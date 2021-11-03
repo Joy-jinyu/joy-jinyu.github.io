@@ -1,5 +1,5 @@
 git add .
-git commit -m '提交代码'
+git commit -m '除前端外的文档全部提交'
 # 提交代码
 git push -u origin master
 
