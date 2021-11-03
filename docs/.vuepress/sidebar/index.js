@@ -22,7 +22,7 @@ module.exports = [
                     title: "webpack",
                     collapsable: true,
                     children: [{
-                        title: "vue-project", path: "/fronted/codeBasic/webpack/vue-project"
+                        title: "vue-project", path: "/fronted/projectBuild/webpack/vue-project"
                     }]
                 }]
             }
