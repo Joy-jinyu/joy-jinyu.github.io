@@ -50,3 +50,21 @@
    + 实际宽度：offsetWidth
    + 距离左侧：offsetLeft
    + 距离顶部：offsetTop
+
+---
+
+## 安全
+
+### XSS(Cross Site Scripting) - 跨站脚本攻击
+
+**主要原理**：嵌入恶意脚本代码到正常用户会访问到的页面
+
+过于信任客户端提交的数据
+
+### CSRF(Cross-site request forgery) - 跨站请求伪造
+
+**主要原理**：攻击者盗用了你的身份，以你的名义发送恶意请求
+
+在没有关闭相关网页的情况下，点击其他人发来的CSRF链接，利用客户端的cookie直接向服务器发送请求
+
+### XSRF
