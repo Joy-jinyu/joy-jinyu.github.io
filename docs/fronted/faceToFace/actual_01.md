@@ -57,7 +57,7 @@
 
 #### this
 
-#### 原型和原型链
+#### [原型和原型链](https://www.jianshu.com/p/8ef16f531d21)
 
 #### 缓存
 
@@ -79,7 +79,7 @@
 
 ### Html
 
-#### H5 有哪些新特性
+#### [H5 有哪些新特性](https://www.w3school.com.cn/html/html5_intro.asp)
 
 #### Canvas和Svg
 
