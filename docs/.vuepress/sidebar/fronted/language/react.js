@@ -8,5 +8,14 @@ module.exports = {
         {
             title: '笔记', path: '/fronted/language/react/notes.md'
         },
+        {
+            title: '算法', path: '/fronted/language/react/algorithm.md'
+        },
+        {
+            title: 'redux', path: '/fronted/language/react/redux.md'
+        },
+        {
+            title: '博客', path: '/fronted/language/react/blog.md'
+        },
     ],
 }
