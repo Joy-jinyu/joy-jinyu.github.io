@@ -12,14 +12,14 @@ echo 'joy.github.io' > CNAME
 
 git init
 git add -A
-git commit -m 'x'
+git commit -m '页面构建提交'
 
-# 把上面的 <USERNAME> 换成你自己的 Github 用户名，<REPO> 换成仓库名，比如我这里就是：
-git push -f https://github.com/Joy-jinyu/joy.github.io.git master:gh-page
+# 将 目录 **docs/.vuepress/dist** 下的 master 分支提交到 git@github.com:Joy-jinyu/joy-jinyu.github.io.git 的 gh-page 分支
+git push -f git@github.com:Joy-jinyu/joy-jinyu.github.io.git master:gh-page
 
 cd -
 # 提交代码仓库
 git add .
-git commit -m 'x'
+git commit -m '文档更新'
 # 提交代码
 git push -u origin master
