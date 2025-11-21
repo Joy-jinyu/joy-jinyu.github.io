@@ -3,7 +3,7 @@ const compatible = require('./compatible')
 const faceToFace = require('./faceToFace')
 const instantMessage = require('./instantMessage')
 const keyword = require('./keyword')
-// const language = require('./language')
+const language = require('./language')
 const mobile = require('./mobile')
 const optimization = require('./optimization')
 const projectBuild = require('./projectBuild')
@@ -19,6 +19,7 @@ module.exports = {
         faceToFace,
         instantMessage,
         keyword,
+        language,
         mobile,
         optimization,
         projectBuild,
