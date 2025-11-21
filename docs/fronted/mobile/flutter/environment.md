@@ -1,6 +1,6 @@
 ## Flutter开发 环境安装
 
-1. ### android sdk安装及配置
+### android sdk安装及配置
 
    + ~~[通过sdkTools下载SDK](https://www.jianshu.com/p/c3ec3cdc77b3,https://www.androiddevtools.cn/,https://www.cnblogs.com/huckleberry/p/12323901.html) （由于证书问题一直无法解决，弃用）~~
 + 下载Android studio
@@ -15,11 +15,11 @@
      - 命令：adb
   - 命令：android -h
    
-2. ### dart安装及配置(flutter开发可忽略安装dart-sdk, flutter内置了)
+### dart安装及配置(flutter开发可忽略安装dart-sdk, flutter内置了)
 
-3. ### fluter 安装及配置
+### fluter 安装及配置
 
-4. ### IDE环境配置
+### IDE环境配置
 
    + [power shell 5.1安装](https://docs.microsoft.com/zh-cn/powershell/scripting/windows-powershell/wmf/setup/install-configure?view=powershell-7)
      
