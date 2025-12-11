@@ -10,6 +10,21 @@ module.exports = {
             collapsable: true,
             children: [
                 {
+                    title: "背景", path: "/fronted/projectBuild/webpack/background"
+                },
+                {
+                    title: "概念", path: "/fronted/projectBuild/webpack/concept"
+                },
+                {
+                    title: "配置", path: "/fronted/projectBuild/webpack/configuration"
+                },
+                {
+                    title: "API", path: "/fronted/projectBuild/webpack/api"
+                },
+                {
+                    title: "错误", path: "/fronted/projectBuild/webpack/error"
+                },
+                {
                     title: "vue项目", path: "/fronted/projectBuild/webpack/vueProject"
                 }
             ]
