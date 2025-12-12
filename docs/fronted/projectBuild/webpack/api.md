@@ -10,9 +10,14 @@
 
 #### Hot Module Replacement
 
-* --hot 实现模块热替换和--watch同样的效果， 区别是hot能够在不刷新界面的情况下实现效果变换
+--hot 实现模块热替换和--watch同样的效果， 区别是hot能够在不刷新界面的情况下实现效果变换
 
 #### Loader Interface
+
++ 同步Loader
++ 异步Loader
++ "Raw" Loader
++ Pitching Loader
 
 #### Logger接口
 
