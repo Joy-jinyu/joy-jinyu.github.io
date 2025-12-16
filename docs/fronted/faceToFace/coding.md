@@ -80,3 +80,41 @@ function objectSizeOf(str, charset) {
     return total
 }
 ```
+
+#### 防抖
+
+```javascript
+function debunce (fn, delay) {
+    let timer
+    return function (...args) {
+        if(timer) {
+            clearTimeout(timer)
+        }
+        timer = setTimeout(() => {
+            fn.apply(this, args)
+        }, delay)
+    }
+}
+```
+
+
+
+#### 节流
+
+```javascript
+function throttle (fn, delay) {
+    let timer
+    let flag = false
+    return function (...args) {
+        if(falg) {
+            return
+        }
+        flag = true
+        timer = setTimeout(() => {
+            fn.apply(this, args)
+            flag = false
+        })
+    }
+}
+```
+
