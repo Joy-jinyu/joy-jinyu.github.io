@@ -7,7 +7,7 @@
 |                           http缓存                           |                                                              |
 |                          浏览器缓存                          |                                                              |
 |                             SSR                              |                                                              |
-|                           preload                            |                                                              |
+|                           [preload](https://www.cnblogs.com/mingweiyard/p/14561144.html)                            |                                                              |
 |                          keep-alive                          |                                                              |
 |                          域名预解析                          |                     `rel="dns-prefetch"`                     |
 |                          域名预链接                          |                    `rel="dns-preconnect"`                    |
