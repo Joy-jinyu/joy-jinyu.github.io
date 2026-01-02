@@ -10,6 +10,14 @@
 
 #### Children
 
+#### React哲学
+
++ 将设计好的UI划分成组件层级
++ 用react创建一个静态版本
++ 确定UI State的最小且完整的表示
++ 确定state放置的位置
++ 添加反向数据流
+
 ---
 
 ### 高级指引
@@ -37,6 +45,57 @@
 #### Context
 
 #### Fragment
+
+---
+
+### Api
+
+#### React
+
+##### 组件
+
+##### 创建React元素
+
+##### 转换元素
+
+##### Fragments
+
+##### Refs
+
+##### Suspense
+
+##### Hooks
+
+#### ReactDom
+
+##### 概览
+
++ render
++ hydrate
++ unmounteComponentAtNode
++ findDomNode
++ createPortal
+
+#### ReactDOMServer
+
+#### DOM元素
+
+##### 属性差异
+
++ checked
++ className
++ dangerouslySetInnerHTML
++ htmlFor
++ onChange
++ Selected
++ Style
++ value
+
+#### [合成事件](https://zh-hans.reactjs.org/docs/events.html)
+
+如需注册捕获阶段的事件处理函数，则应为事件名添加 `Capture`。例如，处理捕获阶段的点击事件请使用 `onClickCapture`，而不是 `onClick`。
+
++ onScrollCapture
 
 ---
 
