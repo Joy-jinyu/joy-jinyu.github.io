@@ -1,4 +1,5 @@
 const css = require('./css')
+const html = require('./html')
 const deno = require('./deno')
 const javascript = require('./javascript')
 const node = require('./node')
@@ -11,6 +12,7 @@ module.exports = {
     collapsable: true,
     children: [
         css,
+        html,
         deno,
         javascript,
         node,
