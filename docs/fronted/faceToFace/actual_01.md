@@ -55,6 +55,8 @@
 
 #### 闭包的定义
 
+#### [箭头函数](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
+
 #### this
 
 #### [原型和原型链](https://www.jianshu.com/p/8ef16f531d21)

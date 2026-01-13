@@ -12,7 +12,7 @@ echo 'joy.github.io' > CNAME
 
 git init
 git add -A
-git commit -m 'web安全'
+git commit -m 'x'
 
 # 把上面的 <USERNAME> 换成你自己的 Github 用户名，<REPO> 换成仓库名，比如我这里就是：
 git push -f https://github.com/Joy-jinyu/joy.github.io.git master:gh-page
@@ -20,6 +20,6 @@ git push -f https://github.com/Joy-jinyu/joy.github.io.git master:gh-page
 cd -
 # 提交代码仓库
 git add .
-git commit -m 'web安全'
+git commit -m 'x'
 # 提交代码
 git push -u origin master
