@@ -1,4 +1,4 @@
-## [Windows](https://www.cnblogs.com/winton-nfs/p/11524007.html)
+## 一、Windows安装
 
 + [官网](https://www.mysql.com/)下载免安装版
 
@@ -41,5 +41,8 @@
   default-character-set=utf8
   ```
 
-  
+  ## End、参考文章
+
+  +  MySQL的安装与配置——详细教程 -  Winton-H
+    https://www.cnblogs.com/winton-nfs/p/11524007.html
 
