@@ -1,8 +1,8 @@
-## [什么是微前端](https://github.com/efoxTeam/emp/wiki/《什么是微前端》,https://swearer23.github.io/micro-frontends/)
+# [什么是微前端](https://github.com/efoxTeam/emp/wiki/《什么是微前端》,https://swearer23.github.io/micro-frontends/)
 
-### 背景
+## 一、背景
 
-#### 实现应用代码隔离
+### 实现应用代码隔离
 
 + 单个应用单个库（`monoRepo` -- `monolithic repository` ）
 
@@ -21,7 +21,7 @@
   >
   >##### 微前端
 
-### 核心思维
+## 二、核心思维
 
 + 技术不可知主义
 + 隔离团队间的代码
@@ -29,7 +29,7 @@
 + 原生浏览器标准优于框架封装的`API`
 + 构建高可用的应用
 
-### 概念
+## 三、概念
 
 > 构建一个现代Web应用所需要的技术、策略和方法，具备多个团队独立开发、部署的特性 -- [`Micro Frontends`官网](https://swearer23.github.io/micro-frontends/)
 
@@ -40,7 +40,7 @@
 - 微前端**不是一门具体的技术**，而是整合了技术、策略和方法，可能会以脚手架、辅助插件和规范约束这种**生态圈**形式展示出来，是一种宏观上的**架构**。这种架构目前有**多种方案**，都有利弊之处，但只要适用当前业务场景的就是好方案。
 - 微前端并**没有技术栈的约束**。每一套微前端方案的设计，都是基于实际需求出发。如果是多团队统一使用了react技术栈，可能对微前端方案的跨技术栈使用并没有要求；如果是多团队同时使用了react和`vue`技术栈，可能就对微前端的跨技术栈要求比较高。
 
-### 优势
+## 四、优势
 
 + 同步更新
 
@@ -52,7 +52,7 @@
 
 + 自主的团队
 
-### 微前端方案
+## 五、微前端方案
 
 + 基座模式
 
@@ -66,4 +66,4 @@
 
   脱离基座模式，每个应用之间都可以彼此分享资源。基于`Webpack 5 Module Federation`实现的[EMP微前端方案](https://github.com/efoxTeam/emp)
 
-[《多方案深入对比分析》](https://github.com/efoxTeam/emp/wiki/《对比多种微前端方案》)
+## 六、[《多方案深入对比分析》](https://github.com/efoxTeam/emp/wiki/《对比多种微前端方案》)
