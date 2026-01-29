@@ -1,16 +1,13 @@
 {
   "name": "joy",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "vuepress dev docs",
-    "build": "vuepress build docs",
+    "dev": "NODE_OPTIONS=--openssl-legacy-provider vuepress dev notes",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider vuepress build notes",
+    "preview": "python3 -m http.server 4173 --directory public",
     "deploy": "bash deploy-gh.sh"
   },
-  "keywords": [],
-  "author": "",
   "license": "ISC",
   "dependencies": {
     "vuepress": "^1.8.2"

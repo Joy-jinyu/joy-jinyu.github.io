@@ -72,7 +72,8 @@ typings/
 dist
 
 # vuepress build output
- docs/.vuepress/dist/
+notes/.vuepress/dist/
+/public/
 
 # Serverless directories
 .serverless
