@@ -1,25 +1,26 @@
-# 确保脚本抛出遇到的错误
-set -e
+#!/usr/bin/env bash
+# 构建并发布到 GitHub Pages（Pages 读取 gh-page 分支根目录）
+#   /        -> site/        简历页（静态 HTML，原样拷贝）
+#   /notes/  -> notes/       VuePress 1.x 技术笔记（base: '/notes/'）
+set -euo pipefail
 
-# 生成静态文件
-npm run build
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+OUT="$ROOT/public"
+REMOTE="git@github.com:Joy-jinyu/joy-jinyu.github.io.git"
 
-# 进入生成的文件夹
-cd docs/.vuepress/dist
+cd "$ROOT"
+rm -rf "$OUT" notes/.vuepress/dist
 
-# 如果是发布到自定义域名
-echo 'joy.github.io' > CNAME
+# VuePress 1.x 依赖 webpack 4，Node 17+ 需要旧版 OpenSSL 摘要算法
+NODE_OPTIONS=--openssl-legacy-provider npx vuepress build notes
 
-git init
+mkdir -p "$OUT"
+cp -R site/. "$OUT/"
+cp -R notes/.vuepress/dist "$OUT/notes"
+touch "$OUT/.nojekyll"
+
+cd "$OUT"
+git init -q -b gh-page
 git add -A
-git commit -m '页面构建提交'
-
-# 将 目录 **docs/.vuepress/dist** 下的 master 分支提交到 git@github.com:Joy-jinyu/joy-jinyu.github.io.git 的 gh-page 分支
-git push -f git@github.com:Joy-jinyu/joy-jinyu.github.io.git master:gh-page
-
-cd -
-# 提交代码仓库
-git add .
-git commit -m '文档更新'
-# 提交代码
-git push -u origin master
+git commit -q -m "deploy: $(git -C "$ROOT" rev-parse --short HEAD)"
+git push -f "$REMOTE" gh-page:gh-page
