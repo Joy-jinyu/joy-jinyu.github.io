@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "NODE_OPTIONS=--openssl-legacy-provider vuepress dev notes",
-    "build": "NODE_OPTIONS=--openssl-legacy-provider vuepress build notes",
+    "dev": "astro dev --root notes",
+    "build": "astro build --root notes",
     "preview": "python3 -m http.server 4173 --directory public",
     "deploy": "bash deploy-gh.sh"
   },
   "license": "ISC",
   "dependencies": {
-    "vuepress": "^1.8.2"
+    "@astrojs/starlight": "0.42.6",
+    "astro": "7.3.8"
   }
 }
