@@ -1,0 +1,35 @@
+---
+/** 右侧「本页内容」：在标题行右边放收起按钮，其余沿用 Starlight 默认目录 */
+import Default from '@astrojs/starlight/components/PageSidebar.astro';
+import PanelToggle from './PanelToggle.astro';
+
+const hasToc = Boolean(Astro.locals.starlightRoute.toc);
+---
+
+<div class="toc-shell">
+	{
+		hasToc && (
+			<div class="toc-toggle sl-hidden lg:sl-block">
+				<PanelToggle panel="toc" />
+			</div>
+		)
+	}
+	<Default />
+</div>
+
+<style>
+	.toc-shell {
+		position: relative;
+	}
+	/* Starlight 的 .right-sidebar 是 fixed + width:100%（按视口算），右对齐会被推出屏幕，所以按目录内容宽度从左边定位 */
+	.toc-toggle {
+		position: absolute;
+		z-index: 1;
+		top: 0.6rem;
+		inset-inline-start: calc(var(--sl-sidebar-width) - var(--sl-sidebar-pad-x) - 2rem);
+		transition: inset-inline-start 0.32s var(--ease);
+	}
+	:global(:root[data-toc='collapsed']) .toc-toggle {
+		inset-inline-start: calc((var(--rail) - 2rem) / 2);
+	}
+</style>
