@@ -1,0 +1,107 @@
+---
+/**
+ * 收起 / 展开左侧菜单或右侧「本页内容」。按钮放在各自面板的顶部内侧，收起后面板缩成一条窄栏，按钮留在原位
+ * 状态记在 <html data-sidebar|data-toc> 和 localStorage，首帧由 astro.config 里的内联脚本恢复
+ */
+interface Props {
+	panel: 'sidebar' | 'toc';
+}
+
+const { panel } = Astro.props;
+const name = panel === 'sidebar' ? '菜单' : '本页内容';
+---
+
+<button
+	type="button"
+	class:list={['panel-toggle', `panel-toggle--${panel}`]}
+	data-panel={panel}
+	data-name={name}
+	aria-controls={panel === 'sidebar' ? 'starlight__sidebar' : undefined}
+	aria-expanded="true"
+	aria-label={`收起${name}`}
+	title={`收起${name}`}
+>
+	{/* 「侧边栏面板」图标：方框 + 一侧竖条，左右面板镜像；用 CSS 画，站里没有图标库 */}
+	<span class="panel-icon" aria-hidden="true"></span>
+</button>
+
+<script>
+	type Panel = 'sidebar' | 'toc';
+
+	function render() {
+		document.querySelectorAll<HTMLButtonElement>('.panel-toggle').forEach((btn) => {
+			const collapsed = document.documentElement.dataset[btn.dataset.panel as Panel] === 'collapsed';
+			const label = `${collapsed ? '展开' : '收起'}${btn.dataset.name}`;
+			btn.setAttribute('aria-expanded', String(!collapsed));
+			btn.setAttribute('aria-label', label);
+			btn.title = label;
+		});
+	}
+
+	document.querySelectorAll<HTMLButtonElement>('.panel-toggle').forEach((btn) => {
+		btn.addEventListener('click', () => {
+			const panel = btn.dataset.panel as Panel;
+			const root = document.documentElement;
+			const collapse = root.dataset[panel] !== 'collapsed';
+			if (collapse) root.dataset[panel] = 'collapsed';
+			else delete root.dataset[panel];
+			localStorage.setItem(`joy-${panel}`, collapse ? 'collapsed' : '');
+			render();
+		});
+	});
+	render();
+</script>
+
+<style>
+	.panel-toggle {
+		display: grid;
+		place-items: center;
+		flex-shrink: 0;
+		width: 2rem;
+		height: 2rem;
+		border: 0;
+		border-radius: 8px;
+		background: none;
+		color: var(--muted);
+		cursor: pointer;
+		transition:
+			color 0.2s var(--ease),
+			background 0.2s var(--ease);
+	}
+	.panel-toggle:hover {
+		color: var(--strong);
+		background: rgba(var(--ink-rgb), 0.06);
+	}
+	.panel-toggle:focus-visible {
+		outline: 2px solid var(--brand);
+		outline-offset: 1px;
+	}
+	.panel-toggle[aria-expanded='false'] {
+		color: var(--brand-2);
+	}
+	.panel-icon {
+		position: relative;
+		width: 16px;
+		height: 13px;
+		border: 1.5px solid currentColor;
+		border-radius: 3.5px;
+	}
+	.panel-icon::before {
+		content: '';
+		position: absolute;
+		inset-block: 0;
+		inset-inline-start: 3.5px;
+		width: 1.5px;
+		background: currentColor;
+	}
+	.panel-toggle--toc .panel-icon::before {
+		inset-inline-start: auto;
+		inset-inline-end: 3.5px;
+	}
+	/* 窄屏下菜单由 Starlight 的汉堡按钮接管，目录本来就是折叠的，不需要这个按钮 */
+	@media (max-width: 49.99em) {
+		.panel-toggle--sidebar {
+			display: none;
+		}
+	}
+</style>

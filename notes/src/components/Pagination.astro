@@ -1,0 +1,100 @@
+---
+/** 文末上一篇 / 下一篇：去掉默认的大卡片，改成简历页那种 mono 小标签 + 标题的轻量导航 */
+const { prev, next } = Astro.locals.starlightRoute.pagination;
+---
+
+{
+	(prev || next) && (
+		<nav class="pager print:hidden" aria-label="文章翻页">
+			{prev && (
+				<a class="prev" href={prev.href} rel="prev">
+					<span class="eyebrow">
+						<span class="arrow" aria-hidden="true">←</span>上一篇
+					</span>
+					<span class="title">{prev.label}</span>
+				</a>
+			)}
+			{next && (
+				<a class="next" href={next.href} rel="next">
+					<span class="eyebrow">
+						下一篇<span class="arrow" aria-hidden="true">→</span>
+					</span>
+					<span class="title">{next.label}</span>
+				</a>
+			)}
+		</nav>
+	)
+}
+
+<style>
+	.pager {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 0.5rem 1.5rem;
+		margin-top: 1rem;
+		padding-top: 1.25rem;
+		border-top: 1px solid var(--line);
+	}
+	a {
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+		min-width: 0;
+		padding: 0.75rem 1rem;
+		margin-inline: -1rem;
+		border-radius: 10px;
+		text-decoration: none;
+		transition: background 0.2s var(--ease);
+	}
+	/* 只有下一篇时也固定在右栏，位置不随有无上一篇跳动 */
+	.next {
+		grid-column: 2;
+		align-items: flex-end;
+		text-align: end;
+	}
+	a:hover {
+		background: rgba(var(--ink-rgb), 0.04);
+	}
+	a:focus-visible {
+		outline: 2px solid var(--brand);
+		outline-offset: 2px;
+	}
+	.eyebrow {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		font: 500 0.72rem/1 var(--sl-font-mono);
+		letter-spacing: 0.14em;
+		color: var(--muted);
+	}
+	.arrow {
+		color: var(--brand);
+		transition: transform 0.2s var(--ease);
+	}
+	.prev:hover .arrow {
+		transform: translateX(-3px);
+	}
+	.next:hover .arrow {
+		transform: translateX(3px);
+	}
+	.title {
+		max-width: 100%;
+		font-size: 1.05rem;
+		font-weight: 600;
+		line-height: 1.4;
+		color: var(--strong);
+		overflow-wrap: anywhere;
+		transition: color 0.2s var(--ease);
+	}
+	a:hover .title {
+		color: var(--brand-2);
+	}
+	@media (max-width: 30em) {
+		.pager {
+			grid-template-columns: 1fr;
+		}
+		.next {
+			grid-column: 1;
+		}
+	}
+</style>

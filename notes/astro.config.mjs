@@ -13,7 +13,54 @@ export default defineConfig({
       title: '有爱心安 - 花期',
       description: '杂乱无章的技术博客',
       locales: { root: { label: '简体中文', lang: 'zh-CN' } },
-      sidebar: [{ label: '← 简历', link: 'https://joy-jinyu.github.io/' }, ...sidebar],
+      // 「← 简历」放在自定义侧边栏顶部那一行（src/components/Sidebar.astro）
+      sidebar,
+      // 视觉规范对齐简历页 site/index.html：同一套字体、配色、底纹
+      customCss: ['./src/styles/theme.css'],
+      components: {
+        ThemeSelect: './src/components/ThemeSwitch.astro',
+        Sidebar: './src/components/Sidebar.astro',
+        PageSidebar: './src/components/PageSidebar.astro',
+        Pagination: './src/components/Pagination.astro',
+      },
+      head: [
+        // 跨页面过渡的开关必须在新页面首帧前就生效，放外链 CSS 里偶尔加载晚了会被浏览器跳过，所以内联在 head
+        {
+          tag: 'style',
+          content:
+            '@view-transition{navigation:auto}@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}',
+        },
+        // 首帧前恢复菜单 / 目录的收起状态，避免先展开再收起的闪动（按钮逻辑见 src/components/PanelToggle.astro）
+        {
+          tag: 'script',
+          content:
+            "try{for(const p of ['sidebar','toc'])if(localStorage.getItem('joy-'+p)==='collapsed')document.documentElement.dataset[p]='collapsed'}catch{}",
+        },
+        { tag: 'link', attrs: { rel: 'preconnect', href: 'https://fonts.googleapis.com' } },
+        { tag: 'link', attrs: { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: true } },
+        {
+          tag: 'link',
+          attrs: {
+            rel: 'stylesheet',
+            href: 'https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap',
+          },
+        },
+      ],
+      expressiveCode: {
+        themes: ['github-dark-default', 'github-light-default'],
+        styleOverrides: {
+          borderRadius: '12px',
+          borderColor: 'var(--line)',
+          codeFontFamily: 'var(--sl-font-mono)',
+          uiFontFamily: 'var(--sl-font-mono)',
+          codeBackground: 'var(--panel-hi)',
+          frames: {
+            shadowColor: 'transparent',
+            editorTabBarBackground: 'var(--panel)',
+            terminalTitlebarBackground: 'var(--panel)',
+          },
+        },
+      },
     }),
   ],
 })

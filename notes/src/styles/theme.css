@@ -1,0 +1,520 @@
+/**
+ * 笔记站主题：对齐简历页 site/index.html 的视觉规范
+ * 深色底 + 青色品牌色（#00b8b8 / #5eead4）、Geist / Geist Mono 字体、网格底纹、胶囊按钮、mono 小标签
+ */
+
+/* ---------- 设计 token：值取自 site/index.html 的 :root ---------- */
+:root {
+  --bg: #07090f;
+  --ink-rgb: 255, 255, 255;
+  --line: rgba(var(--ink-rgb), 0.08);
+  --line-hi: rgba(var(--ink-rgb), 0.14);
+  --panel: rgba(var(--ink-rgb), 0.032);
+  --panel-hi: rgba(var(--ink-rgb), 0.055);
+  --text: #c3c9d4;
+  --strong: #f3f5f9;
+  --muted: #7d8596;
+  --faint: #4a5160;
+  --brand: #00b8b8;
+  --brand-2: #5eead4;
+  --brand-glow: rgba(0, 184, 184, 0.22);
+  --hi-1: #ffffff;
+  --hi-2: #a7f3ec;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --sl-font: "Geist", "PingFang SC", -apple-system, sans-serif;
+  --sl-font-mono: "Geist Mono", "SF Mono", Menlo, monospace;
+
+  --sl-color-accent-low: rgba(0, 184, 184, 0.16);
+  --sl-color-accent: var(--brand);
+  --sl-color-accent-high: var(--brand-2);
+  --sl-color-white: var(--strong);
+  --sl-color-gray-1: #e2e6ee;
+  --sl-color-gray-2: var(--text);
+  --sl-color-gray-3: var(--muted);
+  --sl-color-gray-4: var(--faint);
+  --sl-color-gray-5: #1a1f2a;
+  --sl-color-gray-6: #0d1119;
+  --sl-color-black: var(--bg);
+  --sl-color-bg-nav: rgba(7, 9, 15, 0.72);
+  --sl-color-bg-sidebar: transparent;
+  --sl-color-bg-inline-code: rgba(0, 184, 184, 0.1);
+  --sl-color-hairline: var(--line);
+  --sl-color-hairline-light: var(--line-hi);
+  --sl-color-hairline-shade: var(--line);
+  --sl-color-backdrop-overlay: rgba(3, 4, 10, 0.72);
+
+  --sl-content-width: 48rem;
+  --sl-line-height: 1.8;
+}
+
+/* 亮色：取 site/index.html 的 [data-theme="light"]，青色文字加深保证白底对比度 */
+:root[data-theme="light"] {
+  --bg: #ffffff;
+  --ink-rgb: 10, 14, 25;
+  --text: rgb(40, 44, 54);
+  --strong: rgb(10, 14, 25);
+  --muted: rgb(108, 110, 117);
+  --faint: rgb(169, 171, 174);
+  --brand-2: #0b8f8f;
+  --brand-glow: rgba(0, 184, 184, 0.18);
+  --hi-1: rgb(10, 14, 25);
+  --hi-2: #0b6f6f;
+
+  --sl-color-gray-1: rgb(24, 28, 38);
+  --sl-color-gray-5: #e4e8ec;
+  --sl-color-gray-6: #f2f5f7;
+  --sl-color-gray-7: #f7f9fa;
+  --sl-color-bg-nav: rgba(255, 255, 255, 0.78);
+  --sl-color-bg-inline-code: rgba(0, 184, 184, 0.09);
+  --sl-color-text-accent: #0b7f7f;
+  --sl-color-text-invert: #ffffff;
+  --sl-color-backdrop-overlay: rgba(233, 236, 239, 0.7);
+}
+
+/* ---------- 页面底：品牌色光晕 + 顶部网格底纹 ---------- */
+html {
+  background: var(--bg);
+}
+body {
+  -webkit-font-smoothing: antialiased;
+  background:
+    radial-gradient(900px 480px at 88% -8%, rgba(0, 184, 184, 0.14), transparent 62%),
+    radial-gradient(700px 420px at -10% 104%, rgba(94, 234, 212, 0.06), transparent 60%), var(--bg);
+  background-attachment: fixed;
+}
+:root[data-theme="light"] body {
+  background:
+    radial-gradient(900px 480px at 88% -8%, rgba(0, 184, 184, 0.09), transparent 62%),
+    radial-gradient(700px 420px at -10% 104%, rgba(0, 184, 184, 0.04), transparent 60%), var(--bg);
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: 420px;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(var(--ink-rgb), 0.04) 1px, transparent 1px) -1px -1px / 22px 22px,
+    linear-gradient(90deg, rgba(var(--ink-rgb), 0.04) 1px, transparent 1px) -1px -1px / 22px 22px;
+  mask-image: radial-gradient(ellipse 70% 100% at 70% 0%, #000 10%, transparent 75%);
+}
+::selection {
+  background: rgba(0, 184, 184, 0.3);
+  color: var(--strong);
+}
+
+/* ---------- 顶栏：毛玻璃 ---------- */
+header.header {
+  background: var(--sl-color-bg-nav);
+  /* 前缀版必须写在前面：构建压缩会把两行合并，只保留后写的那行，标准写法在后面 Chrome 才生效 */
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid var(--line);
+}
+.site-title {
+  font: 700 1.05rem/1 var(--sl-font);
+  letter-spacing: -0.02em;
+  color: var(--strong);
+}
+/* 搜索框做成胶囊按钮，风格同简历页 .site-nav a；窄屏只剩图标按钮，不加胶囊 */
+@media (min-width: 50em) {
+  site-search button[data-open-modal] {
+    border-radius: 999px;
+    border: 1px solid var(--line-hi);
+    background: rgba(var(--ink-rgb), 0.04);
+    font-family: var(--sl-font-mono);
+    font-size: var(--sl-text-xs);
+    transition:
+      border-color 0.2s var(--ease),
+      background 0.2s var(--ease),
+      box-shadow 0.2s var(--ease);
+  }
+  site-search button[data-open-modal]:hover {
+    border-color: var(--brand);
+    background: rgba(0, 184, 184, 0.06);
+    box-shadow: 0 0 0 4px rgba(0, 184, 184, 0.08);
+  }
+}
+/* 快捷键提示：外层 kbd 是一个整体徽标，里面的 ⌘ / K 不再各自带框 */
+site-search button > kbd {
+  border-radius: 6px;
+  background: rgba(var(--ink-rgb), 0.06);
+  border: 1px solid var(--line);
+  font-family: var(--sl-font-mono);
+  color: var(--muted);
+}
+site-search button > kbd kbd {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+}
+
+mobile-starlight-toc nav {
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
+}
+
+/* ---------- 侧边栏 ---------- */
+.sidebar-pane {
+  border-inline-end: 1px solid var(--line);
+  background: transparent;
+}
+@media (max-width: 49.99em) {
+  .sidebar-pane {
+    background: var(--bg);
+  }
+}
+.sidebar-content {
+  --sl-sidebar-item-padding-inline: 0.6rem;
+}
+.sidebar-content a,
+.sidebar-content summary {
+  border-radius: 8px;
+  transition:
+    color 0.18s var(--ease),
+    background 0.18s var(--ease),
+    transform 0.18s var(--ease);
+}
+.sidebar-content a:hover {
+  color: var(--strong);
+  background: rgba(var(--ink-rgb), 0.04);
+  transform: translateX(2px);
+}
+.sidebar-content summary:hover {
+  background: rgba(var(--ink-rgb), 0.03);
+}
+.sidebar-content a[aria-current="page"],
+.sidebar-content a[aria-current="page"]:hover {
+  color: var(--brand-2);
+  background: linear-gradient(90deg, rgba(0, 184, 184, 0.16), rgba(0, 184, 184, 0.02));
+  font-weight: 600;
+  transform: none;
+}
+/* 一级分组标题：mono 小标签，同简历 .rail .en */
+.sidebar-content .top-level > li > details > summary .group-label .large {
+  font: 600 0.8rem/1 var(--sl-font);
+  letter-spacing: 0.06em;
+  color: var(--brand-2);
+}
+.sidebar-content summary .caret {
+  transition: transform 0.25s var(--ease);
+}
+.sidebar-content ul ul {
+  border-inline-start-color: var(--line);
+}
+
+/* 移动端侧边栏（popover）滑入 */
+@media (max-width: 49.99em) {
+  .sidebar-pane:popover-open {
+    animation: sidebar-in 0.3s var(--ease);
+  }
+}
+@keyframes sidebar-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+/* ---------- 正文 ---------- */
+.content-panel + .content-panel {
+  border-top-color: var(--line);
+}
+/* 页面标题：同简历 h1 的渐变字 */
+.content-panel h1#_top {
+  /* 块级 h1 会把渐变铺满整行，短标题只吃到最左边的白色，所以收窄到文字宽度 */
+  width: fit-content;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+  background: linear-gradient(100deg, var(--hi-1) 30%, var(--hi-2) 62%, var(--brand) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.sl-markdown-content {
+  color: var(--text);
+}
+.sl-markdown-content :is(h2, h3, h4, h5) {
+  color: var(--strong);
+  letter-spacing: -0.015em;
+}
+.sl-markdown-content h2::before {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 2px;
+  margin-right: 0.6rem;
+  vertical-align: 0.32em;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--brand), var(--brand-2));
+  box-shadow: 0 0 8px var(--brand-glow);
+}
+.sl-markdown-content a:not(.sl-anchor-link) {
+  color: var(--brand-2);
+  text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size 0.25s var(--ease);
+}
+.sl-markdown-content a:not(.sl-anchor-link):hover {
+  background-size: 100% 1px;
+}
+.sl-markdown-content :not(pre) > code {
+  padding: 0.12em 0.4em;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 184, 184, 0.18);
+  color: var(--brand-2);
+  font-size: 0.88em;
+}
+/* 列表圆点换成简历的青色短横 */
+.sl-markdown-content ul:not(:where(.not-content *)) > li::marker {
+  color: var(--brand);
+}
+.sl-markdown-content blockquote {
+  border-inline-start: 2px solid var(--brand);
+  background: var(--panel);
+  padding: 0.6rem 1rem;
+  border-radius: 0 10px 10px 0;
+  color: var(--muted);
+}
+.sl-markdown-content table {
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+.sl-markdown-content :is(th, td) {
+  border-color: var(--line);
+}
+.sl-markdown-content th {
+  background: var(--panel-hi);
+  color: var(--strong);
+  font-family: var(--sl-font-mono);
+  font-size: var(--sl-text-xs);
+  letter-spacing: 0.04em;
+}
+.sl-markdown-content hr {
+  border-color: var(--line);
+}
+.sl-markdown-content img {
+  border-radius: 10px;
+  border: 1px solid var(--line);
+}
+
+/* ---------- 右侧目录 ---------- */
+.right-sidebar {
+  border-inline-start: 1px solid var(--line);
+}
+starlight-toc h2,
+mobile-starlight-toc .toggle {
+  font-family: var(--sl-font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+starlight-toc a {
+  transition: color 0.18s var(--ease);
+}
+starlight-toc a[aria-current="true"] {
+  color: var(--brand-2);
+}
+
+/* ---------- 搜索弹窗 ---------- */
+site-search dialog {
+  border-radius: 14px;
+  border: 1px solid var(--line-hi);
+  background: var(--bg);
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.7);
+}
+site-search dialog[open] {
+  animation: dialog-in 0.28s var(--ease);
+}
+site-search dialog[open]::backdrop {
+  backdrop-filter: blur(6px);
+  animation: fade-in 0.28s var(--ease);
+}
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ---------- 过渡：跨页面 View Transition（开关内联在 head，见 astro.config.mjs；不支持的浏览器直接跳转） ---------- */
+/*
+ * 顶栏、侧边栏、目录单独命名，切页时直接换成新页面（不交叉淡化，否则新旧两张快照叠在一起会重影）；
+ * 只有正文做「旧的先淡出，新的再淡入」，两段错开不重叠
+ */
+header.header {
+  view-transition-name: sl-header;
+}
+.sidebar-pane {
+  view-transition-name: sl-sidebar;
+}
+/* view-transition-name 会让元素自成层叠上下文；窄屏时手机端「本页内容」条在它里面，z-index 会被困住、被正文盖住，所以只在三栏布局时命名 */
+@media (min-width: 72em) {
+  .right-sidebar {
+    view-transition-name: sl-toc;
+  }
+}
+main {
+  view-transition-name: sl-main;
+}
+::view-transition-old(root),
+::view-transition-old(sl-header),
+::view-transition-old(sl-sidebar),
+::view-transition-old(sl-toc) {
+  display: none;
+}
+::view-transition-new(root),
+::view-transition-new(sl-header),
+::view-transition-new(sl-sidebar),
+::view-transition-new(sl-toc),
+::view-transition-group(*) {
+  animation: none;
+}
+::view-transition-old(sl-main) {
+  animation: 0.14s ease-in both vt-out;
+}
+::view-transition-new(sl-main) {
+  animation: 0.32s var(--ease) 0.14s both vt-in;
+}
+@keyframes vt-out {
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+@keyframes vt-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+/* 主题切换时颜色平滑过渡 */
+body,
+header.header {
+  transition:
+    background-color 0.3s var(--ease),
+    color 0.3s var(--ease),
+    border-color 0.3s var(--ease);
+}
+
+/*
+ * ---------- 菜单 / 目录收起 ----------
+ * 状态在 <html data-sidebar|data-toc>（见 src/components/PanelToggle.astro）。
+ * 收起后面板缩成 --rail 宽的窄栏，收起按钮留在原位；面板内容固定宽度只做淡出，避免收窄过程中文字挤成一团
+ */
+:root {
+  --rail: 3.25rem;
+}
+@media (min-width: 50em) {
+  .sidebar-pane {
+    transition:
+      width 0.32s var(--ease),
+      background-color 0.3s var(--ease),
+      border-color 0.3s var(--ease);
+  }
+  .sidebar-content {
+    transition: padding 0.32s var(--ease);
+  }
+  /* sl-sidebar-state-persist 是自定义元素，默认 inline，min-width 不生效；只改它，别碰同级 .md:sl-hidden 的手机端底栏 */
+  .sidebar-content > sl-sidebar-state-persist {
+    display: block;
+  }
+  .sidebar-content > :not(.sidebar-head) {
+    min-width: calc(var(--sl-sidebar-width) - 2 * var(--sl-sidebar-pad-x));
+    transition:
+      opacity 0.2s var(--ease),
+      visibility 0s linear 0s;
+  }
+  .main-frame {
+    transition: padding-inline-start 0.32s var(--ease);
+  }
+  :root[data-sidebar='collapsed'][data-has-sidebar] {
+    --sl-content-inline-start: var(--rail);
+  }
+  :root[data-sidebar='collapsed'] .sidebar-pane {
+    width: var(--rail);
+    overflow: hidden;
+    border-inline-end-color: transparent;
+  }
+  :root[data-sidebar='collapsed'] .sidebar-content {
+    padding-inline: calc((var(--rail) - 2rem) / 2);
+  }
+  /* 链接的内边距和间距也要清掉，否则窄栏里按钮会被挤出去 */
+  :root[data-sidebar='collapsed'] .sidebar-head {
+    gap: 0;
+  }
+  :root[data-sidebar='collapsed'] .sidebar-head .back-link {
+    padding-inline: 0;
+    margin-inline-start: 0;
+  }
+  :root[data-sidebar='collapsed'] .sidebar-content > :not(.sidebar-head),
+  :root[data-sidebar='collapsed'] .sidebar-head .back-link {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 0.15s var(--ease),
+      visibility 0s linear 0.15s;
+  }
+}
+@media (min-width: 72em) {
+  .right-sidebar-container,
+  .main-pane {
+    transition: width 0.32s var(--ease);
+  }
+  .right-sidebar {
+    transition: border-color 0.32s var(--ease);
+  }
+  .right-sidebar-panel {
+    transition:
+      opacity 0.2s var(--ease),
+      visibility 0s linear 0s;
+  }
+  :root[data-toc='collapsed'] .right-sidebar-container {
+    width: var(--rail);
+  }
+  :root[data-toc='collapsed'] .right-sidebar {
+    overflow: hidden;
+    border-inline-start-color: transparent;
+  }
+  :root[data-toc='collapsed'] .right-sidebar-panel {
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.15s var(--ease),
+      visibility 0s linear 0.15s;
+  }
+  :root[data-toc='collapsed'][data-has-toc] .main-pane {
+    --sl-content-margin-inline: auto;
+    width: calc(100% - var(--rail));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* 移动端菜单按钮：默认是白底圆钮，改成和搜索一致的描边胶囊 */
+.sl-menu-button button,
+button.sl-menu-button {
+  background: rgba(var(--ink-rgb), 0.06);
+  color: var(--strong);
+  border: 1px solid var(--line-hi);
+  box-shadow: none;
+}

@@ -1,0 +1,135 @@
+---
+/** 替换 Starlight 默认的主题下拉框：浅色 / 跟随系统 / 深色 三段式切换 */
+import { Icon } from '@astrojs/starlight/components';
+
+const options = [
+	{ value: 'light', icon: 'sun', label: '浅色' },
+	{ value: 'auto', icon: 'desktop', label: '跟随系统' },
+	{ value: 'dark', icon: 'moon', label: '深色' },
+] as const;
+---
+
+<joy-theme-switch>
+	<div class="seg" role="radiogroup" aria-label="主题">
+		<span class="thumb" aria-hidden="true"></span>
+		{
+			options.map(({ value, icon, label }) => (
+				<button type="button" role="radio" data-value={value} aria-label={label} title={label} aria-checked="false" tabindex="-1">
+					<Icon name={icon} size="1rem" />
+				</button>
+			))
+		}
+	</div>
+</joy-theme-switch>
+
+{/* 内联执行，首帧就选中正确的一段，避免闪一下 */}
+<script is:inline>
+	document.currentScript.previousElementSibling.dataset.value =
+		localStorage.getItem('starlight-theme') || 'auto';
+</script>
+
+<script>
+	type Theme = 'auto' | 'dark' | 'light';
+
+	/** 与 Starlight ThemeProvider 共用同一个 key，刷新后由它在首帧恢复主题 */
+	const storageKey = 'starlight-theme';
+	const order: Theme[] = ['light', 'auto', 'dark'];
+
+	const parseTheme = (v: unknown): Theme => (v === 'dark' || v === 'light' ? v : 'auto');
+	const loadTheme = (): Theme => parseTheme(localStorage.getItem(storageKey));
+	const systemTheme = () => (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+
+	function applyTheme(theme: Theme) {
+		document.documentElement.dataset.theme = theme === 'auto' ? systemTheme() : theme;
+		localStorage.setItem(storageKey, theme === 'auto' ? '' : theme);
+		document.querySelectorAll<JoyThemeSwitch>('joy-theme-switch').forEach((el) => el.sync(theme));
+	}
+
+	matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => {
+		if (loadTheme() === 'auto') applyTheme('auto');
+	});
+
+	class JoyThemeSwitch extends HTMLElement {
+		connectedCallback() {
+			this.sync(loadTheme());
+			this.querySelectorAll<HTMLButtonElement>('button').forEach((btn) => {
+				btn.addEventListener('click', () => applyTheme(parseTheme(btn.dataset.value)));
+			});
+			// radiogroup 键盘约定：左右方向键切换并立即生效
+			this.addEventListener('keydown', (e) => {
+				if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) return;
+				e.preventDefault();
+				const step = e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 1;
+				const next = order[(order.indexOf(loadTheme()) + step + order.length) % order.length]!;
+				applyTheme(next);
+				this.querySelector<HTMLButtonElement>(`button[data-value="${next}"]`)?.focus();
+			});
+		}
+		sync(theme: Theme) {
+			this.dataset.value = theme;
+			this.querySelectorAll<HTMLButtonElement>('button').forEach((btn) => {
+				const on = btn.dataset.value === theme;
+				btn.setAttribute('aria-checked', String(on));
+				btn.tabIndex = on ? 0 : -1;
+			});
+		}
+	}
+	customElements.define('joy-theme-switch', JoyThemeSwitch);
+</script>
+
+<style>
+	.seg {
+		position: relative;
+		display: grid;
+		grid-template-columns: repeat(3, 2rem);
+		padding: 3px;
+		border-radius: 999px;
+		border: 1px solid var(--line);
+		background: rgba(var(--ink-rgb), 0.05);
+	}
+	button {
+		position: relative;
+		z-index: 1;
+		display: grid;
+		place-items: center;
+		height: 1.75rem;
+		border: 0;
+		border-radius: 999px;
+		background: none;
+		color: var(--muted);
+		cursor: pointer;
+		transition: color 0.2s var(--ease);
+	}
+	button:hover,
+	button[aria-checked='true'] {
+		color: var(--strong);
+	}
+	button:focus-visible {
+		outline: 2px solid var(--brand);
+		outline-offset: 1px;
+	}
+	/* 选中态的白色滑块，跟着 data-value 平移 */
+	.thumb {
+		position: absolute;
+		inset-block: 3px;
+		inset-inline-start: 3px;
+		width: 2rem;
+		border-radius: 999px;
+		background: var(--sl-color-black);
+		box-shadow:
+			0 1px 3px rgba(0, 0, 0, 0.25),
+			0 0 0 1px var(--line-hi);
+		transition: transform 0.3s var(--ease);
+	}
+	:root[data-theme='light'] .thumb {
+		box-shadow:
+			0 1px 3px rgba(10, 14, 25, 0.12),
+			0 0 0 1px var(--line);
+	}
+	joy-theme-switch[data-value='auto'] .thumb {
+		transform: translateX(100%);
+	}
+	joy-theme-switch[data-value='dark'] .thumb {
+		transform: translateX(200%);
+	}
+</style>
