@@ -1,132 +1,220 @@
 ---
-title: "核心概念"
+title: webpack 核心概念
+description: 以 webpack 5 为准，讲清 entry、output、loader、plugin、mode，module、chunk 与 bundle 的区别，模块解析、构建流程、Tapable 钩子以及 target 与 browserslist。
 ---
 
-## [入口 - Entry](https://webpack.docschina.org/concepts/entry-points/)
+webpack 的配置项很多，但背后的概念并不多：从入口出发构建依赖图，用 loader 转换模块，把模块组织成 chunk，再输出为文件，plugin 则通过钩子介入整个过程。这篇按这个顺序梳理 webpack 5 的核心概念和内部构建流程，读完应该能看懂一份 webpack 配置每一部分在做什么，也能为后续编写 loader 和 plugin 打下基础。具体配置写法见 [webpack 配置详解](/notes/fronted/projectBuild/webpack/configuration.html)。
 
-### 概览
+## 整体模型
 
-+ 默认值是 `./src/index.js`
-+ 可以指定一个（或多个）不同的入口起点
+webpack 是一个静态模块打包器。"静态"指它在构建阶段分析代码，而不是在浏览器运行时才去找依赖。整体可以概括为：
 
-### 单个入口（简写）语法
+```text
+entry ──> 解析依赖 ──> loader 转换 ──> 依赖图（module graph）
+                                            │
+                                            v
+                         按入口和异步边界划分 chunk ──> 优化 ──> 输出 bundle（output）
 
-### 对象语法
+plugin：通过钩子介入上面任意一个环节
+```
+
+依赖图的来龙去脉见 [webpack 的由来](/notes/fronted/projectBuild/webpack/background.html)。下面逐个看各部分。
+
+## entry：入口
+
+entry 指定 webpack 从哪个模块开始构建依赖图。webpack 5 在零配置时默认入口是 `./src/index.js`。
+
+### 写法
+
+```js
+module.exports = {
+  // 1. 字符串：单入口，生成名为 main 的 chunk
+  entry: './src/index.js',
+};
+```
+
+```js
+module.exports = {
+  // 2. 数组：多个文件合并进同一个 chunk（main），按顺序执行
+  entry: ['./src/polyfills.js', './src/index.js'],
+};
+```
+
+```js
+module.exports = {
+  // 3. 对象：多入口，key 就是 chunk 名称
+  entry: {
+    app: './src/app.js',
+    admin: './src/admin.js',
+  },
+};
+```
+
+对象写法里，每个入口还可以是一个描述对象，常用字段有：
+
+| 字段 | 作用 |
+| --- | --- |
+| `import` | 入口模块，可以是字符串或数组 |
+| `dependOn` | 当前入口依赖的其他入口，被依赖入口里的模块不会重复打包进来 |
+| `filename` | 单独指定这个入口的输出文件名 |
+| `runtime` | 指定运行时 chunk 的名字 |
+
+```js
+module.exports = {
+  entry: {
+    shared: ['react', 'react-dom'],
+    app: { import: './src/app.js', dependOn: 'shared' },
+  },
+};
+```
+
+entry 也可以是一个返回上述值（或返回 Promise）的函数，适合入口列表需要动态计算的场景，比如扫描目录生成多页面入口。
 
 ### 常见场景
 
-+ 分离 app(应用程序) 和 vendor(第三方库) 入口
-+ 多页面应用程序
+- **单页应用**：一个入口即可，第三方库的拆分交给 `optimization.splitChunks`，比手写 vendor 入口更省心。
+- **多页应用**：每个页面一个入口，页面之间的公共代码再由 `splitChunks` 提取。
 
----
+早期常见"把 vendor 单独写成一个入口"的做法，在 webpack 4 引入 `splitChunks` 之后已不推荐，除非确实需要精确控制。
 
-## 输出 - Output
+## output：输出
 
-### 概览
+output 决定产物写到哪、叫什么名字。默认输出到 `./dist/main.js`。
 
-+ 输出文件的默认值是 `./dist/main.js`
-+ 其他生成文件默认放置在 `./dist` 文件夹中 （可通过path来进行配置）
-
-### 多个入口起点
-
-### 对资源使用CDN和hash
-
----
-
-## Loader
-
-### 概览
-
-+ **loader** 让 webpack 能够去处理其他类型的文件，并将它们转换为有效 [模块](https://webpack.docschina.org/concepts/modules)，以供应用程序使用，以及被添加到依赖图中
-
-  >webpack 只能理解 JavaScript 和 JSON 文件，这是 webpack 开箱可用的自带能力
-
-+ `rules` 属性，里面包含两个必须属性：`test` 和 `use`
-
-  > **Tips:**
-  >
-  > `test` 属性，识别出哪些文件会被转换。
-  >
-  > `use` 属性，定义出在进行转换时，应该使用哪个 loader。
-  >
-  > **Warning:**
-  >
-  > 配置中定义 rules 时，要定义在 `module.rules` 而不是 `rules` 中
-  >
-  > 使用正则表达式匹配文件时，你不要为它添加引号(`/\.txt$/` 与 `'/\.txt$/'` 或 `"/\.txt$/"` 不一样。前者指示 webpack 匹配任何以 .txt 结尾的文件，后者指示 webpack 匹配具有绝对路径 '.txt' 的单个文件)
-
-### 使用方式
-
-+ 配置方式（推荐）
-+ 内联模式
-
-### Loader特性
-
-+ 支持链式调用
-+ 支持同步或者异步
-+ 是运行在Node.js中
-+ 通过options对象配置（任然支持query来配置，但是已经废弃）
-+ 除了常见的通过 `package.json` 的 `main` 来将一个 npm 模块导出为 loader，还可以在 module.rules 中使用 `loader` 字段直接引用一个模块。
-+ 插件(plugin)可以为 loader 带来更多特性。
-+ loader 能够产生额外的任意文件。
-
-### 解析Loader
-
->loader 遵循标准 [模块解析](https://webpack.docschina.org/concepts/module-resolution/) 规则。多数情况下，loader 将从 [模块路径](https://webpack.docschina.org/concepts/module-resolution/#module-paths) 加载（通常是从 `npm install`, `node_modules` 进行加载）。
->
->我们预期 loader 模块导出为一个函数，并且编写为 Node.js 兼容的 JavaScript。通常使用 npm 进行管理 loader，但是也可以将应用程序中的文件作为自定义 loader。按照约定，loader 通常被命名为 `xxx-loader`（例如 `json-loader`）。更多详细信息，请查看 [编写一个 loader](https://webpack.docschina.org/contribute/writing-a-loader/)。
-
-## 插件 - Plugin
-
-打包优化，资源管理，注入环境变量等等 - （**loader 用于转换某些类型的模块，而插件则可以用于执行范围更广的任务**）
-
-### 剖析
-
->webpack **插件**是一个具有 [`apply`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply) 方法的 JavaScript 对象。`apply` 方法会被 webpack compiler 调用，并且在 **整个** 编译生命周期都可以访问 compiler 对象。
->
->**ConsoleLogOnBuildWebpackPlugin.js**
->
->```javascript
->const pluginName = 'ConsoleLogOnBuildWebpackPlugin';
->
->class ConsoleLogOnBuildWebpackPlugin {
->  apply(compiler) {
->    compiler.hooks.run.tap(pluginName, (compilation) => {
->      console.log('webpack 构建正在启动！');
->    });
->  }
->}
->
->module.exports = ConsoleLogOnBuildWebpackPlugin;
->```
->
->compiler hook 的 tap 方法的第一个参数，应该是驼峰式命名的插件名称。建议为此使用一个常量，以便它可以在所有 hook 中重复使用。
-
-### 用法
-
-由于**插件**可以携带参数/选项，你必须在 webpack 配置中，向 `plugins` 属性传入一个 `new` 实例。
-
-### 配置方式
-
-```javascript
-const HtmlWebpackPlugin = require('html-webpack-plugin'); // 通过 npm 安装
-const webpack = require('webpack'); // 访问内置的插件
+```js
 const path = require('path');
 
 module.exports = {
-  entry: './path/to/my/entry/file.js',
+  entry: { app: './src/app.js', admin: './src/admin.js' },
   output: {
-    filename: 'my-first-webpack.bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'dist'), // 必须是绝对路径
+    filename: '[name].[contenthash].js',   // 多入口时用 [name] 区分
+    clean: true,                           // 构建前清空输出目录
   },
+};
+```
+
+几个要点：
+
+- 多入口时 `filename` 必须带 `[name]` 之类的占位符，否则多个 chunk 会写到同一个文件名，构建报错。
+- `[contenthash]` 根据文件内容计算，内容不变哈希就不变，适合配合 CDN 和浏览器长缓存。
+- `publicPath` 指定资源在浏览器中的访问前缀，部署到 CDN 时设为 CDN 地址。webpack 5 在 web 环境下默认是 `'auto'`，运行时根据当前脚本地址自动推断。
+- `clean: true` 是 webpack 5 新增的选项，以前需要 `clean-webpack-plugin`。
+
+占位符和更多字段见 [webpack 配置详解](/notes/fronted/projectBuild/webpack/configuration.html)。
+
+## loader：转换非 JS 模块
+
+webpack 开箱只理解 JavaScript 和 JSON。要让它处理 CSS、TypeScript、Vue 单文件组件等，需要 loader 把这些文件转换成 webpack 能处理的模块。
+
+### 配置方式
+
+loader 在 `module.rules` 中配置（注意是 `module.rules`，不是顶层的 `rules`）：
+
+```js
+module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
-        use: 'babel-loader',
+        test: /\.css$/i,               // 匹配哪些文件
+        use: ['style-loader', 'css-loader'], // 用哪些 loader 处理
+      },
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: { presets: ['@babel/preset-env', '@babel/preset-typescript'] },
+        },
       },
     ],
   },
+};
+```
+
+- `test` 一般写正则字面量。写成字符串 `'/\.txt$/'` 就不再是正则，而是一个路径字符串，匹配结果完全不同。
+- `include` / `exclude` 用于缩小处理范围，排除 `node_modules` 能明显减少构建时间。
+- 参数通过 `options` 传入。旧写法 `query` 已废弃。
+
+### 执行顺序
+
+同一条规则里的多个 loader 按**从右到左**（数组从后往前）执行，前一个 loader 的输出是后一个 loader 的输入：
+
+```text
+style.css ──> css-loader ──> style-loader ──> 最终模块
+            （解析 @import 和 url()）（生成把 CSS 插入页面的 JS）
+```
+
+这其实是函数组合：`style(css(source))`。如果需要强制调整顺序，可以用 `enforce: 'pre'` 或 `enforce: 'post'`。
+
+除了配置方式，loader 还可以在 `import` 语句里内联指定，例如 `import styles from 'style-loader!css-loader!./style.css'`。内联写法把构建细节耦合进业务代码，一般只在特殊场景使用，日常应该用配置方式。
+
+### loader 的特性
+
+- loader 运行在 Node.js 环境中，本质是一个导出函数的模块，接收源码（或上一个 loader 的结果），返回新的结果。
+- 可以是同步的，也可以是异步的。
+- 支持链式调用，每个 loader 最好只做一件事。
+- 可以产出额外文件。
+- 解析规则与普通模块相同，默认从 `node_modules` 查找，也可以通过 `resolveLoader` 单独配置。按约定命名为 `xxx-loader`。
+
+### 资源模块（webpack 5）
+
+webpack 4 时代处理图片、字体要用 `file-loader`、`url-loader`、`raw-loader`。webpack 5 内置了资源模块（asset modules），通过 `type` 字段直接声明：
+
+| type | 效果 | 替代的 loader |
+| --- | --- | --- |
+| `asset/resource` | 输出为单独文件，导入得到 URL | `file-loader` |
+| `asset/inline` | 内联为 data URL | `url-loader` |
+| `asset/source` | 导入得到文件原始内容字符串 | `raw-loader` |
+| `asset` | 按文件大小自动在 resource 和 inline 之间选择 | `url-loader` 的 limit 用法 |
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      { test: /\.(png|jpe?g|gif|svg)$/i, type: 'asset' },
+      { test: /\.(woff2?|ttf)$/i, type: 'asset/resource' },
+    ],
+  },
+};
+```
+
+编写 loader 的细节见 [webpack Loader 与 Plugin 开发](/notes/fronted/projectBuild/webpack/api.html)，常用 loader 见 [webpack 常用 Loader 与 Plugin](/notes/fronted/keyword/webpackDependencies.html)。
+
+## plugin：介入构建流程
+
+loader 只负责"把某类文件转换成模块"，作用范围是单个文件。打包优化、资源管理、注入环境变量、生成 HTML 这类涉及整个构建过程的工作由 plugin 完成。
+
+### 插件的结构
+
+插件是一个带有 `apply` 方法的对象（通常是类的实例）。webpack 创建 compiler 后会调用每个插件的 `apply(compiler)`，插件在里面订阅自己关心的钩子：
+
+```js
+const pluginName = 'ConsoleLogOnBuildWebpackPlugin';
+
+class ConsoleLogOnBuildWebpackPlugin {
+  apply(compiler) {
+    // run 钩子的回调参数是 compiler 本身
+    compiler.hooks.run.tap(pluginName, (compiler) => {
+      console.log('webpack 构建正在启动');
+    });
+  }
+}
+
+module.exports = ConsoleLogOnBuildWebpackPlugin;
+```
+
+`tap` 的第一个参数是插件名，建议定义成常量，在多个钩子里复用。不少资料里这个示例把 `run` 钩子的回调参数写成 `compilation`，实际上 `run` 钩子传入的是 `compiler`，需要拿 `compilation` 应该订阅 `compilation` 或 `thisCompilation` 钩子。
+
+### 使用方式
+
+插件可以带参数，所以在配置中传入的是 `new` 出来的实例：
+
+```js
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+
+module.exports = {
   plugins: [
     new webpack.ProgressPlugin(),
     new HtmlWebpackPlugin({ template: './src/index.html' }),
@@ -134,260 +222,283 @@ module.exports = {
 };
 ```
 
-### Api方式
+使用 Node API 时，也可以手动调用 `apply`：
 
-```javascript
-const webpack = require('webpack'); // 访问 webpack 运行时(runtime)
-const configuration = require('./webpack.config.js');
+```js
+const webpack = require('webpack');
+const config = require('./webpack.config.js');
 
-let compiler = webpack(configuration);
-
+const compiler = webpack(config);
 new webpack.ProgressPlugin().apply(compiler);
 
-compiler.run(function (err, stats) {
-  // ...
+compiler.run((err, stats) => {
+  if (err) {
+    console.error(err);
+    return;
+  }
+  console.log(stats.toString({ colors: true }));
+  compiler.close(() => {});
 });
 ```
 
-## 模式 - Mode
+webpack 5 的 Node API 要求在 `run` 结束后调用 `compiler.close()`，让持久化缓存等资源有机会写入和释放。
 
-+ 默认值为 `production`
+## mode：模式
 
-  > 取值有 `development`, `production` 或 `none` 
+`mode` 告诉 webpack 使用哪一套内置优化，可选 `development`、`production`、`none`。不设置时按 `production` 处理，并输出一条警告。
 
-## 浏览器兼容 - Browser Compatibility
+| 方面 | development | production |
+| --- | --- | --- |
+| `process.env.NODE_ENV`（代码中） | `'development'` | `'production'` |
+| 默认 `devtool` | `eval` | 不生成 source map |
+| 代码压缩 | 否 | 是（内置 Terser） |
+| 模块 / chunk ID | 可读的名称，便于调试 | 稳定的短数字 ID（deterministic），利于缓存 |
+| Tree Shaking 相关优化 | 关闭大部分 | 开启（标记未使用导出、副作用分析、模块合并） |
+| 默认缓存 | 内存缓存 | 不缓存 |
 
-+ Webpack 支持所有符合 [ES5 标准](https://kangax.github.io/compat-table/es5/) 的浏览器（不支持 IE8 及以下版本）
+`none` 则不启用任何默认优化。`mode` 设置的 `process.env.NODE_ENV` 只作用于被打包的业务代码（通过 `DefinePlugin` 替换），不会修改 webpack 配置文件所在的 Node.js 进程的环境变量，这是一个常见误解。
 
-+ webpack 的 `import()` 和 `require.ensure()` 需要 `Promise`
+## module、chunk 与 bundle
 
-  > 想要支持旧版本浏览器，在使用这些表达式之前，还需要 [提前加载 polyfill](https://webpack.docschina.org/guides/shimming/)
+这三个词经常混用，但在 webpack 里含义不同：
 
-## 环境 - Environment
+| 概念 | 含义 | 出现阶段 |
+| --- | --- | --- |
+| module | 依赖图中的一个节点，通常对应一个源文件（经过 loader 转换后） | 构建阶段 |
+| chunk | 一组 module 的集合，是 webpack 内部用来组织输出的单位 | 优化阶段 |
+| bundle | 最终输出的文件，也常叫 asset | 输出阶段 |
 
-+ Webpack 5 运行于 Node.js v10.13.0+ 的版本
+chunk 的来源有三类：
 
----
+- **入口 chunk**：每个入口生成一个 initial chunk，包含入口模块及其同步依赖。
+- **异步 chunk**：每个动态 `import()` 形成一个 non-initial chunk，运行时按需加载。
+- **拆分出的 chunk**：`optimization.splitChunks` 把公共模块或第三方库提取出来形成新的 chunk，`runtimeChunk` 可以把运行时代码单独拆出。
 
-# 高级概念
+一个 chunk 通常对应一个 JS bundle，但不一定一一对应。比如使用 `mini-css-extract-plugin` 时，同一个 chunk 会同时产出一个 JS 文件和一个 CSS 文件；开启 source map 时还会多出 `.map` 文件。
 
-## 配置 - Configuration
-
-### 基本配置
-
-#### 建议
-
-- 通过 `require(...)` 引入其他文件
-- 通过 `require(...)` 使用 npm 下载的工具函数
-- 使用 JavaScript 控制流表达式，例如 `?:` 操作符
-- 对 value 使用常量或变量赋值
-- 编写并执行函数，生成部分配置
-
-#### 避免
-
-- 当使用 webpack CLI 工具时，访问 CLI 参数（应编写自己的 CLI 工具替代，或者[使用 `--env`](https://webpack.docschina.org/api/cli/#env)）
-- 导出不确定的结果（两次调用 webpack 应产生相同的输出文件）
-- 编写超长的配置（应将配置文件拆分成多个
-
-### [多个target](https://webpack.docschina.org/configuration/configuration-types/#exporting-multiple-configurations)
-
-### [其它语言进行配置](https://webpack.docschina.org/configuration/configuration-languages/)
-
-+ Typescript
-+ CoffeScript
-+ Babel and jsx
-
-## 模块 - Module
-
-模块, 一切皆模块， 一个模块对应一个文件。
-
-### 何为 webpack 模块
-
-与 [Node.js 模块](https://nodejs.org/api/modules.html)相比，webpack *模块* 能以各种方式表达它们的依赖关系。下面是一些示例：
-
-- [ES2015 `import`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) 语句
-- [CommonJS](http://www.commonjs.org/specs/modules/1.0/) `require()` 语句
-- [AMD](https://github.com/amdjs/amdjs-api/blob/master/AMD.md) `define` 和 `require` 语句
-- css/sass/less 文件中的 [`@import` 语句](https://developer.mozilla.org/en-US/docs/Web/CSS/@import)。
-- stylesheet `url(...)` 或者 HTML `<img src=...>` 文件中的图片链接。
-
-### 支持的模块类型
-
-Webpack 天生支持如下模块类型：
-
-- [ECMAScript 模块](https://webpack.docschina.org/guides/ecma-script-modules)
-- CommonJS 模块
-- AMD 模块
-- [Assets](https://webpack.docschina.org/guides/asset-modules)
-- WebAssembly 模块
-
-> [JavaScript Module Systems Showdown](https://auth0.com/blog/javascript-module-systems-showdown/)
-
-## 模块解析 - Module Resolution
-
-resolver 是一个帮助寻找模块绝对路径的库。 一个模块可以作为另一个模块的依赖模块，然后被后者引用，如下：
+异步 chunk 默认用 ID 命名，可以用魔法注释指定名称：
 
 ```js
-import foo from 'path/to/module';
-// 或者
-require('path/to/module');
+import(/* webpackChunkName: "settings" */ './pages/Settings.js').then((mod) => {
+  mod.mount(document.getElementById('root'));
+});
 ```
 
-所依赖的模块可以是来自应用程序的代码或第三方库。 resolver 帮助 webpack 从每个 `require`/`import` 语句中，找到需要引入到 bundle 中的模块代码。 当打包模块时，webpack 使用 [enhanced-resolve](https://github.com/webpack/enhanced-resolve) 来解析文件路径。
+输出文件名由 `output.filename`（入口 chunk）和 `output.chunkFilename`（非入口 chunk）决定。代码分割的实践见 [webpack 实践指南](/notes/fronted/projectBuild/webpack/guide.html)。
 
-### 解析规则（通过enhanced-resolve）
+## 模块解析
 
-#### 绝对路径
+遇到 `import foo from 'xxx'` 时，webpack 要先把 `'xxx'` 解析成一个确定的文件路径。这个工作由 [enhanced-resolve](https://github.com/webpack/enhanced-resolve) 完成，规则和 Node.js 的模块查找相近，但可以通过 `resolve` 配置定制。
 
-#### 相对路径
+### 三类路径
 
-#### 模块路径
+- **绝对路径**：`import '/home/me/file'`，直接使用。
+- **相对路径**：`import '../src/file'`，以当前文件所在目录为基准拼接。
+- **模块路径**：`import 'lodash'`，在 `resolve.modules` 指定的目录中查找，默认是逐级向上查找 `node_modules`。也可以先命中 `resolve.alias` 的别名。
 
-### 解析loader
+### 路径指向文件还是目录
 
-loader 的解析规则也遵循特定的规范。但是 [`resolveLoader`](https://webpack.docschina.org/configuration/resolve/#resolveloader) 配置项可以为 loader 设置独立的解析规则。
+- 如果路径有扩展名，直接按文件处理。
+- 如果没有扩展名，依次尝试 `resolve.extensions` 中的扩展名，默认是 `['.js', '.json', '.wasm']`。所以默认情况下 `import './App'` 找不到 `App.tsx`，需要把 `.tsx` 加进去。
+- 如果是目录：模块路径会读取目录下 `package.json` 中由 `resolve.mainFields` 指定的字段（web 环境下依次是 `browser`、`module`、`main`），如果包声明了 `exports` 字段，则优先按 `exports` 解析；都没有时再查找 `resolve.mainFiles`（默认 `index`）。
 
-### 缓存
+loader 的解析也遵循同样的规则，只是使用 `resolveLoader` 这一份独立配置。
 
-每次文件系统访问文件都会被缓存，以便于更快触发对同一文件的多个并行或串行请求。在 [watch 模式](https://webpack.docschina.org/configuration/watch/#watch) 下，只有修改过的文件会被从缓存中移出。如果关闭 watch 模式，则会在每次编译前清理缓存。
+解析结果会被缓存，同一个请求不会重复访问文件系统。watch 模式下只有发生变化的文件对应的缓存会失效。
 
-## 模块联邦 - Module Federation
+### webpack 5 移除了 Node.js 核心模块的自动 polyfill
 
-### 背景
+webpack 4 遇到前端代码里引用 `crypto`、`buffer`、`path` 等 Node.js 核心模块时，会自动打包浏览器版本的替代实现。webpack 5 不再这样做，构建会报 "Module not found"。如果确实需要，用 `resolve.fallback` 显式指定替代包，或者为该依赖换一个面向浏览器的版本。
 
-多个独立的构建可以组成一个应用程序，这些独立的构建之间不应该存在依赖关系，因此可以单独开发和部署它们。
+## 构建流程
 
-### 底层概念
+webpack 一次构建可以分成三个大阶段：初始化、编译、输出。
 
-### 高级概念
+### 1. 初始化
 
-### 构建块
+1. 合并参数：读取配置文件，合并命令行参数，再填充默认值，得到最终配置。
+2. 创建 `Compiler` 对象。它在整个 webpack 进程中只有一个，代表完整的构建环境（配置、文件系统、钩子）。
+3. 注册插件：依次调用用户插件的 `apply`，然后 webpack 根据配置注册内置插件。比如 `entry` 配置会被转换成 `EntryPlugin`，`optimization` 配置会被转换成对应的优化插件。可以说 webpack 自身的大部分功能也是以插件形式实现的。
 
-### 概念目标
+### 2. 编译
 
-### 用例
+1. 调用 `compiler.run()`（watch 模式下是 `compiler.watch()`），开始一次编译，创建一个 `Compilation` 对象。`Compilation` 代表一次具体的构建，watch 模式下每次文件变动都会生成新的 `Compilation`。
+2. 触发 `make` 钩子，`EntryPlugin` 把入口模块加入编译。
+3. **构建模块**，对每个模块：
+   - 解析出文件的绝对路径，确定要使用的 loader；
+   - 依次执行 loader，得到 JavaScript 代码；
+   - 用解析器（基于 acorn）把代码转成 AST，找出其中的 `import`、`require`、`import()` 等依赖；
+   - 对每个依赖重复上述过程。
+4. 所有模块构建完成后，得到完整的模块依赖图（`ModuleGraph`）。
 
-### 动态远程容器
+### 3. 封装与输出
 
-### 基于promise得动态remote
+1. **seal**：根据入口和异步边界生成 chunk，建立 `ChunkGraph`。
+2. **优化**：标记未使用的导出、合并模块（Scope Hoisting）、执行 `splitChunks` 拆分、生成模块和 chunk 的 ID、计算哈希。
+3. **生成代码**：为每个模块生成最终代码，用模板把 chunk 渲染成 asset。webpack 5 的插件一般在 `processAssets` 钩子上对产物做压缩、追加注释等处理。
+4. **输出**：触发 `emit` 钩子（这是修改产物的最后机会），把 asset 写入 `output.path`，最后触发 `done` 钩子。
 
-### 动态publicPath
+```text
+初始化                    编译                                  输出
+合并配置 → 创建 Compiler → run → compilation → make → 构建模块 → seal → 优化 → 生成代码 → emit → done
+         → 注册插件                          ↑_____递归依赖____|
+```
 
-### 故障排除
+## Tapable：钩子机制
 
-## 依赖图 - Dependency graph
+webpack 的插件体系建立在 [Tapable](https://github.com/webpack/tapable) 这个库之上。`Compiler` 和 `Compilation` 都暴露了大量钩子，每个钩子是一个 Tapable 实例：插件通过 `tap` 注册回调，webpack 在构建的特定时刻调用 `call` 触发它们。本质是一个发布订阅模型。
 
-每当一个文件依赖另一个文件时，webpack 都会将文件视为直接存在 *依赖关系*。这使得 webpack 可以获取非代码资源，如 images 或 web 字体等。并会把它们作为 *依赖* 提供给应用程序。
+```js
+const { SyncHook, AsyncSeriesHook } = require('tapable');
 
-当 webpack 处理应用程序时，它会根据命令行参数中或配置文件中定义的模块列表开始处理。 从 [*入口*](https://webpack.docschina.org/concepts/entry-points/) 开始，webpack 会递归的构建一个 *依赖关系图*，这个依赖图包含着应用程序中所需的每个模块，然后将所有模块打包为少量的 *bundle* —— 通常只有一个 —— 可由浏览器加载。
+class Car {
+  constructor() {
+    this.hooks = {
+      accelerate: new SyncHook(['speed']),
+      calculateRoutes: new AsyncSeriesHook(['source', 'target']),
+    };
+  }
+}
 
->对于 *HTTP/1.1* 的应用程序来说，由 webpack 构建的 bundle 非常强大。当浏览器发起请求时，它能最大程度的减少应用的等待时间。而对于 *HTTP/2* 来说，你还可以使用[代码分割](https://webpack.docschina.org/guides/code-splitting/)进行进一步优化。
+const car = new Car();
 
-## target
+car.hooks.accelerate.tap('LoggerPlugin', (speed) => {
+  console.log(`加速到 ${speed}`);
+});
 
-### 用法
+car.hooks.calculateRoutes.tapPromise('RoutePlugin', async (source, target) => {
+  console.log(`计算 ${source} 到 ${target} 的路线`);
+});
 
-**[target 可用值](https://webpack.docschina.org/configuration/target/)。**
+car.hooks.accelerate.call(60);
+car.hooks.calculateRoutes.promise('A', 'B').then(() => console.log('路线计算完成'));
+```
 
-### 多taget
+### 钩子类型
 
-## manifest
+钩子名称由两个维度组合而成：
 
-webpack使用场景有三种代码类型：
+| 维度 | 取值 | 含义 |
+| --- | --- | --- |
+| 同步 / 异步 | `Sync` | 只能用 `tap` 注册同步回调 |
+| | `AsyncSeries` | 异步，回调依次执行，可用 `tap`、`tapAsync`、`tapPromise` |
+| | `AsyncParallel` | 异步，回调并行执行 |
+| 执行逻辑 | 基础（无后缀） | 依次调用每个回调，忽略返回值 |
+| | `Bail` | 某个回调返回非 `undefined` 的值时，停止执行后续回调 |
+| | `Waterfall` | 上一个回调的返回值作为下一个回调的第一个参数 |
+| | `Loop` | 某个回调返回非 `undefined` 时，从头再执行一轮 |
 
-1. 你或你的团队编写的源码。
-2. 你的源码会依赖的任何第三方的 library 或 "vendor" 代码。
-3. webpack 的 runtime 和 **manifest**，管理所有模块的交互。
+例如 `SyncBailHook`、`AsyncSeriesWaterfallHook`。写插件前查一下目标钩子的类型很重要：在异步钩子上用 `tap` 注册同步逻辑可以，但在同步钩子上无法用 `tapAsync` / `tapPromise`。
 
-### runtime
+### 常用钩子
 
-### manifest
+| 对象 | 钩子 | 时机 |
+| --- | --- | --- |
+| Compiler | `environment` / `afterEnvironment` | 配置处理完成，准备环境 |
+| Compiler | `run` / `watchRun` | 开始一次构建 |
+| Compiler | `thisCompilation` / `compilation` | 创建 Compilation 后，可以在这里订阅 Compilation 的钩子 |
+| Compiler | `make` | 开始从入口构建模块 |
+| Compiler | `emit` | 输出文件前 |
+| Compiler | `done` / `failed` | 构建结束 / 失败 |
+| Compilation | `buildModule` / `succeedModule` | 单个模块开始构建 / 构建成功 |
+| Compilation | `seal` | 开始封装 chunk |
+| Compilation | `processAssets` | 处理产物，分多个阶段（stage），压缩一般在优化阶段 |
 
-### 问题
+插件开发的完整内容见 [webpack Loader 与 Plugin 开发](/notes/fronted/projectBuild/webpack/api.html)。
 
-+ 即使某些内容明显没有修改，某些 hash 还是会改变 （因为注入的 runtime 和 manifest 在每次构建后都会发生变化）
+## runtime 与 manifest
 
-  >- [分离 manifest](https://survivejs.com/webpack/optimizing/separating-manifest/)
-  >- [使用 webpack 提供可预测的长效缓存](https://medium.com/webpack/predictable-long-term-caching-with-webpack-d3eee1d3fa31)
-  >- [缓存](https://webpack.docschina.org/guides/caching/)
+一个 webpack 应用的产物里有三类代码：
 
-## 模块热替换 - Hot module replacement
+1. 业务源码；
+2. 第三方库代码；
+3. webpack 的 runtime 和 manifest。
 
-通过以下几种方式，来显著加快开发速度：
+runtime 是在浏览器中连接各模块的代码，包括 `__webpack_require__`、异步 chunk 的加载逻辑等。manifest 是 runtime 用来查找模块和 chunk 的映射数据，比如"chunk ID 对应哪个文件名"。
 
-- 保留在完全重新加载页面期间丢失的应用程序状态。
-- 只更新变更内容，以节省宝贵的开发时间。
-- 在源代码中 CSS/JS 产生修改时，会立刻在浏览器中进行更新，这几乎相当于在浏览器 devtools 直接更改样式。
+这带来一个缓存问题：异步 chunk 的文件名（含哈希）记录在 manifest 里，manifest 默认又被打进入口 chunk。于是只改了某个异步模块，入口文件的哈希也会跟着变，导致浏览器缓存失效。常见做法是：
 
-### 运行原理
+- 设置 `optimization.runtimeChunk: 'single'`，把 runtime 拆成独立的小文件；
+- 使用 webpack 5 生产模式默认的 `deterministic` 模块 ID 和 chunk ID，避免新增一个模块导致其他模块 ID 整体漂移。
 
-#### 应用程序
+webpack 4 时代需要手动配置 `HashedModuleIdsPlugin` 才能获得稳定 ID，webpack 5 已内置。
 
-1. 应用程序要求 HMR runtime 检查更新。
-2. HMR runtime 异步地下载更新，然后通知应用程序。
-3. 应用程序要求 HMR runtime 应用更新。
-4. HMR runtime 同步地应用更新。
+## 模块热替换（HMR）
 
-#### complier
+HMR 让应用在运行时替换修改过的模块，而不刷新整个页面，从而保留页面状态。它的工作过程大致是：
 
-除了普通资源，compiler 需要发出 "update"，将之前的版本更新到新的版本。"update" 由两部分组成：
+1. 文件变化后，webpack 重新编译，产出一份更新 manifest（JSON）和一个或多个更新后的 chunk。
+2. 开发服务器通过 WebSocket 通知浏览器有更新。
+3. 浏览器中的 HMR runtime 下载更新，检查哪些模块受影响。
+4. 如果模块声明了自己能处理更新（通过 `module.hot.accept`），就执行替换；没有声明的话，更新会沿依赖关系向上冒泡，直到找到能处理的模块。冒泡到入口仍无人处理，则整页刷新。
 
-1. 更新后的 [manifest](https://webpack.docschina.org/concepts/manifest) (JSON)
-2. 一个或多个 updated chunk (JavaScript)
+日常开发中很少需要手写 `module.hot.accept`：`style-loader` 已经实现了 CSS 的热替换，React Fast Refresh、`vue-loader` 等工具也为组件实现了热更新。webpack-dev-server 从 v4 起默认开启 `hot`。
 
-#### 模块
+## 模块联邦
 
-+ HMR 是可选功能，只会影响包含 HMR 代码的模块
-+ 在一个模块中实现了 HMR 接口,更新就会冒泡(bubble up),整组依赖模块都会被重新加载
+模块联邦（Module Federation）是 webpack 5 引入的功能，允许多个独立构建、独立部署的应用在运行时共享模块：一个应用可以把部分模块暴露出去（remote），另一个应用在运行时远程加载使用（host），并且可以声明共享依赖（如 React），避免重复加载。它是实现微前端的一种方案，原理和实践见 [微前端方案与实践](/notes/fronted/optimization/microFronted/practise.html)。
 
->HMR 是可选功能，只会影响包含 HMR 代码的模块。举个例子，通过 [`style-loader`](https://github.com/webpack-contrib/style-loader) 为 style 追加补丁。为了运行追加补丁，`style-loader` 实现了 HMR 接口；当它通过 HMR 接收到更新，它会使用新的样式替换旧的样式。
->
->类似的，当在一个模块中实现了 HMR 接口，你可以描述出当模块被更新后发生了什么。然而在多数情况下，不需要在每个模块中强行写入 HMR 代码。如果一个模块没有 HMR 处理函数，更新就会冒泡(bubble up)。这意味着某个单独处理函数能够更新整个模块树。如果在模块树的一个单独模块被更新，那么整组依赖模块都会被重新加载。
+## 浏览器兼容与 target
 
-#### runtime
+### target
 
-对于模块系统运行时(module system runtime)，会发出额外代码，来跟踪模块 `parents` 和 `children` 关系。在管理方面，runtime 支持两个方法 `check` 和 `apply`。
+`target` 告诉 webpack 产物运行在什么环境，影响 runtime 代码的写法、chunk 加载方式和模块解析规则。常见取值：
 
-## 为什么选择webpack
+| 取值 | 含义 |
+| --- | --- |
+| `web` | 浏览器环境 |
+| `webworker` | Web Worker |
+| `node` | Node.js 环境，用 `require` 加载 chunk |
+| `electron-main` / `electron-renderer` | Electron 主进程 / 渲染进程 |
+| `browserslist` | 从 browserslist 配置推断环境和支持的语法 |
+| `['web', 'es5']` | 数组形式，组合环境与语法版本 |
 
-## 内部原理
+webpack 5 的默认值是：如果项目中能找到 browserslist 配置，就用 `browserslist`，否则用 `web`。
 
-### 主要部分
+也可以导出多个配置，分别构建不同 target 的产物，比如同一个库同时输出 Node.js 和浏览器版本。
 
-+ 项目中使用的每个文件都是一个 [模块](https://webpack.docschina.org/concepts/modules/)
-+ 通过互相引用，这些模块会形成一个图(`ModuleGraph`)数据结构。
+### browserslist
 
-### chunk
+browserslist 是前端工具链共享的"目标浏览器"配置，通常写在 `package.json` 的 `browserslist` 字段或项目根目录的 `.browserslistrc` 中：
 
-chunk 有两种形式：
+```text
+> 0.5%
+last 2 versions
+not dead
+```
 
-- `initial(初始化)` 是入口起点的 main chunk。此 chunk 包含为入口起点指定的所有模块及其依赖项。
+同一份配置会被多个工具读取：
 
-- `non-initial` 是可以延迟加载的块。可能会出现在使用 [动态导入(dynamic imports)](https://webpack.docschina.org/guides/code-splitting/#dynamic-imports) 或者 [SplitChunksPlugin](https://webpack.docschina.org/plugins/split-chunks-plugin/) 时。
+- webpack 用它决定 **runtime 代码**能用哪些语法（比如能否用箭头函数、`const`）；
+- Babel（`@babel/preset-env`）、SWC 用它决定**业务代码**要转译哪些语法、注入哪些 polyfill；
+- Autoprefixer（PostCSS）用它决定 CSS 要加哪些前缀。
 
-  > `non-initial` chunk 没有名称，因此会使用唯一 ID 来替代名称。 在使用动态导入时，我们可以通过使用 [magic comment(魔术注释)](https://webpack.docschina.org/api/module-methods/#magic-comments) 来显式指定 chunk 名称：
-  >
-  > ```js
-  > import(
-  >   /* webpackChunkName: "app" */
-  >   './app.jsx'
-  > ).then((App) => {
-  >   ReactDOM.render(<App />, root);
-  > });
-  > ```
+要分清职责：`target` 只影响 webpack 自己生成的代码，不会转译你写的源码。源码里的新语法要靠 `babel-loader` 或 `swc-loader` 处理。如果只配置了 `target: ['web', 'es5']` 却没有转译业务代码，产物里依然会有箭头函数。
 
-每个 chunk 都有对应的 **asset(资源)**。资源，是指输出文件（即打包结果）。
+### 兼容性底线
 
-### output
+- webpack 支持所有符合 ES5 的浏览器，IE8 及以下不支持。
+- `import()` 和 `require.ensure()` 依赖 `Promise`。如果要支持没有原生 `Promise` 的浏览器（如 IE11），需要提前加载 polyfill。
+- 现在主流项目已不再支持 IE。如果仍有这类需求，记得同时调整 `target`、转译配置和 polyfill，三者缺一不可。
 
-输出文件的名称会受配置中的两个字段的影响：
+## 运行环境
 
-- [`output.filename`](https://webpack.docschina.org/configuration/output/#outputfilename) - 用于 `initial` chunk 文件
-- [`output.chunkFilename`](https://webpack.docschina.org/configuration/output/#outputchunkfilename) - 用于 `non-initial` chunk 文件
-- 在某些情况下，使用 `initial` 和 `non-initial` 的 chunk 时，可以使用 `output.filename`。
+webpack 5 需要 Node.js 10.13.0 及以上版本，但实际项目中 loader、plugin 和 webpack-cli 往往要求更高的 Node.js 版本，建议使用当前仍在维护的 LTS 版本。
 
-这些字段中会有一些 [占位符](https://webpack.docschina.org/configuration/output/#template-strings)。常用的占位符如下：
+## 小结
 
-- `[id]` - chunk id（例如 `[id].js` -> `485.js`）
-- `[name]` - chunk name（例如 `[name].js` -> `app.js`）。如果 chunk 没有名称，则会使用其 id 作为名称
-- `[contenthash]` - 输出文件内容的 md4-hash（例如 `[contenthash].js` -> `4ea6ff1de66c537eb9b2.js`）
+- entry 决定依赖图从哪开始，output 决定产物写到哪、叫什么；loader 按从右到左的顺序转换单个模块，plugin 通过钩子介入整个构建流程。
+- module 是依赖图的节点，chunk 是模块的分组，bundle 是最终输出的文件；一个 chunk 可能产出多个文件。
+- 构建流程分为初始化（合并配置、创建 Compiler、注册插件）、编译（make、递归构建模块）、输出（seal、优化、生成代码、emit）。
+- 插件机制基于 Tapable，钩子按同步/异步和 Bail、Waterfall、Loop 等执行逻辑分类。
+- webpack 5 内置资源模块，移除了 Node.js 核心模块的自动 polyfill，默认 `target` 会读取 browserslist；`target` 只影响 webpack 生成的代码，业务代码转译仍需 Babel 或 SWC。
+
+## 参考
+
+- [webpack 文档：Concepts](https://webpack.js.org/concepts/)
+- [webpack 文档：Under The Hood](https://webpack.js.org/concepts/under-the-hood/)
+- [webpack 文档：Module Resolution](https://webpack.js.org/concepts/module-resolution/)
+- [webpack 文档：Asset Modules](https://webpack.js.org/guides/asset-modules/)
+- [webpack 文档：Compiler Hooks](https://webpack.js.org/api/compiler-hooks/)
+- [webpack 文档：Target](https://webpack.js.org/configuration/target/)
+- [webpack 文档：Module Federation](https://webpack.js.org/concepts/module-federation/)
