@@ -71,8 +71,9 @@ typings/
 # Nuxt generate
 dist
 
-# vuepress build output
-notes/.vuepress/dist/
+# astro build output / cache
+notes/dist/
+notes/.astro/
 /public/
 
 # Serverless directories
