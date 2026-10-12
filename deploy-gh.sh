@@ -9,7 +9,8 @@ OUT="$ROOT/public"
 REMOTE="git@github.com:Joy-jinyu/joy-jinyu.github.io.git"
 
 cd "$ROOT"
-rm -rf "$OUT" notes/dist
+# 一并清掉 Astro 内容缓存：缓存里的页面 HTML 会引用旧的代码块样式文件名（改了 expressiveCode 配置也不失效），发出去就丢样式
+rm -rf "$OUT" notes/dist notes/.astro notes/node_modules/.astro
 
 npx astro build --root notes
 

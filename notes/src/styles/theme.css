@@ -72,33 +72,40 @@
   --sl-color-backdrop-overlay: rgba(233, 236, 239, 0.7);
 }
 
-/* ---------- 页面底：品牌色光晕 + 顶部网格底纹 ---------- */
+/*
+ * ---------- 页面底：品牌色光晕 + 动态背景 ----------
+ * 底色和光晕都放在 html 上，body 必须透明：html 自带背景时 body 的背景按普通块绘制，
+ * 会盖住 z-index:-1 的 <hero-bg>
+ */
 html {
-  background: var(--bg);
-}
-body {
-  -webkit-font-smoothing: antialiased;
   background:
     radial-gradient(900px 480px at 88% -8%, rgba(0, 184, 184, 0.14), transparent 62%),
     radial-gradient(700px 420px at -10% 104%, rgba(94, 234, 212, 0.06), transparent 60%), var(--bg);
   background-attachment: fixed;
 }
-:root[data-theme="light"] body {
+:root[data-theme="light"] {
   background:
     radial-gradient(900px 480px at 88% -8%, rgba(0, 184, 184, 0.09), transparent 62%),
     radial-gradient(700px 420px at -10% 104%, rgba(0, 184, 184, 0.04), transparent 60%), var(--bg);
+  background-attachment: fixed;
 }
-body::before {
-  content: "";
+body {
+  -webkit-font-smoothing: antialiased;
+  background: transparent;
+}
+/*
+ * 全站动态背景 <hero-bg variant="waves">（public/hero-bg.js，由 astro.config 的 head 脚本挂到 body 开头）。
+ * 组件默认只铺首屏、底部渐隐；这里改成固定铺满整个视口。组件运行时注入的样式选择器是 hero-bg，
+ * 用 body > hero-bg 提高优先级覆盖它
+ */
+body > hero-bg {
   position: fixed;
-  inset: 0 0 auto;
-  height: 420px;
+  inset: 0;
+  height: 100vh;
+  max-height: none;
   z-index: -1;
-  pointer-events: none;
-  background:
-    linear-gradient(rgba(var(--ink-rgb), 0.04) 1px, transparent 1px) -1px -1px / 22px 22px,
-    linear-gradient(90deg, rgba(var(--ink-rgb), 0.04) 1px, transparent 1px) -1px -1px / 22px 22px;
-  mask-image: radial-gradient(ellipse 70% 100% at 70% 0%, #000 10%, transparent 75%);
+  -webkit-mask-image: none;
+  mask-image: none;
 }
 ::selection {
   background: rgba(0, 184, 184, 0.3);
@@ -280,20 +287,55 @@ mobile-starlight-toc nav {
   border-radius: 0 10px 10px 0;
   color: var(--muted);
 }
+/*
+ * 表格：Starlight 默认 display:block + overflow:auto（窄屏可横向滚动），这里保留；
+ * 它还把首尾列的左右内边距清零，加了外框后文字会贴边，所以补回来
+ */
 .sl-markdown-content table {
-  border-radius: 10px;
+  width: fit-content;
+  max-width: 100%;
+  overflow-x: auto;
   border: 1px solid var(--line);
-  overflow: hidden;
+  border-radius: 10px;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: var(--sl-text-sm);
+  line-height: 1.6;
+  /* 动态背景会从透明底里透出来，表格和代码块垫一层接近不透明的底色保证可读 */
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
 }
 .sl-markdown-content :is(th, td) {
-  border-color: var(--line);
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+.sl-markdown-content :is(th, td):first-child {
+  padding-inline-start: 1rem;
+}
+.sl-markdown-content :is(th, td):last-child {
+  padding-inline-end: 1rem;
+}
+.sl-markdown-content tr:last-child td {
+  border-bottom: 0;
+}
+.sl-markdown-content tbody tr {
+  transition: background 0.15s var(--ease);
+}
+.sl-markdown-content tbody tr:hover {
+  background: var(--panel);
 }
 .sl-markdown-content th {
   background: var(--panel-hi);
   color: var(--strong);
-  font-family: var(--sl-font-mono);
   font-size: var(--sl-text-xs);
+  font-weight: 600;
   letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+/* 表格里的行内代码缩小一档，避免把行撑高 */
+.sl-markdown-content td code {
+  padding: 0.05em 0.35em;
+  font-size: 0.85em;
 }
 .sl-markdown-content hr {
   border-color: var(--line);
