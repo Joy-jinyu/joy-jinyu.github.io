@@ -1,219 +1,492 @@
 ---
-title: "编写可读代码的艺术-阅读笔记"
+title: 《编写可读代码的艺术》读书笔记
+description: 按原书结构整理表面层次的改进、简化循环与逻辑、重新组织代码三部分的核心观点，每条配一个前后对比的小例子。
 ---
 
-## 一、表面层次的改进   -  23
+《编写可读代码的艺术》（The Art of Readable Code，Dustin Boswell、Trevor Foucher 著）围绕一个核心标准展开：**代码应当让别人用最短的时间理解它**。这里的"别人"也包括几个月后的自己。这篇按书的三大部分整理要点，示例改写成 JavaScript，读完可以拿来对照检查自己的代码。
 
-### 1.1 把信息装进名字  -  25
+书里给出的衡量标准是"理解时间"：不是代码行数越少越好，而是读者读懂、能放心修改它所需的时间越短越好。下面各条建议都服务于这个目标。
 
-#### 选择专业的词
+## 第一部分：表面层次的改进
 
-如Stop、Kill、Pause、Resume
+表面层次指命名、排版、注释。改动成本低，收益却很直接。
 
-#### 避免泛泛的名字
+### 把信息装进名字
 
-如temp、`retval`、迭代器（i）这样的命名。除非能找到合适的理由（没有实际含义价值）
+**选择专业、具体的词。** `get` 太泛，看不出是读缓存还是发请求；`size` 可能是元素个数，也可能是字节数。
 
-#### 用具体的名字代替抽象的名字
+| 泛泛的词 | 更具体的选择 |
+| --- | --- |
+| `get` | `fetch`（远程获取）、`load`、`compute`、`find` |
+| `size` | `count`、`length`、`byteSize` |
+| `stop` | `kill`（不可恢复）、`pause`（可恢复） |
+| `send` | `deliver`、`dispatch`、`broadcast` |
 
-+ 增加合适的形容词
-+ 给名字增加单位
-  如时间单位或者长度单位等等
+**避免 `tmp`、`retval`、`data` 这类空泛的名字**，除非变量确实只是临时存一下、作用域只有几行。循环变量 `i`、`j` 在嵌套循环里容易混淆，可以改成带含义的名字：
 
-#### 使用前缀或者后缀给名字附带信息
+```js
+// 前：members[k] 和 users[j] 的下标用反了，但很难看出来
+for (let i = 0; i < clubs.length; i++)
+  for (let j = 0; j < clubs[i].members.length; j++)
+    for (let k = 0; k < users.length; k++)
+      if (clubs[i].members[k] === users[j]) { /* ... */ }
 
-+ 增加合适的形容词
-+ 增加名称的分类
-  如`html_utf8`
+// 后：下标带上前缀，写成 members[ui] 这种错配会一眼被发现
+for (let ci = 0; ci < clubs.length; ci++)
+  for (let mi = 0; mi < clubs[ci].members.length; mi++)
+    for (let ui = 0; ui < users.length; ui++)
+      if (clubs[ci].members[mi] === users[ui]) { /* ... */ }
+```
 
-#### 决定名字的长度
+**给名字附加重要的额外信息**，最常见的是单位和状态：
 
-+ 在小作用域使用缩写的名字
-+ 在大的作用域（全局作用域）使用全称名字
-+ 可以输入长名字
-+ 首字母缩略词和缩写要易理解
-+ 丢掉没用的词
+```js
+// 前
+const start = Date.now();
+setTimeout(retry, delay);
 
-#### 利用名字的格式来表达含义
+// 后
+const startMs = Date.now();
+setTimeout(retry, delayMs);
+const unsafeHtml = input; // 尚未转义
+const safeHtml = escapeHtml(unsafeHtml);
+```
 
-+ 上限和下限 - `Min` 和 `Max`
-+ 包含的范围 - `First` 和 `Last`
-+ 包含/排除范围 - `Begin` 和 `End`
-+ 布尔值类型 - `Is` 和 `Has`
-+ 小心用户对特定词的期望 - 用户会期望`get()`或者`size()`是轻量的方法
+**名字长度跟作用域匹配**：只活几行的变量可以短，全局可见的名字要完整。缩写只用大家都懂的（`url`、`id`），项目自造的缩写新人看不懂。
 
-### 1.2 审美   -  52
+**用约定俗成的词表达边界：**
 
-#### 三个原则
+| 含义 | 推荐用词 |
+| --- | --- |
+| 包含的上下限 | `min` / `max` |
+| 包含两端的范围 | `first` / `last` |
+| 包含开头、不包含结尾的范围 | `begin` / `end` |
+| 布尔值 | `is`、`has`、`can`、`should` 开头，避免否定形式如 `disableSsl` |
 
-+ 使用一致的风格
-+ 让相似的代码看上去很相似
-+ 把相关代码进行分组，行程代码块
+还要注意读者对特定词的预期：大家默认 `getXxx()`、`size()` 是轻量操作，如果它内部要遍历整个列表或发请求，就应该改名为 `computeXxx()`、`countXxx()`，提醒调用者有成本。
 
-#### 具体细节
+### 不会误解的名字
 
-+ 重新安排换行来保持一致和紧凑
-+ 用方法整理不规则的东西
-+ 在需要时使用列排序
-+ 选一个有意义的顺序，始终一致地使用它
-+ 把声明按块组织起来
-+ 把代码分段落
-+ 一致的风格比**正确**的风格更重要
+命名时多问一句："这个名字会不会被理解成别的意思？"
 
-### 1.3 该写什么样的注释  -  61
+```js
+// filter 是"留下"还是"去掉"？有歧义
+const result = filter(users, 'inactive');
 
-#### 了解什么不需要注释
+// 明确表达
+const activeUsers = excludeBy(users, 'inactive');
+const inactiveUsers = selectBy(users, 'inactive');
+```
 
-+ 不要为了注释而注释
-+ 不要给不好的的名字加注释 - 应该把名字改好
+### 审美：让代码排版有规律
 
-#### 用代码记录你的思想
+书里的三条原则：
 
-+ 记录你的思想
-+ 加入“导演评论”
-+ 为代码中的瑕疵写注释
-+ 给常量加注释
+1. 使用一致的布局，让读者习惯之后能快速扫读。
+2. 让相似的代码看上去也相似。
+3. 把相关的代码分组，形成段落。
 
-#### 站在读者的角度，去想象他们需要知道什么
+```js
+// 前：对齐和顺序都随意
+const user = { name: 'Tom', id: 1,
+  email: 'tom@example.com' };
+const admin = { id: 2, email: 'amy@example.com', name: 'Amy' };
 
-+ 意料之中的提问
-+ 公布可能的陷阱
-+ “全局观”注释
-+ 总结性注释
-  做什么、怎么做、为什么
+// 后：字段顺序一致，结构一眼可比
+const user  = { id: 1, name: 'Tom', email: 'tom@example.com' };
+const admin = { id: 2, name: 'Amy', email: 'amy@example.com' };
+```
 
-### 1.4 写出言简意赅的注释  -  74
+其他建议：
 
-#### 让注释保持紧凑
+- 选一个有意义的顺序并始终使用，比如表单字段的处理顺序与页面上的顺序一致。
+- 声明按用途分块，块之间空一行，像文章分段。
+- **一致的风格比"正确"的风格更重要**。现在这类问题大多可以交给 Prettier 这类格式化工具（上例手动对齐的等号会被 Prettier 去掉，这是可以接受的取舍）。工具配置见 [前端开发规范](/notes/fronted/codeBasic/developRule.html)。
 
-#### 避免使用不明确的代词
+### 该写什么样的注释
 
-#### 润色粗糙的句子
+注释的目的是让读者知道代码作者知道、但从代码里看不出来的东西。
 
-#### 精确的描述函数的行为
+**不需要注释的：**
 
-#### 用输入/输出例子来说明特别的情况
+- 能从代码本身快速推断出的信息。
+- 为了弥补糟糕命名而写的注释，应该直接改名。
 
-#### 声明代码的意图
+```js
+// 前：用注释解释名字
+// 删除过期超过 n 天的记录
+function clean(n) {}
 
-#### “具名函数参数”的注释 
+// 后：名字自己说明
+function deleteRecordsExpiredForDays(days) {}
+```
 
-#### 用含义丰富的词来使注释简洁
+**值得写注释的：**
 
-## 二、简化循环和逻辑  - 81
+- **你的思考过程（"导演评论"）**：为什么选这个方案，放弃了哪些方案。
+- **代码的瑕疵**：用 `TODO`、`FIXME`、`HACK` 标出已知问题。
+- **常量的来历**：`const MAX_THREADS = 8; // 超过 8 个后收益很小`。
+- **读者可能踩的坑**：比如"这个函数会发邮件，测试时注意 mock"。
+- **全局观注释**：文件或模块开头简单说明各部分如何配合。
+- **总结性注释**：一大段代码前用一句话说明这段在做什么。
 
-### 2.1 把控制流变得易读  -  83
+### 写出言简意赅的注释
 
-#### 条件语句中参数的顺序
+- 避免"它""这个"等指代不清的代词。
+- 精确描述函数行为，包括边界：
 
-+ 比较的左侧  -  “被询问的”表达式，倾向于变化的值
-+ 比较的右侧  -  用来做比较的表达式，倾向于常量
+```js
+// 前：含糊
+// 返回文件的行数
 
-#### If/Else 语句块的顺序
+// 后：精确
+// 统计文件中换行符 '\n' 的个数
+```
 
-+ 首先处理正逻辑而不是负逻辑的情况
-+ 先处理掉简单的情况
-+ 先处理可疑（特殊）的情况
+- 用输入输出的例子说明特殊情况：
 
-#### 三目运算符
+```js
+// 去掉 str 开头和结尾的 chars 中的字符
+// 例：strip('abba/a/ba', 'ab') === '/a/'
+function strip(str, chars) {}
+```
 
-默认使用If/Else，最简单的情况再使用三目运算符
+- 写意图，而不是复述代码：`// 按价格从高到低展示` 比 `// 倒序遍历数组` 更有信息量。
+- 对含义不明的参数，在调用处标出参数名，或干脆改为对象参数：
 
-#### 避免Do/While循环
+```js
+connect(10, false);                          // 前：10 和 false 是什么？
+connect({ timeoutMs: 10, useEncryption: false }); // 后
+```
 
-#### 从函数中提前返回
+## 第二部分：简化循环和逻辑
 
-#### 最小化嵌套
+这部分的目标是减少读者在脑子里同时追踪的东西：分支、嵌套、变量。
 
-#### 嵌套是如何积累而成的
+### 让控制流变得易读
 
-#### 通过提前返回来减少嵌套
+**条件里变化的值放左边，常量放右边**，符合自然语言的说法：
 
-#### 让代码流程简单
+```js
+if (length >= 10) {}  // 读作"长度大于等于 10"
+if (10 <= length) {}  // 不自然
+```
 
-### 2.2 拆分超长的表达式   -   82
+**if/else 的顺序**：一般先处理肯定的情况、先处理简单的情况、先处理更值得注意的情况。三条有时冲突，需要权衡。
 
-#### 引入 额外的解释变量
+**三目运算符只用于简单的二选一**，嵌套的三目运算符不如 if/else 清楚：
 
-#### 引入 总结变量
+```js
+// 可以
+const label = isVip ? '会员' : '普通用户';
 
-#### 使用 德摩根定理
+// 不推荐
+const fee = isVip ? (amount > 100 ? 0 : 5) : amount > 200 ? 5 : 10;
+```
 
-#### 避免 滥用短路逻辑
+**避免 `do...while`**：循环条件写在后面，读者要读完循环体才知道何时结束。多数情况可以改写成 `while`。
 
-#### 尽可能 拆分复杂代码
+**提前返回，减少嵌套：**
 
-### 2.3 变量与可读性  -  105
+```js
+// 前：层层嵌套
+function submit(form) {
+  if (form) {
+    if (form.isValid()) {
+      if (!form.isSubmitting) {
+        send(form);
+      }
+    }
+  }
+}
 
-#### 三个问题
+// 后：卫语句提前返回
+function submit(form) {
+  if (!form) return;
+  if (!form.isValid()) return;
+  if (form.isSubmitting) return;
+  send(form);
+}
+```
 
-+ 变量越多，就越难全部跟踪它们的动向
-+ 变量的作用域越大，就需要跟踪它的动向越久
-+ 变量改得越频繁，就越难以跟踪它的当前值
+循环里同理，用 `continue` 跳过不需要处理的元素，避免整个循环体再缩进一层。嵌套往往是一次次修改累积出来的，修改代码时要留意：加了一个 `if` 之后，整体是否还清楚。
 
-#### 减少变量
+### 拆分超长的表达式
 
-+ 没有价值的临时变量
+**引入解释变量**，给子表达式起名字：
 
-+ 减少中间结果
+```js
+// 前
+if (line.split(':')[0].trim() === 'root') {}
 
-+ 减少控制流变量
+// 后
+const username = line.split(':')[0].trim();
+if (username === 'root') {}
+```
 
-  > 一个好的面试问题需要引入三个变量 - 微软的 Eric Brechner
+**引入总结变量**，给反复出现的复杂条件起名字：
 
-#### 把定义下移
+```js
+// 前
+if (request.userId === doc.ownerId) { /* 可编辑 */ }
+if (request.userId !== doc.ownerId) { /* 只读提示 */ }
 
-#### 缩小变量的作用域
+// 后
+const userOwnsDocument = request.userId === doc.ownerId;
+if (userOwnsDocument) {}
+if (!userOwnsDocument) {}
+```
 
-#### 只写一次的变量更好
+**使用德摩根定律化简取反**：`!(a || b)` 等于 `!a && !b`，`!(a && b)` 等于 `!a || !b`。
 
-## 三、重新组织代码  -  119
+```js
+// 前
+if (!(fileExists && !isProtected)) showError();
 
-### 3.1 三种组织代码的方法
+// 后
+if (!fileExists || isProtected) showError();
+```
 
-+ 抽取那些与程序主要目的 "不相关的子问题"
-+ 重新组织代码使它一次只做一件事情
-+ 先用自然语言描述代码，然后用它找到更简洁的解决方案
-+ 把代码完全移除或者一开始就避免写它的那些情况
+**不要滥用短路逻辑**。把多个操作塞进一个 `&&` 链里看起来紧凑，读起来要停下来想：
 
-### 3.2 抽取不想关的子问题  -  121
-
-#### 纯工具代码
-
-#### 其它多用途代码
-
-改进之后可以处理其它更多的业务场景 - 意外之喜
-
-#### 创建大量通用代码
-
-> 自顶向下编程和自底向上编程
-
-### 3.3 一次只做一件事 - 132
-
-#### 细化任务
-
-### 3.4 把想法变成代码 - 141
-
-> 如果你不能把一件事情解释给你祖母听，证明你还没有真正理解它 - 阿尔伯特.爱因斯坦
-
-### 3.5 少写代码 - 149
-
-#### 质疑和拆分你的需求
-
-#### 保持小的代码库
-
-+ 通过“工具”代码来减少重复代码 - 第十章
-+ 减少无用代码或没用的功能
-+ 项目保持分开的子项目状态
-
-### 3.6 熟悉周边的库
-
-只为了保持熟悉度
-
-## 四、精选话题 - 157
-
-### 4.1 测试与可读性 - 159
-
-### 4.2 设计并改进  “分钟/小时计数器” -174
-
-## 五、深入阅读 - 189
+```js
+// 前
+user && user.profile && (cache[user.id] = user.profile) && render();
+
+// 后
+if (user?.profile) {
+  cache[user.id] = user.profile;
+  render();
+}
+```
+
+**换个角度看问题**：书中判断两个区间是否重叠的例子，正面写要考虑多种情况，反过来想"什么时候不重叠"就简单得多：
+
+```js
+// 区间为左闭右开 [begin, end)
+function overlaps(a, b) {
+  // a 完全在 b 左边，或完全在 b 右边，就不重叠
+  if (a.end <= b.begin) return false;
+  if (a.begin >= b.end) return false;
+  return true;
+}
+```
+
+### 变量与可读性
+
+书中指出变量带来的三个问题：
+
+1. 变量越多，越难同时记住它们的状态。
+2. 作用域越大，需要追踪的范围越大。
+3. 值变化越频繁，越难知道它当前是什么。
+
+**去掉没有价值的临时变量：**
+
+```js
+// 前
+const now = Date.now();
+lastVisitTime = now;
+
+// 后
+lastVisitTime = Date.now();
+```
+
+**去掉控制流变量**，用 `break` 或提前返回代替 `done` 这类标记：
+
+```js
+// 前
+let done = false;
+for (const item of list) {
+  if (done) break;
+  if (item.isTarget) {
+    handle(item);
+    done = true;
+  }
+}
+
+// 后
+const target = list.find((item) => item.isTarget);
+if (target) handle(target);
+```
+
+**缩小作用域，把定义移到使用的地方：**
+
+```js
+// 前：所有变量在函数开头声明，读者要一直记着
+function report(orders) {
+  let total = 0;
+  let maxOrder = null;
+  let text = '';
+  // ...几十行之后才用到 text
+}
+
+// 后：用到时才声明
+function report(orders) {
+  const total = orders.reduce((sum, o) => sum + o.amount, 0);
+  const maxOrder = orders.reduce((max, o) => (o.amount > max.amount ? o : max));
+  const text = `合计 ${total}，最大单笔 ${maxOrder.amount}`;
+  return text;
+}
+```
+
+**只写一次的变量更好**：在 JS 里就是优先用 `const`。值不变的变量读者不需要追踪它的变化。
+
+## 第三部分：重新组织代码
+
+前两部分在语句层面做改进，第三部分讨论函数和模块的组织方式。书中给出四种方法：抽取不相关的子问题、一次只做一件事、把想法用自然语言说清楚再写代码、少写代码。
+
+### 抽取不相关的子问题
+
+看一个函数时，问自己：这段代码的高层目标是什么？每一行是在直接解决这个目标，还是在解决一个与之无关的子问题？如果是后者，就把它抽成独立函数。
+
+```js
+// 前：找最近的门店，计算球面距离的公式混在里面
+function findClosestStore(user, stores) {
+  let closest = null;
+  let minDist = Infinity;
+  for (const s of stores) {
+    const dLat = ((s.lat - user.lat) * Math.PI) / 180;
+    const dLng = ((s.lng - user.lng) * Math.PI) / 180;
+    const a =
+      Math.sin(dLat / 2) ** 2 +
+      Math.cos((user.lat * Math.PI) / 180) *
+        Math.cos((s.lat * Math.PI) / 180) *
+        Math.sin(dLng / 2) ** 2;
+    const dist = 2 * 6371 * Math.asin(Math.sqrt(a));
+    if (dist < minDist) {
+      minDist = dist;
+      closest = s;
+    }
+  }
+  return closest;
+}
+
+// 后：距离计算是独立子问题，抽出去之后主函数只剩"找最小值"
+function distanceKm(from, to) {
+  const toRad = (deg) => (deg * Math.PI) / 180;
+  const dLat = toRad(to.lat - from.lat);
+  const dLng = toRad(to.lng - from.lng);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(from.lat)) * Math.cos(toRad(to.lat)) * Math.sin(dLng / 2) ** 2;
+  return 2 * 6371 * Math.asin(Math.sqrt(a));
+}
+
+function findClosestStore(user, stores) {
+  let closest = null;
+  let minDist = Infinity;
+  for (const store of stores) {
+    const dist = distanceKm(user, store);
+    if (dist < minDist) {
+      minDist = dist;
+      closest = store;
+    }
+  }
+  return closest;
+}
+```
+
+抽出来的通常是这几类代码：
+
+- **纯工具代码**：字符串处理、日期格式化、深拷贝等，任何项目都可能需要。
+- **通用但被埋在业务里的代码**：抽出来后常常发现别处也能复用。
+- **对难用接口的包装**：比如把读写 cookie、`localStorage` 的细节封装成简单函数。
+
+书里也提醒不要过度：抽出一堆一两行的小函数，读者反而要来回跳转。
+
+### 一次只做一件事
+
+一段代码同时做多件事时，先把它要做的事列出来，再分别实现：
+
+```js
+// 前：解析、校验、计算交织在一起
+function checkout(input) {
+  const items = JSON.parse(input);
+  let total = 0;
+  for (const item of items) {
+    if (!item.price || item.price < 0) throw new Error('价格无效');
+    total += item.price * (item.qty ?? 1);
+  }
+  if (total > 10000) total *= 0.9;
+  return total;
+}
+
+// 后：每一段只做一件事
+function checkout(input) {
+  const items = JSON.parse(input);
+  items.forEach(assertValidItem);
+  const subtotal = sumItems(items);
+  return applyDiscount(subtotal);
+}
+
+function assertValidItem(item) {
+  if (!item.price || item.price < 0) throw new Error('价格无效');
+}
+
+function sumItems(items) {
+  return items.reduce((sum, item) => sum + item.price * (item.qty ?? 1), 0);
+}
+
+function applyDiscount(amount) {
+  return amount > 10000 ? amount * 0.9 : amount;
+}
+```
+
+### 把想法变成代码
+
+书中引用了一句话，大意是：如果你不能把一件事解释给你祖母听，说明你还没有真正理解它。写代码前，先用自然语言把逻辑讲清楚，再照着这段话写代码，往往能得到更简洁的结构。
+
+比如"判断用户能否查看文档"，先写成大白话：
+
+> 如果是管理员，可以查看；否则如果文档是公开的，可以查看；否则只有作者本人可以查看。
+
+再翻译成代码：
+
+```js
+function canView(user, doc) {
+  if (user.isAdmin) return true;
+  if (doc.isPublic) return true;
+  return doc.authorId === user.id;
+}
+```
+
+这种方法在调试时同样有效：把问题讲给别人（或一只橡皮鸭）听，常常讲到一半就发现了问题。
+
+### 少写代码
+
+最易读的代码是不存在的代码。
+
+- **质疑需求**：不是所有功能都值得实现。有些需求可以用更简单的版本满足，比如先做精确到天的统计，而不是精确到秒。
+- **保持代码库小**：删除无用代码和没人用的功能；把通用逻辑放进工具函数，减少重复；让项目按子模块拆开，彼此独立。
+- **熟悉周边的库**：很多需求标准库或现成依赖已经实现了。书中的建议是定期花点时间浏览标准库的 API，知道有什么可用。
+
+```js
+// 前：手写去重
+const unique = [];
+for (const x of list) {
+  if (unique.indexOf(x) === -1) unique.push(x);
+}
+
+// 后：标准库已经提供
+const unique = [...new Set(list)];
+```
+
+## 第四部分：精选话题
+
+原书最后两章是两个综合案例，这里只记录要点：
+
+- **测试与可读性**：测试代码同样要可读。把构造测试数据的重复代码抽成辅助函数，让每个测试一眼就能看出"输入是什么、期望是什么"；测试失败时的报错信息要能直接说明哪里不对；测试名要描述被测的情况。
+- **设计并改进"分钟/小时计数器"**：用一个具体的数据结构问题，演示从直观但低效的实现，逐步改进到更清晰、更高效的设计，整个过程都在应用前面讲到的原则。
+
+## 小结
+
+- 可读性的标准是"读者理解所需的时间"，不是行数。
+- 名字要具体、带单位和状态、不产生歧义；注释写代码表达不出来的东西。
+- 用提前返回减少嵌套，用解释变量和总结变量拆分长表达式。
+- 减少变量数量、缩小作用域、优先使用只赋值一次的变量。
+- 抽取与主目标无关的子问题，一段代码一次只做一件事。
+- 先用自然语言把逻辑说清楚再写代码；能复用标准库就不要自己写。
+
+## 参考
+
+- [MDN：JavaScript 指南](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide)
