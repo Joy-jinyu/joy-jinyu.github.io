@@ -1,0 +1,408 @@
+<!DOCTYPE html><html lang="zh-CN" dir="ltr" data-theme="dark" data-has-toc data-has-sidebar class="astro-pht42zuh"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>常用工具库速查 | 有爱心安 - 花期</title><link rel="canonical" href="https://joy-jinyu.github.io/notes/fronted/keyword/others.html"/><link rel="sitemap" href="/notes/sitemap-index.xml"/><style>@view-transition{navigation:auto}@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style><script>try{for(const p of ['sidebar','toc'])if(localStorage.getItem('joy-'+p)==='collapsed')document.documentElement.dataset[p]='collapsed'}catch{}</script><link rel="apple-touch-icon" href="/notes/apple-touch-icon.png"/><script src="/notes/hero-bg.js" defer></script><script>document.addEventListener('DOMContentLoaded',()=>{const bg=document.createElement('hero-bg');bg.setAttribute('variant','waves');bg.setAttribute('intensity','0.55');document.body.prepend(bg)})</script><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="true"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap"/><link rel="shortcut icon" href="/notes/favicon.png" type="image/png"/><meta name="generator" content="Astro v7.3.8"/><meta name="generator" content="Starlight v0.42.6"/><meta property="og:title" content="常用工具库速查"/><meta property="og:type" content="article"/><meta property="og:url" content="https://joy-jinyu.github.io/notes/fronted/keyword/others.html"/><meta property="og:locale" content="zh-CN"/><meta property="og:description" content="按用途整理博客与内容站、代码高亮、图片资源、监控统计、Node 服务端等方向的常用工具库，并简要对比 Monorepo 与 Multirepo。"/><meta property="og:site_name" content="有爱心安 - 花期"/><meta name="twitter:card" content="summary_large_image"/><meta name="description" content="按用途整理博客与内容站、代码高亮、图片资源、监控统计、Node 服务端等方向的常用工具库，并简要对比 Monorepo 与 Multirepo。"/><script>
+	window.StarlightThemeProvider = (() => {
+		const storedTheme =
+			typeof localStorage !== 'undefined' && localStorage.getItem('starlight-theme');
+		const theme =
+			storedTheme ||
+			(window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+		document.documentElement.dataset.theme = theme === 'light' ? 'light' : 'dark';
+		return {
+			updatePickers(theme = storedTheme || 'auto') {
+				document.querySelectorAll('starlight-theme-select').forEach((picker) => {
+					const select = picker.querySelector('select');
+					if (select) select.value = theme;
+					/** @type {HTMLTemplateElement | null} */
+					const tmpl = document.querySelector(`#theme-icons`);
+					const newIcon = tmpl && tmpl.content.querySelector('.' + theme);
+					if (newIcon) {
+						const oldIcon = picker.querySelector('svg.label-icon');
+						if (oldIcon) {
+							oldIcon.replaceChildren(...newIcon.cloneNode(true).childNodes);
+						}
+					}
+				});
+			},
+		};
+	})();
+</script><template id="theme-icons"><svg aria-hidden="true" class="light astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><svg aria-hidden="true" class="dark astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><svg aria-hidden="true" class="auto astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg></template><link rel="stylesheet" href="/notes/_astro/print.ehPL0gv-.css" media="print"><link rel="stylesheet" href="/notes/_astro/common.C6NtIbeP.css"><script type="module" src="/notes/_astro/page.cNngjUgL.js"></script></head><body class="astro-pht42zuh"><a class="sl-skip-link astro-6l5ig4lw" href="#_top">跳转到内容</a><div class="page sl-flex astro-j36ezbnx"><header class="header astro-j36ezbnx"><div class="header astro-2r7rdtqt"><div class="title-wrapper sl-flex astro-2r7rdtqt"><a href="/notes/index.html" class="site-title sl-flex astro-f5gnq237"><span class="astro-f5gnq237" translate="no">有爱心安 - 花期</span></a></div><div class="sl-flex print:hidden astro-2r7rdtqt"><site-search class="astro-2r7rdtqt astro-q3uisoit" data-translations="{&quot;placeholder&quot;:&quot;搜索&quot;}"><button data-open-modal disabled aria-label="搜索" aria-keyshortcuts="Control+K" class="astro-q3uisoit"><svg aria-hidden="true" class="astro-q3uisoit astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.71 20.29 18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z"/></svg><span class="sl-hidden md:sl-block astro-q3uisoit" aria-hidden="true">搜索</span><kbd class="sl-hidden md:sl-flex astro-q3uisoit" style="display: none;"><kbd class="astro-q3uisoit">Ctrl</kbd><kbd class="astro-q3uisoit">K</kbd></kbd></button><dialog style="padding:0" aria-label="搜索" class="astro-q3uisoit"><div class="dialog-frame sl-flex astro-q3uisoit"><button data-close-modal class="sl-flex md:sl-hidden astro-q3uisoit">取消</button><div class="search-container astro-q3uisoit"><div id="starlight__search" class="astro-q3uisoit"></div></div></div></dialog></site-search><script>
+	(() => {
+		const openBtn = document.querySelector('button[data-open-modal]');
+		const shortcut = openBtn?.querySelector('kbd');
+		if (!openBtn || !(shortcut instanceof HTMLElement)) return;
+		const platformKey = shortcut.querySelector('kbd');
+		if (platformKey && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
+			platformKey.textContent = '⌘';
+			openBtn.setAttribute('aria-keyshortcuts', 'Meta+K');
+		}
+		shortcut.style.display = '';
+	})();
+</script><script type="module" src="/notes/_astro/Search.astro_astro_type_script_index_0_lang.CZJwZ-iM.js"></script></div><div class="sl-hidden md:sl-flex print:hidden right-group astro-2r7rdtqt"><div class="sl-flex social-icons astro-2r7rdtqt"></div><joy-theme-switch class="astro-hds7qqbe"><div class="seg astro-hds7qqbe" role="radiogroup" aria-label="主题"><span class="thumb astro-hds7qqbe" aria-hidden="true"></span><button type="button" role="radio" data-value="light" aria-label="浅色" title="浅色" aria-checked="false" tabindex="-1" class="astro-hds7qqbe"><svg aria-hidden="true" class="astro-hds7qqbe astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg></button><button type="button" role="radio" data-value="auto" aria-label="跟随系统" title="跟随系统" aria-checked="false" tabindex="-1" class="astro-hds7qqbe"><svg aria-hidden="true" class="astro-hds7qqbe astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="M19 3H5a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h6v2H7a1 1 0 0 0 0 2h10a1 1 0 0 0 0-2h-4v-2h6a3 3 0 0 0 3-3V6a3 3 0 0 0-3-3m1 11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1Z"/></svg></button><button type="button" role="radio" data-value="dark" aria-label="深色" title="深色" aria-checked="false" tabindex="-1" class="astro-hds7qqbe"><svg aria-hidden="true" class="astro-hds7qqbe astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg></button></div></joy-theme-switch><script>
+	document.currentScript.previousElementSibling.dataset.value =
+		localStorage.getItem('starlight-theme') || 'auto';
+</script><script type="module">var e=`starlight-theme`,t=[`light`,`auto`,`dark`],n=e=>e===`dark`||e===`light`?e:`auto`,r=()=>n(localStorage.getItem(e)),i=()=>matchMedia(`(prefers-color-scheme: light)`).matches?`light`:`dark`;function a(t){document.documentElement.dataset.theme=t===`auto`?i():t,localStorage.setItem(e,t===`auto`?``:t),document.querySelectorAll(`joy-theme-switch`).forEach(e=>e.sync(t))}matchMedia(`(prefers-color-scheme: light)`).addEventListener(`change`,()=>{r()===`auto`&&a(`auto`)});var o=class extends HTMLElement{connectedCallback(){this.sync(r()),this.querySelectorAll(`button`).forEach(e=>{e.addEventListener(`click`,()=>a(n(e.dataset.value)))}),this.addEventListener(`keydown`,e=>{if(![`ArrowLeft`,`ArrowRight`,`ArrowUp`,`ArrowDown`].includes(e.key))return;e.preventDefault();let n=e.key===`ArrowLeft`||e.key===`ArrowUp`?-1:1,i=t[(t.indexOf(r())+n+t.length)%t.length];a(i),this.querySelector(`button[data-value="${i}"]`)?.focus()})}sync(e){this.dataset.value=e,this.querySelectorAll(`button`).forEach(t=>{let n=t.dataset.value===e;t.setAttribute(`aria-checked`,String(n)),t.tabIndex=n?0:-1})}};customElements.define(`joy-theme-switch`,o);</script><script type="module">var e=class extends HTMLElement{constructor(){super();let e=this.querySelector(`select`);e&&(e.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&(window.location.pathname=e.currentTarget.value)}),window.addEventListener(`pageshow`,t=>{if(!t.persisted)return;let n=e.querySelector(`option[selected]`)?.index;n!==e.selectedIndex&&(e.selectedIndex=n??0)}))}};customElements.define(`starlight-lang-select`,e);</script></div></div></header><nav class="sidebar print:hidden astro-j36ezbnx" aria-label="主要"><button popovertarget="starlight__sidebar" class="sl-menu-button sl-flex md:sl-hidden print:hidden astro-iwcaxo5h"><svg aria-hidden="true" class="open-menu astro-iwcaxo5h astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M3 8h18a1 1 0 1 0 0-2H3a1 1 0 0 0 0 2Zm18 8H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Zm0-5H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Z"/></svg><svg aria-hidden="true" class="close-menu astro-iwcaxo5h astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="m13.41 12 6.3-6.29a1.004 1.004 0 1 0-1.42-1.42L12 10.59l-6.29-6.3a1.004 1.004 0 0 0-1.42 1.42l6.3 6.29-6.3 6.29a1 1 0 0 0 0 1.42.998.998 0 0 0 1.42 0l6.29-6.3 6.29 6.3a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.42L13.41 12Z"/></svg><span class="sr-only astro-iwcaxo5h">菜单</span></button><script type="module">var e=class extends HTMLElement{constructor(){super();let e=matchMedia(`(min-width: 50em)`),t=()=>{this.popover=e.matches?null:`auto`};t(),e.addEventListener(`change`,()=>t()),this.addEventListener(`toggle`,({newState:e})=>this.trapFocus(e===`open`))}trapFocus(e){document.querySelectorAll(`.main-frame, .sl-skip-link`).forEach(t=>{t.toggleAttribute(`inert`,e)})}};customElements.define(`sl-sidebar-pane`,e);</script><script type="module">function e(){document.querySelectorAll(`.panel-toggle`).forEach(e=>{let t=document.documentElement.dataset[e.dataset.panel]===`collapsed`,n=`${t?`展开`:`收起`}${e.dataset.name}`;e.setAttribute(`aria-expanded`,String(!t)),e.setAttribute(`aria-label`,n),e.title=n})}document.querySelectorAll(`.panel-toggle`).forEach(t=>{t.addEventListener(`click`,()=>{let n=t.dataset.panel,r=document.documentElement,i=r.dataset[n]!==`collapsed`;i?r.dataset[n]=`collapsed`:delete r.dataset[n],localStorage.setItem(`joy-${n}`,i?`collapsed`:``),e()})}),e();</script><sl-sidebar-pane popover id="starlight__sidebar" class="sidebar-pane astro-j36ezbnx"><div class="sidebar-content sl-flex astro-j36ezbnx"><div class="sidebar-head astro-wv7whodv"><a class="back-link astro-wv7whodv" href="https://joy-jinyu.github.io/">← 简历</a><button type="button" class="panel-toggle panel-toggle--sidebar astro-w3ddhq4m" data-panel="sidebar" data-name="菜单" aria-controls="starlight__sidebar" aria-expanded="true" aria-label="收起菜单" title="收起菜单"><span class="panel-icon astro-w3ddhq4m" aria-hidden="true"></span></button></div><sl-sidebar-state-persist data-hash="1cvbqug" class="astro-shbxt3t6"><script aria-hidden="true">
+		(() => {
+			try {
+				if (!matchMedia('(min-width: 50em)').matches) return;
+				/** @type {HTMLElement | null} */
+				const target = document.querySelector('sl-sidebar-state-persist');
+				const state = JSON.parse(sessionStorage.getItem('sl-sidebar-state') || '0');
+				if (!target || !state || target.dataset.hash !== state.hash) return;
+				window._starlightScrollRestore = state.scroll;
+				customElements.define(
+					'sl-sidebar-restore',
+					class SidebarRestore extends HTMLElement {
+						connectedCallback() {
+							try {
+								const idx = parseInt(this.dataset.index || '');
+								const details = this.closest('details');
+								if (details && typeof state.open[idx] === 'boolean') details.open = state.open[idx];
+							} catch {}
+						}
+					}
+				);
+			} catch {}
+		})();
+	</script><ul class="top-level astro-6khlz4tn"><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">JavaScript</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="0"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/language/javascript/eventLoop.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">执行机制与事件循环</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/javascript/theJavaScriptYouDontKonw/scopeAndClosure_01.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">作用域与闭包</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/javascript/theJavaScriptYouDontKonw/thisAndPrototype_02.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">this 与原型链</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/javascript/es6.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">ES2015+ 核心特性</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/javascript/basic.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">错误类型与异常处理</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/javascript/ast.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">AST 与代码转换</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">TypeScript</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="1"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/language/typescript/basic.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">类型系统</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">HTML 与 CSS</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="2"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/language/html/h5_standard.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">HTML5 新特性</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/css/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">CSS 核心概念</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/css/media.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">媒体查询与响应式</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">React</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="3"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/language/react/createProject.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">项目搭建</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/react/notes.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">核心概念与 Hooks</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/react/algorithm.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">协调与 Fiber</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/react/redux.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Redux 状态管理</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">Vue</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="4"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/language/vue/createProject.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Vue 3 项目搭建</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/vue/vite/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Vite 原理与使用</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">Node.js</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="5"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/language/node/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">架构与运行机制</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/node/problem.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">异步与并发</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/node/node_package.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">npm 依赖管理</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/deno/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Deno 简介</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">工程化</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="6"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/projectBuild/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">构建工具概览</span></a></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">webpack</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="7"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/projectBuild/webpack/background.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">由来</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/projectBuild/webpack/concept.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">核心概念</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/projectBuild/webpack/configuration.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">配置详解</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/projectBuild/webpack/guide.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">实践指南</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/keyword/webpackDependencies.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">常用 Loader 与 Plugin</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/projectBuild/webpack/api.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Loader 与 Plugin 开发</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/projectBuild/webpack/vueProject.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">搭建 Vue 项目</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">PostCSS</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="8"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/projectBuild/postcss/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">简介</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/projectBuild/postcss/translate.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">工作原理</span></a></li></ul></details></li><li class="astro-6khlz4tn"><a href="/notes/fronted/test/karma.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">单元测试</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">性能与架构</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="9"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/optimization/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">性能优化总览</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/optimization/blankScreen/background.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">白屏问题分析</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/optimization/blankScreen/case.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">白屏优化方案</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/optimization/microFronted/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">微前端概念</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/optimization/microFronted/practise.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">微前端方案与实践</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">浏览器</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="10"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/system/browser/basic.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">工作原理</span></a></li><li class="astro-6khlz4tn"><a href="/notes/system/browser/cookies.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Cookie 详解</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/instantMessage/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">实时通信方案</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/compatible/browsers.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">兼容性问题汇总</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">编码实践</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="11"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/codeBasic/developRule.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">前端开发规范</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/codeBasic/codeArtReading.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">《编写可读代码的艺术》</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/codeBasic/problemRecord.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">开发踩坑记录</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">移动端</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="12"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/mobile/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">跨平台开发概览</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/mobile/flutter/environment.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Flutter 环境搭建</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/mobile/flutter/dart/basic.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Dart 基础概念</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/mobile/flutter/dart/grammar.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Dart 语法</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/mobile/flutter/dart/codeRule.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Dart 编码规范</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details open class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">工具</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="13"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/others/git.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Git 常用操作</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/soft/vsCodePlugin.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">VS Code 插件推荐</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/keyword/others.html" aria-current="page" class="astro-6khlz4tn"><span class="astro-6khlz4tn">常用工具库速查</span></a></li><li class="astro-6khlz4tn"><a href="/notes/others/markdown.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Markdown 语法速查</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">系统与数据库</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="14"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/system/linux/basic.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Linux 常用命令</span></a></li><li class="astro-6khlz4tn"><a href="/notes/system/linux/soft.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Linux 软件安装与管理</span></a></li><li class="astro-6khlz4tn"><a href="/notes/system/linux/vim.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Vim 使用指南</span></a></li><li class="astro-6khlz4tn"><a href="/notes/databases/mysql/install.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">MySQL 安装与基础配置</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">英语</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="15"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/language/english/professional.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">前端常用英文术语</span></a></li></ul></details></li></ul><script aria-hidden="true">
+		(() => {
+			const scroller = document.getElementById('starlight__sidebar');
+			if (!window._starlightScrollRestore || !scroller) return;
+			scroller.scrollTop = window._starlightScrollRestore;
+			delete window._starlightScrollRestore;
+		})();
+	</script></sl-sidebar-state-persist><div class="md:sl-hidden"><div class="mobile-preferences sl-flex astro-ku646vwa"><div class="social-icons astro-ku646vwa"></div><joy-theme-switch class="astro-hds7qqbe"><div class="seg astro-hds7qqbe" role="radiogroup" aria-label="主题"><span class="thumb astro-hds7qqbe" aria-hidden="true"></span><button type="button" role="radio" data-value="light" aria-label="浅色" title="浅色" aria-checked="false" tabindex="-1" class="astro-hds7qqbe"><svg aria-hidden="true" class="astro-hds7qqbe astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg></button><button type="button" role="radio" data-value="auto" aria-label="跟随系统" title="跟随系统" aria-checked="false" tabindex="-1" class="astro-hds7qqbe"><svg aria-hidden="true" class="astro-hds7qqbe astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="M19 3H5a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h6v2H7a1 1 0 0 0 0 2h10a1 1 0 0 0 0-2h-4v-2h6a3 3 0 0 0 3-3V6a3 3 0 0 0-3-3m1 11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1Z"/></svg></button><button type="button" role="radio" data-value="dark" aria-label="深色" title="深色" aria-checked="false" tabindex="-1" class="astro-hds7qqbe"><svg aria-hidden="true" class="astro-hds7qqbe astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg></button></div></joy-theme-switch><script>
+	document.currentScript.previousElementSibling.dataset.value =
+		localStorage.getItem('starlight-theme') || 'auto';
+</script></div></div></div></sl-sidebar-pane></nav><div class="main-frame astro-j36ezbnx"><script type="module">var e=document.getElementById(`starlight__sidebar`),t=e?.querySelector(`sl-sidebar-state-persist`),n=`sl-sidebar-state`,r=()=>{let r=[],i=t?.dataset.hash||``;try{let e=sessionStorage.getItem(n),t=JSON.parse(e||`{}`);Array.isArray(t.open)&&t.hash===i&&(r=t.open)}catch{}return{hash:i,open:r,scroll:e?.scrollTop||0}},i=e=>{try{sessionStorage.setItem(n,JSON.stringify(e))}catch{}},a=()=>i(r()),o=(e,t)=>{let n=r();n.open[t]=e,i(n)};t?.addEventListener(`click`,e=>{if(!(e.target instanceof Element))return;let t=e.target.closest(`summary`)?.closest(`details`);if(!t)return;let n=t.querySelector(`sl-sidebar-restore`),r=parseInt(n?.dataset.index||``);isNaN(r)||o(!t.open,r)}),addEventListener(`visibilitychange`,()=>{document.visibilityState===`hidden`&&a()});</script><div class="lg:sl-flex astro-t4g3r4ti"><aside class="right-sidebar-container print:hidden astro-t4g3r4ti"><div class="right-sidebar astro-t4g3r4ti"><div class="toc-shell astro-hasoujoj"><div class="toc-toggle sl-hidden lg:sl-block astro-hasoujoj"><button type="button" class="panel-toggle panel-toggle--toc astro-w3ddhq4m" data-panel="toc" data-name="本页内容" aria-expanded="true" aria-label="收起本页内容" title="收起本页内容"><span class="panel-icon astro-w3ddhq4m" aria-hidden="true"></span></button></div><div class="lg:sl-hidden astro-mz3pd4lj"><mobile-starlight-toc data-min-h="2" data-max-h="3" class="astro-2l64q533"><nav aria-labelledby="starlight__on-this-page--mobile" class="astro-2l64q533"><details id="starlight__mobile-toc" class="astro-2l64q533"><summary id="starlight__on-this-page--mobile" class="sl-flex astro-2l64q533"><span class="toggle sl-flex astro-2l64q533">本页内容<svg aria-hidden="true" class="caret astro-2l64q533 astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></span><span class="display-current astro-2l64q533"></span></summary><div class="dropdown astro-2l64q533"><ul class="isMobile astro-hdifz754" style="--depth: 0;"><li style="--depth: 0;" class="astro-hdifz754"><a href="#_top" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">概述</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#内容渲染与代码高亮" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">内容渲染与代码高亮</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#博客与内容站组件" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">博客与内容站组件</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#图片与静态资源" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">图片与静态资源</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#监控与统计" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">监控与统计</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#社交分享" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">社交分享</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#node-服务端" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">Node 服务端</span></a><ul class="isMobile astro-hdifz754" style="--depth: 1;"><li style="--depth: 1;" class="astro-hdifz754"><a href="#koa" style="--depth: 1;" class="astro-hdifz754"><span style="--depth: 1;" class="astro-hdifz754">Koa</span></a></li><li style="--depth: 1;" class="astro-hdifz754"><a href="#其他服务端框架与数据层" style="--depth: 1;" class="astro-hdifz754"><span style="--depth: 1;" class="astro-hdifz754">其他服务端框架与数据层</span></a></li></ul></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#monorepo-与-multirepo" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">Monorepo 与 Multirepo</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#小结" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">小结</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#参考" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">参考</span></a></li></ul></div></details></nav></mobile-starlight-toc><script type="module" src="/notes/_astro/MobileTableOfContents.astro_astro_type_script_index_0_lang.C3fM4Kra.js"></script></div><div class="right-sidebar-panel sl-hidden lg:sl-block astro-mz3pd4lj"><div class="sl-container astro-mz3pd4lj"><starlight-toc data-min-h="2" data-max-h="3"><nav aria-labelledby="starlight__on-this-page"><h2 id="starlight__on-this-page">本页内容</h2><ul class="astro-hdifz754" style="--depth: 0;"><li style="--depth: 0;" class="astro-hdifz754"><a href="#_top" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">概述</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#内容渲染与代码高亮" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">内容渲染与代码高亮</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#博客与内容站组件" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">博客与内容站组件</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#图片与静态资源" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">图片与静态资源</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#监控与统计" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">监控与统计</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#社交分享" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">社交分享</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#node-服务端" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">Node 服务端</span></a><ul class="astro-hdifz754" style="--depth: 1;"><li style="--depth: 1;" class="astro-hdifz754"><a href="#koa" style="--depth: 1;" class="astro-hdifz754"><span style="--depth: 1;" class="astro-hdifz754">Koa</span></a></li><li style="--depth: 1;" class="astro-hdifz754"><a href="#其他服务端框架与数据层" style="--depth: 1;" class="astro-hdifz754"><span style="--depth: 1;" class="astro-hdifz754">其他服务端框架与数据层</span></a></li></ul></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#monorepo-与-multirepo" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">Monorepo 与 Multirepo</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#小结" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">小结</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#参考" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">参考</span></a></li></ul></nav></starlight-toc><script type="module" src="/notes/_astro/TableOfContents.astro_astro_type_script_index_0_lang.BpJaGz7G.js"></script></div></div></div></div></aside><div class="main-pane astro-t4g3r4ti"><main data-pagefind-body class="astro-pht42zuh" lang="zh-CN" dir="ltr"><div class="content-panel astro-knxu7jx2"><div class="sl-container astro-knxu7jx2"><h1 id="_top" class="astro-tpvyatgl">常用工具库速查</h1></div></div><div class="content-panel astro-knxu7jx2"><div class="sl-container astro-knxu7jx2"><div class="sl-markdown-content"><p>这篇是一份按用途分类的工具库速查表，覆盖搭建博客或内容站、展示代码、处理图片、监控与统计、Node 服务端开发等常见需求，每项说明它解决什么问题、适合什么场景。最后简要对比 Monorepo 与 Multirepo 两种代码仓库组织方式。</p>
+<aside aria-label="警告" class="starlight-aside starlight-aside--caution"><p class="starlight-aside__title" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="starlight-aside__icon"><path d="M12 16a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm10.67 1.47-8.05-14a3 3 0 0 0-5.24 0l-8 14A3 3 0 0 0 3.94 22h16.12a3 3 0 0 0 2.61-4.53Zm-1.73 2a1 1 0 0 1-.88.51H3.94a1 1 0 0 1-.88-.51 1 1 0 0 1 0-1l8-14a1 1 0 0 1 1.78 0l8.05 14a1 1 0 0 1 .05 1.02v-.02ZM12 8a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0V9a1 1 0 0 0-1-1Z"/></svg>警告</p><div class="starlight-aside__content"><p>第三方库的维护状态会变化。表中标注「使用前确认维护状态」的条目，引入前先看仓库最近的提交与发布时间、未关闭的 issue 情况，以及是否支持你使用的框架版本。</p></div></aside>
+<div class="sl-heading-wrapper level-h2"><h2 id="内容渲染与代码高亮">内容渲染与代码高亮</h2><a class="sl-anchor-link" href="#内容渲染与代码高亮"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “内容渲染与代码高亮”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>说明</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>marked</td>
+<td>体积小、速度快的 Markdown 解析器，把 Markdown 转成 HTML</td>
+<td>在浏览器或 Node 中简单地渲染 Markdown</td>
+</tr>
+<tr>
+<td>markdown-it</td>
+<td>可扩展的 Markdown 解析器，插件生态丰富</td>
+<td>需要自定义语法（容器、脚注、锚点等）的文档站</td>
+</tr>
+<tr>
+<td>remark / rehype（unified 生态）</td>
+<td>把 Markdown、HTML 解析成语法树再处理，插件化</td>
+<td>需要在语法树层面做转换的场景，许多静态站点框架底层使用它</td>
+</tr>
+<tr>
+<td>highlight.js</td>
+<td>运行时代码高亮，支持语言多，可自动检测语言</td>
+<td>客户端渲染的页面，需要即时高亮</td>
+</tr>
+<tr>
+<td>Prism</td>
+<td>轻量的代码高亮库，按需加载语言和插件</td>
+<td>对体积敏感的页面</td>
+</tr>
+<tr>
+<td>Shiki</td>
+<td>使用与 VS Code 相同的语法定义和主题，通常在构建时生成高亮好的 HTML</td>
+<td>静态站点、文档站，追求和编辑器一致的高亮效果</td>
+</tr>
+</tbody>
+</table>
+<p>渲染用户输入的 Markdown 时要注意 XSS：marked 等解析器默认不会清理 HTML，输出到页面前应使用 DOMPurify 之类的库进行过滤。</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="博客与内容站组件">博客与内容站组件</h2><a class="sl-anchor-link" href="#博客与内容站组件"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “博客与内容站组件”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>说明</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>giscus</td>
+<td>基于 GitHub Discussions 的评论系统</td>
+<td>技术博客、文档站，读者用 GitHub 账号评论</td>
+</tr>
+<tr>
+<td>Gitalk</td>
+<td>基于 GitHub Issues 的评论系统，使用前确认维护状态</td>
+<td>旧博客中常见；需要 OAuth 应用凭证，新项目更推荐 giscus</td>
+</tr>
+<tr>
+<td>tocbot</td>
+<td>根据文章标题自动生成目录，并在滚动时高亮当前章节</td>
+<td>自建博客的文章侧边目录</td>
+</tr>
+<tr>
+<td>PhotoSwipe</td>
+<td>图片点击放大、手势缩放、左右切换的画廊组件</td>
+<td>图片较多的文章或相册页</td>
+</tr>
+<tr>
+<td>medium-zoom</td>
+<td>轻量的图片点击放大效果</td>
+<td>只需要单张放大，不需要画廊功能</td>
+</tr>
+</tbody>
+</table>
+<p>如果使用 Astro Starlight、VitePress、Docusaurus 这类文档框架，目录、代码高亮、搜索通常已经内置，不需要再单独引入上面的库。</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="图片与静态资源">图片与静态资源</h2><a class="sl-anchor-link" href="#图片与静态资源"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “图片与静态资源”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>说明</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>云厂商对象存储 + CDN</td>
+<td>各大云厂商都提供对象存储和 CDN，通常还支持按 URL 参数裁剪、缩放、转格式</td>
+<td>正式项目的图片、视频等资源</td>
+</tr>
+<tr>
+<td>jsDelivr</td>
+<td>面向开源项目的公共 CDN，可以加速 npm 包和 GitHub 仓库中的文件</td>
+<td>引用开源库的静态文件</td>
+</tr>
+<tr>
+<td>sharp</td>
+<td>Node 中的高性能图片处理库</td>
+<td>构建时或服务端生成缩略图、转换 WebP / AVIF</td>
+</tr>
+</tbody>
+</table>
+<p>有些资料推荐用“GitHub 仓库 + jsDelivr”搭建免费图床。jsDelivr 的使用政策针对的是开源项目文件分发，把它当成通用图床可能违反其使用条款，且存在被限制访问的风险。个人博客的图片更稳妥的做法是放在站点仓库里随站点一起部署，或使用正式的对象存储服务。</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="监控与统计">监控与统计</h2><a class="sl-anchor-link" href="#监控与统计"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “监控与统计”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>说明</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sentry</td>
+<td>前后端错误监控与性能追踪，开源且可自建，提供 Source Map 还原</td>
+<td>线上错误收集、发布质量追踪</td>
+</tr>
+<tr>
+<td>web-vitals</td>
+<td>采集 LCP、INP、CLS 等核心性能指标的官方库</td>
+<td>自建性能监控，把指标上报到自己的服务</td>
+</tr>
+<tr>
+<td>Fundebug 等国内错误监控平台</td>
+<td>商业化错误监控服务，使用前确认维护状态</td>
+<td>已在使用的旧项目</td>
+</tr>
+<tr>
+<td>百度统计、Google Analytics</td>
+<td>网站访问统计</td>
+<td>需要流量来源、访问量等运营数据</td>
+</tr>
+<tr>
+<td>Plausible、Umami</td>
+<td>注重隐私、轻量的访问统计，可自建</td>
+<td>个人站点、对隐私合规要求较高的站点</td>
+</tr>
+</tbody>
+</table>
+<p>单页应用（SPA）切换路由时页面并不刷新，统计脚本默认只记录首次加载的页面。需要在路由变化后手动上报一次页面浏览：有的统计服务提供专门的 SPA 追踪选项（如百度统计的 URL 变化追踪设置），有的需要在路由钩子里调用上报接口。具体做法以对应服务的文档为准。</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="社交分享">社交分享</h2><a class="sl-anchor-link" href="#社交分享"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “社交分享”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>说明</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Web Share API</td>
+<td>浏览器原生的分享接口 <code dir="auto">navigator.share()</code>，调起系统分享面板</td>
+<td>移动端分享，无需第三方库</td>
+</tr>
+<tr>
+<td>vue-social-share 等分享组件</td>
+<td>生成各社交平台分享按钮的组件，使用前确认维护状态</td>
+<td>旧的 Vue 2 项目</td>
+</tr>
+</tbody>
+</table>
+<p>Web Share API 在移动端浏览器支持较好，桌面端支持不完整。调用前先判断 <code dir="auto">navigator.share</code> 是否存在，不支持时降级为复制链接。</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="node-服务端">Node 服务端</h2><a class="sl-anchor-link" href="#node-服务端"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Node 服务端”</span></a></div>
+<div class="sl-heading-wrapper level-h3"><h3 id="koa">Koa</h3><a class="sl-anchor-link" href="#koa"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Koa”</span></a></div>
+<p>Koa 是 Express 原班人马设计的 Web 框架，核心只提供基于 <code dir="auto">async/await</code> 的中间件机制（洋葱模型），路由、请求体解析等功能都由独立的中间件提供。</p>
+<table>
+<thead>
+<tr>
+<th>包</th>
+<th>说明</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>koa</td>
+<td>Koa 核心</td>
+<td></td>
+</tr>
+<tr>
+<td>@koa/router</td>
+<td>路由中间件</td>
+<td>旧包名 <code dir="auto">koa-router</code> 已转移到 <code dir="auto">@koa/router</code>，新项目使用后者</td>
+</tr>
+<tr>
+<td>@koa/bodyparser / koa-bodyparser</td>
+<td>解析 JSON、表单等请求体，结果放在 <code dir="auto">ctx.request.body</code></td>
+<td>不处理文件上传；文件上传需要 multer 一类的中间件</td>
+</tr>
+<tr>
+<td>@koa/cors</td>
+<td>处理跨域请求</td>
+<td></td>
+</tr>
+<tr>
+<td>koa-static</td>
+<td>静态文件服务</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div class="expressive-code"><link rel="stylesheet" href="/notes/_astro/ec.16pll.css"><script type="module" src="/notes/_astro/ec.0vx5m.js"></script><figure class="frame not-content"><figcaption class="header"></figcaption><pre data-language="js"><code><div class="ec-line"><div class="code"><span style="--0:#FF7B72;--1:#CA212D">import</span><span style="--0:#E6EDF3;--1:#1F2328"> Koa </span><span style="--0:#FF7B72;--1:#CA212D">from</span><span style="--0:#E6EDF3;--1:#1F2328"> </span><span style="--0:#A5D6FF;--1:#0A3069">'koa'</span><span style="--0:#E6EDF3;--1:#1F2328">;</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FF7B72;--1:#CA212D">import</span><span style="--0:#E6EDF3;--1:#1F2328"> Router </span><span style="--0:#FF7B72;--1:#CA212D">from</span><span style="--0:#E6EDF3;--1:#1F2328"> </span><span style="--0:#A5D6FF;--1:#0A3069">'@koa/router'</span><span style="--0:#E6EDF3;--1:#1F2328">;</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FF7B72;--1:#CA212D">import</span><span style="--0:#E6EDF3;--1:#1F2328"> bodyParser </span><span style="--0:#FF7B72;--1:#CA212D">from</span><span style="--0:#E6EDF3;--1:#1F2328"> </span><span style="--0:#A5D6FF;--1:#0A3069">'koa-bodyparser'</span><span style="--0:#E6EDF3;--1:#1F2328">;</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#FF7B72;--1:#CA212D">const</span><span style="--0:#E6EDF3;--1:#1F2328"> </span><span style="--0:#79C0FF;--1:#0550AE">app</span><span style="--0:#E6EDF3;--1:#1F2328"> </span><span style="--0:#FF7B72;--1:#CA212D">=</span><span style="--0:#E6EDF3;--1:#1F2328"> </span><span style="--0:#FF7B72;--1:#CA212D">new</span><span style="--0:#E6EDF3;--1:#1F2328"> </span><span style="--0:#D2A8FF;--1:#7A4BD1">Koa</span><span style="--0:#E6EDF3;--1:#1F2328">();</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FF7B72;--1:#CA212D">const</span><span style="--0:#E6EDF3;--1:#1F2328"> </span><span style="--0:#79C0FF;--1:#0550AE">router</span><span style="--0:#E6EDF3;--1:#1F2328"> </span><span style="--0:#FF7B72;--1:#CA212D">=</span><span style="--0:#E6EDF3;--1:#1F2328"> </span><span style="--0:#FF7B72;--1:#CA212D">new</span><span style="--0:#E6EDF3;--1:#1F2328"> </span><span style="--0:#D2A8FF;--1:#7A4BD1">Router</span><span style="--0:#E6EDF3;--1:#1F2328">();</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#E6EDF3;--1:#1F2328">router.</span><span style="--0:#D2A8FF;--1:#7A4BD1">post</span><span style="--0:#E6EDF3;--1:#1F2328">(</span><span style="--0:#A5D6FF;--1:#0A3069">'/api/users'</span><span style="--0:#E6EDF3;--1:#1F2328">, (</span><span style="--0:#FFA657;--1:#953800">ctx</span><span style="--0:#E6EDF3;--1:#1F2328">) </span><span style="--0:#FF7B72;--1:#CA212D">=&gt;</span><span style="--0:#E6EDF3;--1:#1F2328"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#FF7B72;--1:#CA212D">const</span><span style="--0:#E6EDF3;--1:#1F2328"> { </span><span style="--0:#79C0FF;--1:#0550AE">name</span><span style="--0:#E6EDF3;--1:#1F2328"> } </span><span style="--0:#FF7B72;--1:#CA212D">=</span><span style="--0:#E6EDF3;--1:#1F2328"> ctx.request.body;</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E6EDF3;--1:#1F2328">  </span></span><span style="--0:#E6EDF3;--1:#1F2328">ctx.status </span><span style="--0:#FF7B72;--1:#CA212D">=</span><span style="--0:#E6EDF3;--1:#1F2328"> </span><span style="--0:#79C0FF;--1:#0550AE">201</span><span style="--0:#E6EDF3;--1:#1F2328">;</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E6EDF3;--1:#1F2328">  </span></span><span style="--0:#E6EDF3;--1:#1F2328">ctx.body </span><span style="--0:#FF7B72;--1:#CA212D">=</span><span style="--0:#E6EDF3;--1:#1F2328"> { name };</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E6EDF3;--1:#1F2328">});</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#E6EDF3;--1:#1F2328">app.</span><span style="--0:#D2A8FF;--1:#7A4BD1">use</span><span style="--0:#E6EDF3;--1:#1F2328">(</span><span style="--0:#D2A8FF;--1:#7A4BD1">bodyParser</span><span style="--0:#E6EDF3;--1:#1F2328">());</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E6EDF3;--1:#1F2328">app.</span><span style="--0:#D2A8FF;--1:#7A4BD1">use</span><span style="--0:#E6EDF3;--1:#1F2328">(router.</span><span style="--0:#D2A8FF;--1:#7A4BD1">routes</span><span style="--0:#E6EDF3;--1:#1F2328">()).</span><span style="--0:#D2A8FF;--1:#7A4BD1">use</span><span style="--0:#E6EDF3;--1:#1F2328">(router.</span><span style="--0:#D2A8FF;--1:#7A4BD1">allowedMethods</span><span style="--0:#E6EDF3;--1:#1F2328">());</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E6EDF3;--1:#1F2328">app.</span><span style="--0:#D2A8FF;--1:#7A4BD1">listen</span><span style="--0:#E6EDF3;--1:#1F2328">(</span><span style="--0:#79C0FF;--1:#0550AE">3000</span><span style="--0:#E6EDF3;--1:#1F2328">);</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="复制到剪贴板" data-copied="复制成功！" data-code="import Koa from &#x27;koa&#x27;;import Router from &#x27;@koa/router&#x27;;import bodyParser from &#x27;koa-bodyparser&#x27;;const app = new Koa();const router = new Router();router.post(&#x27;/api/users&#x27;, (ctx) => {  const { name } = ctx.request.body;  ctx.status = 201;  ctx.body = { name };});app.use(bodyParser());app.use(router.routes()).use(router.allowedMethods());app.listen(3000);"><div></div></button></div></figure></div>
+<div class="sl-heading-wrapper level-h3"><h3 id="其他服务端框架与数据层">其他服务端框架与数据层</h3><a class="sl-anchor-link" href="#其他服务端框架与数据层"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “其他服务端框架与数据层”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>说明</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Express</td>
+<td>最广泛使用的 Node Web 框架，生态最大</td>
+<td>通用 Web 服务，资料多</td>
+</tr>
+<tr>
+<td>Fastify</td>
+<td>注重性能和基于 JSON Schema 的校验</td>
+<td>对吞吐量有要求的 API 服务</td>
+</tr>
+<tr>
+<td>NestJS</td>
+<td>基于 TypeScript 和依赖注入的分层框架</td>
+<td>结构复杂、团队较大的后端项目</td>
+</tr>
+<tr>
+<td>Hono</td>
+<td>基于 Web 标准 <code dir="auto">Request</code> / <code dir="auto">Response</code> 的轻量框架，可运行在 Node、Deno、Bun 和边缘平台</td>
+<td>边缘函数、多运行时部署</td>
+</tr>
+<tr>
+<td>Mongoose</td>
+<td>MongoDB 的 ODM，提供 Schema 定义、校验和查询封装</td>
+<td>使用 MongoDB 的 Node 项目</td>
+</tr>
+<tr>
+<td>Prisma、Drizzle</td>
+<td>TypeScript 友好的 ORM / 查询构建器</td>
+<td>使用 MySQL、PostgreSQL 等关系型数据库的项目</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h2"><h2 id="monorepo-与-multirepo">Monorepo 与 Multirepo</h2><a class="sl-anchor-link" href="#monorepo-与-multirepo"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Monorepo 与 Multirepo”</span></a></div>
+<p>Monorepo（monolithic repository）指把多个项目或包放在同一个仓库里；Multirepo（multiple repository，也叫 polyrepo）指每个项目或包一个独立仓库。</p>
+<table>
+<thead>
+<tr>
+<th>方面</th>
+<th>Monorepo</th>
+<th>Multirepo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>代码共享</td>
+<td>包之间直接本地引用，改动即时生效</td>
+<td>需要发布新版本，再在使用方升级</td>
+</tr>
+<tr>
+<td>跨项目修改</td>
+<td>一次提交即可同时修改多个包，原子性好</td>
+<td>需要在多个仓库分别提交、按顺序发布</td>
+</tr>
+<tr>
+<td>依赖版本</td>
+<td>容易统一依赖版本，减少重复</td>
+<td>各仓库各自管理，容易出现版本分裂</td>
+</tr>
+<tr>
+<td>工具与规范</td>
+<td>一套 lint、构建、CI 配置覆盖全部包</td>
+<td>每个仓库各自维护配置，容易不一致</td>
+</tr>
+<tr>
+<td>权限控制</td>
+<td>仓库级权限粒度粗，按目录控制需额外机制</td>
+<td>按仓库授权，边界清晰</td>
+</tr>
+<tr>
+<td>构建与 CI</td>
+<td>仓库变大后需要增量构建、任务缓存，否则越来越慢</td>
+<td>每个仓库体量小，CI 简单</td>
+</tr>
+<tr>
+<td>独立性</td>
+<td>包之间耦合更容易发生，需要约束依赖方向</td>
+<td>团队自主性高，技术栈可以不同</td>
+</tr>
+</tbody>
+</table>
+<p>常用工具：</p>
+<ul>
+<li><strong>依赖管理</strong>：npm / yarn / pnpm 的 workspaces，详见 <a href="/notes/fronted/language/node/node_package.html">npm 依赖管理</a>。</li>
+<li><strong>任务编排与缓存</strong>：Turborepo、Nx，按依赖关系排序执行任务，只重新构建受影响的包，并缓存构建结果。</li>
+<li><strong>版本与发布</strong>：Changesets，记录每次变更影响哪些包及版本级别，统一生成变更日志和发布。</li>
+<li>Lerna 是较早的 monorepo 管理工具，一度停止维护后由 Nx 团队接手，新项目通常直接使用 workspaces 搭配上面的工具。</li>
+</ul>
+<p>选择思路：</p>
+<ul>
+<li>多个包之间改动频繁、互相依赖紧密（如组件库、工具库、文档站、示例应用），适合 Monorepo。</li>
+<li>项目之间相互独立、由不同团队维护、发布节奏不同，或者需要严格的访问权限隔离，适合 Multirepo。</li>
+<li>选择 Monorepo 时，从一开始就使用 workspaces 和任务缓存工具，并约定包之间的依赖方向，避免仓库变成难以拆分的整体。</li>
+</ul>
+<div class="sl-heading-wrapper level-h2"><h2 id="小结">小结</h2><a class="sl-anchor-link" href="#小结"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “小结”</span></a></div>
+<ul>
+<li>内容渲染：marked、markdown-it 解析 Markdown，Shiki 适合构建时高亮，highlight.js、Prism 适合运行时高亮；渲染用户输入要做 XSS 过滤。</li>
+<li>博客组件：评论推荐 giscus，目录用 tocbot，图片放大用 PhotoSwipe 或 medium-zoom；使用文档框架时这些功能通常已内置。</li>
+<li>图片资源用对象存储加 CDN，不要把公共 CDN 当作通用图床。</li>
+<li>监控统计：错误监控用 Sentry，性能指标用 web-vitals；SPA 需要在路由变化时手动上报页面浏览。</li>
+<li>Koa 的路由包已迁移到 <code dir="auto">@koa/router</code>；表中标注的旧库使用前先确认维护状态。</li>
+<li>Monorepo 便于共享代码和原子修改，但需要任务缓存和依赖约束；Multirepo 边界清晰、团队独立，但跨仓库协作成本高。</li>
+</ul>
+<div class="sl-heading-wrapper level-h2"><h2 id="参考">参考</h2><a class="sl-anchor-link" href="#参考"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “参考”</span></a></div>
+<ul>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/share">MDN：Navigator.share()</a></li>
+<li><a href="https://docs.npmjs.com/cli/using-npm/workspaces">npm 文档：workspaces</a></li>
+<li><a href="https://pnpm.io/workspaces">pnpm：Workspace</a></li>
+</ul>
+</div><footer class="sl-flex astro-qcph7vbk"><div class="meta sl-flex astro-qcph7vbk"></div><nav class="pager print:hidden astro-ohknivtf" aria-label="文章翻页"><a class="prev astro-ohknivtf" href="/notes/fronted/soft/vsCodePlugin.html" rel="prev"><span class="eyebrow astro-ohknivtf"><span class="arrow astro-ohknivtf" aria-hidden="true">←</span>上一篇</span><span class="title astro-ohknivtf">VS Code 插件推荐</span></a><a class="next astro-ohknivtf" href="/notes/others/markdown.html" rel="next"><span class="eyebrow astro-ohknivtf">下一篇<span class="arrow astro-ohknivtf" aria-hidden="true">→</span></span><span class="title astro-ohknivtf">Markdown 语法速查</span></a></nav></footer></div></div></main></div></div></div></div></body></html>

@@ -1,0 +1,922 @@
+<!DOCTYPE html><html lang="zh-CN" dir="ltr" data-theme="dark" data-has-toc data-has-sidebar class="astro-pht42zuh"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>前端常用英文术语 | 有爱心安 - 花期</title><link rel="canonical" href="https://joy-jinyu.github.io/notes/language/english/professional.html"/><link rel="sitemap" href="/notes/sitemap-index.xml"/><style>@view-transition{navigation:auto}@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style><script>try{for(const p of ['sidebar','toc'])if(localStorage.getItem('joy-'+p)==='collapsed')document.documentElement.dataset[p]='collapsed'}catch{}</script><link rel="apple-touch-icon" href="/notes/apple-touch-icon.png"/><script src="/notes/hero-bg.js" defer></script><script>document.addEventListener('DOMContentLoaded',()=>{const bg=document.createElement('hero-bg');bg.setAttribute('variant','waves');bg.setAttribute('intensity','0.55');document.body.prepend(bg)})</script><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="true"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap"/><link rel="shortcut icon" href="/notes/favicon.png" type="image/png"/><meta name="generator" content="Astro v7.3.8"/><meta name="generator" content="Starlight v0.42.6"/><meta property="og:title" content="前端常用英文术语"/><meta property="og:type" content="article"/><meta property="og:url" content="https://joy-jinyu.github.io/notes/language/english/professional.html"/><meta property="og:locale" content="zh-CN"/><meta property="og:description" content="按基础、JS 与语言、框架、工程化、网络与浏览器、协作与流程分组整理前端开发中常见的英文术语，附中文译名和简短解释，便于阅读英文文档和报错信息。"/><meta property="og:site_name" content="有爱心安 - 花期"/><meta name="twitter:card" content="summary_large_image"/><meta name="description" content="按基础、JS 与语言、框架、工程化、网络与浏览器、协作与流程分组整理前端开发中常见的英文术语，附中文译名和简短解释，便于阅读英文文档和报错信息。"/><script>
+	window.StarlightThemeProvider = (() => {
+		const storedTheme =
+			typeof localStorage !== 'undefined' && localStorage.getItem('starlight-theme');
+		const theme =
+			storedTheme ||
+			(window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+		document.documentElement.dataset.theme = theme === 'light' ? 'light' : 'dark';
+		return {
+			updatePickers(theme = storedTheme || 'auto') {
+				document.querySelectorAll('starlight-theme-select').forEach((picker) => {
+					const select = picker.querySelector('select');
+					if (select) select.value = theme;
+					/** @type {HTMLTemplateElement | null} */
+					const tmpl = document.querySelector(`#theme-icons`);
+					const newIcon = tmpl && tmpl.content.querySelector('.' + theme);
+					if (newIcon) {
+						const oldIcon = picker.querySelector('svg.label-icon');
+						if (oldIcon) {
+							oldIcon.replaceChildren(...newIcon.cloneNode(true).childNodes);
+						}
+					}
+				});
+			},
+		};
+	})();
+</script><template id="theme-icons"><svg aria-hidden="true" class="light astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><svg aria-hidden="true" class="dark astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><svg aria-hidden="true" class="auto astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg></template><link rel="stylesheet" href="/notes/_astro/print.ehPL0gv-.css" media="print"><link rel="stylesheet" href="/notes/_astro/common.C6NtIbeP.css"><script type="module" src="/notes/_astro/page.cNngjUgL.js"></script></head><body class="astro-pht42zuh"><a class="sl-skip-link astro-6l5ig4lw" href="#_top">跳转到内容</a><div class="page sl-flex astro-j36ezbnx"><header class="header astro-j36ezbnx"><div class="header astro-2r7rdtqt"><div class="title-wrapper sl-flex astro-2r7rdtqt"><a href="/notes/index.html" class="site-title sl-flex astro-f5gnq237"><span class="astro-f5gnq237" translate="no">有爱心安 - 花期</span></a></div><div class="sl-flex print:hidden astro-2r7rdtqt"><site-search class="astro-2r7rdtqt astro-q3uisoit" data-translations="{&quot;placeholder&quot;:&quot;搜索&quot;}"><button data-open-modal disabled aria-label="搜索" aria-keyshortcuts="Control+K" class="astro-q3uisoit"><svg aria-hidden="true" class="astro-q3uisoit astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.71 20.29 18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z"/></svg><span class="sl-hidden md:sl-block astro-q3uisoit" aria-hidden="true">搜索</span><kbd class="sl-hidden md:sl-flex astro-q3uisoit" style="display: none;"><kbd class="astro-q3uisoit">Ctrl</kbd><kbd class="astro-q3uisoit">K</kbd></kbd></button><dialog style="padding:0" aria-label="搜索" class="astro-q3uisoit"><div class="dialog-frame sl-flex astro-q3uisoit"><button data-close-modal class="sl-flex md:sl-hidden astro-q3uisoit">取消</button><div class="search-container astro-q3uisoit"><div id="starlight__search" class="astro-q3uisoit"></div></div></div></dialog></site-search><script>
+	(() => {
+		const openBtn = document.querySelector('button[data-open-modal]');
+		const shortcut = openBtn?.querySelector('kbd');
+		if (!openBtn || !(shortcut instanceof HTMLElement)) return;
+		const platformKey = shortcut.querySelector('kbd');
+		if (platformKey && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
+			platformKey.textContent = '⌘';
+			openBtn.setAttribute('aria-keyshortcuts', 'Meta+K');
+		}
+		shortcut.style.display = '';
+	})();
+</script><script type="module" src="/notes/_astro/Search.astro_astro_type_script_index_0_lang.CZJwZ-iM.js"></script></div><div class="sl-hidden md:sl-flex print:hidden right-group astro-2r7rdtqt"><div class="sl-flex social-icons astro-2r7rdtqt"></div><joy-theme-switch class="astro-hds7qqbe"><div class="seg astro-hds7qqbe" role="radiogroup" aria-label="主题"><span class="thumb astro-hds7qqbe" aria-hidden="true"></span><button type="button" role="radio" data-value="light" aria-label="浅色" title="浅色" aria-checked="false" tabindex="-1" class="astro-hds7qqbe"><svg aria-hidden="true" class="astro-hds7qqbe astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg></button><button type="button" role="radio" data-value="auto" aria-label="跟随系统" title="跟随系统" aria-checked="false" tabindex="-1" class="astro-hds7qqbe"><svg aria-hidden="true" class="astro-hds7qqbe astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="M19 3H5a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h6v2H7a1 1 0 0 0 0 2h10a1 1 0 0 0 0-2h-4v-2h6a3 3 0 0 0 3-3V6a3 3 0 0 0-3-3m1 11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1Z"/></svg></button><button type="button" role="radio" data-value="dark" aria-label="深色" title="深色" aria-checked="false" tabindex="-1" class="astro-hds7qqbe"><svg aria-hidden="true" class="astro-hds7qqbe astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg></button></div></joy-theme-switch><script>
+	document.currentScript.previousElementSibling.dataset.value =
+		localStorage.getItem('starlight-theme') || 'auto';
+</script><script type="module">var e=`starlight-theme`,t=[`light`,`auto`,`dark`],n=e=>e===`dark`||e===`light`?e:`auto`,r=()=>n(localStorage.getItem(e)),i=()=>matchMedia(`(prefers-color-scheme: light)`).matches?`light`:`dark`;function a(t){document.documentElement.dataset.theme=t===`auto`?i():t,localStorage.setItem(e,t===`auto`?``:t),document.querySelectorAll(`joy-theme-switch`).forEach(e=>e.sync(t))}matchMedia(`(prefers-color-scheme: light)`).addEventListener(`change`,()=>{r()===`auto`&&a(`auto`)});var o=class extends HTMLElement{connectedCallback(){this.sync(r()),this.querySelectorAll(`button`).forEach(e=>{e.addEventListener(`click`,()=>a(n(e.dataset.value)))}),this.addEventListener(`keydown`,e=>{if(![`ArrowLeft`,`ArrowRight`,`ArrowUp`,`ArrowDown`].includes(e.key))return;e.preventDefault();let n=e.key===`ArrowLeft`||e.key===`ArrowUp`?-1:1,i=t[(t.indexOf(r())+n+t.length)%t.length];a(i),this.querySelector(`button[data-value="${i}"]`)?.focus()})}sync(e){this.dataset.value=e,this.querySelectorAll(`button`).forEach(t=>{let n=t.dataset.value===e;t.setAttribute(`aria-checked`,String(n)),t.tabIndex=n?0:-1})}};customElements.define(`joy-theme-switch`,o);</script><script type="module">var e=class extends HTMLElement{constructor(){super();let e=this.querySelector(`select`);e&&(e.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&(window.location.pathname=e.currentTarget.value)}),window.addEventListener(`pageshow`,t=>{if(!t.persisted)return;let n=e.querySelector(`option[selected]`)?.index;n!==e.selectedIndex&&(e.selectedIndex=n??0)}))}};customElements.define(`starlight-lang-select`,e);</script></div></div></header><nav class="sidebar print:hidden astro-j36ezbnx" aria-label="主要"><button popovertarget="starlight__sidebar" class="sl-menu-button sl-flex md:sl-hidden print:hidden astro-iwcaxo5h"><svg aria-hidden="true" class="open-menu astro-iwcaxo5h astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M3 8h18a1 1 0 1 0 0-2H3a1 1 0 0 0 0 2Zm18 8H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Zm0-5H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Z"/></svg><svg aria-hidden="true" class="close-menu astro-iwcaxo5h astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="m13.41 12 6.3-6.29a1.004 1.004 0 1 0-1.42-1.42L12 10.59l-6.29-6.3a1.004 1.004 0 0 0-1.42 1.42l6.3 6.29-6.3 6.29a1 1 0 0 0 0 1.42.998.998 0 0 0 1.42 0l6.29-6.3 6.29 6.3a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.42L13.41 12Z"/></svg><span class="sr-only astro-iwcaxo5h">菜单</span></button><script type="module">var e=class extends HTMLElement{constructor(){super();let e=matchMedia(`(min-width: 50em)`),t=()=>{this.popover=e.matches?null:`auto`};t(),e.addEventListener(`change`,()=>t()),this.addEventListener(`toggle`,({newState:e})=>this.trapFocus(e===`open`))}trapFocus(e){document.querySelectorAll(`.main-frame, .sl-skip-link`).forEach(t=>{t.toggleAttribute(`inert`,e)})}};customElements.define(`sl-sidebar-pane`,e);</script><script type="module">function e(){document.querySelectorAll(`.panel-toggle`).forEach(e=>{let t=document.documentElement.dataset[e.dataset.panel]===`collapsed`,n=`${t?`展开`:`收起`}${e.dataset.name}`;e.setAttribute(`aria-expanded`,String(!t)),e.setAttribute(`aria-label`,n),e.title=n})}document.querySelectorAll(`.panel-toggle`).forEach(t=>{t.addEventListener(`click`,()=>{let n=t.dataset.panel,r=document.documentElement,i=r.dataset[n]!==`collapsed`;i?r.dataset[n]=`collapsed`:delete r.dataset[n],localStorage.setItem(`joy-${n}`,i?`collapsed`:``),e()})}),e();</script><sl-sidebar-pane popover id="starlight__sidebar" class="sidebar-pane astro-j36ezbnx"><div class="sidebar-content sl-flex astro-j36ezbnx"><div class="sidebar-head astro-wv7whodv"><a class="back-link astro-wv7whodv" href="https://joy-jinyu.github.io/">← 简历</a><button type="button" class="panel-toggle panel-toggle--sidebar astro-w3ddhq4m" data-panel="sidebar" data-name="菜单" aria-controls="starlight__sidebar" aria-expanded="true" aria-label="收起菜单" title="收起菜单"><span class="panel-icon astro-w3ddhq4m" aria-hidden="true"></span></button></div><sl-sidebar-state-persist data-hash="1cvbqug" class="astro-shbxt3t6"><script aria-hidden="true">
+		(() => {
+			try {
+				if (!matchMedia('(min-width: 50em)').matches) return;
+				/** @type {HTMLElement | null} */
+				const target = document.querySelector('sl-sidebar-state-persist');
+				const state = JSON.parse(sessionStorage.getItem('sl-sidebar-state') || '0');
+				if (!target || !state || target.dataset.hash !== state.hash) return;
+				window._starlightScrollRestore = state.scroll;
+				customElements.define(
+					'sl-sidebar-restore',
+					class SidebarRestore extends HTMLElement {
+						connectedCallback() {
+							try {
+								const idx = parseInt(this.dataset.index || '');
+								const details = this.closest('details');
+								if (details && typeof state.open[idx] === 'boolean') details.open = state.open[idx];
+							} catch {}
+						}
+					}
+				);
+			} catch {}
+		})();
+	</script><ul class="top-level astro-6khlz4tn"><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">JavaScript</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="0"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/language/javascript/eventLoop.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">执行机制与事件循环</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/javascript/theJavaScriptYouDontKonw/scopeAndClosure_01.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">作用域与闭包</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/javascript/theJavaScriptYouDontKonw/thisAndPrototype_02.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">this 与原型链</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/javascript/es6.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">ES2015+ 核心特性</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/javascript/basic.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">错误类型与异常处理</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/javascript/ast.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">AST 与代码转换</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">TypeScript</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="1"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/language/typescript/basic.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">类型系统</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">HTML 与 CSS</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="2"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/language/html/h5_standard.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">HTML5 新特性</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/css/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">CSS 核心概念</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/css/media.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">媒体查询与响应式</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">React</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="3"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/language/react/createProject.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">项目搭建</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/react/notes.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">核心概念与 Hooks</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/react/algorithm.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">协调与 Fiber</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/react/redux.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Redux 状态管理</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">Vue</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="4"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/language/vue/createProject.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Vue 3 项目搭建</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/vue/vite/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Vite 原理与使用</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">Node.js</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="5"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/language/node/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">架构与运行机制</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/node/problem.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">异步与并发</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/node/node_package.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">npm 依赖管理</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/deno/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Deno 简介</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">工程化</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="6"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/projectBuild/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">构建工具概览</span></a></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">webpack</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="7"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/projectBuild/webpack/background.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">由来</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/projectBuild/webpack/concept.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">核心概念</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/projectBuild/webpack/configuration.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">配置详解</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/projectBuild/webpack/guide.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">实践指南</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/keyword/webpackDependencies.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">常用 Loader 与 Plugin</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/projectBuild/webpack/api.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Loader 与 Plugin 开发</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/projectBuild/webpack/vueProject.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">搭建 Vue 项目</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">PostCSS</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="8"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/projectBuild/postcss/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">简介</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/projectBuild/postcss/translate.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">工作原理</span></a></li></ul></details></li><li class="astro-6khlz4tn"><a href="/notes/fronted/test/karma.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">单元测试</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">性能与架构</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="9"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/optimization/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">性能优化总览</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/optimization/blankScreen/background.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">白屏问题分析</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/optimization/blankScreen/case.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">白屏优化方案</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/optimization/microFronted/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">微前端概念</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/optimization/microFronted/practise.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">微前端方案与实践</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">浏览器</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="10"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/system/browser/basic.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">工作原理</span></a></li><li class="astro-6khlz4tn"><a href="/notes/system/browser/cookies.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Cookie 详解</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/instantMessage/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">实时通信方案</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/compatible/browsers.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">兼容性问题汇总</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">编码实践</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="11"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/codeBasic/developRule.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">前端开发规范</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/codeBasic/codeArtReading.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">《编写可读代码的艺术》</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/codeBasic/problemRecord.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">开发踩坑记录</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">移动端</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="12"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/mobile/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">跨平台开发概览</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/mobile/flutter/environment.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Flutter 环境搭建</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/mobile/flutter/dart/basic.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Dart 基础概念</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/mobile/flutter/dart/grammar.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Dart 语法</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/mobile/flutter/dart/codeRule.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Dart 编码规范</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">工具</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="13"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/others/git.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Git 常用操作</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/soft/vsCodePlugin.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">VS Code 插件推荐</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/keyword/others.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">常用工具库速查</span></a></li><li class="astro-6khlz4tn"><a href="/notes/others/markdown.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Markdown 语法速查</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">系统与数据库</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="14"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/system/linux/basic.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Linux 常用命令</span></a></li><li class="astro-6khlz4tn"><a href="/notes/system/linux/soft.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Linux 软件安装与管理</span></a></li><li class="astro-6khlz4tn"><a href="/notes/system/linux/vim.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Vim 使用指南</span></a></li><li class="astro-6khlz4tn"><a href="/notes/databases/mysql/install.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">MySQL 安装与基础配置</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details open class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">英语</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="15"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/language/english/professional.html" aria-current="page" class="astro-6khlz4tn"><span class="astro-6khlz4tn">前端常用英文术语</span></a></li></ul></details></li></ul><script aria-hidden="true">
+		(() => {
+			const scroller = document.getElementById('starlight__sidebar');
+			if (!window._starlightScrollRestore || !scroller) return;
+			scroller.scrollTop = window._starlightScrollRestore;
+			delete window._starlightScrollRestore;
+		})();
+	</script></sl-sidebar-state-persist><div class="md:sl-hidden"><div class="mobile-preferences sl-flex astro-ku646vwa"><div class="social-icons astro-ku646vwa"></div><joy-theme-switch class="astro-hds7qqbe"><div class="seg astro-hds7qqbe" role="radiogroup" aria-label="主题"><span class="thumb astro-hds7qqbe" aria-hidden="true"></span><button type="button" role="radio" data-value="light" aria-label="浅色" title="浅色" aria-checked="false" tabindex="-1" class="astro-hds7qqbe"><svg aria-hidden="true" class="astro-hds7qqbe astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg></button><button type="button" role="radio" data-value="auto" aria-label="跟随系统" title="跟随系统" aria-checked="false" tabindex="-1" class="astro-hds7qqbe"><svg aria-hidden="true" class="astro-hds7qqbe astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="M19 3H5a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h6v2H7a1 1 0 0 0 0 2h10a1 1 0 0 0 0-2h-4v-2h6a3 3 0 0 0 3-3V6a3 3 0 0 0-3-3m1 11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1Z"/></svg></button><button type="button" role="radio" data-value="dark" aria-label="深色" title="深色" aria-checked="false" tabindex="-1" class="astro-hds7qqbe"><svg aria-hidden="true" class="astro-hds7qqbe astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg></button></div></joy-theme-switch><script>
+	document.currentScript.previousElementSibling.dataset.value =
+		localStorage.getItem('starlight-theme') || 'auto';
+</script></div></div></div></sl-sidebar-pane></nav><div class="main-frame astro-j36ezbnx"><script type="module">var e=document.getElementById(`starlight__sidebar`),t=e?.querySelector(`sl-sidebar-state-persist`),n=`sl-sidebar-state`,r=()=>{let r=[],i=t?.dataset.hash||``;try{let e=sessionStorage.getItem(n),t=JSON.parse(e||`{}`);Array.isArray(t.open)&&t.hash===i&&(r=t.open)}catch{}return{hash:i,open:r,scroll:e?.scrollTop||0}},i=e=>{try{sessionStorage.setItem(n,JSON.stringify(e))}catch{}},a=()=>i(r()),o=(e,t)=>{let n=r();n.open[t]=e,i(n)};t?.addEventListener(`click`,e=>{if(!(e.target instanceof Element))return;let t=e.target.closest(`summary`)?.closest(`details`);if(!t)return;let n=t.querySelector(`sl-sidebar-restore`),r=parseInt(n?.dataset.index||``);isNaN(r)||o(!t.open,r)}),addEventListener(`visibilitychange`,()=>{document.visibilityState===`hidden`&&a()});</script><div class="lg:sl-flex astro-t4g3r4ti"><aside class="right-sidebar-container print:hidden astro-t4g3r4ti"><div class="right-sidebar astro-t4g3r4ti"><div class="toc-shell astro-hasoujoj"><div class="toc-toggle sl-hidden lg:sl-block astro-hasoujoj"><button type="button" class="panel-toggle panel-toggle--toc astro-w3ddhq4m" data-panel="toc" data-name="本页内容" aria-expanded="true" aria-label="收起本页内容" title="收起本页内容"><span class="panel-icon astro-w3ddhq4m" aria-hidden="true"></span></button></div><div class="lg:sl-hidden astro-mz3pd4lj"><mobile-starlight-toc data-min-h="2" data-max-h="3" class="astro-2l64q533"><nav aria-labelledby="starlight__on-this-page--mobile" class="astro-2l64q533"><details id="starlight__mobile-toc" class="astro-2l64q533"><summary id="starlight__on-this-page--mobile" class="sl-flex astro-2l64q533"><span class="toggle sl-flex astro-2l64q533">本页内容<svg aria-hidden="true" class="caret astro-2l64q533 astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></span><span class="display-current astro-2l64q533"></span></summary><div class="dropdown astro-2l64q533"><ul class="isMobile astro-hdifz754" style="--depth: 0;"><li style="--depth: 0;" class="astro-hdifz754"><a href="#_top" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">概述</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#基础与文档常用词" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">基础与文档常用词</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#js-与语言" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">JS 与语言</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#框架" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">框架</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#工程化" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">工程化</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#网络与浏览器" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">网络与浏览器</span></a><ul class="isMobile astro-hdifz754" style="--depth: 1;"><li style="--depth: 1;" class="astro-hdifz754"><a href="#css-中的常见词" style="--depth: 1;" class="astro-hdifz754"><span style="--depth: 1;" class="astro-hdifz754">CSS 中的常见词</span></a></li></ul></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#协作与流程" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">协作与流程</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#小结" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">小结</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#参考" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">参考</span></a></li></ul></div></details></nav></mobile-starlight-toc><script type="module" src="/notes/_astro/MobileTableOfContents.astro_astro_type_script_index_0_lang.C3fM4Kra.js"></script></div><div class="right-sidebar-panel sl-hidden lg:sl-block astro-mz3pd4lj"><div class="sl-container astro-mz3pd4lj"><starlight-toc data-min-h="2" data-max-h="3"><nav aria-labelledby="starlight__on-this-page"><h2 id="starlight__on-this-page">本页内容</h2><ul class="astro-hdifz754" style="--depth: 0;"><li style="--depth: 0;" class="astro-hdifz754"><a href="#_top" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">概述</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#基础与文档常用词" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">基础与文档常用词</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#js-与语言" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">JS 与语言</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#框架" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">框架</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#工程化" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">工程化</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#网络与浏览器" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">网络与浏览器</span></a><ul class="astro-hdifz754" style="--depth: 1;"><li style="--depth: 1;" class="astro-hdifz754"><a href="#css-中的常见词" style="--depth: 1;" class="astro-hdifz754"><span style="--depth: 1;" class="astro-hdifz754">CSS 中的常见词</span></a></li></ul></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#协作与流程" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">协作与流程</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#小结" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">小结</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#参考" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">参考</span></a></li></ul></nav></starlight-toc><script type="module" src="/notes/_astro/TableOfContents.astro_astro_type_script_index_0_lang.BpJaGz7G.js"></script></div></div></div></div></aside><div class="main-pane astro-t4g3r4ti"><main data-pagefind-body class="astro-pht42zuh" lang="zh-CN" dir="ltr"><div class="content-panel astro-knxu7jx2"><div class="sl-container astro-knxu7jx2"><h1 id="_top" class="astro-tpvyatgl">前端常用英文术语</h1></div></div><div class="content-panel astro-knxu7jx2"><div class="sl-container astro-knxu7jx2"><div class="sl-markdown-content"><p>阅读官方文档、报错信息、源码注释和英文技术讨论时，同一个词在技术语境下往往有固定含义，直接按日常词义理解容易出错。这篇按领域分组整理常见术语，每个词给出常用中文译名和一句话解释。部分词有多种译法，取社区最常用的一种。</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="基础与文档常用词">基础与文档常用词</h2><a class="sl-anchor-link" href="#基础与文档常用词"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “基础与文档常用词”</span></a></div>
+<p>文档和报错信息里高频出现的通用词。</p>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>中文</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>built-in</td>
+<td>内置的</td>
+<td>语言或环境自带、无需额外引入，如 built-in objects（内置对象）</td>
+</tr>
+<tr>
+<td>compatible / compatibility</td>
+<td>兼容的 / 兼容性</td>
+<td>能在某环境或与某版本一起正常工作，如 browser compatibility</td>
+</tr>
+<tr>
+<td>deprecated</td>
+<td>已弃用的</td>
+<td>仍可使用但不再推荐，将来可能移除</td>
+</tr>
+<tr>
+<td>ecosystem</td>
+<td>生态系统</td>
+<td>围绕某技术的库、工具、社区的总和</td>
+</tr>
+<tr>
+<td>experimental</td>
+<td>实验性的</td>
+<td>尚未稳定，API 可能变化</td>
+</tr>
+<tr>
+<td>fallback</td>
+<td>回退、降级方案</td>
+<td>首选方案不可用时使用的替代方案</td>
+</tr>
+<tr>
+<td>manually</td>
+<td>手动地</td>
+<td>与 automatically（自动地）相对</td>
+</tr>
+<tr>
+<td>predictable</td>
+<td>可预测的</td>
+<td>结果确定、易于推断，常用于描述状态管理</td>
+</tr>
+<tr>
+<td>optional / required</td>
+<td>可选的 / 必需的</td>
+<td>参数、字段是否必须提供</td>
+</tr>
+<tr>
+<td>default</td>
+<td>默认值</td>
+<td>未显式指定时使用的值</td>
+</tr>
+<tr>
+<td>at a minimum</td>
+<td>至少、最低限度</td>
+<td>文档中表示“最少需要做到……”</td>
+</tr>
+<tr>
+<td>universally</td>
+<td>普遍地、通用地</td>
+<td>如 universally supported（被广泛支持）</td>
+</tr>
+<tr>
+<td>economical</td>
+<td>节省的、经济的</td>
+<td>文档中多指节省资源，如节省内存</td>
+</tr>
+<tr>
+<td>tracking</td>
+<td>跟踪</td>
+<td>如 dependency tracking（依赖跟踪）、tracking issue（跟踪问题进展的 issue）</td>
+</tr>
+<tr>
+<td>troubleshoot / troubleshooting</td>
+<td>排查问题 / 故障排除</td>
+<td>文档中解决常见问题的章节标题</td>
+</tr>
+<tr>
+<td>workaround</td>
+<td>变通方案、绕过方法</td>
+<td>问题未根本修复时的临时解决办法</td>
+</tr>
+<tr>
+<td>caveat</td>
+<td>注意事项、限制</td>
+<td>使用时需要留意的坑</td>
+</tr>
+<tr>
+<td>edge case</td>
+<td>边界情况</td>
+<td>输入处于极端或少见取值时的情况</td>
+</tr>
+<tr>
+<td>boilerplate</td>
+<td>样板代码、模板项目</td>
+<td>重复性的固定代码，或用于起步的项目模板</td>
+</tr>
+<tr>
+<td>out of the box</td>
+<td>开箱即用</td>
+<td>不需要额外配置就能使用</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h2"><h2 id="js-与语言">JS 与语言</h2><a class="sl-anchor-link" href="#js-与语言"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “JS 与语言”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>中文</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>syntax</td>
+<td>语法</td>
+<td>代码的书写规则；<code dir="auto">SyntaxError</code> 即语法错误</td>
+</tr>
+<tr>
+<td>semantics</td>
+<td>语义</td>
+<td>代码的含义和运行时行为</td>
+</tr>
+<tr>
+<td>expression / statement</td>
+<td>表达式 / 语句</td>
+<td>表达式产生值，语句执行动作</td>
+</tr>
+<tr>
+<td>scope</td>
+<td>作用域</td>
+<td>变量可被访问的范围</td>
+</tr>
+<tr>
+<td>closure</td>
+<td>闭包</td>
+<td>函数与其创建时所在词法环境的组合，能访问外层变量</td>
+</tr>
+<tr>
+<td>hoisting</td>
+<td>提升</td>
+<td>声明在编译阶段被移动到作用域顶部的行为</td>
+</tr>
+<tr>
+<td>context</td>
+<td>上下文</td>
+<td>如 execution context（执行上下文）</td>
+</tr>
+<tr>
+<td>prototype</td>
+<td>原型</td>
+<td>JS 对象继承属性的来源对象</td>
+</tr>
+<tr>
+<td>ancestor / descendant</td>
+<td>祖先 / 后代</td>
+<td>原型链或 DOM 树中上层 / 下层的节点</td>
+</tr>
+<tr>
+<td>anonymous function</td>
+<td>匿名函数</td>
+<td>没有名字的函数</td>
+</tr>
+<tr>
+<td>callback</td>
+<td>回调函数</td>
+<td>作为参数传入、在合适时机被调用的函数</td>
+</tr>
+<tr>
+<td>higher-order function</td>
+<td>高阶函数</td>
+<td>接收函数作为参数或返回函数的函数</td>
+</tr>
+<tr>
+<td>immutable / mutable</td>
+<td>不可变的 / 可变的</td>
+<td>创建后能否被修改</td>
+</tr>
+<tr>
+<td>mutation</td>
+<td>变更、修改</td>
+<td>直接修改已有数据；如 Vuex 的 mutation、DOM 的 MutationObserver</td>
+</tr>
+<tr>
+<td>side effect</td>
+<td>副作用</td>
+<td>函数除返回值外对外部产生的影响，如修改全局变量、发请求</td>
+</tr>
+<tr>
+<td>pure function</td>
+<td>纯函数</td>
+<td>相同输入总是相同输出且无副作用的函数</td>
+</tr>
+<tr>
+<td>iterator / iterable</td>
+<td>迭代器 / 可迭代对象</td>
+<td>能被 <code dir="auto">for...of</code> 遍历的对象及其遍历机制</td>
+</tr>
+<tr>
+<td>generator</td>
+<td>生成器</td>
+<td>用 <code dir="auto">function*</code> 定义、可暂停和恢复的函数</td>
+</tr>
+<tr>
+<td>asynchronous / synchronous</td>
+<td>异步 / 同步</td>
+<td>是否等待操作完成再继续执行</td>
+</tr>
+<tr>
+<td>promise</td>
+<td>期约（多直接用英文）</td>
+<td>表示异步操作最终结果的对象</td>
+</tr>
+<tr>
+<td>event loop</td>
+<td>事件循环</td>
+<td>调度同步代码、宏任务、微任务的运行机制</td>
+</tr>
+<tr>
+<td>microtask / macrotask</td>
+<td>微任务 / 宏任务</td>
+<td>事件循环中两类任务队列</td>
+</tr>
+<tr>
+<td>garbage collection</td>
+<td>垃圾回收</td>
+<td>自动释放不再使用的内存</td>
+</tr>
+<tr>
+<td>type inference</td>
+<td>类型推断</td>
+<td>编译器根据代码自动推导类型</td>
+</tr>
+<tr>
+<td>generic</td>
+<td>泛型</td>
+<td>用类型参数编写可复用于多种类型的代码</td>
+</tr>
+<tr>
+<td>type assertion</td>
+<td>类型断言</td>
+<td>告诉编译器把值当作某种类型</td>
+</tr>
+<tr>
+<td>union / intersection type</td>
+<td>联合类型 / 交叉类型</td>
+<td><code dir="auto">A | B</code> 与 <code dir="auto">A &amp; B</code></td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h2"><h2 id="框架">框架</h2><a class="sl-anchor-link" href="#框架"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “框架”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>中文</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>component</td>
+<td>组件</td>
+<td>可复用的 UI 单元</td>
+</tr>
+<tr>
+<td>props</td>
+<td>属性</td>
+<td>父组件传给子组件的数据</td>
+</tr>
+<tr>
+<td>state</td>
+<td>状态</td>
+<td>组件内部可变化、驱动渲染的数据</td>
+</tr>
+<tr>
+<td>render</td>
+<td>渲染</td>
+<td>根据数据生成 UI 的过程</td>
+</tr>
+<tr>
+<td>virtual DOM</td>
+<td>虚拟 DOM</td>
+<td>用 JS 对象描述 DOM 结构，用于计算最小更新</td>
+</tr>
+<tr>
+<td>reconciliation</td>
+<td>协调</td>
+<td>React 比较新旧树、决定如何更新的过程</td>
+</tr>
+<tr>
+<td>diffing</td>
+<td>差异比较</td>
+<td>找出新旧两份数据之间的差别</td>
+</tr>
+<tr>
+<td>hook</td>
+<td>钩子</td>
+<td>React 中以 <code dir="auto">use</code> 开头、在函数组件里使用状态等能力的函数</td>
+</tr>
+<tr>
+<td>lifecycle</td>
+<td>生命周期</td>
+<td>组件从创建、更新到销毁的各个阶段</td>
+</tr>
+<tr>
+<td>reactive / reactivity</td>
+<td>响应式的 / 响应式系统</td>
+<td>数据变化自动触发视图更新的机制</td>
+</tr>
+<tr>
+<td>two-way binding</td>
+<td>双向绑定</td>
+<td>视图与数据相互同步，如 Vue 的 <code dir="auto">v-model</code></td>
+</tr>
+<tr>
+<td>directive</td>
+<td>指令</td>
+<td>模板中带特殊前缀的属性，如 <code dir="auto">v-if</code></td>
+</tr>
+<tr>
+<td>slot</td>
+<td>插槽</td>
+<td>父组件向子组件内容区域分发内容的机制</td>
+</tr>
+<tr>
+<td>hydration</td>
+<td>注水、水合</td>
+<td>在客户端为服务端渲染的 HTML 绑定事件和状态</td>
+</tr>
+<tr>
+<td>server-side rendering (SSR)</td>
+<td>服务端渲染</td>
+<td>在服务器上生成 HTML 再发送给浏览器</td>
+</tr>
+<tr>
+<td>client-side rendering (CSR)</td>
+<td>客户端渲染</td>
+<td>由浏览器执行 JS 生成页面内容</td>
+</tr>
+<tr>
+<td>routing / router</td>
+<td>路由 / 路由器</td>
+<td>根据 URL 决定展示哪个页面</td>
+</tr>
+<tr>
+<td>store</td>
+<td>状态仓库</td>
+<td>集中管理全局状态的地方</td>
+</tr>
+<tr>
+<td>middleware</td>
+<td>中间件</td>
+<td>插在请求或动作处理流程中间的处理函数，如 Express、Redux 的中间件</td>
+</tr>
+<tr>
+<td>dispatch</td>
+<td>派发</td>
+<td>发出一个动作（action）以触发状态更新</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h2"><h2 id="工程化">工程化</h2><a class="sl-anchor-link" href="#工程化"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “工程化”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>中文</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bundler</td>
+<td>打包工具</td>
+<td>把模块及依赖合并成浏览器可用的文件，如 webpack、Rollup</td>
+</tr>
+<tr>
+<td>bundle / chunk</td>
+<td>包 / 代码块</td>
+<td>打包输出的文件 / 拆分出的代码片段</td>
+</tr>
+<tr>
+<td>module</td>
+<td>模块</td>
+<td>独立的代码单元，如 ES Module、CommonJS</td>
+</tr>
+<tr>
+<td>dependency</td>
+<td>依赖</td>
+<td>项目运行或构建所需的外部包</td>
+</tr>
+<tr>
+<td>loader / plugin</td>
+<td>加载器 / 插件</td>
+<td>webpack 中转换文件的模块 / 扩展构建流程的模块</td>
+</tr>
+<tr>
+<td>transpile / compile</td>
+<td>转译 / 编译</td>
+<td>源码转换为同级语言（如新语法转旧语法）/ 转换为更低层的形式</td>
+</tr>
+<tr>
+<td>polyfill</td>
+<td>垫片</td>
+<td>为旧环境补齐缺失 API 的代码</td>
+</tr>
+<tr>
+<td>tree shaking</td>
+<td>摇树优化</td>
+<td>移除未被使用的代码</td>
+</tr>
+<tr>
+<td>code splitting</td>
+<td>代码分割</td>
+<td>把代码拆成多个按需加载的块</td>
+</tr>
+<tr>
+<td>lazy loading</td>
+<td>懒加载</td>
+<td>需要时才加载资源</td>
+</tr>
+<tr>
+<td>minify</td>
+<td>压缩、混淆</td>
+<td>去掉空白、缩短变量名以减小体积</td>
+</tr>
+<tr>
+<td>source map</td>
+<td>源码映射</td>
+<td>把构建产物映射回源码，方便调试</td>
+</tr>
+<tr>
+<td>hot module replacement (HMR)</td>
+<td>模块热替换</td>
+<td>运行时替换修改的模块而不刷新整页</td>
+</tr>
+<tr>
+<td>lint / linter</td>
+<td>代码检查 / 检查工具</td>
+<td>静态分析代码的风格和潜在问题，如 ESLint</td>
+</tr>
+<tr>
+<td>semi（lint 规则名）</td>
+<td>分号</td>
+<td>是 semicolon 的缩写，ESLint 中控制语句末尾是否加分号的规则</td>
+</tr>
+<tr>
+<td>comma / trailing comma</td>
+<td>逗号 / 尾逗号</td>
+<td>尾逗号指列表最后一项后面的逗号</td>
+</tr>
+<tr>
+<td>indent / indentation</td>
+<td>缩进</td>
+<td>行首的空白，常用 2 或 4 个空格</td>
+</tr>
+<tr>
+<td>monorepo</td>
+<td>单一代码仓库</td>
+<td>多个项目或包放在同一个仓库中管理</td>
+</tr>
+<tr>
+<td>lockfile</td>
+<td>锁文件</td>
+<td>锁定依赖的确切版本，如 <code dir="auto">package-lock.json</code></td>
+</tr>
+<tr>
+<td>semantic versioning (semver)</td>
+<td>语义化版本</td>
+<td><code dir="auto">主版本.次版本.修订号</code> 的版本号规范</td>
+</tr>
+<tr>
+<td>continuous integration (CI)</td>
+<td>持续集成</td>
+<td>代码提交后自动构建和测试</td>
+</tr>
+<tr>
+<td>continuous deployment / delivery (CD)</td>
+<td>持续部署 / 持续交付</td>
+<td>自动将通过测试的代码发布上线 / 保持随时可发布</td>
+</tr>
+<tr>
+<td>unit test / e2e test</td>
+<td>单元测试 / 端到端测试</td>
+<td>测试单个函数或组件 / 模拟用户操作测试完整流程</td>
+</tr>
+<tr>
+<td>mock</td>
+<td>模拟</td>
+<td>用假的实现替代真实依赖，用于测试或开发</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h2"><h2 id="网络与浏览器">网络与浏览器</h2><a class="sl-anchor-link" href="#网络与浏览器"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “网络与浏览器”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>中文</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>request / response</td>
+<td>请求 / 响应</td>
+<td>HTTP 通信的两端消息</td>
+</tr>
+<tr>
+<td>header</td>
+<td>头部</td>
+<td>请求或响应中的元信息字段</td>
+</tr>
+<tr>
+<td>payload</td>
+<td>载荷</td>
+<td>请求或响应中实际传输的数据</td>
+</tr>
+<tr>
+<td>cross-origin</td>
+<td>跨源（常称跨域）</td>
+<td>协议、域名、端口任一不同</td>
+</tr>
+<tr>
+<td>CORS</td>
+<td>跨源资源共享</td>
+<td>服务器声明允许哪些源访问资源的机制</td>
+</tr>
+<tr>
+<td>same-site / cross-site</td>
+<td>同站 / 跨站</td>
+<td>按协议和可注册域名判断，与同源不同</td>
+</tr>
+<tr>
+<td>cookie</td>
+<td>Cookie</td>
+<td>浏览器保存并随请求自动发送的小段数据</td>
+</tr>
+<tr>
+<td>session</td>
+<td>会话</td>
+<td>服务端维护的用户状态</td>
+</tr>
+<tr>
+<td>cache</td>
+<td>缓存</td>
+<td>保存资源副本以加快后续访问</td>
+</tr>
+<tr>
+<td>CDN</td>
+<td>内容分发网络</td>
+<td>把资源分发到离用户近的节点</td>
+</tr>
+<tr>
+<td>DNS</td>
+<td>域名系统</td>
+<td>把域名解析为 IP 地址</td>
+</tr>
+<tr>
+<td>latency / bandwidth</td>
+<td>延迟 / 带宽</td>
+<td>数据往返耗时 / 单位时间的传输能力</td>
+</tr>
+<tr>
+<td>Ethernet</td>
+<td>以太网</td>
+<td>常见的有线局域网技术</td>
+</tr>
+<tr>
+<td>metered connection</td>
+<td>按流量计费的连接</td>
+<td>系统据此限制后台下载等流量消耗</td>
+</tr>
+<tr>
+<td>rendering engine</td>
+<td>渲染引擎</td>
+<td>浏览器中负责解析和绘制页面的部分，如 Blink、WebKit</td>
+</tr>
+<tr>
+<td>reflow / repaint</td>
+<td>重排 / 重绘</td>
+<td>重新计算布局 / 重新绘制外观</td>
+</tr>
+<tr>
+<td>composite / compositing</td>
+<td>合成</td>
+<td>把多个图层组合成最终画面</td>
+</tr>
+<tr>
+<td>viewport</td>
+<td>视口</td>
+<td>浏览器中用于显示页面的区域</td>
+</tr>
+<tr>
+<td>DOM</td>
+<td>文档对象模型</td>
+<td>页面结构的对象表示</td>
+</tr>
+<tr>
+<td>event bubbling / capturing</td>
+<td>事件冒泡 / 事件捕获</td>
+<td>事件在 DOM 树中向上 / 向下传播的阶段</td>
+</tr>
+<tr>
+<td>event delegation</td>
+<td>事件委托</td>
+<td>在父元素上统一处理子元素的事件</td>
+</tr>
+<tr>
+<td>debounce / throttle</td>
+<td>防抖 / 节流</td>
+<td>停止触发一段时间后才执行 / 固定间隔内最多执行一次</td>
+</tr>
+<tr>
+<td>XSS</td>
+<td>跨站脚本攻击</td>
+<td>注入恶意脚本在用户页面中执行</td>
+</tr>
+<tr>
+<td>CSRF</td>
+<td>跨站请求伪造</td>
+<td>借用户已登录的身份发起非本意的请求</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h3"><h3 id="css-中的常见词">CSS 中的常见词</h3><a class="sl-anchor-link" href="#css-中的常见词"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “CSS 中的常见词”</span></a></div>
+<p>CSS 属性名和值中的英文单词，按技术含义理解：</p>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>中文</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>skew</td>
+<td>倾斜</td>
+<td><code dir="auto">transform: skew()</code>，沿 X 或 Y 轴倾斜元素</td>
+</tr>
+<tr>
+<td>scale</td>
+<td>缩放</td>
+<td><code dir="auto">transform: scale()</code>，按比例放大或缩小</td>
+</tr>
+<tr>
+<td>rotate / translate</td>
+<td>旋转 / 平移</td>
+<td><code dir="auto">transform</code> 的另外两个常用函数</td>
+</tr>
+<tr>
+<td>iteration</td>
+<td>迭代、重复次数</td>
+<td><code dir="auto">animation-iteration-count</code>，动画播放的次数</td>
+</tr>
+<tr>
+<td>alternate</td>
+<td>交替</td>
+<td><code dir="auto">animation-direction: alternate</code>，动画正向和反向交替播放</td>
+</tr>
+<tr>
+<td>specificity</td>
+<td>优先级（特异性）</td>
+<td>选择器权重，决定规则冲突时谁生效</td>
+</tr>
+<tr>
+<td>cascade</td>
+<td>层叠</td>
+<td>多条规则作用于同一元素时的合并与取舍机制</td>
+</tr>
+<tr>
+<td>inheritance</td>
+<td>继承</td>
+<td>子元素沿用父元素的某些属性值</td>
+</tr>
+<tr>
+<td>pseudo-class / pseudo-element</td>
+<td>伪类 / 伪元素</td>
+<td>如 <code dir="auto">:hover</code> / <code dir="auto">::before</code></td>
+</tr>
+<tr>
+<td>media query</td>
+<td>媒体查询</td>
+<td>根据设备特征应用不同样式</td>
+</tr>
+<tr>
+<td>flexbox / grid</td>
+<td>弹性盒 / 网格布局</td>
+<td>一维 / 二维布局模型</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h2"><h2 id="协作与流程">协作与流程</h2><a class="sl-anchor-link" href="#协作与流程"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “协作与流程”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>中文</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>repository (repo)</td>
+<td>仓库</td>
+<td>存放项目代码及其历史的地方</td>
+</tr>
+<tr>
+<td>commit</td>
+<td>提交</td>
+<td>一次被记录的代码变更</td>
+</tr>
+<tr>
+<td>branch / merge / rebase</td>
+<td>分支 / 合并 / 变基</td>
+<td>Git 中并行开发与整合变更的操作</td>
+</tr>
+<tr>
+<td>conflict</td>
+<td>冲突</td>
+<td>两处修改了同一位置，需要手动解决</td>
+</tr>
+<tr>
+<td>pull request (PR) / merge request (MR)</td>
+<td>拉取请求 / 合并请求</td>
+<td>申请把分支合入目标分支并进行评审</td>
+</tr>
+<tr>
+<td>code review</td>
+<td>代码评审</td>
+<td>他人审阅代码变更</td>
+</tr>
+<tr>
+<td>LGTM</td>
+<td>看起来没问题</td>
+<td>Looks Good To Me，评审通过时的常用回复</td>
+</tr>
+<tr>
+<td>WIP</td>
+<td>进行中</td>
+<td>Work In Progress，尚未完成，暂不合并</td>
+</tr>
+<tr>
+<td>nit</td>
+<td>小问题</td>
+<td>nitpick 的缩写，评审中指不影响合并的细节建议</td>
+</tr>
+<tr>
+<td>issue</td>
+<td>问题单</td>
+<td>用于跟踪缺陷、需求、讨论的条目</td>
+</tr>
+<tr>
+<td>bug / regression</td>
+<td>缺陷 / 回归问题</td>
+<td>程序错误 / 原本正常的功能因新改动而出错</td>
+</tr>
+<tr>
+<td>hotfix</td>
+<td>紧急修复</td>
+<td>绕过常规发布节奏、尽快上线的修复</td>
+</tr>
+<tr>
+<td>release / changelog</td>
+<td>发布 / 更新日志</td>
+<td>发布的版本 / 记录各版本变更的文档</td>
+</tr>
+<tr>
+<td>breaking change</td>
+<td>破坏性变更</td>
+<td>不向后兼容、需要使用者修改代码的变更</td>
+</tr>
+<tr>
+<td>backward compatible</td>
+<td>向后兼容</td>
+<td>新版本仍支持旧的用法</td>
+</tr>
+<tr>
+<td>refactor</td>
+<td>重构</td>
+<td>不改变外部行为地改进代码结构</td>
+</tr>
+<tr>
+<td>technical debt</td>
+<td>技术债</td>
+<td>为了短期速度而留下的、日后需要偿还的设计或代码问题</td>
+</tr>
+<tr>
+<td>milestone / roadmap</td>
+<td>里程碑 / 路线图</td>
+<td>阶段性目标 / 长期规划</td>
+</tr>
+<tr>
+<td>sprint / iteration</td>
+<td>冲刺 / 迭代</td>
+<td>敏捷开发中的固定开发周期</td>
+</tr>
+<tr>
+<td>stakeholder</td>
+<td>利益相关方</td>
+<td>与项目结果有关、需要沟通的人或团队</td>
+</tr>
+<tr>
+<td>ETA</td>
+<td>预计完成时间</td>
+<td>Estimated Time of Arrival</td>
+</tr>
+<tr>
+<td>TBD</td>
+<td>待定</td>
+<td>To Be Determined</td>
+</tr>
+<tr>
+<td>FYI</td>
+<td>供参考</td>
+<td>For Your Information</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h2"><h2 id="小结">小结</h2><a class="sl-anchor-link" href="#小结"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “小结”</span></a></div>
+<ul>
+<li>技术文档里的词常有固定含义，例如 CSS 的 iteration 是“重复次数”、alternate 是“交替”，不能按“复述”“轮流”理解。</li>
+<li>lint 规则名多是缩写，如 <code dir="auto">semi</code> 指 semicolon（分号），而不是“半”。</li>
+<li>同站（same-site）与同源（same-origin）、转译（transpile）与编译（compile）这类成对概念要区分清楚。</li>
+<li>协作中的缩写（LGTM、WIP、nit、TBD）在代码评审和 issue 讨论中很常见。</li>
+</ul>
+<div class="sl-heading-wrapper level-h2"><h2 id="参考">参考</h2><a class="sl-anchor-link" href="#参考"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “参考”</span></a></div>
+<ul>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Glossary">MDN Web 文档术语表</a></li>
+<li><a href="https://react.dev/">React 文档</a></li>
+<li><a href="https://vuejs.org/">Vue 文档</a></li>
+<li><a href="https://webpack.js.org/concepts/">webpack 概念</a></li>
+<li><a href="https://git-scm.com/doc">Git 文档</a></li>
+</ul>
+</div><footer class="sl-flex astro-qcph7vbk"><div class="meta sl-flex astro-qcph7vbk"></div><nav class="pager print:hidden astro-ohknivtf" aria-label="文章翻页"><a class="prev astro-ohknivtf" href="/notes/databases/mysql/install.html" rel="prev"><span class="eyebrow astro-ohknivtf"><span class="arrow astro-ohknivtf" aria-hidden="true">←</span>上一篇</span><span class="title astro-ohknivtf">MySQL 安装与基础配置</span></a></nav></footer></div></div></main></div></div></div></div></body></html>

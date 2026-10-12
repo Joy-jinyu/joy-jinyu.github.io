@@ -1,0 +1,342 @@
+<!DOCTYPE html><html lang="zh-CN" dir="ltr" data-theme="dark" data-has-toc data-has-sidebar class="astro-pht42zuh"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>VS Code 插件推荐 | 有爱心安 - 花期</title><link rel="canonical" href="https://joy-jinyu.github.io/notes/fronted/soft/vsCodePlugin.html"/><link rel="sitemap" href="/notes/sitemap-index.xml"/><style>@view-transition{navigation:auto}@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style><script>try{for(const p of ['sidebar','toc'])if(localStorage.getItem('joy-'+p)==='collapsed')document.documentElement.dataset[p]='collapsed'}catch{}</script><link rel="apple-touch-icon" href="/notes/apple-touch-icon.png"/><script src="/notes/hero-bg.js" defer></script><script>document.addEventListener('DOMContentLoaded',()=>{const bg=document.createElement('hero-bg');bg.setAttribute('variant','waves');bg.setAttribute('intensity','0.55');document.body.prepend(bg)})</script><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="true"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap"/><link rel="shortcut icon" href="/notes/favicon.png" type="image/png"/><meta name="generator" content="Astro v7.3.8"/><meta name="generator" content="Starlight v0.42.6"/><meta property="og:title" content="VS Code 插件推荐"/><meta property="og:type" content="article"/><meta property="og:url" content="https://joy-jinyu.github.io/notes/fronted/soft/vsCodePlugin.html"/><meta property="og:locale" content="zh-CN"/><meta property="og:description" content="按用途分类整理前端开发常用的 VS Code 插件，说明哪些旧插件已被内置功能取代，并给出一份通用的编辑器配置。"/><meta property="og:site_name" content="有爱心安 - 花期"/><meta name="twitter:card" content="summary_large_image"/><meta name="description" content="按用途分类整理前端开发常用的 VS Code 插件，说明哪些旧插件已被内置功能取代，并给出一份通用的编辑器配置。"/><script>
+	window.StarlightThemeProvider = (() => {
+		const storedTheme =
+			typeof localStorage !== 'undefined' && localStorage.getItem('starlight-theme');
+		const theme =
+			storedTheme ||
+			(window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+		document.documentElement.dataset.theme = theme === 'light' ? 'light' : 'dark';
+		return {
+			updatePickers(theme = storedTheme || 'auto') {
+				document.querySelectorAll('starlight-theme-select').forEach((picker) => {
+					const select = picker.querySelector('select');
+					if (select) select.value = theme;
+					/** @type {HTMLTemplateElement | null} */
+					const tmpl = document.querySelector(`#theme-icons`);
+					const newIcon = tmpl && tmpl.content.querySelector('.' + theme);
+					if (newIcon) {
+						const oldIcon = picker.querySelector('svg.label-icon');
+						if (oldIcon) {
+							oldIcon.replaceChildren(...newIcon.cloneNode(true).childNodes);
+						}
+					}
+				});
+			},
+		};
+	})();
+</script><template id="theme-icons"><svg aria-hidden="true" class="light astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><svg aria-hidden="true" class="dark astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><svg aria-hidden="true" class="auto astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg></template><link rel="stylesheet" href="/notes/_astro/print.ehPL0gv-.css" media="print"><link rel="stylesheet" href="/notes/_astro/common.C6NtIbeP.css"><script type="module" src="/notes/_astro/page.cNngjUgL.js"></script></head><body class="astro-pht42zuh"><a class="sl-skip-link astro-6l5ig4lw" href="#_top">跳转到内容</a><div class="page sl-flex astro-j36ezbnx"><header class="header astro-j36ezbnx"><div class="header astro-2r7rdtqt"><div class="title-wrapper sl-flex astro-2r7rdtqt"><a href="/notes/index.html" class="site-title sl-flex astro-f5gnq237"><span class="astro-f5gnq237" translate="no">有爱心安 - 花期</span></a></div><div class="sl-flex print:hidden astro-2r7rdtqt"><site-search class="astro-2r7rdtqt astro-q3uisoit" data-translations="{&quot;placeholder&quot;:&quot;搜索&quot;}"><button data-open-modal disabled aria-label="搜索" aria-keyshortcuts="Control+K" class="astro-q3uisoit"><svg aria-hidden="true" class="astro-q3uisoit astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.71 20.29 18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z"/></svg><span class="sl-hidden md:sl-block astro-q3uisoit" aria-hidden="true">搜索</span><kbd class="sl-hidden md:sl-flex astro-q3uisoit" style="display: none;"><kbd class="astro-q3uisoit">Ctrl</kbd><kbd class="astro-q3uisoit">K</kbd></kbd></button><dialog style="padding:0" aria-label="搜索" class="astro-q3uisoit"><div class="dialog-frame sl-flex astro-q3uisoit"><button data-close-modal class="sl-flex md:sl-hidden astro-q3uisoit">取消</button><div class="search-container astro-q3uisoit"><div id="starlight__search" class="astro-q3uisoit"></div></div></div></dialog></site-search><script>
+	(() => {
+		const openBtn = document.querySelector('button[data-open-modal]');
+		const shortcut = openBtn?.querySelector('kbd');
+		if (!openBtn || !(shortcut instanceof HTMLElement)) return;
+		const platformKey = shortcut.querySelector('kbd');
+		if (platformKey && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
+			platformKey.textContent = '⌘';
+			openBtn.setAttribute('aria-keyshortcuts', 'Meta+K');
+		}
+		shortcut.style.display = '';
+	})();
+</script><script type="module" src="/notes/_astro/Search.astro_astro_type_script_index_0_lang.CZJwZ-iM.js"></script></div><div class="sl-hidden md:sl-flex print:hidden right-group astro-2r7rdtqt"><div class="sl-flex social-icons astro-2r7rdtqt"></div><joy-theme-switch class="astro-hds7qqbe"><div class="seg astro-hds7qqbe" role="radiogroup" aria-label="主题"><span class="thumb astro-hds7qqbe" aria-hidden="true"></span><button type="button" role="radio" data-value="light" aria-label="浅色" title="浅色" aria-checked="false" tabindex="-1" class="astro-hds7qqbe"><svg aria-hidden="true" class="astro-hds7qqbe astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg></button><button type="button" role="radio" data-value="auto" aria-label="跟随系统" title="跟随系统" aria-checked="false" tabindex="-1" class="astro-hds7qqbe"><svg aria-hidden="true" class="astro-hds7qqbe astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="M19 3H5a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h6v2H7a1 1 0 0 0 0 2h10a1 1 0 0 0 0-2h-4v-2h6a3 3 0 0 0 3-3V6a3 3 0 0 0-3-3m1 11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1Z"/></svg></button><button type="button" role="radio" data-value="dark" aria-label="深色" title="深色" aria-checked="false" tabindex="-1" class="astro-hds7qqbe"><svg aria-hidden="true" class="astro-hds7qqbe astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg></button></div></joy-theme-switch><script>
+	document.currentScript.previousElementSibling.dataset.value =
+		localStorage.getItem('starlight-theme') || 'auto';
+</script><script type="module">var e=`starlight-theme`,t=[`light`,`auto`,`dark`],n=e=>e===`dark`||e===`light`?e:`auto`,r=()=>n(localStorage.getItem(e)),i=()=>matchMedia(`(prefers-color-scheme: light)`).matches?`light`:`dark`;function a(t){document.documentElement.dataset.theme=t===`auto`?i():t,localStorage.setItem(e,t===`auto`?``:t),document.querySelectorAll(`joy-theme-switch`).forEach(e=>e.sync(t))}matchMedia(`(prefers-color-scheme: light)`).addEventListener(`change`,()=>{r()===`auto`&&a(`auto`)});var o=class extends HTMLElement{connectedCallback(){this.sync(r()),this.querySelectorAll(`button`).forEach(e=>{e.addEventListener(`click`,()=>a(n(e.dataset.value)))}),this.addEventListener(`keydown`,e=>{if(![`ArrowLeft`,`ArrowRight`,`ArrowUp`,`ArrowDown`].includes(e.key))return;e.preventDefault();let n=e.key===`ArrowLeft`||e.key===`ArrowUp`?-1:1,i=t[(t.indexOf(r())+n+t.length)%t.length];a(i),this.querySelector(`button[data-value="${i}"]`)?.focus()})}sync(e){this.dataset.value=e,this.querySelectorAll(`button`).forEach(t=>{let n=t.dataset.value===e;t.setAttribute(`aria-checked`,String(n)),t.tabIndex=n?0:-1})}};customElements.define(`joy-theme-switch`,o);</script><script type="module">var e=class extends HTMLElement{constructor(){super();let e=this.querySelector(`select`);e&&(e.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&(window.location.pathname=e.currentTarget.value)}),window.addEventListener(`pageshow`,t=>{if(!t.persisted)return;let n=e.querySelector(`option[selected]`)?.index;n!==e.selectedIndex&&(e.selectedIndex=n??0)}))}};customElements.define(`starlight-lang-select`,e);</script></div></div></header><nav class="sidebar print:hidden astro-j36ezbnx" aria-label="主要"><button popovertarget="starlight__sidebar" class="sl-menu-button sl-flex md:sl-hidden print:hidden astro-iwcaxo5h"><svg aria-hidden="true" class="open-menu astro-iwcaxo5h astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M3 8h18a1 1 0 1 0 0-2H3a1 1 0 0 0 0 2Zm18 8H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Zm0-5H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Z"/></svg><svg aria-hidden="true" class="close-menu astro-iwcaxo5h astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="m13.41 12 6.3-6.29a1.004 1.004 0 1 0-1.42-1.42L12 10.59l-6.29-6.3a1.004 1.004 0 0 0-1.42 1.42l6.3 6.29-6.3 6.29a1 1 0 0 0 0 1.42.998.998 0 0 0 1.42 0l6.29-6.3 6.29 6.3a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.42L13.41 12Z"/></svg><span class="sr-only astro-iwcaxo5h">菜单</span></button><script type="module">var e=class extends HTMLElement{constructor(){super();let e=matchMedia(`(min-width: 50em)`),t=()=>{this.popover=e.matches?null:`auto`};t(),e.addEventListener(`change`,()=>t()),this.addEventListener(`toggle`,({newState:e})=>this.trapFocus(e===`open`))}trapFocus(e){document.querySelectorAll(`.main-frame, .sl-skip-link`).forEach(t=>{t.toggleAttribute(`inert`,e)})}};customElements.define(`sl-sidebar-pane`,e);</script><script type="module">function e(){document.querySelectorAll(`.panel-toggle`).forEach(e=>{let t=document.documentElement.dataset[e.dataset.panel]===`collapsed`,n=`${t?`展开`:`收起`}${e.dataset.name}`;e.setAttribute(`aria-expanded`,String(!t)),e.setAttribute(`aria-label`,n),e.title=n})}document.querySelectorAll(`.panel-toggle`).forEach(t=>{t.addEventListener(`click`,()=>{let n=t.dataset.panel,r=document.documentElement,i=r.dataset[n]!==`collapsed`;i?r.dataset[n]=`collapsed`:delete r.dataset[n],localStorage.setItem(`joy-${n}`,i?`collapsed`:``),e()})}),e();</script><sl-sidebar-pane popover id="starlight__sidebar" class="sidebar-pane astro-j36ezbnx"><div class="sidebar-content sl-flex astro-j36ezbnx"><div class="sidebar-head astro-wv7whodv"><a class="back-link astro-wv7whodv" href="https://joy-jinyu.github.io/">← 简历</a><button type="button" class="panel-toggle panel-toggle--sidebar astro-w3ddhq4m" data-panel="sidebar" data-name="菜单" aria-controls="starlight__sidebar" aria-expanded="true" aria-label="收起菜单" title="收起菜单"><span class="panel-icon astro-w3ddhq4m" aria-hidden="true"></span></button></div><sl-sidebar-state-persist data-hash="1cvbqug" class="astro-shbxt3t6"><script aria-hidden="true">
+		(() => {
+			try {
+				if (!matchMedia('(min-width: 50em)').matches) return;
+				/** @type {HTMLElement | null} */
+				const target = document.querySelector('sl-sidebar-state-persist');
+				const state = JSON.parse(sessionStorage.getItem('sl-sidebar-state') || '0');
+				if (!target || !state || target.dataset.hash !== state.hash) return;
+				window._starlightScrollRestore = state.scroll;
+				customElements.define(
+					'sl-sidebar-restore',
+					class SidebarRestore extends HTMLElement {
+						connectedCallback() {
+							try {
+								const idx = parseInt(this.dataset.index || '');
+								const details = this.closest('details');
+								if (details && typeof state.open[idx] === 'boolean') details.open = state.open[idx];
+							} catch {}
+						}
+					}
+				);
+			} catch {}
+		})();
+	</script><ul class="top-level astro-6khlz4tn"><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">JavaScript</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="0"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/language/javascript/eventLoop.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">执行机制与事件循环</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/javascript/theJavaScriptYouDontKonw/scopeAndClosure_01.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">作用域与闭包</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/javascript/theJavaScriptYouDontKonw/thisAndPrototype_02.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">this 与原型链</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/javascript/es6.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">ES2015+ 核心特性</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/javascript/basic.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">错误类型与异常处理</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/javascript/ast.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">AST 与代码转换</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">TypeScript</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="1"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/language/typescript/basic.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">类型系统</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">HTML 与 CSS</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="2"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/language/html/h5_standard.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">HTML5 新特性</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/css/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">CSS 核心概念</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/css/media.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">媒体查询与响应式</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">React</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="3"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/language/react/createProject.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">项目搭建</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/react/notes.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">核心概念与 Hooks</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/react/algorithm.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">协调与 Fiber</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/react/redux.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Redux 状态管理</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">Vue</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="4"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/language/vue/createProject.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Vue 3 项目搭建</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/vue/vite/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Vite 原理与使用</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">Node.js</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="5"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/language/node/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">架构与运行机制</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/node/problem.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">异步与并发</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/node/node_package.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">npm 依赖管理</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/language/deno/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Deno 简介</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">工程化</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="6"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/projectBuild/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">构建工具概览</span></a></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">webpack</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="7"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/projectBuild/webpack/background.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">由来</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/projectBuild/webpack/concept.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">核心概念</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/projectBuild/webpack/configuration.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">配置详解</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/projectBuild/webpack/guide.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">实践指南</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/keyword/webpackDependencies.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">常用 Loader 与 Plugin</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/projectBuild/webpack/api.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Loader 与 Plugin 开发</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/projectBuild/webpack/vueProject.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">搭建 Vue 项目</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">PostCSS</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="8"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/projectBuild/postcss/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">简介</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/projectBuild/postcss/translate.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">工作原理</span></a></li></ul></details></li><li class="astro-6khlz4tn"><a href="/notes/fronted/test/karma.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">单元测试</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">性能与架构</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="9"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/optimization/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">性能优化总览</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/optimization/blankScreen/background.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">白屏问题分析</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/optimization/blankScreen/case.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">白屏优化方案</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/optimization/microFronted/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">微前端概念</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/optimization/microFronted/practise.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">微前端方案与实践</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">浏览器</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="10"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/system/browser/basic.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">工作原理</span></a></li><li class="astro-6khlz4tn"><a href="/notes/system/browser/cookies.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Cookie 详解</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/instantMessage/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">实时通信方案</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/compatible/browsers.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">兼容性问题汇总</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">编码实践</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="11"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/codeBasic/developRule.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">前端开发规范</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/codeBasic/codeArtReading.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">《编写可读代码的艺术》</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/codeBasic/problemRecord.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">开发踩坑记录</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">移动端</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="12"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/fronted/mobile/introduction.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">跨平台开发概览</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/mobile/flutter/environment.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Flutter 环境搭建</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/mobile/flutter/dart/basic.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Dart 基础概念</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/mobile/flutter/dart/grammar.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Dart 语法</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/mobile/flutter/dart/codeRule.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Dart 编码规范</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details open class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">工具</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="13"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/others/git.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Git 常用操作</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/soft/vsCodePlugin.html" aria-current="page" class="astro-6khlz4tn"><span class="astro-6khlz4tn">VS Code 插件推荐</span></a></li><li class="astro-6khlz4tn"><a href="/notes/fronted/keyword/others.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">常用工具库速查</span></a></li><li class="astro-6khlz4tn"><a href="/notes/others/markdown.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Markdown 语法速查</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">系统与数据库</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="14"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/system/linux/basic.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Linux 常用命令</span></a></li><li class="astro-6khlz4tn"><a href="/notes/system/linux/soft.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Linux 软件安装与管理</span></a></li><li class="astro-6khlz4tn"><a href="/notes/system/linux/vim.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">Vim 使用指南</span></a></li><li class="astro-6khlz4tn"><a href="/notes/databases/mysql/install.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">MySQL 安装与基础配置</span></a></li></ul></details></li><li class="astro-6khlz4tn"><details class="astro-6khlz4tn"><summary class="astro-6khlz4tn"><span class="group-label astro-6khlz4tn"><span class="large astro-6khlz4tn">英语</span></span><svg aria-hidden="true" class="caret astro-6khlz4tn astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="15"></sl-sidebar-restore><ul class="astro-6khlz4tn"><li class="astro-6khlz4tn"><a href="/notes/language/english/professional.html" class="astro-6khlz4tn"><span class="astro-6khlz4tn">前端常用英文术语</span></a></li></ul></details></li></ul><script aria-hidden="true">
+		(() => {
+			const scroller = document.getElementById('starlight__sidebar');
+			if (!window._starlightScrollRestore || !scroller) return;
+			scroller.scrollTop = window._starlightScrollRestore;
+			delete window._starlightScrollRestore;
+		})();
+	</script></sl-sidebar-state-persist><div class="md:sl-hidden"><div class="mobile-preferences sl-flex astro-ku646vwa"><div class="social-icons astro-ku646vwa"></div><joy-theme-switch class="astro-hds7qqbe"><div class="seg astro-hds7qqbe" role="radiogroup" aria-label="主题"><span class="thumb astro-hds7qqbe" aria-hidden="true"></span><button type="button" role="radio" data-value="light" aria-label="浅色" title="浅色" aria-checked="false" tabindex="-1" class="astro-hds7qqbe"><svg aria-hidden="true" class="astro-hds7qqbe astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg></button><button type="button" role="radio" data-value="auto" aria-label="跟随系统" title="跟随系统" aria-checked="false" tabindex="-1" class="astro-hds7qqbe"><svg aria-hidden="true" class="astro-hds7qqbe astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="M19 3H5a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h6v2H7a1 1 0 0 0 0 2h10a1 1 0 0 0 0-2h-4v-2h6a3 3 0 0 0 3-3V6a3 3 0 0 0-3-3m1 11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1Z"/></svg></button><button type="button" role="radio" data-value="dark" aria-label="深色" title="深色" aria-checked="false" tabindex="-1" class="astro-hds7qqbe"><svg aria-hidden="true" class="astro-hds7qqbe astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg></button></div></joy-theme-switch><script>
+	document.currentScript.previousElementSibling.dataset.value =
+		localStorage.getItem('starlight-theme') || 'auto';
+</script></div></div></div></sl-sidebar-pane></nav><div class="main-frame astro-j36ezbnx"><script type="module">var e=document.getElementById(`starlight__sidebar`),t=e?.querySelector(`sl-sidebar-state-persist`),n=`sl-sidebar-state`,r=()=>{let r=[],i=t?.dataset.hash||``;try{let e=sessionStorage.getItem(n),t=JSON.parse(e||`{}`);Array.isArray(t.open)&&t.hash===i&&(r=t.open)}catch{}return{hash:i,open:r,scroll:e?.scrollTop||0}},i=e=>{try{sessionStorage.setItem(n,JSON.stringify(e))}catch{}},a=()=>i(r()),o=(e,t)=>{let n=r();n.open[t]=e,i(n)};t?.addEventListener(`click`,e=>{if(!(e.target instanceof Element))return;let t=e.target.closest(`summary`)?.closest(`details`);if(!t)return;let n=t.querySelector(`sl-sidebar-restore`),r=parseInt(n?.dataset.index||``);isNaN(r)||o(!t.open,r)}),addEventListener(`visibilitychange`,()=>{document.visibilityState===`hidden`&&a()});</script><div class="lg:sl-flex astro-t4g3r4ti"><aside class="right-sidebar-container print:hidden astro-t4g3r4ti"><div class="right-sidebar astro-t4g3r4ti"><div class="toc-shell astro-hasoujoj"><div class="toc-toggle sl-hidden lg:sl-block astro-hasoujoj"><button type="button" class="panel-toggle panel-toggle--toc astro-w3ddhq4m" data-panel="toc" data-name="本页内容" aria-expanded="true" aria-label="收起本页内容" title="收起本页内容"><span class="panel-icon astro-w3ddhq4m" aria-hidden="true"></span></button></div><div class="lg:sl-hidden astro-mz3pd4lj"><mobile-starlight-toc data-min-h="2" data-max-h="3" class="astro-2l64q533"><nav aria-labelledby="starlight__on-this-page--mobile" class="astro-2l64q533"><details id="starlight__mobile-toc" class="astro-2l64q533"><summary id="starlight__on-this-page--mobile" class="sl-flex astro-2l64q533"><span class="toggle sl-flex astro-2l64q533">本页内容<svg aria-hidden="true" class="caret astro-2l64q533 astro-yaf6gfyb" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></span><span class="display-current astro-2l64q533"></span></summary><div class="dropdown astro-2l64q533"><ul class="isMobile astro-hdifz754" style="--depth: 0;"><li style="--depth: 0;" class="astro-hdifz754"><a href="#_top" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">概述</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#代码质量" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">代码质量</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#git" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">Git</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#编辑效率" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">编辑效率</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#框架与语言支持" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">框架与语言支持</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#远程开发" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">远程开发</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#主题与图标" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">主题与图标</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#已被内置功能取代的插件" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">已被内置功能取代的插件</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#推荐的基础配置" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">推荐的基础配置</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#小结" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">小结</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#参考" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">参考</span></a></li></ul></div></details></nav></mobile-starlight-toc><script type="module" src="/notes/_astro/MobileTableOfContents.astro_astro_type_script_index_0_lang.C3fM4Kra.js"></script></div><div class="right-sidebar-panel sl-hidden lg:sl-block astro-mz3pd4lj"><div class="sl-container astro-mz3pd4lj"><starlight-toc data-min-h="2" data-max-h="3"><nav aria-labelledby="starlight__on-this-page"><h2 id="starlight__on-this-page">本页内容</h2><ul class="astro-hdifz754" style="--depth: 0;"><li style="--depth: 0;" class="astro-hdifz754"><a href="#_top" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">概述</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#代码质量" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">代码质量</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#git" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">Git</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#编辑效率" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">编辑效率</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#框架与语言支持" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">框架与语言支持</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#远程开发" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">远程开发</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#主题与图标" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">主题与图标</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#已被内置功能取代的插件" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">已被内置功能取代的插件</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#推荐的基础配置" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">推荐的基础配置</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#小结" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">小结</span></a></li><li style="--depth: 0;" class="astro-hdifz754"><a href="#参考" style="--depth: 0;" class="astro-hdifz754"><span style="--depth: 0;" class="astro-hdifz754">参考</span></a></li></ul></nav></starlight-toc><script type="module" src="/notes/_astro/TableOfContents.astro_astro_type_script_index_0_lang.BpJaGz7G.js"></script></div></div></div></div></aside><div class="main-pane astro-t4g3r4ti"><main data-pagefind-body class="astro-pht42zuh" lang="zh-CN" dir="ltr"><div class="content-panel astro-knxu7jx2"><div class="sl-container astro-knxu7jx2"><h1 id="_top" class="astro-tpvyatgl">VS Code 插件推荐</h1></div></div><div class="content-panel astro-knxu7jx2"><div class="sl-container astro-knxu7jx2"><div class="sl-markdown-content"><p>VS Code 本身已经内置了很多早年要靠插件实现的功能，插件装得多反而会拖慢启动和编辑。这篇按用途整理前端开发常用的插件，标出已经可以卸载的旧插件，最后给出一份与插件配套的基础配置。插件名后的括号是扩展 ID，可以在扩展面板中直接搜索，或用 <code dir="auto">code --install-extension &lt;ID&gt;</code> 安装。</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="代码质量">代码质量</h2><a class="sl-anchor-link" href="#代码质量"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “代码质量”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>插件</th>
+<th>扩展 ID</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ESLint</td>
+<td><code dir="auto">dbaeumer.vscode-eslint</code></td>
+<td>在编辑器中实时显示 ESLint 报错，支持保存时自动修复。读取项目里的 ESLint 配置和本地安装的 ESLint。</td>
+</tr>
+<tr>
+<td>Prettier - Code formatter</td>
+<td><code dir="auto">esbenp.prettier-vscode</code></td>
+<td>用 Prettier 格式化代码，优先使用项目里的 <code dir="auto">.prettierrc</code> 配置。</td>
+</tr>
+<tr>
+<td>Stylelint</td>
+<td><code dir="auto">stylelint.vscode-stylelint</code></td>
+<td>检查 CSS、SCSS、Less 等样式文件。</td>
+</tr>
+<tr>
+<td>Error Lens</td>
+<td><code dir="auto">usernamehw.errorlens</code></td>
+<td>把错误和警告直接显示在对应代码行的末尾，不用把鼠标悬停上去。</td>
+</tr>
+<tr>
+<td>Code Spell Checker</td>
+<td><code dir="auto">streetsidesoftware.code-spell-checker</code></td>
+<td>检查变量名、注释里的英文拼写错误，支持驼峰拆词。</td>
+</tr>
+<tr>
+<td>EditorConfig for VS Code</td>
+<td><code dir="auto">EditorConfig.EditorConfig</code></td>
+<td>让编辑器遵循项目根目录的 <code dir="auto">.editorconfig</code>（缩进、换行符、编码）。</td>
+</tr>
+</tbody>
+</table>
+<p>这几个插件只负责“在编辑器里显示和触发”，规则本身应该写在项目配置里，这样命令行、CI 和编辑器的检查结果才一致。规则怎么配见 <a href="/notes/fronted/codeBasic/developRule.html">前端开发规范</a>。</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="git">Git</h2><a class="sl-anchor-link" href="#git"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Git”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>插件</th>
+<th>扩展 ID</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GitLens</td>
+<td><code dir="auto">eamodio.gitlens</code></td>
+<td>在代码行旁显示最后修改人和提交信息（blame），查看文件和行的修改历史，比较分支与提交。部分高级功能需要付费。</td>
+</tr>
+<tr>
+<td>Git Graph</td>
+<td><code dir="auto">mhutchie.git-graph</code></td>
+<td>以图形方式查看提交历史和分支关系，可以在图上执行检出、合并、变基等操作。</td>
+</tr>
+</tbody>
+</table>
+<p>VS Code 内置的源代码管理面板已经能完成暂存、提交、推送、解决冲突等日常操作，近年的版本也内置了提交图（Source Control Graph）。只是偶尔看历史的话，内置功能可能已经够用。Git 命令本身见 <a href="/notes/others/git.html">Git 常用操作</a>。</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="编辑效率">编辑效率</h2><a class="sl-anchor-link" href="#编辑效率"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “编辑效率”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>插件</th>
+<th>扩展 ID</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Path Intellisense</td>
+<td><code dir="auto">christian-kohler.path-intellisense</code></td>
+<td>输入文件路径时自动补全。可以通过 <code dir="auto">path-intellisense.mappings</code> 配置 <code dir="auto">@</code> 等路径别名。</td>
+</tr>
+<tr>
+<td>Bookmarks</td>
+<td><code dir="auto">alefragnani.Bookmarks</code></td>
+<td>给代码行加书签，在书签之间快速跳转，适合阅读大型代码库。</td>
+</tr>
+<tr>
+<td>Better Comments</td>
+<td><code dir="auto">aaron-bond.better-comments</code></td>
+<td>按前缀给注释上色，例如 <code dir="auto">// !</code> 警告、<code dir="auto">// ?</code> 疑问、<code dir="auto">// TODO</code> 待办。</td>
+</tr>
+<tr>
+<td>Paste JSON as Code</td>
+<td><code dir="auto">quicktype.quicktype</code></td>
+<td>把 JSON 粘贴为 TypeScript 类型或其他语言的数据结构定义，适合根据接口返回生成类型。</td>
+</tr>
+<tr>
+<td>Color Highlight</td>
+<td><code dir="auto">naumovs.color-highlight</code></td>
+<td>在任意文件中把颜色值渲染成对应的颜色。CSS 文件里内置就有颜色预览，这个插件主要用于 JS、TS 等文件中的颜色字符串。</td>
+</tr>
+<tr>
+<td>Live Server</td>
+<td><code dir="auto">ritwickdey.LiveServer</code></td>
+<td>为静态 HTML 页面启动本地服务器，保存后自动刷新浏览器。用 Vite 等工具的项目自带开发服务器，不需要它。</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h2"><h2 id="框架与语言支持">框架与语言支持</h2><a class="sl-anchor-link" href="#框架与语言支持"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “框架与语言支持”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>插件</th>
+<th>扩展 ID</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vue - Official</td>
+<td><code dir="auto">Vue.volar</code></td>
+<td>Vue 官方维护的插件，提供 <code dir="auto">.vue</code> 单文件组件的语法高亮、类型检查和补全。取代了旧的 Vetur。</td>
+</tr>
+<tr>
+<td>Tailwind CSS IntelliSense</td>
+<td><code dir="auto">bradlc.vscode-tailwindcss</code></td>
+<td>Tailwind 类名补全、悬停显示对应的 CSS、检查冲突的类名。</td>
+</tr>
+<tr>
+<td>ES7+ React/Redux/React-Native snippets</td>
+<td><code dir="auto">dsznajder.es7-react-js-snippets</code></td>
+<td>常用 React 代码片段，例如输入 <code dir="auto">rafce</code> 生成函数组件模板。</td>
+</tr>
+<tr>
+<td>Markdown All in One</td>
+<td><code dir="auto">yzhang.markdown-all-in-one</code></td>
+<td>Markdown 快捷键、自动生成目录、列表编号自动维护、表格格式化。</td>
+</tr>
+<tr>
+<td>Markdown Preview Github Styling</td>
+<td><code dir="auto">bierner.markdown-preview-github-styles</code></td>
+<td>让内置的 Markdown 预览使用 GitHub 的样式。</td>
+</tr>
+</tbody>
+</table>
+<aside aria-label="警告" class="starlight-aside starlight-aside--caution"><p class="starlight-aside__title" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="starlight-aside__icon"><path d="M12 16a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm10.67 1.47-8.05-14a3 3 0 0 0-5.24 0l-8 14A3 3 0 0 0 3.94 22h16.12a3 3 0 0 0 2.61-4.53Zm-1.73 2a1 1 0 0 1-.88.51H3.94a1 1 0 0 1-.88-.51 1 1 0 0 1 0-1l8-14a1 1 0 0 1 1.78 0l8.05 14a1 1 0 0 1 .05 1.02v-.02ZM12 8a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0V9a1 1 0 0 0-1-1Z"/></svg>警告</p><div class="starlight-aside__content"><p>Vetur 是 Vue 2 时代的插件，已不再推荐。开发 Vue 3 项目应使用 Vue - Official，并且两者不要同时启用，否则会出现重复的提示和格式化冲突。</p></div></aside>
+<div class="sl-heading-wrapper level-h2"><h2 id="远程开发">远程开发</h2><a class="sl-anchor-link" href="#远程开发"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “远程开发”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>插件</th>
+<th>扩展 ID</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Remote - SSH</td>
+<td><code dir="auto">ms-vscode-remote.remote-ssh</code></td>
+<td>通过 SSH 连接远程机器，在本地界面中编辑远程文件、使用远程终端。</td>
+</tr>
+<tr>
+<td>Dev Containers</td>
+<td><code dir="auto">ms-vscode-remote.remote-containers</code></td>
+<td>在 Docker 容器中开发，把开发环境写成配置文件，团队成员打开项目即可得到一致的环境。</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h2"><h2 id="主题与图标">主题与图标</h2><a class="sl-anchor-link" href="#主题与图标"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “主题与图标”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>插件</th>
+<th>扩展 ID</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Material Icon Theme</td>
+<td><code dir="auto">PKief.material-icon-theme</code></td>
+<td>按文件类型和文件夹名称显示对应图标，在资源管理器里更容易区分文件。</td>
+</tr>
+<tr>
+<td>GitHub Theme</td>
+<td><code dir="auto">GitHub.github-vscode-theme</code></td>
+<td>GitHub 风格的亮色和暗色配色主题。</td>
+</tr>
+</tbody>
+</table>
+<p>主题属于个人偏好，按喜好选择即可。VS Code 内置的 Dark Modern / Light Modern 主题已经足够日常使用。</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="已被内置功能取代的插件">已被内置功能取代的插件</h2><a class="sl-anchor-link" href="#已被内置功能取代的插件"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “已被内置功能取代的插件”</span></a></div>
+<p>下面这些插件曾经很流行，现在可以卸载，改用 VS Code 的内置设置：</p>
+<table>
+<thead>
+<tr>
+<th>插件</th>
+<th>现状</th>
+<th>内置替代</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bracket Pair Colorizer / Bracket Pair Colorizer 2</td>
+<td>作者已声明停止维护，推荐使用内置功能</td>
+<td>括号配对着色已内置，<code dir="auto">editor.bracketPairColorization.enabled</code>（新版默认开启）；配对辅助线 <code dir="auto">editor.guides.bracketPairs</code></td>
+</tr>
+<tr>
+<td>Indenticator（高亮当前缩进层级）</td>
+<td>内置功能已覆盖</td>
+<td><code dir="auto">editor.guides.highlightActiveIndentation</code></td>
+</tr>
+<tr>
+<td>Go To Method（跳转到方法）</td>
+<td>内置功能已覆盖</td>
+<td>命令“转到文件中的符号”（macOS <code dir="auto">Cmd+Shift+O</code>，Windows <code dir="auto">Ctrl+Shift+O</code>）</td>
+</tr>
+<tr>
+<td>Github Markdown Preview 中的基础预览</td>
+<td>内置已有预览</td>
+<td>内置 Markdown 预览（<code dir="auto">Cmd/Ctrl+Shift+V</code>），需要 GitHub 样式时只装上面的样式插件</td>
+</tr>
+<tr>
+<td>open in browser</td>
+<td>静态页面可用 Live Server 代替</td>
+<td>现代项目一般由构建工具的开发服务器提供访问地址</td>
+</tr>
+</tbody>
+</table>
+<p>两个容易引起争议的插件：</p>
+<ul>
+<li><strong>Auto Rename Tag</strong>（<code dir="auto">formulahendry.auto-rename-tag</code>）：修改开始标签时同步修改结束标签。VS Code 内置的“链接编辑”（<code dir="auto">editor.linkedEditing</code>）在 HTML 中可以实现相同效果，在 JSX、Vue 模板中是否完全覆盖取决于对应语言的支持情况，这里不下结论，可以先开启内置设置，不够用再装插件。</li>
+<li><strong>Auto Close Tag</strong>（<code dir="auto">formulahendry.auto-close-tag</code>）：自动补全结束标签。HTML 文件中内置已支持（<code dir="auto">html.autoClosingTags</code>），JSX 中也有 TypeScript 语言服务提供的类似能力，多数情况下不需要再装。</li>
+</ul>
+<p>另外，原清单中的 <code dir="auto">vscode-flow-ide</code> 用于 Flow 类型检查。Flow 在社区中的使用已经很少，新项目普遍使用 TypeScript，这里不再推荐。</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="推荐的基础配置">推荐的基础配置</h2><a class="sl-anchor-link" href="#推荐的基础配置"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “推荐的基础配置”</span></a></div>
+<p>用户级配置（<code dir="auto">settings.json</code>，命令面板中搜索“首选项：打开用户设置 (JSON)”）放与项目无关的个人偏好：</p>
+<div class="expressive-code"><link rel="stylesheet" href="/notes/_astro/ec.16pll.css"><script type="module" src="/notes/_astro/ec.0vx5m.js"></script><figure class="frame not-content"><figcaption class="header"></figcaption><pre data-language="json"><code><div class="ec-line"><div class="code"><span style="--0:#E6EDF3;--1:#1F2328">{</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#7EE787;--1:#116329">"editor.formatOnSave"</span><span style="--0:#E6EDF3;--1:#1F2328">: </span><span style="--0:#79C0FF;--1:#0550AE">true</span><span style="--0:#E6EDF3;--1:#1F2328">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#7EE787;--1:#116329">"editor.defaultFormatter"</span><span style="--0:#E6EDF3;--1:#1F2328">: </span><span style="--0:#A5D6FF;--1:#0A3069">"esbenp.prettier-vscode"</span><span style="--0:#E6EDF3;--1:#1F2328">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#7EE787;--1:#116329">"editor.codeActionsOnSave"</span><span style="--0:#E6EDF3;--1:#1F2328">: {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#7EE787;--1:#116329">"source.fixAll.eslint"</span><span style="--0:#E6EDF3;--1:#1F2328">: </span><span style="--0:#A5D6FF;--1:#0A3069">"explicit"</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E6EDF3;--1:#1F2328">  </span></span><span style="--0:#E6EDF3;--1:#1F2328">},</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#7EE787;--1:#116329">"editor.bracketPairColorization.enabled"</span><span style="--0:#E6EDF3;--1:#1F2328">: </span><span style="--0:#79C0FF;--1:#0550AE">true</span><span style="--0:#E6EDF3;--1:#1F2328">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#7EE787;--1:#116329">"editor.guides.bracketPairs"</span><span style="--0:#E6EDF3;--1:#1F2328">: </span><span style="--0:#A5D6FF;--1:#0A3069">"active"</span><span style="--0:#E6EDF3;--1:#1F2328">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#7EE787;--1:#116329">"editor.linkedEditing"</span><span style="--0:#E6EDF3;--1:#1F2328">: </span><span style="--0:#79C0FF;--1:#0550AE">true</span><span style="--0:#E6EDF3;--1:#1F2328">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#7EE787;--1:#116329">"editor.stickyScroll.enabled"</span><span style="--0:#E6EDF3;--1:#1F2328">: </span><span style="--0:#79C0FF;--1:#0550AE">true</span><span style="--0:#E6EDF3;--1:#1F2328">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#7EE787;--1:#116329">"files.eol"</span><span style="--0:#E6EDF3;--1:#1F2328">: </span><span style="--0:#A5D6FF;--1:#0A3069">"</span><span style="--0:#FF7B72;--1:#CA212D">\n</span><span style="--0:#A5D6FF;--1:#0A3069">"</span><span style="--0:#E6EDF3;--1:#1F2328">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#7EE787;--1:#116329">"files.trimTrailingWhitespace"</span><span style="--0:#E6EDF3;--1:#1F2328">: </span><span style="--0:#79C0FF;--1:#0550AE">true</span><span style="--0:#E6EDF3;--1:#1F2328">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#7EE787;--1:#116329">"files.insertFinalNewline"</span><span style="--0:#E6EDF3;--1:#1F2328">: </span><span style="--0:#79C0FF;--1:#0550AE">true</span><span style="--0:#E6EDF3;--1:#1F2328">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#7EE787;--1:#116329">"workbench.iconTheme"</span><span style="--0:#E6EDF3;--1:#1F2328">: </span><span style="--0:#A5D6FF;--1:#0A3069">"material-icon-theme"</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E6EDF3;--1:#1F2328">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="复制到剪贴板" data-copied="复制成功！" data-code="{  &quot;editor.formatOnSave&quot;: true,  &quot;editor.defaultFormatter&quot;: &quot;esbenp.prettier-vscode&quot;,  &quot;editor.codeActionsOnSave&quot;: {    &quot;source.fixAll.eslint&quot;: &quot;explicit&quot;  },  &quot;editor.bracketPairColorization.enabled&quot;: true,  &quot;editor.guides.bracketPairs&quot;: &quot;active&quot;,  &quot;editor.linkedEditing&quot;: true,  &quot;editor.stickyScroll.enabled&quot;: true,  &quot;files.eol&quot;: &quot;\n&quot;,  &quot;files.trimTrailingWhitespace&quot;: true,  &quot;files.insertFinalNewline&quot;: true,  &quot;workbench.iconTheme&quot;: &quot;material-icon-theme&quot;}"><div></div></button></div></figure></div>
+<p>几点说明：</p>
+<ul>
+<li><code dir="auto">source.fixAll.eslint</code> 的值在较新的 VS Code 中写 <code dir="auto">"explicit"</code>（保存时执行）；旧版本的写法是 <code dir="auto">true</code>。</li>
+<li><code dir="auto">editor.stickyScroll.enabled</code> 在滚动时把当前所在的函数、类的开头固定在顶部，阅读长文件时很有用。</li>
+<li>和团队相关的配置（格式化器、保存时修复）应该放进项目的 <code dir="auto">.vscode/settings.json</code> 并提交到仓库，同时在 <code dir="auto">.vscode/extensions.json</code> 中列出推荐插件，其他成员打开项目时 VS Code 会提示安装：</li>
+</ul>
+<div class="expressive-code"><figure class="frame has-title not-content"><figcaption class="header"><span class="title">.vscode/extensions.json</span></figcaption><pre data-language="json"><code><div class="ec-line"><div class="code"><span style="--0:#E6EDF3;--1:#1F2328">{</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#7EE787;--1:#116329">"recommendations"</span><span style="--0:#E6EDF3;--1:#1F2328">: [</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#A5D6FF;--1:#0A3069">"dbaeumer.vscode-eslint"</span><span style="--0:#E6EDF3;--1:#1F2328">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#A5D6FF;--1:#0A3069">"esbenp.prettier-vscode"</span><span style="--0:#E6EDF3;--1:#1F2328">,</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#A5D6FF;--1:#0A3069">"EditorConfig.EditorConfig"</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E6EDF3;--1:#1F2328">  </span></span><span style="--0:#E6EDF3;--1:#1F2328">]</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E6EDF3;--1:#1F2328">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="复制到剪贴板" data-copied="复制成功！" data-code="{  &quot;recommendations&quot;: [    &quot;dbaeumer.vscode-eslint&quot;,    &quot;esbenp.prettier-vscode&quot;,    &quot;EditorConfig.EditorConfig&quot;  ]}"><div></div></button></div></figure></div>
+<p>旧配置迁移时注意：</p>
+<ul>
+<li>原配置里大量 <code dir="auto">prettier.xxx</code> 设置（如 <code dir="auto">prettier.eslintIntegration</code>、<code dir="auto">prettier.parser: "babylon"</code>）来自旧版 Prettier 插件，已被移除或不再生效。Prettier 的选项应写在项目的 <code dir="auto">.prettierrc</code> 中，插件会自动读取。</li>
+<li><code dir="auto">terminal.integrated.shell.windows</code> 已被终端配置文件（<code dir="auto">terminal.integrated.profiles.windows</code> 与 <code dir="auto">terminal.integrated.defaultProfile.windows</code>）取代。</li>
+<li>配置里不要写本机绝对路径（如 Git、终端程序的安装路径）后再提交到项目仓库，换一台机器就会失效。</li>
+</ul>
+<div class="sl-heading-wrapper level-h2"><h2 id="小结">小结</h2><a class="sl-anchor-link" href="#小结"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “小结”</span></a></div>
+<ul>
+<li>代码质量类插件（ESLint、Prettier、Stylelint）只负责在编辑器中执行项目配置，规则写在项目里。</li>
+<li>Error Lens、GitLens、Path Intellisense 等是提升效率的常用插件，按需安装。</li>
+<li>Vue 3 项目用 Vue - Official，不再使用 Vetur。</li>
+<li>括号着色、缩进高亮、跳转符号、标签联动编辑都已内置，对应的旧插件可以卸载。</li>
+<li>团队配置放进 <code dir="auto">.vscode/settings.json</code> 和 <code dir="auto">.vscode/extensions.json</code> 一起提交，个人偏好放用户设置。</li>
+</ul>
+<div class="sl-heading-wrapper level-h2"><h2 id="参考">参考</h2><a class="sl-anchor-link" href="#参考"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “参考”</span></a></div>
+<ul>
+<li><a href="https://code.visualstudio.com/docs/editor/extension-marketplace">VS Code：Extension Marketplace</a></li>
+<li><a href="https://code.visualstudio.com/docs/getstarted/settings">VS Code：User and Workspace Settings</a></li>
+<li><a href="https://code.visualstudio.com/docs/terminal/profiles">VS Code：Terminal Profiles</a></li>
+<li><a href="https://cn.vuejs.org/guide/scaling-up/tooling.html#ide-support">Vue：工具链 - IDE 支持</a></li>
+</ul>
+</div><footer class="sl-flex astro-qcph7vbk"><div class="meta sl-flex astro-qcph7vbk"></div><nav class="pager print:hidden astro-ohknivtf" aria-label="文章翻页"><a class="prev astro-ohknivtf" href="/notes/others/git.html" rel="prev"><span class="eyebrow astro-ohknivtf"><span class="arrow astro-ohknivtf" aria-hidden="true">←</span>上一篇</span><span class="title astro-ohknivtf">Git 常用操作</span></a><a class="next astro-ohknivtf" href="/notes/fronted/keyword/others.html" rel="next"><span class="eyebrow astro-ohknivtf">下一篇<span class="arrow astro-ohknivtf" aria-hidden="true">→</span></span><span class="title astro-ohknivtf">常用工具库速查</span></a></nav></footer></div></div></main></div></div></div></div></body></html>
