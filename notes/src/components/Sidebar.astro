@@ -1,0 +1,42 @@
+---
+/** 侧边栏顶部一行：左边回简历，右边收起菜单；下面沿用 Starlight 默认侧边栏 */
+import Default from '@astrojs/starlight/components/Sidebar.astro';
+import PanelToggle from './PanelToggle.astro';
+---
+
+<div class="sidebar-head">
+	<a class="back-link" href="https://joy-jinyu.github.io/">← 简历</a>
+	<PanelToggle panel="sidebar" />
+</div>
+<Default />
+
+<style>
+	.sidebar-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.5rem;
+		min-height: 2rem;
+	}
+	/* min-width:0 让链接随面板收窄一起缩到 0，收起按钮才能留在窄栏里 */
+	.back-link {
+		flex: 1 1 auto;
+		min-width: 0;
+		overflow: hidden;
+		white-space: nowrap;
+		padding: 0.25rem 0.5rem;
+		margin-inline-start: -0.5rem;
+		border-radius: 8px;
+		font-weight: 600;
+		color: var(--strong);
+		text-decoration: none;
+		transition:
+			color 0.2s var(--ease),
+			background 0.2s var(--ease),
+			opacity 0.2s var(--ease);
+	}
+	.back-link:hover {
+		color: var(--brand-2);
+		background: rgba(var(--ink-rgb), 0.04);
+	}
+</style>
