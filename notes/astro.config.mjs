@@ -13,6 +13,8 @@ export default defineConfig({
       title: '有爱心安 - 花期',
       description: '杂乱无章的技术博客',
       locales: { root: { label: '简体中文', lang: 'zh-CN' } },
+      // 站点图标：简历页里的 Joy 签名头像（同一份图也放在 site/ 给简历页用）
+      favicon: '/favicon.png',
       // 「← 简历」放在自定义侧边栏顶部那一行（src/components/Sidebar.astro）
       sidebar,
       // 视觉规范对齐简历页 site/index.html：同一套字体、配色、底纹
@@ -36,6 +38,14 @@ export default defineConfig({
           content:
             "try{for(const p of ['sidebar','toc'])if(localStorage.getItem('joy-'+p)==='collapsed')document.documentElement.dataset[p]='collapsed'}catch{}",
         },
+        { tag: 'link', attrs: { rel: 'apple-touch-icon', href: '/notes/apple-touch-icon.png' } },
+        // 全站动态背景：waves 场景，组件拷贝自 learning/html（public/hero-bg.js），铺满视口的样式见 theme.css
+        { tag: 'script', attrs: { src: '/notes/hero-bg.js', defer: true } },
+        {
+          tag: 'script',
+          content:
+            "document.addEventListener('DOMContentLoaded',()=>{const bg=document.createElement('hero-bg');bg.setAttribute('variant','waves');bg.setAttribute('intensity','0.55');document.body.prepend(bg)})",
+        },
         { tag: 'link', attrs: { rel: 'preconnect', href: 'https://fonts.googleapis.com' } },
         { tag: 'link', attrs: { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: true } },
         {
@@ -53,7 +63,8 @@ export default defineConfig({
           borderColor: 'var(--line)',
           codeFontFamily: 'var(--sl-font-mono)',
           uiFontFamily: 'var(--sl-font-mono)',
-          codeBackground: 'var(--panel-hi)',
+          // 不能用半透明的 --panel-hi：动态背景会从代码块里透出来
+          codeBackground: 'color-mix(in srgb, var(--bg) 94%, var(--strong) 6%)',
           frames: {
             shadowColor: 'transparent',
             editorTabBarBackground: 'var(--panel)',
