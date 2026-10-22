@@ -18,6 +18,9 @@
   --brand-glow: rgba(0, 184, 184, 0.22);
   /* 品牌色当文字用时取这个：浅色下 #00b8b8 对白底只有约 2.4:1，换成笔记站同款加深青 */
   --brand-ink: var(--brand);
+  /* 光标：钢笔笔尖，热点在笔尖（旋转后约 4,4）。平时是空心笔尖，能点的地方「蘸了墨」变实心 */
+  --cursor-default: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cg transform='rotate(-45 12 12)' stroke-linejoin='round'%3E%3Cpath d='M12 1C14 5 18 9 18 14v5H6v-5c0-5 4-9 6-13z' fill='%2307090f' stroke='%235eead4' stroke-width='1.5'/%3E%3Cpath d='M12 3.5V10' stroke='%235eead4' stroke-width='1.2'/%3E%3Ccircle cx='12' cy='11.5' r='1.6' fill='%235eead4'/%3E%3C/g%3E%3C/svg%3E") 4 4, default;
+  --cursor-pointer: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cg transform='rotate(-45 12 12)' stroke-linejoin='round'%3E%3Cpath d='M12 1C14 5 18 9 18 14v5H6v-5c0-5 4-9 6-13z' fill='%2300b8b8' stroke='%2304201f' stroke-width='1.5'/%3E%3Cpath d='M12 3.5V10' stroke='%2304201f' stroke-width='1.2'/%3E%3Ccircle cx='12' cy='11.5' r='1.6' fill='%2304201f'/%3E%3C/g%3E%3C/svg%3E") 4 4, pointer;
   --hi-1: #ffffff;
   --hi-2: #a7f3ec;
   --warn: #f5b454;
@@ -90,6 +93,10 @@ body > hero-bg {
 a { color: var(--brand-2); text-decoration: none; }
 a:hover { text-decoration: underline; text-underline-offset: 3px; }
 :focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; border-radius: 6px; }
+html { cursor: var(--cursor-default); }
+/* 浏览器默认给 button / summary 的是箭头光标，这里统一兜底；组件里要手型就写 var(--cursor-pointer)，别写 pointer */
+a[href], button:not(:disabled), summary, select, label[for], :root .expressive-code .copy button { cursor: var(--cursor-pointer); }
+input, textarea, [contenteditable] { cursor: text; }
 b, strong { color: var(--strong); font-weight: 600; }
 img { max-width: 100%; height: auto; }
 
