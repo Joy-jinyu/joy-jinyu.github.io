@@ -52,6 +52,7 @@
 /* 标题悬停时出现 # 锚点，点了能复制分享到具体一节（链接由 slug 页脚本插入） */
 .prose .anchor {
   margin-left: 10px;
+  text-decoration: none;
   color: var(--faint);
   font: 500 0.7em/1 var(--mono);
   opacity: 0;
@@ -61,12 +62,13 @@
 .prose .anchor:hover { color: var(--brand-2); text-decoration: none; }
 @media (hover: none) { .prose .anchor { opacity: 0.6; } }
 
-.prose ul, .prose ol { padding-left: 1.3em; }
-.prose li + li { margin-top: 0.3em; }
-.prose li::marker { color: var(--brand); }
-.prose a { color: var(--brand-2); text-decoration: underline; text-decoration-color: rgba(94, 234, 212, 0.35); text-underline-offset: 3px; }
-.prose a:hover { text-decoration-color: currentColor; }
-.prose :not(pre) > code {
+/* 列表、链接、行内代码、表格的样式不进入交互组件：组件根节点加 .not-prose 即可豁免（同 Tailwind Typography 的约定） */
+.prose :is(ul, ol):not(:where(.not-prose *)) { padding-left: 1.3em; }
+.prose li:not(:where(.not-prose *)) + li { margin-top: 0.3em; }
+.prose li:not(:where(.not-prose *))::marker { color: var(--brand); }
+.prose a:not(:where(.not-prose *)) { color: var(--brand-2); text-decoration: underline; text-decoration-color: rgba(94, 234, 212, 0.35); text-underline-offset: 3px; }
+.prose a:not(:where(.not-prose *)):hover { text-decoration-color: currentColor; }
+.prose :not(pre) > code:not(:where(.not-prose *)) {
   padding: 0.12em 0.4em;
   border-radius: 6px;
   background: rgba(0, 184, 184, 0.1);
@@ -79,13 +81,13 @@
 
 /* 表格：横向放不下时容器内滚动，不撑破页面 */
 .prose .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); }
-.prose table { width: 100%; border-collapse: collapse; font-size: 14.5px; line-height: 1.65; }
-.prose th, .prose td { padding: 10px 16px; text-align: left; vertical-align: top; }
-.prose th { color: var(--muted); font: 500 12px/1.4 var(--mono); letter-spacing: 0.06em; background: rgba(var(--ink-rgb), 0.03); border-bottom: 1px solid var(--line); }
-.prose tr + tr td { border-top: 1px solid var(--line); }
-.prose td:first-child { white-space: nowrap; }
-.prose tbody tr { transition: background 0.18s var(--ease); }
-.prose tbody tr:hover { background: rgba(0, 184, 184, 0.04); }
+.prose table:not(:where(.not-prose *)) { width: 100%; border-collapse: collapse; font-size: 14.5px; line-height: 1.65; }
+.prose :is(th, td):not(:where(.not-prose *)) { padding: 10px 16px; text-align: left; vertical-align: top; }
+.prose th:not(:where(.not-prose *)) { color: var(--muted); font: 500 12px/1.4 var(--mono); letter-spacing: 0.06em; background: rgba(var(--ink-rgb), 0.03); border-bottom: 1px solid var(--line); }
+.prose tr + tr td:not(:where(.not-prose *)) { border-top: 1px solid var(--line); }
+.prose td:not(:where(.not-prose *)):first-child { white-space: nowrap; }
+.prose tbody tr:not(:where(.not-prose *)) { transition: background 0.18s var(--ease); }
+.prose tbody tr:not(:where(.not-prose *)):hover { background: rgba(0, 184, 184, 0.04); }
 
 .prose .expressive-code { margin-top: 1.2em; }
 
@@ -93,5 +95,5 @@
   .prose { font-size: 16px; }
   .prose h2 { font-size: 25px; }
   .prose h3 { font-size: 19px; }
-  .prose td:first-child { white-space: normal; }
+  .prose td:not(:where(.not-prose *)):first-child { white-space: normal; }
 }
