@@ -6,12 +6,16 @@
 <script>document.documentElement.dataset.theme = new URLSearchParams(location.search).get("theme") === "light" ? "light" : "dark";
 if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("reveal-ready");</script>
 <script src="/notes/hero-bg.js" defer></script>
+<!-- 右下角 3D 小猫（three.js），只在简历页 -->
+<script type="module" src="/pet.js"></script>
 <title>Joy · AI 应用前端工程师</title>
 <link rel="icon" type="image/png" href="/favicon.png" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Mrs+Saint+Delafield&display=block" rel="stylesheet" />
+<!-- 字体按 text= 子集化，只下页面（含 pet.js 气泡文案）用到的非中文字符；中文走系统字体。改文案时新增的英文 / 数字 / 符号要补进 text=，否则该字会回退成系统字体 -->
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=block&text=%20%25%27%2B%2C-.%2F0123456789%40ABCDEFGHIJKLMNOPQRSTUVWZ_abcdefghijklmnoprstuvwxyz%C2%B7%C3%97%E2%80%93%E2%80%94%E2%86%97%E2%8C%98%E2%9D%AF" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Mrs+Saint+Delafield&display=block&text=Joy" rel="stylesheet" />
 <style>
   :root {
     --bg: #07090f;
@@ -241,9 +245,10 @@ if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: re
     .reveal-ready .page { opacity: 0; transform: translateY(28px) scale(0.985); transition: opacity 0.7s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1); }
     .reveal-ready .page.is-in { opacity: 1; transform: none; }
     /* 要入场的元素直接用选择器命中，首帧就是隐藏状态；JS 只负责写 --i（错峰序号），不能靠 JS 打标记，否则会先显示再淡出 */
-    .reveal-ready :is(.sig, .eyebrow, .id h1, .prompt, .contact, .kpi, section > .rail, .hl .card, .sk, .proj, .job) { opacity: 0; transform: translateY(12px); filter: blur(4px); transition: opacity 0.6s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), filter 0.6s ease; transition-delay: calc(var(--i, 0) * 60ms + 180ms); }
+    /* 不做 blur 渐显：几十个元素同时过渡 filter 会逐帧重新栅格化，叠加纸面 backdrop-filter 时入场明显掉帧；opacity / transform 只走合成 */
+    .reveal-ready :is(.sig, .eyebrow, .id h1, .prompt, .contact, .kpi, section > .rail, .hl .card, .sk, .proj, .job) { opacity: 0; transform: translateY(12px); transition: opacity 0.6s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1); transition-delay: calc(var(--i, 0) * 60ms + 180ms); }
     .reveal-ready .page .sig { transform: scale(0.7) rotate(-12deg); } /* 加 .page 才能压过上一条 :is() 的优先级 */
-    .reveal-ready .is-in :is(.sig, .eyebrow, .id h1, .prompt, .contact, .kpi, section > .rail, .hl .card, .sk, .proj, .job) { opacity: 1; transform: none; filter: none; }
+    .reveal-ready .is-in :is(.sig, .eyebrow, .id h1, .prompt, .contact, .kpi, section > .rail, .hl .card, .sk, .proj, .job) { opacity: 1; transform: none; }
     .reveal-ready .meter i.on { transform: scaleX(0); transform-origin: left; transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1); transition-delay: calc(var(--i, 0) * 60ms + 420ms + var(--j, 0) * 70ms); }
     .reveal-ready .is-in .meter i.on { transform: none; }
   }
@@ -283,7 +288,8 @@ if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: re
     });
     // 字体用的是 display=block，字体到之前文字不可见；等字体下载完再开始入场，否则动画在看不见的时候就播完了（最多等 1.5s）。
     // 不能只等 document.fonts.ready：DOM 刚就绪时字体可能还没开始请求，它会立即 resolve，所以显式 load 用到的字体
-    var fonts = Promise.all(['700 50px Geist', '500 13px "Geist Mono"', '400 60px "Mrs Saint Delafield"'].map(function (f) { return document.fonts.load(f); }));
+    // 子集字体带 unicode-range，load 必须传实际文字，默认的空格匹配不到签名字体（它只有 Joy 三个字）
+    var fonts = Promise.all([['700 50px Geist', 'Joy'], ['500 13px "Geist Mono"', 'AI'], ['400 60px "Mrs Saint Delafield"', 'Joy']].map(function (f) { return document.fonts.load(f[0], f[1]); }));
     Promise.race([fonts, new Promise(function (r) { setTimeout(r, 1500); })]).catch(function () {}).then(function () {
       document.querySelectorAll(".page").forEach(function (page) { io.observe(page); });
     });
