@@ -1,0 +1,43 @@
+---
+/** 文章里的提示块。type 决定配色和默认标题：tip 要点 / warn 注意 / pit 坑 / todo 待验证 / try 练习 */
+interface Props {
+  type?: 'tip' | 'warn' | 'pit' | 'todo' | 'try'
+  title?: string
+}
+const labels = { tip: '要点', warn: '注意', pit: '坑', todo: '待验证', try: '练习' } as const
+const { type = 'tip', title } = Astro.props
+---
+
+<aside class={`callout ${type}`}>
+  <div class="label">{title ?? labels[type]}</div>
+  <div class="body"><slot /></div>
+</aside>
+
+<style>
+  .callout {
+    --c: var(--brand-2);
+    position: relative;
+    margin-top: 1.4em;
+    padding: 14px 18px 14px 20px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: linear-gradient(90deg, color-mix(in srgb, var(--c) 9%, transparent), var(--panel) 60%);
+    font-size: 15px;
+    line-height: 1.75;
+  }
+  .callout::before {
+    content: "";
+    position: absolute;
+    left: -1px;
+    top: 14px;
+    bottom: 14px;
+    width: 2px;
+    border-radius: 2px;
+    background: var(--c);
+  }
+  .warn, .todo { --c: var(--warn); }
+  .pit { --c: var(--danger); }
+  .label { color: var(--c); font: 600 11px/1 var(--mono); letter-spacing: 0.16em; }
+  .body { margin-top: 8px; }
+  .body :global(p + p) { margin-top: 0.6em; }
+</style>

@@ -1,0 +1,230 @@
+---
+/**
+ * 文章目录：宽屏是左侧吸顶栏，窄屏收成右下角「目录」按钮 + 底部抽屉（原生 <dialog>，自带焦点圈定和 Esc 关闭）。
+ * h2 是一级（文章分部），h3 是二级；当前阅读位置高亮，非当前分部的二级目录折叠起来
+ */
+import type { MarkdownHeading } from 'astro'
+
+interface Props {
+  headings: MarkdownHeading[]
+}
+const { headings } = Astro.props
+const groups: { h: MarkdownHeading; items: MarkdownHeading[] }[] = []
+for (const h of headings) {
+  if (h.depth === 2 || groups.length === 0) groups.push({ h, items: [] })
+  else groups[groups.length - 1].items.push(h)
+}
+---
+
+{
+  groups.length > 0 && (
+    <joy-toc>
+      <nav class="toc" aria-label="文章目录">
+        <div class="title">目录</div>
+        <ol class="l1">
+          {groups.map((g, i) => (
+            <li data-group={g.h.slug}>
+              <a href={`#${g.h.slug}`} data-slug={g.h.slug}>
+                <span class="n">{String(i + 1).padStart(2, '0')}</span>
+                {g.h.text}
+              </a>
+              {g.items.length > 0 && (
+                <ol class="l2">
+                  {g.items.map((s) => (
+                    <li>
+                      <a href={`#${s.slug}`} data-slug={s.slug}>
+                        {s.text}
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </li>
+          ))}
+        </ol>
+      </nav>
+      <button class="fab" type="button" aria-haspopup="dialog">
+        目录
+      </button>
+      <dialog class="sheet" aria-label="文章目录">
+        <div class="sheet-head">
+          <span>目录</span>
+          <button type="button" class="close" aria-label="关闭目录">
+            ×
+          </button>
+        </div>
+      </dialog>
+    </joy-toc>
+  )
+}
+
+<script>
+  class JoyToc extends HTMLElement {
+    connectedCallback() {
+      const nav = this.querySelector<HTMLElement>('nav.toc')!
+      const sheet = this.querySelector<HTMLDialogElement>('dialog.sheet')!
+      // 抽屉里放一份目录副本，两份共用同一套高亮逻辑
+      const copy = nav.querySelector('ol.l1')!.cloneNode(true) as HTMLElement
+      sheet.append(copy)
+      this.querySelector('.fab')!.addEventListener('click', () => sheet.showModal())
+      this.querySelector('.close')!.addEventListener('click', () => sheet.close())
+      // 抽屉开着时窗口变宽（平板转屏），抽屉被 CSS 隐藏但仍是模态，整页会点不动，所以主动关掉
+      matchMedia('(min-width: 1081px)').addEventListener('change', (e) => e.matches && sheet.open && sheet.close())
+      sheet.addEventListener('click', (e) => {
+        if (e.target === sheet || (e.target as HTMLElement).closest('a')) sheet.close()
+      })
+
+      const links = [...this.querySelectorAll<HTMLAnchorElement>('a[data-slug]')]
+      const targets = [...new Set(links.map((a) => a.dataset.slug!))]
+        .map((s) => document.getElementById(s))
+        .filter((el): el is HTMLElement => !!el)
+      const groupOf = new Map<string, string>()
+      nav.querySelectorAll<HTMLElement>('li[data-group]').forEach((li) => {
+        li.querySelectorAll<HTMLAnchorElement>('a[data-slug]').forEach((a) => groupOf.set(a.dataset.slug!, li.dataset.group!))
+      })
+
+      let current = ''
+      const setActive = (slug: string) => {
+        if (slug === current) return
+        current = slug
+        const group = groupOf.get(slug)
+        links.forEach((a) => {
+          const on = a.dataset.slug === slug
+          a.classList.toggle('on', on)
+          if (on) a.setAttribute('aria-current', 'location')
+          else a.removeAttribute('aria-current')
+        })
+        this.querySelectorAll<HTMLElement>('li[data-group]').forEach((li) => li.classList.toggle('open', li.dataset.group === group))
+        nav.querySelector('a.on')?.scrollIntoView({ block: 'nearest' })
+      }
+      // 视口上方 30% 那条线以上最后一个标题就是「当前位置」
+      const update = () => {
+        const line = innerHeight * 0.3
+        let slug = targets[0]?.id ?? ''
+        for (const t of targets) {
+          if (t.getBoundingClientRect().top <= line) slug = t.id
+          else break
+        }
+        setActive(slug)
+      }
+      let ticking = false
+      addEventListener(
+        'scroll',
+        () => {
+          if (ticking) return
+          ticking = true
+          requestAnimationFrame(() => {
+            ticking = false
+            update()
+          })
+        },
+        { passive: true },
+      )
+      update()
+    }
+  }
+  customElements.define('joy-toc', JoyToc)
+</script>
+
+<style>
+  .toc {
+    position: sticky;
+    top: calc(var(--header-h) + 32px);
+    max-height: calc(100vh - var(--header-h) - 64px);
+    margin-top: 56px;
+    padding: 4px 6px 4px 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+  .title { margin-bottom: 12px; color: var(--faint); font: 500 11px/1 var(--mono); letter-spacing: 0.18em; }
+  ol { list-style: none; margin: 0; padding: 0; }
+  .l1 > li + li { margin-top: 4px; }
+  a {
+    display: block;
+    padding: 5px 10px;
+    border-radius: 8px;
+    color: var(--muted);
+    font-size: 13.5px;
+    line-height: 1.5;
+    transition: color 0.18s var(--ease), background 0.18s var(--ease);
+  }
+  a:hover { color: var(--strong); background: rgba(var(--ink-rgb), 0.04); text-decoration: none; }
+  .l1 > li > a { color: var(--text); font-weight: 600; }
+  .n { margin-right: 8px; color: var(--brand-ink); font: 500 11px/1 var(--mono); }
+  .l2 {
+    display: none;
+    margin: 2px 0 6px 14px;
+    padding-left: 8px;
+    border-left: 1px solid var(--line);
+  }
+  .l2 a { font-size: 13px; }
+  li.open > .l2 { display: block; animation: drop 0.3s var(--ease); }
+  @keyframes drop { from { opacity: 0; transform: translateY(-4px); } }
+  a.on { color: var(--brand-2); background: linear-gradient(90deg, rgba(0, 184, 184, 0.14), transparent); }
+  .l1 > li > a.on { color: var(--brand-2); }
+
+  .fab, .sheet { display: none; }
+  @media (max-width: 1080px) {
+    .toc { display: none; }
+    .fab {
+      display: block;
+      position: fixed;
+      right: 16px;
+      bottom: 24px;
+      z-index: 25;
+      height: 42px;
+      padding: 0 18px;
+      border: 1px solid var(--line-hi);
+      border-radius: 999px;
+      background: var(--solid);
+      color: var(--strong);
+      font: 500 13px/1 var(--mono);
+      box-shadow: 0 12px 32px -14px rgba(0, 0, 0, 0.6);
+      cursor: pointer;
+    }
+    .fab:hover { border-color: var(--brand); }
+    .sheet[open] {
+      display: block;
+      width: min(560px, 100vw);
+      max-width: 100vw;
+      max-height: 78vh;
+      margin: auto auto 0;
+      padding: 0 12px 24px;
+      border: 1px solid var(--line-hi);
+      border-bottom: 0;
+      border-radius: 18px 18px 0 0;
+      background: var(--solid);
+      color: var(--text);
+      overflow-y: auto;
+      animation: up 0.35s var(--ease);
+    }
+    .sheet::backdrop { background: rgba(3, 4, 10, 0.55); }
+    .sheet-head {
+      position: sticky;
+      top: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 6px 10px;
+      background: var(--solid);
+      color: var(--strong);
+      font: 600 14px/1 var(--sans);
+    }
+    .close {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--line-hi);
+      border-radius: 999px;
+      background: transparent;
+      color: var(--strong);
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .sheet .l2 { display: block; }
+  }
+  @keyframes up { from { transform: translateY(40px); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) {
+    li.open > .l2 { animation: none; }
+    .sheet[open] { animation: none; }
+  }
+</style>

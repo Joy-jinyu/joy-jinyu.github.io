@@ -1,0 +1,117 @@
+---
+import Base from '../layouts/Base.astro'
+import { listPosts, readingMinutes, formatDate, titleTransition } from '../lib/posts'
+
+const posts = await listPosts()
+const base = import.meta.env.BASE_URL
+---
+
+<Base title="Joy · Blog" description="Joy 的博客：工具、工程化与 AI 应用开发的实践记录。">
+  <section class="hero">
+    <div class="eyebrow">Blog · {posts.length} 篇</div>
+    <h1>写给未来的自己</h1>
+    <p class="lede">日常在用的工具、踩过的坑和做过的取舍。笔记站放成体系的知识点，这里放完整的一篇。</p>
+  </section>
+
+  <section class="list" aria-label="文章列表">
+    {
+      posts.length === 0 ? (
+        <p class="empty">还没有文章。</p>
+      ) : (
+        posts.map((p, i) => (
+          <a class="card" href={`${base}${p.id}/`} style={`--i:${i}`}>
+            <div class="row">
+              <time datetime={p.data.date.toISOString()}>{formatDate(p.data.date)}</time>
+              <span class="dot" aria-hidden="true" />
+              <span>{p.data.meta ?? `约 ${readingMinutes(p.body)} 分钟`}</span>
+            </div>
+            <h2 style={`view-transition-name:${titleTransition(p.id)}`}>{p.data.title}</h2>
+            <p>{p.data.description}</p>
+            <div class="foot">
+              <div class="tags">
+                {p.data.tags.map((t) => (
+                  <span class="chip">{t}</span>
+                ))}
+              </div>
+              <span class="go" aria-hidden="true">
+                阅读 →
+              </span>
+            </div>
+          </a>
+        ))
+      )
+    }
+  </section>
+</Base>
+
+<style>
+  .hero { max-width: 880px; margin: 0 auto; padding: 88px 24px 40px; }
+  h1 {
+    margin: 14px 0 0;
+    font: 700 clamp(40px, 7vw, 64px) / 1.02 var(--sans);
+    letter-spacing: -0.045em;
+    background: linear-gradient(100deg, var(--hi-1) 30%, var(--hi-2) 62%, var(--brand) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .lede { max-width: 38em; margin: 18px 0 0; color: var(--muted); font-size: 17px; }
+  .list { display: grid; gap: 16px; max-width: 880px; margin: 0 auto; padding: 0 24px; }
+  .empty { color: var(--muted); }
+  .card {
+    position: relative;
+    display: block;
+    padding: 26px 28px 22px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: linear-gradient(180deg, var(--panel-hi), var(--panel));
+    color: var(--text);
+    overflow: hidden;
+    transition: border-color 0.25s var(--ease), transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  }
+  /* 鼠标位置跟随的光斑：--mx / --my 由下面的脚本写入 */
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(420px circle at var(--mx, 80%) var(--my, 0%), rgba(0, 184, 184, 0.14), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s var(--ease);
+    pointer-events: none;
+  }
+  .card:hover, .card:focus-visible {
+    border-color: rgba(0, 184, 184, 0.45);
+    transform: translateY(-2px);
+    box-shadow: 0 24px 60px -30px var(--brand-glow);
+    text-decoration: none;
+  }
+  .card:hover::before, .card:focus-visible::before { opacity: 1; }
+  .row { display: flex; align-items: center; gap: 10px; color: var(--muted); font: 400 12px/1 var(--mono); }
+  .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--faint); }
+  h2 { margin: 14px 0 0; color: var(--strong); font: 600 26px/1.3 var(--sans); letter-spacing: -0.02em; }
+  .card p { margin: 10px 0 0; }
+  .foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .go { color: var(--brand-2); font: 500 13px/1 var(--mono); transition: transform 0.3s var(--ease); }
+  .card:hover .go { transform: translateX(4px); }
+  @media (prefers-reduced-motion: no-preference) {
+    .card { animation: rise 0.7s var(--ease) both; animation-delay: calc(var(--i) * 80ms + 120ms); }
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } }
+  @media (max-width: 640px) {
+    .hero { padding: 56px 16px 28px; }
+    .list { padding: 0 16px; }
+    .card { padding: 20px 18px 18px; }
+    h2 { font-size: 22px; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.card').forEach((card) => {
+    card.addEventListener('pointermove', (e) => {
+      const r = card.getBoundingClientRect()
+      card.style.setProperty('--mx', `${e.clientX - r.left}px`)
+      card.style.setProperty('--my', `${e.clientY - r.top}px`)
+    })
+  })
+</script>

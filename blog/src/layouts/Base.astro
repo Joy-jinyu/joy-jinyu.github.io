@@ -1,0 +1,157 @@
+---
+/** 全站外壳：head、顶栏、动态背景、页脚；文章页和首页都套这一层 */
+import '../styles/global.css'
+import ThemeToggle from '../components/ThemeToggle.astro'
+
+interface Props {
+  title: string
+  description: string
+  /** hero-bg 的强度：文章页压低一点，避免干扰阅读 */
+  bgIntensity?: number
+}
+const { title, description, bgIntensity = 0.55 } = Astro.props
+const base = import.meta.env.BASE_URL
+const canonical = new URL(Astro.url.pathname, Astro.site)
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="article" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    {/* 首帧前恢复主题，避免闪烁；和笔记站共用 starlight-theme 这个 key，两边切换互相同步 */}
+    <script is:inline>
+      try {
+        const t = localStorage.getItem('starlight-theme')
+        document.documentElement.dataset.theme =
+          t === 'light' || t === 'dark' ? t : matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+      } catch {
+        document.documentElement.dataset.theme = 'dark'
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap"
+    />
+    {/* 动态背景组件与简历页、笔记站共用一份（notes/public/hero-bg.js，部署后在 /notes/ 下） */}
+    <script is:inline src="/notes/hero-bg.js" defer></script>
+  </head>
+  <body>
+    <hero-bg variant="neural" intensity={bgIntensity}></hero-bg>
+    <a class="skip" href="#main">跳到正文</a>
+    <header class="top">
+      <div class="top-in">
+        <a class="brand" href={base}>
+          <span class="mark" aria-hidden="true">J</span>
+          <span>Joy<span class="slash">/</span>blog</span>
+        </a>
+        <nav aria-label="站点导航">
+          <a href={base} aria-current={Astro.url.pathname === base ? 'page' : undefined}>文章</a>
+          <a href="/notes/">Notes</a>
+          <a href="/">简历</a>
+          <ThemeToggle />
+        </nav>
+      </div>
+    </header>
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <footer class="foot">
+      <span>© {new Date().getFullYear()} Joy</span>
+      <span class="sep">·</span>
+      <a href="https://github.com/Joy-jinyu/joy-jinyu.github.io">源码</a>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .skip {
+    position: fixed;
+    top: 8px;
+    left: 8px;
+    z-index: 100;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: var(--brand);
+    color: #001414;
+    font-weight: 600;
+    transform: translateY(-200%);
+    transition: transform 0.2s var(--ease);
+  }
+  .skip:focus { transform: none; }
+  .top {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    height: var(--header-h);
+    border-bottom: 1px solid var(--line);
+    background: color-mix(in srgb, var(--bg) 72%, transparent);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    backdrop-filter: blur(14px) saturate(140%);
+  }
+  .top-in {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    max-width: 1240px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--strong);
+    font: 700 16px/1 var(--sans);
+    letter-spacing: -0.02em;
+  }
+  .brand:hover { text-decoration: none; }
+  .brand .slash { margin: 0 2px; color: var(--brand); }
+  .mark {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 9px;
+    background: conic-gradient(from 200deg, var(--brand), var(--brand-2), rgba(var(--ink-rgb), 0.15), var(--brand));
+    color: #021616;
+    font: 700 14px/1 var(--mono);
+    box-shadow: 0 6px 20px -6px var(--brand-glow);
+  }
+  nav { display: flex; align-items: center; gap: 6px; font: 500 13px/1 var(--mono); }
+  nav a {
+    padding: 8px 12px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    color: var(--muted);
+    transition: color 0.2s var(--ease), border-color 0.2s var(--ease), background 0.2s var(--ease);
+  }
+  nav a:hover { color: var(--strong); background: rgba(var(--ink-rgb), 0.05); text-decoration: none; }
+  nav a[aria-current="page"] { color: var(--brand-2); border-color: var(--line-hi); }
+  main { display: block; outline: none; }
+  .foot {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 56px 16px 40px;
+    color: var(--faint);
+    font: 400 12px/1 var(--mono);
+  }
+  .foot a { color: var(--muted); }
+  @media (max-width: 640px) {
+    .top-in { padding: 0 16px; }
+    nav a { padding: 8px 8px; }
+  }
+</style>
