@@ -478,7 +478,8 @@ export class TmuxPlayground extends HTMLElement {
   private buildPane(id: number): HTMLElement {
     const p = this.panes.get(id)!
     const on = id === this.win.active
-    const el = h('div', `tp-pane${on ? ' on' : ''}`)
+    // pick：点了能切过来的 pane，只用来给手型光标
+    const el = h('div', `tp-pane${on ? ' on' : this.mode.kind === 'normal' ? ' pick' : ''}`)
     el.dataset.pane = String(id)
     el.append(h('span', 'no', String(this.paneIndex(id))))
     p.lines.forEach((l) => l.text && el.append(h('div', `tp-line${l.out ? ' out' : ''}`, l.text)))

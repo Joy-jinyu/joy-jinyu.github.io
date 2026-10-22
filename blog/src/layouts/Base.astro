@@ -52,8 +52,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site)
     <header class="top">
       <div class="top-in">
         <a class="brand" href={base}>
-          <span class="mark" aria-hidden="true">J</span>
-          <span>Joy<span class="slash">/</span>blog</span>
+          {/* 和简历页共用同一张 Joy 签名图（site/favicon.png，部署后在站点根目录） */}
+          <img class="mark" src="/favicon.png" alt="" width="30" height="30" />
+          <span>Pairwise</span>
         </a>
         <nav aria-label="站点导航">
           <a href={base} aria-current={Astro.url.pathname === base ? 'page' : undefined}>文章</a>
@@ -118,16 +119,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site)
     letter-spacing: -0.02em;
   }
   .brand:hover { text-decoration: none; }
-  .brand .slash { margin: 0 2px; color: var(--brand); }
   .mark {
-    display: grid;
-    place-items: center;
-    width: 28px;
-    height: 28px;
-    border-radius: 9px;
-    background: conic-gradient(from 200deg, var(--brand), var(--brand-2), rgba(var(--ink-rgb), 0.15), var(--brand));
-    color: #021616;
-    font: 700 14px/1 var(--mono);
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
     box-shadow: 0 6px 20px -6px var(--brand-glow);
   }
   nav { display: flex; align-items: center; gap: 6px; font: 500 13px/1 var(--mono); }

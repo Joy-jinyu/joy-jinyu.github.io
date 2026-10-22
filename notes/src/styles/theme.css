@@ -177,6 +177,10 @@ mobile-starlight-toc nav {
 .sidebar-content {
   --sl-sidebar-item-padding-inline: 0.6rem;
 }
+/* 浏览器默认 summary 是箭头光标，Starlight 只给侧栏的 summary 加了手型，手机端「本页内容概述」等其余折叠条没有 */
+summary {
+  cursor: pointer;
+}
 .sidebar-content a,
 .sidebar-content summary {
   border-radius: 8px;

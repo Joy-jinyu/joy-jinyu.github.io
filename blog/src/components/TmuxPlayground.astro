@@ -109,6 +109,7 @@ const tasks = [
   .tp-pane { position: relative; display: flex; flex-direction: column; justify-content: flex-start; height: 100%; padding: 6px 10px; background: var(--t-bg); overflow: hidden; }
   .tp-pane::after { content: ""; position: absolute; inset: 0; border: 1px solid transparent; pointer-events: none; transition: border-color 0.2s var(--ease); }
   .tp-pane.on::after { border-color: rgba(0, 184, 184, 0.7); }
+  .tp-pane.pick { cursor: var(--cursor-pointer); }
   .tp-pane .no { position: absolute; top: 4px; right: 8px; color: #4a5160; font-size: 11px; }
   .tp-pane.on .no { color: #5eead4; }
   .tp-line { white-space: pre-wrap; word-break: break-all; }
@@ -131,7 +132,7 @@ const tasks = [
   .tp-status input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: #f3f5f9; font: inherit; }
   .tp-full { position: absolute; inset: 0; padding: 14px 16px; background: var(--t-bg); }
   .tp-full .tp-act { margin-top: 14px; }
-  .tp-full button, .tp-help button { padding: 4px 12px; border: 1px solid rgba(0, 184, 184, 0.6); border-radius: 999px; background: transparent; color: #5eead4; font: inherit; cursor: pointer; }
+  .tp-full button, .tp-help button { padding: 4px 12px; border: 1px solid rgba(0, 184, 184, 0.6); border-radius: 999px; background: transparent; color: #5eead4; font: inherit; cursor: var(--cursor-pointer); }
   .tp-help { position: absolute; inset: 8px; padding: 12px 16px; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 10px; background: #0b1016; overflow: auto; }
   .tp-help table { border-collapse: collapse; width: 100%; font-size: 12px; }
   .tp-help td { padding: 3px 10px 3px 0; vertical-align: top; }
@@ -150,7 +151,7 @@ const tasks = [
 
   .tp-below { display: grid; grid-template-columns: minmax(0, 1fr) 240px; gap: 14px; margin-top: 14px; }
   .tp-pad { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; align-content: start; }
-  .tp-pad button { -webkit-tap-highlight-color: transparent; touch-action: manipulation; display: flex; align-items: center; gap: 8px; min-height: 40px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); color: var(--text); font: 500 13px/1.3 var(--sans); text-align: left; cursor: pointer; transition: border-color 0.18s var(--ease), background 0.18s var(--ease), transform 0.12s var(--ease); }
+  .tp-pad button { -webkit-tap-highlight-color: transparent; touch-action: manipulation; display: flex; align-items: center; gap: 8px; min-height: 40px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); color: var(--text); font: 500 13px/1.3 var(--sans); text-align: left; cursor: var(--cursor-pointer); transition: border-color 0.18s var(--ease), background 0.18s var(--ease), transform 0.12s var(--ease); }
   /* 触屏点完会残留 :hover，只在真有悬停能力的设备上加悬停样式 */
   @media (hover: hover) { .tp-pad button:hover { border-color: rgba(0, 184, 184, 0.5); background: rgba(0, 184, 184, 0.06); } }
   .tp-pad button:active, .tp-pad button.hit { transform: scale(0.97); border-color: var(--brand); background: rgba(0, 184, 184, 0.12); }
@@ -158,7 +159,7 @@ const tasks = [
   .tp-tasks { padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); font-size: 13.5px; }
   .tp-tasks-head { display: flex; align-items: center; justify-content: space-between; color: var(--strong); font-weight: 600; }
   .tp-count { margin-left: 6px; color: var(--brand-2); font: 500 12px var(--mono); }
-  .tp-reset { padding: 3px 10px; border: 1px solid var(--line-hi); border-radius: 999px; background: transparent; color: var(--muted); font: 500 12px/1.4 var(--mono); cursor: pointer; }
+  .tp-reset { padding: 3px 10px; border: 1px solid var(--line-hi); border-radius: 999px; background: transparent; color: var(--muted); font: 500 12px/1.4 var(--mono); cursor: var(--cursor-pointer); }
   .tp-reset:hover { color: var(--strong); border-color: var(--brand); }
   .tp-tasks ol { list-style: none; margin: 10px 0 0; padding: 0; }
   .tp-tasks li { display: flex; align-items: center; gap: 8px; margin: 0; padding: 4px 0; color: var(--muted); transition: color 0.2s var(--ease); }
