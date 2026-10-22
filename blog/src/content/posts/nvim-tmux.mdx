@@ -1,0 +1,610 @@
+---
+title: nvim + tmux：我的终端开发环境
+description: tmux 管会话和进程，nvim 管文件和代码。讲我的 nvim 配置和日常按键，再讲两者怎么配合：真彩色、Esc 延迟、剪贴板、pane 与窗口的分工，以及一条命令开好整个项目。文中有一个演示按键会被哪一层接住的小工具。
+date: 2026-10-22
+tags: [nvim, tmux, 终端, 效率工具]
+---
+
+import Callout from '../../components/Callout.astro'
+import KeyRoute from '../../components/KeyRoute.astro'
+
+[上一篇](../tmux-guide/)讲了 tmux。这篇讲跑在 tmux 里面的编辑器：nvim。我的分工很简单：
+
+| 谁 | 负责 | 例子 |
+| --- | --- | --- |
+| tmux | 会话、窗口、pane，以及要一直跑着的进程 | 一个项目一个会话；dev server、测试、日志各占一个 pane |
+| nvim | 文件和代码 | 找文件、全文搜索、跳定义、重命名、格式化、看 git 改动 |
+
+关掉终端软件，tmux 里的 nvim 和服务都还在；第二天 `tmux attach` 回来，光标还停在昨天的位置。
+
+本文以 nvim 0.11.5、tmux 3.6 为准，按键以我的 `~/.config/nvim` 和 `~/.tmux.conf` 为准，两份配置都在[文末附录](#附录我的完整配置)。
+
+<Callout title="先说两个键">
+  nvim 的 `<leader>` 我设成了空格，下文写作 <kbd>Space</kbd>，例如 <kbd>Space f f</kbd> 是依次按空格、f、f。tmux 的前缀是 <kbd>Ctrl-a</kbd>，和上一篇一样。
+</Callout>
+
+## 我的 nvim 配置
+
+### 目录结构
+
+配置用 Lua 写，按职责拆成几个文件，插件由 [lazy.nvim](https://github.com/folke/lazy.nvim) 管理，第一次启动时自动安装：
+
+```text title="~/.config/nvim"
+init.lua              # 设置 leader，按顺序加载下面的模块
+lazy-lock.json        # 插件版本锁定，换机器时装出同一套版本
+lua/config/
+  options.lua         # 编辑器选项
+  autocmds.lua        # 自动命令：复制高亮、按语言设缩进
+  keymaps.lua         # 全局快捷键
+  lazy.lua            # 安装并启动 lazy.nvim
+  lsp.lua             # LSP：用 nvim 0.11 自带的 vim.lsp.config
+lua/plugins/
+  editor.lua          # 主题、文件浏览、状态栏、git 标记
+  lsp.lua             # 补全、代码片段、格式化
+  search.lua          # 模糊搜索、语法树、lazygit
+```
+
+### 基础选项
+
+`options.lua` 里值得一提的几项：
+
+| 选项 | 值 | 效果 |
+| --- | --- | --- |
+| `number` + `relativenumber` | 开 | 当前行显示行号，其余行显示相对距离，配合 `5j` 这类跳转 |
+| `clipboard` | `unnamedplus` | 复制粘贴直接走系统剪贴板 |
+| `splitright` / `splitbelow` | 开 | 新窗口开在右边 / 下边，和 tmux 分屏的方向习惯一致 |
+| `timeoutlen` | `300` | 键序列有歧义时最多等 300 毫秒，下文有演示 |
+| `scrolloff` | `8` | 光标上下始终留 8 行 |
+| `ignorecase` + `smartcase` | 开 | 搜索默认不区分大小写，输入了大写才区分 |
+| `wrap` | 关 | 长行不折行 |
+| 缩进 | 2 个空格 | Go 改成 tab、宽 4；Rust 改成 4 个空格（`autocmds.lua`） |
+
+另外 `options.lua` 把 `~/go/bin`、nvm 和 bun 的 bin 目录加进了 nvim 的 `PATH`，这样从任何地方启动 nvim 都能找到 `gopls`、`prettierd` 这些工具。
+
+### 插件一览
+
+| 插件 | 作用 | 我怎么用 |
+| --- | --- | --- |
+| tokyonight.nvim | 主题 | 用 `tokyonight-night` |
+| oil.nvim | 把目录当成一个文本缓冲区来编辑 | <kbd>-</kbd> 打开上级目录，改文件名就像改文字 |
+| telescope.nvim | 模糊搜索 | 找文件、全文搜索、切换缓冲区 |
+| nvim-treesitter | 语法树高亮 | 配置了 Go、TS、Rust 等文件类型，但目前没真正生效，见下面的坑 |
+| nvim-cmp + LuaSnip | 补全和代码片段 | <kbd>Tab</kbd> / <kbd>Shift-Tab</kbd> 选，<kbd>Enter</kbd> 确认 |
+| conform.nvim | 格式化 | 保存时自动格式化 |
+| gitsigns.nvim | 行号旁显示 git 改动 | 一眼看出哪几行改过 |
+| lazygit.nvim | 在 nvim 里开 lazygit | <kbd>Space g g</kbd> |
+| lualine.nvim | 状态栏 | 开了 `globalstatus`，整个 nvim 只有一条状态栏 |
+
+LSP 的启用写在我自己的 `lsp.lua` 里，用的是 nvim 0.11 新增的 `vim.lsp.config` + `vim.lsp.enable`。配置了 Go（gopls）、Rust（rust-analyzer）、TypeScript / JavaScript（typescript-language-server）三个，启动时先检查命令是否存在，没装就跳过，不会报错。nvim-lspconfig 插件仍然装着：它自带这几个服务的默认配置（`lsp/ts_ls.lua` 等），0.11 会把它和我写的配置合并，所以我只需要写和默认不同的部分。
+
+<Callout type="pit" title="我自己的配置里的坑：treesitter 其实没生效">
+  写这篇时我用 headless 模式打开一个 TS 文件检查，`vim.treesitter.highlighter.active` 是空的，说明语法树高亮没开起来。原因是配置只在打开文件时调用 `vim.treesitter.start`，但从没装过 parser：`~/.local/share/nvim/site/parser/` 是空的，失败又被 `pcall` 吞掉了，所以一直没发现。另外列表里的 `tsx` 不是 nvim 的文件类型名，`.tsx` 文件的类型是 `typescriptreact`。按 nvim-treesitter 的文档，执行 `:TSInstall go typescript tsx rust` 安装 parser 应该就能解决（我还没改，修完再更新这里）。
+</Callout>
+
+## 日常按键
+
+### 找文件、搜内容
+
+| 按键 | 作用 |
+| --- | --- |
+| <kbd>Space f f</kbd> | 按文件名模糊查找 |
+| <kbd>Space f g</kbd> | 全文搜索（Telescope 的 live_grep，底层用 ripgrep） |
+| <kbd>Space f b</kbd> | 在已打开的文件之间切换 |
+| <kbd>Space f h</kbd> | 搜 nvim 帮助文档 |
+| <kbd>-</kbd> 或 <kbd>Space e</kbd> | 用 Oil 打开当前文件所在目录 |
+| <kbd>Esc</kbd> | 清掉搜索高亮 |
+
+Telescope 的结果列表我设成了输入框在上、结果从上往下排，和大多数编辑器的命令面板一样。
+
+<Callout title="Oil 的用法">
+  Oil 把目录显示成一个普通缓冲区：改某一行就是重命名，删一行就是删除文件，新加一行就是新建文件，最后 `:w` 一次性生效。批量改名时比在终端里敲 `mv` 方便得多。
+</Callout>
+
+### 写代码：LSP 和补全
+
+下面这些键只在 LSP 连上之后才有（在 `lsp.lua` 的 `on_attach` 里给当前缓冲区绑定）。我在本机用 headless 模式打开一个 TS 文件验证过：`ts_ls` 会连上，<kbd>g d</kbd> 是只对当前缓冲区生效的映射。
+
+| 按键 | 作用 |
+| --- | --- |
+| <kbd>g d</kbd> | 跳到定义 |
+| <kbd>g r</kbd> | 查找引用（会等 300 毫秒，原因见下文） |
+| <kbd>g i</kbd> | 跳到实现 |
+| <kbd>K</kbd> | 悬浮显示文档 |
+| <kbd>Space r n</kbd> | 重命名符号，所有引用一起改 |
+| <kbd>Space c a</kbd> | code action，例如自动导入、快速修复 |
+| <kbd>Space f</kbd> | 格式化当前文件 |
+
+补全菜单出现后：
+
+| 按键 | 作用 |
+| --- | --- |
+| <kbd>Tab</kbd> / <kbd>Shift-Tab</kbd> | 下一个 / 上一个候选；没有菜单时在代码片段的占位符之间跳 |
+| <kbd>Enter</kbd> | 确认当前候选（没选时默认选第一个） |
+| <kbd>Ctrl-Space</kbd> | 手动呼出补全 |
+
+### 保存、格式化、git
+
+| 按键 | 作用 |
+| --- | --- |
+| <kbd>Space w</kbd> | 保存 |
+| <kbd>Space q</kbd> | 关闭当前窗口 |
+| <kbd>Space g g</kbd> | 在 nvim 里打开 lazygit |
+
+保存时 conform 会自动格式化，超时 800 毫秒：Go 配的是 `goimports` 和 `gofmt`，Rust 是 `rustfmt`，JS / TS / JSON / Markdown / YAML 是 `prettierd` 和 `prettier`。一个都找不到时，退回 LSP 自带的格式化。
+
+<Callout type="pit" title="列表里的格式化工具会全部执行">
+  我原本以为 `{ "prettierd", "prettier" }` 的意思是「有 prettierd 就用它，没有再用 prettier」。查了 conform 的文档才知道，默认是按顺序全部执行，只用第一个要加 `stop_after_first = true`。我本机两个都装了，所以现在每次保存会先后跑两遍；结果一样，只是多花时间。Go 那一组 `goimports` 加 `gofmt` 也是两个都跑，这个倒是合理的。
+</Callout>
+
+## 和 tmux 配合
+
+### 一个键先到谁手里
+
+按下一个键，它先经过终端软件，再到 tmux，最后才到 nvim。键盘输入里，tmux 只截住前缀 <kbd>Ctrl-a</kbd> 和紧跟在前缀后面的那个键，其余按键原样交给 nvim。鼠标是例外：开了 `mouse on`，点击和拖动先由 tmux 处理。下面这个小工具按我的两份配置演示这条路线：点一下输入区再按键，或者点下面的预设。
+
+<KeyRoute />
+
+几个值得注意的地方：
+
+- <kbd>Space f</kbd> 和 <kbd>Space f f</kbd> 都有映射。只按 <kbd>Space f</kbd> 时，nvim 不知道你是不是还要按第二个 f，会等 `timeoutlen`（我设的是 300 毫秒）后再执行格式化。`timeoutlen` 设太长，<kbd>Space f</kbd> 就会显得卡。
+- <kbd>g r</kbd> 也一样：nvim 0.11 自带了 `grr`（引用）、`grn`（重命名）、`gri`、`gra`、`grt` 几个全局映射（`:h grr`），和我绑的 <kbd>g r</kbd> 前缀重叠，所以按 <kbd>g r</kbd> 也要等 300 毫秒。直接按 <kbd>g r r</kbd> 就不用等。
+- nvim 里 <kbd>Ctrl-a</kbd> 本来是「把光标下的数字加 1」，被 tmux 前缀占了。我的 tmux 配置有 `bind C-a send-prefix`，连按两次 <kbd>Ctrl-a</kbd>，第二次就会转发给 nvim。
+- nvim 自己也有一套窗口：<kbd>Ctrl-w v</kbd> 左右分、<kbd>Ctrl-w h/j/k/l</kbd> 移动。这些键 tmux 不管，全部交给 nvim。<kbd>Ctrl-w</kbd> 是 nvim 的内置命令，会一直等下一个键，不受 `timeoutlen` 限制。
+
+### pane 还是 nvim 窗口
+
+两边都能分屏，我按「里面跑的是什么」来选：
+
+| 场景 | 用 | 原因 |
+| --- | --- | --- |
+| 同时看两个文件、对照着改 | nvim 窗口（<kbd>Ctrl-w v</kbd>） | 共用补全、搜索、LSP，跳定义能直接在旁边打开 |
+| dev server、测试 watch、日志 | tmux pane（<kbd>{'Ctrl-a \\'}</kbd>） | 进程一直跑，关掉 nvim 不影响它 |
+| 临时跑一条命令 | tmux pane，用完 <kbd>Ctrl-a z</kbd> 放大看输出 | 不打断 nvim 里的编辑状态 |
+| 看 git 改动、提交 | nvim 里 <kbd>Space g g</kbd> | lazygit 浮在编辑器上，关掉就回到原来的位置 |
+
+移动光标时两套键分开：<kbd>Ctrl-a h/j/k/l</kbd> 在 tmux pane 之间移动，<kbd>Ctrl-w h/j/k/l</kbd> 在 nvim 窗口之间移动。
+
+<Callout type="todo" title="可选，我没装">
+  [vim-tmux-navigator](https://github.com/christoomey/vim-tmux-navigator) 能让 <kbd>Ctrl-h/j/k/l</kbd> 一套键同时在 nvim 窗口和 tmux pane 之间移动，需要在 nvim 和 tmux 两边都配置。我目前用两套键也没觉得麻烦，所以没装，也没实测。
+</Callout>
+
+### 真彩色、Esc 延迟、焦点事件：用 checkhealth 验证
+
+tmux 里跑 nvim，最常见的三个问题是：主题颜色不对、按 <kbd>Esc</kbd> 有延迟、在别处改了文件 nvim 不知道。nvim 自带的 `:checkhealth vim.health` 会逐项检查。我在一个隔离的 tmux 实例里用我的配置跑了一遍，结果如下：
+
+```text title=":checkhealth vim.health（tmux 部分）"
+tmux ~
+- ✅ OK escape-time: 10
+- ✅ OK focus-events: on
+- $TERM: screen-256color
+```
+
+对应的是 `~/.tmux.conf` 里这几行：
+
+```sh title="~/.tmux.conf"
+set -g default-terminal "screen-256color"
+set -as terminal-features ",xterm-256color:RGB"   # 外层终端是 xterm-256color 时，告诉 tmux 它支持真彩色
+set -sg escape-time 10                            # 收到 Esc 后只等 10ms，判断是不是转义序列
+set -g focus-events on                            # 把「切回这个 pane」的焦点事件转发给 nvim
+```
+
+- **真彩色**：nvim 开了 `termguicolors`，主题用的是 24 位颜色。`terminal-features` 里的 `RGB` 告诉 tmux 外层终端支持真彩色，tmux 才会原样转发。
+- **Esc 延迟**：tmux 收到 <kbd>Esc</kbd> 后要等一会儿，判断它是不是方向键这类转义序列的开头。老版本 tmux 默认等 500 毫秒，在 nvim 里从插入模式退出时能明显感觉到卡。tmux 3.6 的默认值已经是 10（我用空配置启动实测过），配置里显式写上，是为了换到装着老版本 tmux 的机器上也不出问题。
+- **焦点事件**：nvim 的文档（`:h vim_diff`）写着 `'autoread'` 在终端里需要终端支持焦点事件才生效。开了 `focus-events on`，在旁边的 pane 里 `git checkout` 改了文件，切回 nvim 时它会自动重新载入。
+
+<Callout type="pit" title="检查时要有终端连着 tmux">
+  第一次我在一个没有客户端连接的 tmux 里跑 checkhealth，结果报了 `True color support could not be detected`。原因是 `terminal-features` 是按「连上来的终端」生效的：没有终端连着，tmux 不知道外层是 xterm-256color。用真实终端连上去再跑，警告就消失了；当时 tmux 报告的终端能力是 `RGB, ccolour, clipboard, cstyle, focus, title`。所以看到这条警告，先确认是不是在真实终端里检查的。
+</Callout>
+
+### 剪贴板：两边都进系统剪贴板
+
+- tmux 复制模式里按 <kbd>y</kbd> 会写进系统剪贴板。我的配置把它绑到 `pbcopy`，后加载的 tmux-yank 插件又重新绑定了一次，最终走的也是 `pbcopy`。
+- nvim 设了 `clipboard=unnamedplus`，`:checkhealth vim.provider` 显示它用的也是 `pbcopy`。
+
+所以在 tmux 复制模式里复制的日志，切到 nvim 直接按 <kbd>p</kbd> 就能贴进来；nvim 里 <kbd>y</kbd> 复制的代码，在浏览器里 <kbd>Cmd-v</kbd> 也能粘贴。
+
+<Callout type="todo" title="ssh 到远程机器时">
+  远程机器上没有 `pbcopy`。nvim 0.10 起内置了 OSC 52 剪贴板：让终端软件替你写本机剪贴板。nvim 的文档（`:h clipboard-osc52`）提到在 tmux 里自动检测可能失效，这时可以在配置里加 `vim.g.clipboard = 'osc52'` 强制使用。我的 tmux 开了 `set-clipboard on`，理论上能转发 OSC 52，但这条链路我还没在远程机器上实测。
+</Callout>
+
+### lazygit 的两种打开方式
+
+本机装了 lazygit，我有两个入口：
+
+- 在 nvim 里按 <kbd>Space g g</kbd>：lazygit 浮在编辑器上面，关掉回到原来的文件。适合边改边提交。
+- 上一篇提到的 tmux 弹出窗口：`bind g display-popup -E -w 90% -h 90% -d "#{pane_current_path}" lazygit`。不在 nvim 里的时候也能用。这一行不在我现在的配置里，需要的话自己加上。
+
+### 一条命令开好项目
+
+上一篇的项目脚本改一下，让左边的 pane 直接打开 nvim，右边跑服务，再单独开一个 git 窗口：
+
+```bash title="dev.sh"
+#!/usr/bin/env bash
+S=myapp
+DIR=~/code/myapp
+
+# 会话已存在就直接进入
+tmux has-session -t "$S" 2>/dev/null && exec tmux attach -t "$S"
+
+tmux new-session -d -s "$S" -n code -c "$DIR"                 # 窗口 1：code
+tmux send-keys -t "$S:code.1" 'nvim .' Enter                  # 左边 pane 开 nvim
+tmux split-window -h -t "$S:code" -c "$DIR" -l 35%            # 右边 35% 宽的 pane
+tmux send-keys -t "$S:code.2" 'pnpm dev' Enter                # 在右边启动服务
+tmux new-window -t "$S" -n git -c "$DIR"                      # 窗口 2：git
+tmux send-keys -t "$S:git" 'lazygit' Enter
+tmux select-window -t "$S:code"
+tmux select-pane -t "$S:code.1"
+exec tmux attach -t "$S"
+```
+
+这个脚本依赖我配置里的 `pane-base-index 1`：`code.1`、`code.2` 是从 1 开始的 pane 编号，用默认配置（从 0 开始）会报 `can't find pane: 1`。我在加载了我配置的隔离 tmux 实例里跑过（把 `pnpm dev` 换成了 `echo`，目录换成临时目录）：窗口 1 左边 pane 在跑 nvim、占约 65% 宽，右边 pane 在跑服务命令，窗口 2 在跑 lazygit，焦点停在 nvim 上。
+
+<Callout>
+  用 `send-keys 'nvim .' Enter` 而不是 `new-session ... nvim`：后者让 nvim 成为 pane 的主进程，`:q` 退出后 pane 也跟着关掉；前者是在 shell 里启动 nvim，退出后还留着 shell。
+</Callout>
+
+### 关机后恢复 nvim
+
+上一篇装的 tmux-resurrect 默认会重新启动 nvim，我在插件源码里确认过，它的默认进程列表是 `vi vim view nvim emacs man less more tail top htop irssi weechat mutt`。但它只是重新执行 `nvim` 命令，打开过哪些文件、分了几个窗口不会回来。
+
+<Callout type="todo" title="想连打开的文件一起恢复">
+  tmux-resurrect 的文档给的方案是：装 [vim-obsession](https://github.com/tpope/vim-obsession) 让 nvim 持续写 `Session.vim`，再在 `~/.tmux.conf` 里加 `set -g @resurrect-strategy-nvim 'session'`，恢复时如果目录里有 `Session.vim` 就用它打开 nvim。我目前没这样配，没有实测。
+</Callout>
+
+## 附录：我的完整配置
+
+`~/.tmux.conf` 在[上一篇的附录](../tmux-guide/#附录我的完整配置)里。下面是 `~/.config/nvim` 的全部文件，`lazy-lock.json` 只是版本号，省略。
+
+```lua title="init.lua"
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
+require("config.options")
+require("config.autocmds")
+require("config.keymaps")
+require("config.lazy")
+require("config.lsp")
+```
+
+```lua title="lua/config/options.lua"
+local opt = vim.opt
+local home = vim.fn.expand("$HOME")
+
+vim.env.PATH = table.concat({
+  home .. "/go/bin",
+  home .. "/.nvm/versions/prefix/bin",
+  home .. "/.bun/bin",
+  vim.env.PATH or "",
+}, ":")
+
+opt.number = true
+opt.relativenumber = true
+opt.mouse = "a"
+opt.clipboard = "unnamedplus"
+opt.termguicolors = true
+opt.signcolumn = "yes"
+opt.updatetime = 250
+opt.timeoutlen = 300
+opt.splitright = true
+opt.splitbelow = true
+opt.ignorecase = true
+opt.smartcase = true
+opt.cursorline = true
+opt.scrolloff = 8
+opt.sidescrolloff = 8
+opt.wrap = false
+opt.completeopt = { "menu", "menuone", "noselect" }
+
+opt.expandtab = true
+opt.shiftwidth = 2
+opt.tabstop = 2
+opt.softtabstop = 2
+opt.smartindent = true
+```
+
+```lua title="lua/config/autocmds.lua"
+local group = vim.api.nvim_create_augroup("local_config", { clear = true })
+
+vim.api.nvim_create_autocmd("TextYankPost", {
+  group = group,
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  group = group,
+  pattern = { "go" },
+  callback = function()
+    vim.opt_local.expandtab = false
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.tabstop = 4
+    vim.opt_local.softtabstop = 4
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  group = group,
+  pattern = { "rust" },
+  callback = function()
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.tabstop = 4
+    vim.opt_local.softtabstop = 4
+  end,
+})
+```
+
+```lua title="lua/config/keymaps.lua"
+local map = vim.keymap.set
+
+map("n", "<leader>w", "<cmd>w<cr>", { desc = "Write file" })
+map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit window" })
+map("n", "<leader>e", "<cmd>Oil<cr>", { desc = "Open file browser" })
+map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Find files" })
+map("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", { desc = "Live grep" })
+map("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Buffers" })
+map("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { desc = "Help tags" })
+map("n", "<leader>gg", "<cmd>LazyGit<cr>", { desc = "LazyGit" })
+map("n", "-", "<cmd>Oil<cr>", { desc = "Open parent directory" })
+map("n", "<Esc>", "<cmd>nohlsearch<cr>", { desc = "Clear search highlight" })
+```
+
+```lua title="lua/config/lazy.lua"
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+
+if not vim.uv.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable",
+    lazypath,
+  })
+end
+
+vim.opt.rtp:prepend(lazypath)
+
+require("lazy").setup("plugins", {
+  change_detection = { notify = false },
+  install = { colorscheme = { "tokyonight", "habamax" } },
+  ui = { border = "rounded" },
+})
+```
+
+```lua title="lua/config/lsp.lua"
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+local cmp_ok, cmp_lsp = pcall(require, "cmp_nvim_lsp")
+if cmp_ok then
+  capabilities = cmp_lsp.default_capabilities(capabilities)
+end
+
+local on_attach = function(_, bufnr)
+  local map = function(mode, lhs, rhs, desc)
+    vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
+  end
+
+  map("n", "gd", vim.lsp.buf.definition, "Go to definition")
+  map("n", "gr", vim.lsp.buf.references, "References")
+  map("n", "gi", vim.lsp.buf.implementation, "Implementation")
+  map("n", "K", vim.lsp.buf.hover, "Hover")
+  map("n", "<leader>rn", vim.lsp.buf.rename, "Rename symbol")
+  map("n", "<leader>ca", vim.lsp.buf.code_action, "Code action")
+  map("n", "<leader>f", function()
+    require("conform").format({ async = false, lsp_fallback = true })
+  end, "Format buffer")
+end
+
+local servers = {
+  gopls = {
+    cmd = { "gopls" },
+    filetypes = { "go", "gomod", "gowork", "gotmpl" },
+    root_markers = { "go.work", "go.mod", ".git" },
+  },
+  rust_analyzer = {
+    cmd = { "rust-analyzer" },
+    filetypes = { "rust" },
+    root_markers = { "Cargo.toml", ".git" },
+  },
+  ts_ls = {
+    cmd = { "typescript-language-server", "--stdio" },
+    filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+    root_markers = { "package.json", "tsconfig.json", "jsconfig.json", ".git" },
+  },
+}
+
+for name, config in pairs(servers) do
+  local executable = config.cmd[1]
+  if vim.fn.executable(executable) == 1 and vim.lsp.config and vim.lsp.enable then
+    config.capabilities = capabilities
+    config.on_attach = on_attach
+    vim.lsp.config(name, config)
+    vim.lsp.enable(name)
+  end
+end
+```
+
+```lua title="lua/plugins/editor.lua"
+return {
+  {
+    "folke/tokyonight.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.cmd.colorscheme("tokyonight-night")
+    end,
+  },
+  {
+    "stevearc/oil.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    opts = {
+      default_file_explorer = true,
+      view_options = { show_hidden = true },
+    },
+  },
+  {
+    "nvim-lualine/lualine.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    opts = {
+      options = {
+        theme = "tokyonight",
+        globalstatus = true,
+      },
+    },
+  },
+  {
+    "lewis6991/gitsigns.nvim",
+    opts = {},
+  },
+}
+```
+
+```lua title="lua/plugins/lsp.lua"
+return {
+  {
+    "neovim/nvim-lspconfig",
+  },
+  {
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp",
+      "L3MON4D3/LuaSnip",
+      "saadparwaiz1/cmp_luasnip",
+      "rafamadriz/friendly-snippets",
+    },
+    config = function()
+      local cmp = require("cmp")
+      local luasnip = require("luasnip")
+
+      require("luasnip.loaders.from_vscode").lazy_load()
+
+      cmp.setup({
+        snippet = {
+          expand = function(args)
+            luasnip.lsp_expand(args.body)
+          end,
+        },
+        mapping = cmp.mapping.preset.insert({
+          ["<C-Space>"] = cmp.mapping.complete(),
+          ["<CR>"] = cmp.mapping.confirm({ select = true }),
+          ["<Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_next_item()
+            elseif luasnip.expand_or_jumpable() then
+              luasnip.expand_or_jump()
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
+          ["<S-Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_prev_item()
+            elseif luasnip.jumpable(-1) then
+              luasnip.jump(-1)
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
+        }),
+        sources = cmp.config.sources({
+          { name = "nvim_lsp" },
+          { name = "luasnip" },
+        }),
+      })
+    end,
+  },
+  {
+    "stevearc/conform.nvim",
+    opts = {
+      formatters_by_ft = {
+        go = { "goimports", "gofmt" },
+        javascript = { "prettierd", "prettier" },
+        javascriptreact = { "prettierd", "prettier" },
+        typescript = { "prettierd", "prettier" },
+        typescriptreact = { "prettierd", "prettier" },
+        json = { "prettierd", "prettier" },
+        jsonc = { "prettierd", "prettier" },
+        markdown = { "prettierd", "prettier" },
+        rust = { "rustfmt" },
+        yaml = { "prettierd", "prettier" },
+      },
+      format_on_save = {
+        timeout_ms = 800,
+        lsp_fallback = true,
+      },
+    },
+  },
+}
+```
+
+```lua title="lua/plugins/search.lua"
+return {
+  {
+    "nvim-lua/plenary.nvim",
+    lazy = true,
+  },
+  {
+    "nvim-telescope/telescope.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      require("telescope").setup({
+        defaults = {
+          layout_strategy = "horizontal",
+          sorting_strategy = "ascending",
+          layout_config = {
+            prompt_position = "top",
+          },
+        },
+      })
+    end,
+  },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    lazy = false,
+    build = ":TSUpdate",
+    config = function()
+      local ok, treesitter = pcall(require, "nvim-treesitter")
+      if not ok then
+        return
+      end
+
+      treesitter.setup({
+        install_dir = vim.fn.stdpath("data") .. "/site",
+      })
+
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = {
+          "bash",
+          "go",
+          "javascript",
+          "json",
+          "lua",
+          "markdown",
+          "rust",
+          "toml",
+          "tsx",
+          "typescript",
+          "yaml",
+        },
+        callback = function(args)
+          pcall(vim.treesitter.start, args.buf)
+        end,
+      })
+    end,
+  },
+  {
+    "kdheepak/lazygit.nvim",
+    cmd = {
+      "LazyGit",
+      "LazyGitConfig",
+      "LazyGitCurrentFile",
+      "LazyGitFilter",
+      "LazyGitFilterCurrentFile",
+    },
+    dependencies = { "nvim-lua/plenary.nvim" },
+  },
+}
+```
+
+延伸阅读：[lazy.nvim](https://lazy.folke.io/) · [Telescope](https://github.com/nvim-telescope/telescope.nvim) · [oil.nvim](https://github.com/stevearc/oil.nvim) · [conform.nvim](https://github.com/stevearc/conform.nvim) · [nvim 0.11 LSP 文档](https://neovim.io/doc/user/lsp.html)
