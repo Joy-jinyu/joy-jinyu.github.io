@@ -1,0 +1,149 @@
+---
+import { render } from 'astro:content'
+import Base from '../layouts/Base.astro'
+import '../styles/prose.css'
+import Toc from '../components/Toc.astro'
+import { listPosts, readingMinutes, formatDate, titleTransition, type Post } from '../lib/posts'
+
+export async function getStaticPaths() {
+  const posts = await listPosts()
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }))
+}
+
+const { post } = Astro.props as { post: Post }
+const { Content, headings } = await render(post)
+const toc = headings.filter((h) => h.depth === 2 || h.depth === 3)
+const minutes = readingMinutes(post.body)
+const base = import.meta.env.BASE_URL
+---
+
+<Base title={`${post.data.title} · Joy`} description={post.data.description} bgIntensity={0.32}>
+  <div class="progress" aria-hidden="true"><span></span></div>
+  <div class="layout">
+    <aside class="side">
+      <Toc headings={toc} />
+    </aside>
+    <article>
+      <header class="head">
+        <a class="back" href={base}>← 全部文章</a>
+        <div class="tags">{post.data.tags.map((t) => <span class="chip">{t}</span>)}</div>
+        <h1 style={`view-transition-name:${titleTransition(post.id)}`}>{post.data.title}</h1>
+        <p class="lede">{post.data.description}</p>
+        <div class="meta">
+          <span>发布 <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time></span>
+          {post.data.updated && <span>更新 <time datetime={post.data.updated.toISOString()}>{formatDate(post.data.updated)}</time></span>}
+          <span>阅读约 {minutes} 分钟</span>
+        </div>
+      </header>
+      <div class="prose">
+        <Content />
+      </div>
+    </article>
+  </div>
+  <button class="to-top" type="button" aria-label="回到顶部" title="回到顶部">↑</button>
+</Base>
+
+<style>
+  /* 阅读进度条：支持滚动驱动动画的浏览器纯 CSS，其余由下面的脚本写 --p */
+  .progress { position: fixed; top: 0; left: 0; right: 0; z-index: 40; height: 2px; pointer-events: none; }
+  .progress span {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, var(--brand), var(--brand-2));
+    box-shadow: 0 0 10px var(--brand);
+    transform-origin: left;
+    transform: scaleX(var(--p, 0));
+  }
+  @supports (animation-timeline: scroll()) {
+    .progress span { animation: grow linear both; animation-timeline: scroll(root); }
+    @keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 250px minmax(0, 760px);
+    justify-content: center;
+    gap: 56px;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .side { position: relative; }
+  article { min-width: 0; padding-top: 56px; }
+  .head { padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+  .back { color: var(--muted); font: 500 13px/1 var(--mono); }
+  .back:hover { color: var(--brand-2); text-decoration: none; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 22px; }
+  h1 {
+    margin: 14px 0 0;
+    color: var(--strong);
+    font: 700 clamp(32px, 5vw, 46px) / 1.12 var(--sans);
+    letter-spacing: -0.035em;
+  }
+  .lede { margin: 16px 0 0; color: var(--muted); font-size: 17px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 18px; color: var(--muted); font: 400 12px/1.6 var(--mono); }
+  .to-top {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 20;
+    width: 42px;
+    height: 42px;
+    border: 1px solid var(--line-hi);
+    border-radius: 999px;
+    background: var(--solid);
+    color: var(--strong);
+    font: 500 16px/1 var(--mono);
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(12px);
+    pointer-events: none;
+    transition: opacity 0.3s var(--ease), transform 0.3s var(--ease), visibility 0s linear 0.3s, border-color 0.2s var(--ease);
+  }
+  /* 隐藏时用 visibility 移出 Tab 顺序，看不见的按钮不能还能被聚焦 */
+  .to-top.on { opacity: 1; visibility: visible; transform: none; pointer-events: auto; transition-delay: 0s; }
+  .to-top:hover { border-color: var(--brand); }
+  @media (max-width: 1080px) {
+    .layout { grid-template-columns: minmax(0, 760px); }
+    .side { position: static; }
+    /* 这个宽度下右下角还有「目录」按钮（Toc.astro），回到顶部挪到它上面 */
+    .to-top { right: 16px; bottom: 76px; }
+  }
+  @media (max-width: 640px) {
+    .layout { padding: 0 16px; }
+    article { padding-top: 32px; }
+  }
+</style>
+
+<script>
+  const bar = document.querySelector<HTMLElement>('.progress span')
+  const top = document.querySelector<HTMLButtonElement>('.to-top')
+  const cssDriven = CSS.supports('animation-timeline: scroll()')
+  let ticking = false
+  function onScroll() {
+    if (ticking) return
+    ticking = true
+    requestAnimationFrame(() => {
+      ticking = false
+      const max = document.documentElement.scrollHeight - innerHeight
+      if (!cssDriven && bar) bar.style.setProperty('--p', String(max > 0 ? scrollY / max : 0))
+      top?.classList.toggle('on', scrollY > innerHeight * 1.2)
+    })
+  }
+  addEventListener('scroll', onScroll, { passive: true })
+  onScroll()
+  // 标题末尾的 # 锚点：Sätteri 的用户插件跑在生成 id 之前，拿不到 id，所以放到运行时加（没 JS 只是少了这个入口）
+  document.querySelectorAll<HTMLElement>('.prose :is(h2, h3, h4)[id]').forEach((el) => {
+    const a = document.createElement('a')
+    a.className = 'anchor'
+    a.href = `#${el.id}`
+    a.textContent = '#'
+    a.setAttribute('aria-label', `本节链接：${el.textContent}`)
+    el.append(a)
+  })
+  top?.addEventListener('click', () => {
+    scrollTo({ top: 0 })
+    document.querySelector<HTMLElement>('#main')?.focus({ preventScroll: true })
+  })
+</script>

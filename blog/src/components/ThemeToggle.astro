@@ -1,0 +1,46 @@
+---
+/** 顶栏的明暗切换：只在深色 / 浅色之间切；没手动选过时跟随系统 */
+---
+
+<button class="theme" type="button" aria-label="切换明暗主题" title="切换明暗主题">
+  <span class="sun" aria-hidden="true">☀</span>
+  <span class="moon" aria-hidden="true">☾</span>
+</button>
+
+<script>
+  /** 与笔记站 ThemeSwitch 共用的 key：值为 light / dark，空表示跟随系统 */
+  const KEY = 'starlight-theme'
+  document.querySelectorAll<HTMLButtonElement>('button.theme').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'
+      document.documentElement.dataset.theme = next
+      try {
+        localStorage.setItem(KEY, next)
+      } catch {
+        // 隐私模式写不进去时只影响记忆，不影响本次切换
+      }
+    })
+  })
+</script>
+
+<style>
+  .theme {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    margin-left: 4px;
+    border: 1px solid var(--line-hi);
+    border-radius: 999px;
+    background: rgba(var(--ink-rgb), 0.04);
+    color: var(--strong);
+    font-size: 15px;
+    cursor: pointer;
+    transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+  }
+  .theme:hover { border-color: var(--brand); box-shadow: 0 0 0 4px rgba(0, 184, 184, 0.08); }
+  .theme span { grid-area: 1 / 1; transition: opacity 0.3s var(--ease), transform 0.4s var(--ease); }
+  :global([data-theme="dark"]) .theme .sun,
+  :global([data-theme="light"]) .theme .moon { opacity: 0; transform: rotate(-90deg) scale(0.6); }
+</style>

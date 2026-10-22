@@ -99,3 +99,6 @@ static/site/
 assets/icons/
 /lang/
 /static/favicon.ico
+
+blog/dist/
+blog/.astro/

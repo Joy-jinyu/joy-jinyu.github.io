@@ -4,13 +4,18 @@
   "private": true,
   "scripts": {
     "dev": "astro dev --root notes",
+    "dev:blog": "astro dev --root blog",
     "build": "astro build --root notes",
+    "build:blog": "astro build --root blog",
     "preview": "python3 -m http.server 4173 --directory public",
     "deploy": "bash deploy-gh.sh"
   },
   "license": "ISC",
   "dependencies": {
+    "@astrojs/markdown-satteri": "0.4.3",
+    "@astrojs/mdx": "8.0.3",
     "@astrojs/starlight": "0.42.6",
-    "astro": "7.3.8"
+    "astro": "7.3.8",
+    "astro-expressive-code": "0.44.2"
   }
 }

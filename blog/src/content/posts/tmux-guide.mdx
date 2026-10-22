@@ -1,0 +1,421 @@
+---
+title: tmux 从会用到用好
+description: 按初级、熟练、高级三步走：会话 / 窗口 / pane 的基本操作，复制模式与布局整理，再到关机恢复现场和一条命令开好项目。文中有一个能直接在页面上按键的模拟器。
+date: 2026-10-21
+tags: [tmux, 终端, 效率工具]
+---
+
+import Callout from '../../components/Callout.astro'
+import TmuxPlayground from '../../components/TmuxPlayground.astro'
+
+我每天的终端工作都开在 tmux 里：一个项目一个会话，编辑器、服务、日志各占一块，关掉终端软件也不会丢。这篇把我用到的东西按三个阶段整理出来：
+
+- **初级**：能用起来。开会话、分窗口、切 pane、离开再回来。
+- **熟练**：用得顺手。复制模式翻历史和搜索、布局整理、调整顺序。
+- **高级**：让它替你干活。关机后恢复现场、同步输入、一条命令开好项目布局。
+
+命令以 tmux 3.6 的 man page 为准。按键以我的 `~/.tmux.conf` 为准，[完整配置](#附录我的完整配置)放在文末。
+
+<Callout title="先说前缀键">
+  下文的 <kbd>前缀</kbd> 指我配置里的 <kbd>Ctrl-a</kbd>，tmux 默认是 <kbd>Ctrl-b</kbd>。用法是先按下并松开前缀，再按后面的键。例如 <kbd>前缀 d</kbd> 就是按一下 <kbd>Ctrl-a</kbd>，松开，再按 <kbd>d</kbd>。
+</Callout>
+
+## 初级：能用起来
+
+**三层结构和基本操作** · 阅读约 15 分钟
+
+学完这一部分，你能开会话、分窗口、切 pane、放大缩小，离开终端后再回来接着干。
+
+### 三层结构
+
+tmux 把终端分成三层：**会话**（session）里有多个**窗口**（window），窗口里切分出多个 **pane**。
+
+| 层级 | 相当于 | 典型用法 |
+| --- | --- | --- |
+| 会话 | 一个工作现场 | 一个项目一个会话，例如 `blog`、`api` |
+| 窗口 | 浏览器标签页 | 编辑器一个窗口，日志一个窗口 |
+| pane | 标签页里的分屏 | 左边写代码，右边跑测试 |
+
+这三层都由后台的 tmux server 进程持有。关掉终端软件，server 和里面的程序照常运行，这就是 tmux 最大的价值。
+
+<Callout>
+  我的配置里 `base-index 1` 和 `pane-base-index 1` 让窗口和 pane 都从 1 开始编号；`renumber-windows on` 让关掉一个窗口后，其余窗口自动补齐编号。
+</Callout>
+
+### 会话：开、离开、回来、关
+
+#### 在普通终端里
+
+```bash
+tmux new -s work          # 新建名为 work 的会话并进入
+tmux new -A -s work       # 已存在就进入，不存在就新建（日常最常用）
+tmux ls                   # 列出所有会话
+tmux attach -t work       # 回到 work 会话
+tmux kill-session -t work # 关掉 work 会话
+```
+
+#### 在 tmux 里面
+
+| 按键 | 作用 |
+| --- | --- |
+| <kbd>前缀 d</kbd> | 离开（detach）当前会话，程序继续在后台运行 |
+| <kbd>前缀 s</kbd> | 打开会话列表，上下键选择，回车切换 |
+| <kbd>前缀 $</kbd> | 重命名当前会话 |
+| <kbd>前缀 :</kbd> 输入 `new -s 名字` | 在 tmux 里新建会话 |
+
+在会话列表里删除会话：选中后按 <kbd>x</kbd>，再按 <kbd>y</kbd> 确认。
+
+<Callout type="pit">
+  在 tmux 里面的 shell 直接执行 `tmux new` 会报 `sessions should be nested with care`。在 tmux 内部新建会话要走 <kbd>前缀 :</kbd>。
+</Callout>
+
+### 窗口：新建、切换、改名、关闭
+
+| 按键 | 作用 |
+| --- | --- |
+| <kbd>前缀 c</kbd> | 新建窗口（我的配置会沿用当前 pane 的目录） |
+| <kbd>前缀 ,</kbd> | 重命名当前窗口 |
+| <kbd>前缀 n</kbd> / <kbd>前缀 p</kbd> | 下一个 / 上一个窗口 |
+| <kbd>前缀 1</kbd> ~ <kbd>前缀 9</kbd> | 直接跳到对应编号的窗口 |
+| <kbd>前缀 w</kbd> | 打开所有会话和窗口的树形列表 |
+| <kbd>前缀 &</kbd> | 关闭当前窗口，按 <kbd>y</kbd> 确认 |
+
+在窗口里最后一个 pane 中执行 `exit`，窗口也会关闭。
+
+### pane：分屏、移动、放大、调大小
+
+| 按键 | 作用 | 来源 |
+| --- | --- | --- |
+| <kbd>{'前缀 \\'}</kbd>（或 <kbd>前缀 %</kbd>） | 左右分屏 | 我的配置 |
+| <kbd>前缀 -</kbd>（或 <kbd>前缀 "</kbd>） | 上下分屏 | 我的配置 |
+| <kbd>前缀 h/j/k/l</kbd> | 移到左 / 下 / 上 / 右的 pane | 我的配置 |
+| <kbd>前缀 H/J/K/L</kbd> | 向左 / 下 / 上 / 右调大小 5 格，可连按 | 我的配置 |
+| <kbd>前缀 z</kbd> | 放大当前 pane 到整个窗口，再按一次还原 | 默认 |
+| <kbd>前缀 x</kbd> | 关闭当前 pane，按 <kbd>y</kbd> 确认 | 默认 |
+| <kbd>前缀 q</kbd> | 显示 pane 编号，趁显示时按数字跳过去 | 默认 |
+
+分屏都会沿用当前 pane 的目录。我开了 `mouse on`，也可以用鼠标点选 pane、拖动边框调整大小。
+
+<Callout type="warn">
+  拖不动边框时，多半是 iTerm2 没把鼠标事件交给 tmux。检查 iTerm2 设置 **Profiles > Terminal** 里的 **Enable mouse reporting**（推测，我没有专门验证过）。
+</Callout>
+
+### 在页面上练一遍
+
+下面是一个按我的配置做的 tmux 模拟器。点一下让它获得焦点，然后按 <kbd>Ctrl-a</kbd> 松开，再按操作键；默认的 <kbd>Ctrl-b</kbd> 也能用。没有键盘就点下面的按钮。不按前缀时直接打字，会输入到当前 pane 里。
+
+<TmuxPlayground />
+
+<Callout type="try" title="边看边做">
+  模拟器下方的「跟着做」清单会在你完成对应操作后自动打勾，做完 6 项再去真实终端里练下面那道练习。
+</Callout>
+
+### 忘了怎么办
+
+| 按键 | 作用 |
+| --- | --- |
+| <kbd>前缀 ?</kbd> | 列出所有快捷键，包括你自己绑定的；按 <kbd>q</kbd> 退出 |
+| <kbd>前缀 :</kbd> | 输入任意 tmux 命令，支持 Tab 补全 |
+| <kbd>前缀 r</kbd> | 重新加载 `~/.tmux.conf`（我的配置） |
+
+<Callout type="try">
+  用 `tmux new -A -s practice` 开一个会话，建两个窗口并分别命名，在第一个窗口左右分屏，放大右边，再按 <kbd>前缀 d</kbd> 离开，最后用同一条命令回来。全部做到，初级就过关了。
+</Callout>
+
+## 熟练：用得顺手
+
+**少按键、少用鼠标** · 阅读约 20 分钟 · 前置：初级
+
+初级解决「能用」，这一部分解决「顺手」。最该先练的是复制模式：翻历史、搜索、复制全靠它。其余几节按需取用。
+
+### 复制模式：翻历史、搜索、复制
+
+我的配置用的是 vi 键位（`mode-keys vi`），复制会通过 `pbcopy` 进入系统剪贴板，历史保留 10 万行。
+
+| 按键 | 作用 |
+| --- | --- |
+| <kbd>前缀 [</kbd> | 进入复制模式 |
+| <kbd>前缀 PageUp</kbd> | 进入复制模式并向上翻一页 |
+| <kbd>k</kbd> / <kbd>j</kbd>，<kbd>Ctrl-u</kbd> / <kbd>Ctrl-d</kbd> | 上下移动，翻半页 |
+| <kbd>?</kbd>关键字 / <kbd>/</kbd>关键字 | 向上 / 向下搜索 |
+| <kbd>n</kbd> / <kbd>N</kbd> | 跳到下一个 / 上一个搜索结果 |
+| <kbd>v</kbd> 选择，<kbd>y</kbd> 复制 | 复制到系统剪贴板并退出，之后用 <kbd>Cmd-v</kbd> 粘贴 |
+| <kbd>q</kbd> | 退出复制模式 |
+
+<Callout title="场景">
+  测试跑出几百行日志，想找报错：按 <kbd>前缀 [</kbd>，输入 `?error` 回车，用 <kbd>n</kbd> 逐个往上找。
+</Callout>
+
+### 创建时直接命名
+
+先建再改名要多走一步。创建时带上名字即可：
+
+```bash
+tmux new -s work -n editor -c ~/workspace   # 会话 work，第一个窗口叫 editor，起始目录 ~/workspace
+tmux new -d -s logs                          # 只在后台创建，不进入
+```
+
+在 tmux 里新建命名窗口：<kbd>前缀 :</kbd> 输入 `new-window -n logs`。
+
+也可以绑定快捷键，按下后弹出输入框填名字：
+
+```sh title="~/.tmux.conf"
+# 前缀 S：输入名字，新建会话
+bind S command-prompt -p "session name:" "new-session -s '%%'"
+# 前缀 C：输入名字，在当前目录新建窗口
+bind C command-prompt -p "window name:" "new-window -n '%%' -c '#{pane_current_path}'"
+```
+
+<Callout type="todo">
+  这两行快捷键配置我还没实际跑过。加到配置后按 <kbd>前缀 r</kbd>，先试一次再长期使用。
+</Callout>
+
+### 快速跳转
+
+| 按键 | 作用 |
+| --- | --- |
+| <kbd>前缀 ;</kbd> | 回到上一个 pane，适合在两个 pane 之间来回切换 |
+| <kbd>前缀 '</kbd> | 输入编号跳到窗口，适合窗口超过 9 个时 |
+| <kbd>前缀 f</kbd> | 按文字搜索所有窗口 |
+| <kbd>前缀 s</kbd> / <kbd>前缀 w</kbd> | 树形列表：会话、窗口、pane 一起选，右侧带预览 |
+
+<Callout type="pit">
+  tmux 默认 <kbd>前缀 l</kbd> 是「回到上一个窗口」，但我的配置把 <kbd>l</kbd> 改成了「移到右边的 pane」，所以这个功能目前没有快捷键。需要的话，可以另外绑定，例如 `bind Tab last-window`。
+</Callout>
+
+### 布局一键整理
+
+分屏分乱了，不用手动拖动边框：
+
+| 按键 | 作用 |
+| --- | --- |
+| <kbd>前缀 空格</kbd> | 在预设布局之间循环切换 |
+| <kbd>前缀 Alt-1</kbd> ~ <kbd>Alt-7</kbd> | 直接选择某个预设布局 |
+
+预设布局包括 `even-horizontal`（左右均分）、`even-vertical`（上下均分）、`main-horizontal` / `main-vertical`（一个大 pane 加一排小 pane）和 `tiled`（平铺）。也可以用命令指定，例如 `select-layout tiled`。
+
+### 调整顺序
+
+#### 会话：靠排序和命名
+
+会话没有固定位置。在 <kbd>前缀 s</kbd> 列表里，按 <kbd>O</kbd> 切换排序字段，按 <kbd>r</kbd> 反转排序。想固定顺序，就在名字前加编号，例如 `1-blog`。
+
+#### 窗口：交换位置
+
+| 操作 | 作用 |
+| --- | --- |
+| 在 <kbd>前缀 w</kbd> 列表里按 <kbd>Shift-↑</kbd> / <kbd>Shift-↓</kbd> | 和上一个 / 下一个窗口交换位置 |
+| `swap-window -d -t -1` / `+1` | 当前窗口左移 / 右移一位，焦点跟着走 |
+| `swap-window -t 1` | 和 1 号窗口交换 |
+| <kbd>前缀 .</kbd> | 输入编号，把当前窗口移过去（目标编号需要空着） |
+
+#### pane：交换、拆出、并入
+
+| 操作 | 作用 |
+| --- | --- |
+| <kbd>{'前缀 {'}</kbd> / <kbd>{'前缀 }'}</kbd> | 和上一个 / 下一个 pane 交换位置 |
+| <kbd>前缀 Ctrl-o</kbd> / <kbd>前缀 Alt-o</kbd> | 所有 pane 向前 / 向后轮换 |
+| <kbd>前缀 !</kbd> | 把当前 pane 拆成独立窗口 |
+| `join-pane -t :2` | 把当前 pane 并入 2 号窗口 |
+
+### 给 pane 起名字
+
+pane 默认只有编号。可以给它设置标题，再把标题显示在边框上：
+
+```sh
+# 前缀 : 后输入，给当前 pane 起标题
+select-pane -T "api server"
+
+# 写进 ~/.tmux.conf：在每个 pane 顶部显示「编号: 标题」
+set -g pane-border-status top
+set -g pane-border-format " #{pane_index}: #{pane_title} "
+```
+
+<Callout type="warn">
+  有些程序（如 vim、shell 主题）会主动改标题，把你起的名字覆盖掉。想锁住标题，可以加 `set -g allow-set-title off`。
+</Callout>
+
+## 高级：让它替你干活
+
+**恢复、同步、脚本化** · 阅读约 20 分钟 · 前置：熟练
+
+这一部分的东西用得不频繁，但每一项都能省下大量重复操作：关机不丢现场、一次输入发到多台机器、一条命令开好整个项目。
+
+### 关机后恢复现场
+
+我装了 `tmux-resurrect`（负责保存和恢复）和 `tmux-continuum`（负责自动保存和开机恢复），并开了 `@continuum-restore "on"`。在我的机器上实测：存档在 `~/.local/share/tmux/resurrect/`，每 15 分钟自动生成一份。
+
+| 按键 | 作用 |
+| --- | --- |
+| <kbd>前缀 Ctrl-s</kbd> | 立即保存（关机前按一下，避免丢掉最近 15 分钟的变化） |
+| <kbd>前缀 Ctrl-r</kbd> | 手动从最新存档恢复 |
+
+#### 能恢复什么
+
+| 内容 | 默认 |
+| --- | --- |
+| 会话、窗口、pane 的布局、编号、名字 | 恢复 |
+| 每个 pane 所在的目录 | 恢复 |
+| `vim`、`less`、`tail`、`htop`、`man` 等程序 | 重新启动 |
+| pane 里显示过的文字 | 不恢复，需开启选项 |
+| `npm run dev`、`ssh`、`claude` 等程序 | 不恢复，只留下空 shell |
+
+#### 让恢复更完整
+
+加到 `~/.tmux.conf` 里 `run "~/.tmux/plugins/tpm/tpm"` 那一行之前：
+
+```sh title="~/.tmux.conf"
+# 连 pane 里显示的文字一起保存
+set -g @resurrect-capture-pane-contents "on"
+# 额外重启这些程序，"~" 表示按名字模糊匹配
+set -g @resurrect-processes "ssh '~npm run dev'"
+# 自动保存间隔改成 5 分钟
+set -g @continuum-save-interval "5"
+```
+
+<Callout type="todo">
+  `@resurrect-processes` 的写法参照插件文档的惯例，我还没实测。加完后按 <kbd>前缀 Ctrl-s</kbd> 保存，执行 `tmux kill-server` 后重开，确认效果。重启程序只是重新执行一遍命令，程序内部状态（例如 claude 的对话）不会回来。
+</Callout>
+
+### 同步输入到所有 pane
+
+打开后，在一个 pane 里输入的内容会同时发送到同一窗口的所有 pane。适合同时登录几台服务器执行同样的命令。
+
+```sh
+# 前缀 : 后输入
+setw synchronize-panes on
+# 用完立刻关掉
+setw synchronize-panes off
+```
+
+<Callout type="pit">
+  忘记关掉同步是常见事故：之后在任一 pane 敲的命令都会在所有 pane 里执行。处于复制模式等特殊模式的 pane 不会收到输入。
+</Callout>
+
+### 弹出窗口
+
+`display-popup` 在当前画面上浮出一个临时窗口，关掉程序后自动消失，不会打乱已有布局。
+
+```sh
+# 前缀 : 后输入：弹出 80% 大小的 htop，退出 htop 后弹窗自动关闭
+display-popup -E -w 80% -h 80% htop
+
+# 写进配置：前缀 g 在当前目录弹出 lazygit
+bind g display-popup -E -w 90% -h 90% -d "#{pane_current_path}" lazygit
+```
+
+`-E` 表示程序退出后关闭弹窗，`-w` / `-h` 设置宽高，`-d` 指定起始目录。
+
+### 一条命令开好项目布局
+
+每天打开同一个项目都要建窗口、分屏、启动服务，可以写成脚本。下面的脚本我在隔离的 tmux 实例里跑通过：会生成 `code`（2 个 pane）和 `logs` 两个窗口。
+
+```bash title="dev.sh"
+#!/usr/bin/env bash
+S=myapp
+DIR=~/code/myapp
+
+# 会话已存在就直接进入
+tmux has-session -t "$S" 2>/dev/null && exec tmux attach -t "$S"
+
+tmux new-session -d -s "$S" -n code -c "$DIR"                # 窗口 1：code
+tmux split-window -h -t "$S:code" -c "$DIR" -l 40%           # 右侧开 40% 宽的 pane
+tmux send-keys -t "$S:code.2" 'pnpm dev' Enter               # 在右侧 pane 启动服务
+tmux new-window -t "$S" -n logs -c "$DIR"                    # 窗口 2：logs
+tmux select-window -t "$S:code"
+tmux select-pane -t "$S:code.1"
+exec tmux attach -t "$S"
+```
+
+<Callout>
+  `-t "$S:code.2"` 的格式是「会话:窗口.pane」。编号从 1 开始，是因为我的配置设了 `pane-base-index 1`。`pnpm dev` 只是示例，换成项目实际的命令。
+</Callout>
+
+### 定制自己的快捷键
+
+用 `bind` 绑定按键，`-r` 表示可连按：按一次前缀后，在 `repeat-time` 时间内可以连续按同一个键。
+
+```sh title="~/.tmux.conf"
+# 前缀 < / >：当前窗口左移 / 右移一位，可连按
+bind -r < swap-window -d -t -1
+bind -r > swap-window -d -t +1
+
+# 前缀 Tab：回到上一个窗口（补回被 l 占用的功能）
+bind Tab last-window
+```
+
+改完按 <kbd>前缀 r</kbd> 重新加载。加之前先用 <kbd>前缀 ?</kbd> 看一下这个键有没有被占用。
+
+### 远程服务器上的 tmux
+
+在服务器上跑长任务时，先 `ssh` 登录，再在服务器上开 tmux。网络断了，任务也不会中断，重新登录后 `tmux attach` 就能回来。
+
+本地 tmux 里再 ssh 进远程 tmux，就是「嵌套」：按一次 <kbd>Ctrl-a</kbd> 只有本地 tmux 收到。我的配置有 `bind C-a send-prefix`，所以连按两次 <kbd>Ctrl-a</kbd>，就会把前缀发给里层的 tmux。
+
+<Callout>
+  如果远程服务器的 tmux 用默认前缀 <kbd>Ctrl-b</kbd>，就不会冲突：<kbd>Ctrl-a</kbd> 控制本地，<kbd>Ctrl-b</kbd> 控制远程。
+</Callout>
+
+## 附录：我的完整配置
+
+上文提到的「我的配置」就是下面这份。插件由 [tpm](https://github.com/tmux-plugins/tpm) 管理，第一次使用要先装 tpm，再在 tmux 里按 <kbd>前缀 I</kbd> 安装插件。
+
+```sh title="~/.tmux.conf"
+set -g default-terminal "screen-256color"
+set -as terminal-features ",xterm-256color:RGB"
+
+unbind C-b
+set -g prefix C-a
+bind C-a send-prefix
+
+set -g base-index 1
+set -g pane-base-index 1
+set -g renumber-windows on
+set -g history-limit 100000
+set -sg escape-time 10
+set -g focus-events on
+set -g mouse on
+set -g set-clipboard on
+
+setw -g mode-keys vi
+
+bind r source-file ~/.tmux.conf \; display-message "tmux config reloaded"
+
+bind c new-window -c "#{pane_current_path}"
+bind '"' split-window -v -c "#{pane_current_path}"
+bind % split-window -h -c "#{pane_current_path}"
+bind - split-window -v -c "#{pane_current_path}"
+bind \\ split-window -h -c "#{pane_current_path}"
+
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+
+bind -r H resize-pane -L 5
+bind -r J resize-pane -D 5
+bind -r K resize-pane -U 5
+bind -r L resize-pane -R 5
+
+bind -T copy-mode-vi v send-keys -X begin-selection
+bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "pbcopy"
+
+set -g status-position bottom
+set -g status-justify left
+set -g status-left-length 30
+set -g status-right-length 120
+set -g status-left "#[fg=green]#S "
+set -g status-right "#[fg=cyan]%Y-%m-%d #[fg=white]%H:%M "
+
+set -g @plugin "tmux-plugins/tpm"
+set -g @plugin "tmux-plugins/tmux-sensible"
+set -g @plugin "tmux-plugins/tmux-yank"
+set -g @plugin "tmux-plugins/tmux-resurrect"
+set -g @plugin "tmux-plugins/tmux-continuum"
+
+set -g @continuum-restore "on"
+
+run "~/.tmux/plugins/tpm/tpm"
+```
+
+延伸阅读：[tmux wiki](https://github.com/tmux/tmux/wiki) · [tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect) · [tmux-continuum](https://github.com/tmux-plugins/tmux-continuum)
