@@ -1,0 +1,376 @@
+---
+title: 照着 ChatGPT 写对话页：骨架都对，错在边上
+description: 让 AI 照 ChatGPT 写了三次对话页，对照规范逐项量过：骨架都对，错在边上。现成的检查工具大多查不出来，文末给了一个能自己跑的检查脚本。
+date: 2026-10-24
+tags: [UI, 布局, AI, 审美]
+meta: 系列第一篇 · 布局与对齐
+draft: false
+---
+
+import Figure from '../../components/Figure.astro'
+import ChatLayoutLab from '../../components/ChatLayoutLab.astro'
+
+Claude、ChatGPT 这类对话页，看上去只有四块：左边侧边栏，顶上一条标题，中间消息，底下输入框。让 AI 照着写一个，几分钟就能跑起来。
+
+这篇把同一个需求交给 AI 写了三次，在浏览器里按桌面和手机几种宽度逐项量过。每个问题都按同一个顺序讲：规范怎么说，AI 写成了什么样，怎么改，用什么工具能查出来。
+
+<Figure caption="第 1 次生成的对话页，1440 × 900 的桌面视口。Claude Opus 5.5，2026-10-24。三次的布局几乎一样，下文的演示里可以切换。">
+  <img src="/blog/lab/ai-chat-layout/img/run1-desk.webp" width="1440" height="900" alt="第 1 次生成：左侧浅灰侧边栏和对话列表，中间居中的消息列，底部圆角输入框" class="fig-shot" />
+</Figure>
+
+**要点速览**
+
+- **骨架三次都对。** 只让消息区滚动、滚到底时输入框不挡住最后一条消息、长代码块在框里横滑、手机上侧边栏变抽屉，三次都写到了。
+- **该对齐的边没对齐。** 1440 宽时输入框比消息列左右各宽出 16–24&nbsp;px；滚动条常显时，两者的中线还会再差 7.5&nbsp;px。规范只讲「对齐要有意为之」，「同一列只定义一次宽度」是从这条推出来的做法。
+- **往上翻着看，会被拽回底部。** 三次里有两次，新回复一到就把页面滚到最底下。这一条没有规范，只有开源库的通行做法：离底部近才跟着滚。
+- **抽屉的焦点没管好。** 第 2 次收起侧边栏以后，连按 25 次 Tab，焦点有 18 次落在屏幕外；三次打开抽屉后，焦点都还能 Tab 到被遮住的页面上。把抽屉当模态对话框做，WAI-ARIA APG 对焦点怎么走有明确要求。
+- **现成工具大多查不出来。** axe-core、Lighthouse、截图对比、stylelint 都没查出这几个问题，Lighthouse 还给第 2 次打了满分。附录给了一个检查脚本，这些问题都能查出来，修正后的页面能通过。
+
+## 它做对了什么
+
+这次和上一篇的卡片不一样：三次生成几乎是同一份布局。内容区的 `max-width` 都是 760&nbsp;px，侧边栏都是 268–272&nbsp;px，按钮都是 36&nbsp;px，输入框都是最多长到 200&nbsp;px。
+
+- **列宽在常见范围里。** 消息列去掉留白后是 712–728&nbsp;px，16&nbsp;px 的字，一行大约 44–45 个汉字。英文排版常说一行 45–90 个字符（[Butterick](https://practicaltypography.com/line-length.html)）或 50–75 个（[Baymard](https://baymard.com/blog/line-length-readability)），这些数换不成汉字。[W3C 的中文排版需求](https://www.w3.org/TR/clreq/)只说行长要定，没给推荐值。唯一给了中文数字的是 [WCAG 1.4.8](https://www.w3.org/WAI/WCAG22/Understanding/visual-presentation.html)：每行不超过 40 个汉字，而它是最高的 AAA 级，不是基本要求。作为参照，ChatGPT 未登录首页的输入框在 1440 宽时是 768&nbsp;px（[量到的数据](/blog/lab/ai-chat-layout/data/chatgpt-ref.json)），Gemini 未登录页的样式里，输入区最宽 760&nbsp;px。
+- **只滚消息区。** 三次都是侧边栏、标题栏、输入框固定，中间一块单独滚动。输入框是和消息区并排的一块，不是盖在上面，所以滚到最底下，最后一条消息和输入框之间还空着 24–56&nbsp;px。整页滚还是只滚中间这块，没有找到哪条规范规定过。
+- **高度用了 dvh。** 都写了 `height: 100vh; height: 100dvh;`，前一句留给不认识 `dvh` 的老浏览器。按 [CSS 规范](https://drafts.csswg.org/css-values-4/#viewport-relative-lengths)，`dvh` 跟着浏览器工具栏的伸缩变化，`vh` 等于工具栏收起时的大视口；手机软键盘默认不影响这两个单位（[web.dev](https://web.dev/blog/viewport-units)）。
+- **长内容不撑破页面。** 在 390&nbsp;px 和 320&nbsp;px 宽的手机上，页面都没有横向滚动，满足 [WCAG 1.4.10](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html) 要求的 320&nbsp;px 宽下不出现两个方向的滚动。代码块在自己的框里横滑，很长的链接会折行，靠的是 `min-width: 0` 和 `overflow-wrap: anywhere`。
+- **输入框的细节。** 字号都是 16&nbsp;px：iOS Safari 聚焦小于 16&nbsp;px 的输入框时会放大页面，[WebKit 源码](https://github.com/WebKit/WebKit/blob/main/Source/WebKit/UIProcess/API/ios/WKWebViewIOS.mm)里放大倍数按 `16 / 字号` 算。发送按钮 36&nbsp;px，超过 [WCAG 2.5.8](https://www.w3.org/TR/WCAG22/#target-size-minimum) 的 24&nbsp;px。输入 12 行，框长到 200&nbsp;px 后改为框内滚动；清空后缩回一行。三份都是回车发送、Shift+回车换行，代码里都判断了 `isComposing`，用中文输入法选字时按回车不会把消息发出去（没有用输入法实测）。[Vercel 的界面准则](https://vercel.com/design/guidelines)主张反过来，在多行输入框里回车换行、⌘/Ctrl+回车提交，这三份都没照这条做。
+- **消息区标了 `role="log"`。** 第 1、2 次标了 `role="log"`，第 3 次标了 `aria-live="polite"`，读屏软件会念出新到的消息。[MDN](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/log_role) 举的例子里就有聊天记录。
+- **手机上变抽屉。** 768&nbsp;px 以下，侧边栏收进菜单按钮。三份都给遮罩写了点击关闭，按 Esc 实测能关上。
+
+## 它漏掉了什么
+
+漏掉的问题都在边上：两块该对齐的边，滚动条占的那 15 像素，用户往上翻的那一下。下面是三次的原样文件，可以切换、打开对齐线、套用修正，读数都是从页面里实时量出来的。
+
+<Figure caption="三次生成的原样文件。桌面视图按 1280 宽渲染再缩小，所以读数和正文里 1440 宽的数字会略有不同。蓝色虚线是消息列的左右边，红色实线是和它对不齐的输入框边。修正读自 fixes.json，只在原文件上追加样式、替换几行 JS。">
+  <ChatLayoutLab />
+</Figure>
+
+### 输入框比消息列宽一截
+
+**规范怎么说。** 没有哪条规范直接规定「输入框要和消息列一样宽」，能找到的是更一般的对齐原则。[Apple 的设计指南](https://developer.apple.com/design/human-interface-guidelines/layout)写的是：对齐让内容更容易扫读，人会把对齐的元素看成相关的。[Vercel 的界面准则](https://vercel.com/design/guidelines)要求每个元素都有意对齐到网格、基线、边或视觉中心，不能是碰巧落在那里。iOS 有一个现成的例子：系统给每个视图算好一个适合阅读的宽度 [readableContentGuide](https://developer.apple.com/documentation/uikit/uiview/readablecontentguide)，Apple 建议用它来排一栏文字，宽度由系统这一处给出。「消息列和输入框共用一个宽度定义」是从这几条推出来的，不是哪条规范的原话。
+
+**实测。** 在 1440 宽的桌面上，第 1、2 次的输入框比消息列左右各宽 24&nbsp;px，第 3 次各宽 16&nbsp;px。把窗口缩到 1024，三次又都正好对齐。到了 390 宽的手机上，第 1、2 次又各宽 4&nbsp;px，第 3 次对齐。对齐方式随窗口宽度变化，说明不是有意定下的。
+
+<Figure caption="第 1 次，1440 宽，滚到底部。上面是原样：输入框（红线）比消息列（蓝线）两边各宽 24 px；下面是修正后。">
+  <div class="fig-stack">
+    <figure><img src="/blog/lab/ai-chat-layout/img/run1-align-before.webp" width="856" height="271" alt="修正前：输入框的左右边在消息列外侧 24px" /><figcaption>修正前</figcaption></figure>
+    <figure><img src="/blog/lab/ai-chat-layout/img/run1-align-after.webp" width="856" height="271" alt="修正后：输入框的左右边和消息列重合" /><figcaption>修正后</figcaption></figure>
+  </div>
+</Figure>
+
+原因是留白放的位置不同。以第 1 次为例：消息列写的是 `max-width: 760px; padding: 24px 24px 32px`，三份都有 `* { box-sizing: border-box }`，留白算在这 760 里面，文字实际只有 712 宽。输入框也是 `max-width: 760px`，留白却写在外面那层 `.composer-wrap` 上。1024 宽时，两边都是「可用宽度减去 48」，正好对齐；窗口一宽，`max-width` 先起作用，一个是 712，一个是 760。到了手机上，消息列的留白是 16，输入框外层是 12，又差了 4。
+
+**修法。** 宽度只在一处定义，两块都用它：
+
+```css title="同一列只定义一次"
+:root { --col-w: 712px; --gutter: 24px; }  /* 原来 760px，留白各自写在 padding 里 */
+.thread, .composer {
+  width: min(var(--col-w), 100% - 2 * var(--gutter));
+  margin-inline: auto;
+}
+.thread, .composer-wrap { padding-inline: 0; }  /* 原来 24px，留白已经算进上面的 width */
+@media (max-width: 768px) { :root { --gutter: 16px; } }
+```
+
+也可以让输入框里的文字对齐消息列，选哪种都行，只要换个窗口宽度不跟着变。第 3 次的消息列留白是 16，修正时用的是 `--col-w: 728px; --gutter: 16px`，每次的具体取值见 [fixes.json](/blog/lab/ai-chat-layout/fixes.json)。
+
+**怎么查。** 要在几种宽度下分别量两个元素的左右边，比较它们是否相等。下文「用什么查」里试过的现成工具都不做这种比较；[Galen](https://github.com/galenframework/galen) 能写「这两块左右对齐」的断言，量出第 1、2 次偏差 48&nbsp;px（左右合计），但它 2019 年以后就没有更新过。附录的检查脚本会在 1440、1024、390 三个宽度下量这一项。
+
+### 滚动条一出现，中线就偏了
+
+**规范怎么说。** [CSS 规范](https://drafts.csswg.org/css-overflow-3/#scrollbar-gutter-property)把滚动条分成两种：浮在内容上、不占宽度的叫 overlay 滚动条；常显、占掉一条宽度的叫经典滚动条。`scrollbar-gutter: stable` 让经典滚动条的位置一直留着，不管内容有没有溢出；对 overlay 滚动条不起作用。Mac 上有一项系统设置决定滚动条显示方式（[Apple 支持文档](https://support.apple.com/guide/mac-help/change-appearance-settings-mchlp1225/mac)），Vercel 的准则建议把它设成「始终」，看看 Windows 用户看到的样子。
+
+**实测。** 在 Mac 上的 Chrome 里关掉 overlay 滚动条量，经典滚动条是 15&nbsp;px；Windows 真机没有测。三次都只让消息区滚动，滚动条就只挤占消息区的宽度：消息列在「减掉滚动条的宽度」里居中，输入框在整个宽度里居中，中线差了 7.5&nbsp;px。1024 宽时更明显，左边对齐，右边差 15&nbsp;px。
+
+<Figure caption="第 2 次，1024 宽，滚动条常显（Chrome 关闭 overlay 滚动条后的样子）。只截了右下角：修正前输入框的右边伸到了滚动条旁边。">
+  <div class="fig-pair">
+    <figure><img src="/blog/lab/ai-chat-layout/img/run2-sb-before.webp" width="420" height="271" alt="修正前：输入框右边比消息列右边多出 15px，紧贴滚动条" /><figcaption>修正前</figcaption></figure>
+    <figure><img src="/blog/lab/ai-chat-layout/img/run2-sb-after.webp" width="420" height="271" alt="修正后：输入框右边和消息列右边对齐" /><figcaption>修正后</figcaption></figure>
+  </div>
+</Figure>
+
+**修法。** 让输入框那一层也预留出滚动条的位置。ChatGPT 加载的样式表里也有 `scrollbar-gutter: stable both-edges` 这条规则（[样式表摘录](/blog/lab/ai-chat-layout/data/chatgpt-ref.json)），但没有确认它用在哪个元素上。
+
+```css title="两层都预留滚动条的位置"
+.scroller, .composer-wrap { scrollbar-gutter: stable both-edges; }
+/* scrollbar-gutter 只对滚动容器生效，hidden 也算；上下留出阴影的位置 */
+.composer-wrap { overflow: hidden; padding-block: 16px 20px; }
+```
+
+- **`overflow: hidden` 会裁掉阴影。** 三次的输入框都有一圈外阴影，第 1 次向上伸出 12&nbsp;px、向下 20&nbsp;px。外层不留上下内边距的话，阴影顶上那 12&nbsp;px 会被裁掉，所以修正里留了 16 和 20。
+- **代价是窄了 30 像素。** `both-edges` 在左右两边各留一条滚动条的宽度，滚动条常显时，消息列会比原来窄 30&nbsp;px；滚动条不占宽度的系统上没有影响。
+- **支持情况。** `scrollbar-gutter` 从 Chrome 94、Firefox 97、Safari 18.2 开始支持（[MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scrollbar-gutter)）。
+
+**怎么查。** 先要让滚动条显示出来。Mac 上最简单的办法是把系统设置里的滚动条改成「始终」，再用眼睛看。自动化测试时，无头 Chrome 默认隐藏滚动条，要加启动参数才是 15&nbsp;px 的经典滚动条（见附录）。试过的现成工具都不会切换滚动条模式，所以都查不出这一项；Galen 换了浏览器启动参数后能查出来，但要自己写驱动代码。附录的检查脚本会用经典滚动条重量一遍中线。
+
+### 往上翻，被拽回底部
+
+**规范怎么说。** 这一项没有规范。CSS 的[滚动锚定](https://drafts.csswg.org/css-scroll-anchoring/)只处理视口上方内容变化引起的跳动，而且滚动位置为 0 时不生效，管不到「新消息追加在底部」的情况。能参考的是开源库的通行做法。[react-scroll-to-bottom](https://github.com/compulim/react-scroll-to-bottom) 的说明写的是：只有视口已经在底部时才跟着滚，像 `tail -f`，否则显示一个「回到底部」按钮。[use-stick-to-bottom](https://github.com/stackblitz-labs/use-stick-to-bottom) 用 `ResizeObserver` 盯住内容变化，用户一往上翻就取消跟随。
+
+**实测。** 回复还在输出时往上翻，回头看前面的内容，是对话页里很常见的操作。第 2 次每冒出两个字、第 3 次每插入一条消息，都直接执行 `scrollTop = scrollHeight`，人刚翻上去，就被拽回了最底下。
+
+第 1 次没有这个问题：它算了离底部还有多远，不到 120&nbsp;px 才跟着滚。不过它是先写入新文字、再算距离，顺序反了；只是每次只多两个字，增长远小于 120，才没出错。
+
+**修法。**
+
+```js title="离底部不远才跟着滚"
+// 要在内容变长之前算，变长以后，离底部的距离已经被新内容撑大了
+const gap = scroller.scrollHeight - scroller.scrollTop - scroller.clientHeight
+appendReply(chunk)
+if (gap < 120) scroller.scrollTop = scroller.scrollHeight  // 原来是无条件滚到底
+```
+
+这几行只处理了「往上翻时别打扰」。回复里有图片加载、代码块展开这类内容变高的情况，换成上面两个库更省事。CSS 的 `overflow-anchor` 可以关掉滚动锚定，Safari 27 才支持（[MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-anchor)），这里没有实测。
+
+**怎么查。** 这一项要先操作页面再等一会儿：发一条消息，往上翻，等回复到达，再看滚动位置。试过的现成工具都不操作页面，所以都查不出。让 AI 照 Vercel 的准则审代码时，第 2 次查到了，第 3 次没查到（[审查输出](/blog/lab/ai-chat-layout/data/vercel-review-run3.md)）；它用的审查指令里本来没有这一条，查到的那次是审代码的模型自己看出来的。附录的检查脚本会测两种情况：刚发送时有没有跟到底部，往上翻以后会不会被拽回去。
+
+### 看不见的侧边栏还能 Tab 进去
+
+**规范怎么说。** APG 没有专门的抽屉模式。手机上盖在内容上面、带遮罩的抽屉，行为和模态对话框一样，这里按 [WAI-ARIA APG 的模态对话框模式](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/)来做，这是我们的选择。它对打开以后的焦点有明确要求：
+
+- 打开时，焦点移到抽屉里的一个元素上。
+- 打开期间，Tab 不能移出抽屉。
+- 按 Esc 关闭，关闭后焦点回到打开它的按钮。
+
+APG 只管打开以后，收起时怎么办它没说。HTML 的 [`inert`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/inert) 属性能让整块内容不能聚焦、不能点击，读屏软件也读不到：收起时给抽屉加，打开时给抽屉后面的页面加。WCAG 没有专门针对「Tab 到屏幕外的元素」的失败条目。最接近的是 [2.4.7](https://www.w3.org/TR/WCAG22/#focus-visible)（焦点要看得见），焦点落到屏幕外就看不见了；其次是 [2.4.3](https://www.w3.org/TR/WCAG22/#focus-order)（焦点顺序不能让人困惑）。归到这两条是我们的判断，不是 WCAG 原文。
+
+**实测。** 手机上，三次都用 `transform: translateX(-100%)` 把侧边栏移到屏幕外。第 1、3 次同时把它设成 `visibility: hidden`，第 2 次没有：收起的侧边栏里还有 13 个能聚焦的元素，2 个按钮、11 个链接。在 390&nbsp;px 宽的页面上连按 25 次 Tab，有 18 次焦点落在屏幕外，用键盘操作的人会突然看不到焦点在哪。第 2 次打开抽屉时，焦点也还留在菜单按钮上，没有移进抽屉；关上以后，焦点也没回到菜单按钮。
+
+打开以后，三次都有同一个问题：遮罩挡住了后面的页面，但没有让它 `inert`，Tab 键照样能走到遮罩下面。抽屉打开时连按 30 次 Tab，第 1、3 次有 6 次、第 2 次有 11 次落到了被遮住的元素上。
+
+**修法。**
+
+```css title="收起时彻底藏起来"
+/* 原来只有 transform */
+.sidebar {
+  visibility: hidden;
+  transition: transform .25s ease, visibility 0s .25s;
+}
+.app.nav-open .sidebar {
+  visibility: visible;
+  transition: transform .25s ease;
+}
+```
+
+`visibility` 的过渡要延迟到滑出动画结束，否则侧边栏在滑出之前就先消失了。打开和关上时，焦点也要跟着走：
+
+```js title="打开时焦点进抽屉、后面的页面 inert，关上后回到菜单按钮"
+function setNav(open) {
+  const wasOpen = app.classList.contains('nav-open')
+  app.classList.toggle('nav-open', open)
+  openNav.setAttribute('aria-expanded', String(open))
+  main.inert = open                   // 原来没有这三行：打开期间后面的页面 Tab 不进去
+  if (open) closeNav.focus()
+  else if (wasOpen) openNav.focus()
+}
+```
+
+**怎么查。** 这一项最容易被以为工具会查，实际上默认规则都查不到：
+
+- **axe-core 4.14 和 Lighthouse 13.5 都没报。** Lighthouse 给第 2 次的手机页面打了 100 分，「屏幕外的内容已隐藏」只列为需要人工检查的项。axe 有一条 `aria-hidden-focus`，只在可聚焦元素位于 `aria-hidden` 的区域里时才会触发，第 2 次没给侧边栏加 `aria-hidden`。
+- **IBM Equal Access Checker 查到了，但有误报。** [IBM Equal Access Checker](https://github.com/IBMa/equal-access) 的 `element_tabbable_visible` 把抽屉里的 13 个元素都标成了「可能有问题」，但消息里代码块的复制按钮和长链接也被标了，三次都有。
+- **给 axe 加一条十行左右的自定义规则就能准确查出来。** 第 2 次查出 13 个，另外两次和骨架都是 0，规则见附录。
+
+打开以后焦点进没进抽屉、会不会 Tab 到后面、Esc 后回没回按钮，要点按钮、按键盘才知道，扫描器查不了。让 AI 照 Vercel 准则审代码时，「Tab 到遮罩后面」只在第 1 次提到了（[审查输出](/blog/lab/ai-chat-layout/data/vercel-review-run1.md)）。附录的检查脚本会把这几步都操作一遍。
+
+### 还没测的
+
+以上都是 Chrome 的结果。手机上的软键盘、刘海和底部横条的安全区，要在 iOS Safari 和安卓 Chrome 上实测，放在后面「H5 与原生」那篇。三次里只有第 1 次在 viewport 里写了 `interactive-widget=resizes-content`，这一项在安卓上会改变键盘弹起时的布局，到时候一起量。
+
+## 用什么查
+
+我们把常见的开源检查工具在三次原样文件和骨架上都跑了一遍，桌面和手机尺寸各一次（多数用 1440 和 390 宽，Lighthouse 用它自己的默认尺寸）：
+
+| 工具 | 对齐 | 中线 | 拽回 | 抽屉 |
+| --- | :-: | :-: | :-: | :-: |
+| axe-core、Lighthouse、Pa11y、Alfa | ✗ | ✗ | ✗ | ✗ |
+| IBM Equal Access Checker | ✗ | ✗ | ✗ | △ |
+| axe 加自定义规则 | — | — | — | △ |
+| Galen | △ | △ | — | — |
+| 截图对比：Playwright、BackstopJS、Lost Pixel | ✗ | ✗ | ✗ | ✗ |
+| stylelint 加插件、impeccable | ✗ | ✗ | ✗ | ✗ |
+| AI 照 Vercel 准则审代码 | ✗ | ✗ | △ | ✓ |
+| 附录的检查脚本 | ✓ | ✓ | ✓ | ✓ |
+
+四列依次是：输入框和消息列对齐、常显滚动条下的中线、往上翻被拽回底部、收起的抽屉能 Tab 进去。✓ 查出；△ 能查出，但要自己写断言或规则（Galen、axe 自定义规则）、有误报（IBM）或时有时无（AI 审代码，2 次里查出 1 次）；✗ 查不出；— 没试。抽屉一列指收起后还能 Tab 进去；打开后 Tab 到遮罩后面这一项，只有 AI 审代码和附录的脚本试过。
+
+- **扫描器看单个元素。** axe-core、Lighthouse 这类无障碍扫描器检查的是一个时刻、一个元素：颜色够不够、有没有名字、角色对不对。「两个元素的边是否相等」「操作之后滚动位置变没变」不在它们的范围里。这几个工具依然值得跑：它们在同一批文件里查出了对比度不足、按钮没有名字这类问题，只是和布局无关。
+- **截图对比只能查出变化。** Playwright 的 `toHaveScreenshot`、BackstopJS、Lost Pixel 拿这次的截图和上次比，适合防止改坏，前提是基准本身是对的。第一次跑时，错位的页面就成了基准。
+- **CSS lint 看不到布局结果。** stylelint 的插件能管住「间距只用这几档」「用逻辑属性」，但第 2 次错位的那几行，它只提示把 `max-width` 换成 `max-inline-size`。
+- **让 AI 审代码，结果不稳定。** [Vercel 的准则](https://github.com/vercel-labs/web-interface-guidelines)附了一份给 AI 用的审查指令 command.md。「对齐要有意为之」「用常显滚动条测试」只写在网页版准则里，command.md 里都没有，三次审查也都没查出前两项。查出来的几条里，「打开抽屉后 Tab 到遮罩后面」在 command.md 里有对应的规则（被遮住的元素不能拿到焦点），三次里也只查出 1 次；「往上翻被拽回底部」没有对应规则，是审代码的模型自己看出来的。换一次就可能看不出来。
+
+所以布局类的问题，目前要靠自己写断言：在几个宽度下量几何位置，操作页面再看结果。附录的 [layout-check.mjs](/blog/lab/ai-chat-layout/layout-check.mjs) 把这篇用到的量法合成了一个脚本：
+
+- 三个宽度下的左右边；
+- 经典滚动条下的中线；
+- 发送和往上翻时的滚动位置；
+- 抽屉收起时 Tab 进不去，打开时焦点的三步；
+- 再加上输入框字号和发送按钮大小。
+
+共 14 项。三次原样文件分别有 5、10、5 项不通过，套用修正后和骨架都全部通过。
+
+## 附录：可以直接用的骨架
+
+把上面的修法合在一起的完整页面：[skeleton.html](/blog/lab/ai-chat-layout/skeleton.html)。输入框没有外阴影，所以外层只留了 8&nbsp;px 的上边距；加阴影时记得按上文加大。手机上的抽屉带关闭按钮和遮罩，打开时后面的页面设为 `inert`。用检查脚本跑过，14 项全部通过。
+
+```css title="骨架里和布局有关的部分"
+:root { --side-w: 272px; --col-w: 712px; --gutter: 24px; }
+.app {
+  display: grid;
+  grid-template-columns: var(--side-w) minmax(0, 1fr);
+  height: 100vh;
+  height: 100dvh;
+}
+.main { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+
+/* 只有消息区滚动；输入框那一层也预留滚动条的位置 */
+.scroller, .composer-wrap { scrollbar-gutter: stable both-edges; }
+.scroller { flex: 1; min-height: 0; overflow-y: auto; }
+.composer-wrap {
+  overflow: hidden;
+  padding: 8px 0 max(16px, env(safe-area-inset-bottom));
+}
+
+/* 同一列只定义一次 */
+.thread, .composer {
+  width: min(var(--col-w), 100% - 2 * var(--gutter));
+  margin-inline: auto;
+}
+
+.msg { min-width: 0; overflow-wrap: anywhere; }
+.msg pre { overflow-x: auto; }
+.msg pre code { white-space: pre; overflow-wrap: normal; }
+
+/* 不支持 field-sizing 的浏览器用 JS 撑高，见 skeleton.html */
+#input { font-size: 16px; max-height: 200px; field-sizing: content; }
+
+@media (max-width: 768px) {
+  :root { --gutter: 16px; }
+  .app { grid-template-columns: minmax(0, 1fr); }
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    transform: translateX(-100%);
+    visibility: hidden;
+    transition: transform .25s ease, visibility 0s .25s;
+  }
+  .app.nav-open .sidebar {
+    transform: none;
+    visibility: visible;
+    transition: transform .25s ease;
+  }
+}
+```
+
+## 附录：检查脚本
+
+[layout-check.mjs](/blog/lab/ai-chat-layout/layout-check.mjs) 是一个文件，依赖 `playwright-core` 和本机的 Chrome。参数是页面文件或网址，再用几个选择器告诉它哪块是什么，默认值按本文的页面写：
+
+```bash
+npm i playwright-core
+node layout-check.mjs run2.html
+node layout-check.mjs http://localhost:3000/chat \
+  --message '[data-role=message]' --composer form \
+  --drawer nav --open '#menu' --wait 8000
+```
+
+选项和默认值：
+
+- `--message .msg`：一条消息，它的父元素当作消息列。
+- `--column`：直接指定消息列，量的是去掉内边距后的内容区；不给就用上一项。
+- `--composer .composer`：输入框外框。`--input textarea`：输入框。
+- `--drawer aside`：侧边栏。`--open '[aria-controls][aria-expanded]'`：打开侧边栏的按钮。
+- `--wait 6000`：发送后等回复多久，单位毫秒。`--json`：输出 JSON。
+
+第 2 次原样文件的输出：
+
+```text
+✗ 1440 宽：左右边对齐  输入框左边 -24px，右边 +24px（负数表示比消息列宽）
+✓ 1024 宽：左右边对齐  输入框左边 0px，右边 0px（负数表示比消息列宽）
+✗ 390 宽：左右边对齐  输入框左边 -4px，右边 +4px（负数表示比消息列宽）
+✗ 常显滚动条，1440 宽：中线一致  滚动条 15px，中线差 7.5px
+✗ 常显滚动条，1024 宽：中线一致  滚动条 15px，中线差 7.5px
+✓ 刚发送：跟到底部  离底部 0px
+✗ 往上翻时：回复到达不拽回底部  翻到顶部 6000ms 后 scrollTop = 1244px
+✗ 收起的抽屉：屏幕外没有可 Tab 的元素  13 个：#closeNav、#newChat、a "Nginx 反向代理"、a "周报"…
+✗ 收起的抽屉：连按 25 次 Tab 不落到屏幕外  18 次落在屏幕外
+✗ 打开抽屉：焦点移进抽屉  焦点在 #openNav
+✗ 抽屉打开时：连按 30 次 Tab 不落到抽屉后面  11 次落到抽屉后面的页面上
+✗ Esc：关闭抽屉，焦点回到打开按钮  已关闭，焦点在 a "把一段 Python"
+✓ 手机上输入框字号 ≥ 16px  16px
+✓ 发送按钮 ≥ 24×24  36×36
+10 项不通过
+```
+
+- **结果有三种。** ✓ 通过，✗ 不通过，? 没测成（比如发送后页面没有出现新消息，或者等了 `--wait` 毫秒还没有回复）。有 ✗ 或 ? 时退出码是 1，可以直接放进 CI。
+- **发送时先点输入框里的发送按钮**，找不到按钮才按回车，所以不依赖「回车发送」。「被拽回底部」要有回复进来才测得出：演示页用定时器模拟回复，真实应用要接好后端，或者把 `--wait` 调长。
+- **焦点离开页面不算出错。** 抽屉打开时连按 Tab，焦点走到浏览器自己的界面（地址栏等）不算落到抽屉后面，只统计落在页面元素上的次数。
+- **只在 Chrome 里量。** 宽度固定为 1440、1024、390。`CHROME_PATH` 默认是 macOS 上 Chrome 的安装路径，Windows 和 Linux 要自己设置。
+
+收起的抽屉那两项也可以交给 axe 来查。下面这条自定义规则就是 [offscreen-tabbable.js](/blog/lab/ai-chat-layout/tools/offscreen-tabbable.js)，注入 axe 以后执行，再用 `axe.run(document, { runOnly: ['offscreen-tabbable'] })`：
+
+```js title="axe 自定义规则：能 Tab 到、却在视口外的元素"
+axe.configure({
+  checks: [{ id: 'tabbable-not-offscreen', evaluate: (node) => !axe.commons.dom.isOffscreen(node) }],
+  rules: [{
+    id: 'offscreen-tabbable',
+    selector: 'a[href], button, input, select, textarea, [tabindex]',
+    matches: (node) => node.tabIndex >= 0 && axe.commons.dom.isFocusable(node),
+    any: ['tabbable-not-offscreen'],
+  }],
+})
+```
+
+## 附录：AGENTS.md 规则
+
+只收这次 AI 真的没做到的几条，它已经做对的不用再写。
+
+```markdown title="AGENTS.md"
+## 对话页布局
+
+- 消息列和输入框是同一列：宽度只在一处定义
+  （width: min(内容宽, 100% - 2 × 留白)），
+  不要一个把留白写进 padding、一个写在外层。
+  改完在宽屏和窄屏下各量一次两者的左右边。
+- 只让消息区滚动时，消息区和输入框那一层
+  都加 scrollbar-gutter: stable both-edges（外层要 overflow: hidden，并留出输入框阴影的位置）；
+  在滚动条常显的环境下检查两者中线是否一致。
+- 新内容到达时，只有用户离底部不到 120px 才自动滚到底；
+  这个距离要在插入内容之前算。用户自己发的消息可以直接滚到底。
+- 用 transform 移出屏幕的抽屉，收起时必须同时 visibility: hidden 或 inert；
+  打开时把焦点移进抽屉，抽屉后面的页面设为 inert，
+  Esc 关闭后焦点回到菜单按钮（按 WAI-ARIA APG 的模态对话框来做）。
+- 改完跑 node layout-check.mjs <页面>，全部通过再交付。
+```
+
+## 附录：实测材料
+
+被测的是 Claude Code 里的全新 subagent（Claude Opus 5.5，2026-10-24），每次一个，prompt 里只有需求，没有设计规范。它们会继承这台机器上的全局配置 `~/.claude/CLAUDE.md`。和上一篇不同，这次三个 subagent 都不只写了文件：按它们交付时的说明，三次都在无头浏览器里截图自查过，第 1、3 次查完还改了一轮（补了一轮对话、缩短了占位文字）；过程记录没有存档。第 1、2 次把产品名写成了「Pairwise Chat」，这是本博客的名字，推测是读到了仓库里的内容。
+
+```text title="prompt（三次只有最后一行的文件名不同）"
+用 HTML + CSS + 少量原生 JS 写一个单文件页面：一个 AI 对话产品的主界面，布局参考 Claude、ChatGPT 这类产品。
+
+内容：
+- 左侧侧边栏：「新对话」按钮、最近的对话列表（10 条左右，标题有长有短）、底部是用户头像和名字
+- 主区域顶部：当前对话的标题、一个「分享」按钮
+- 中间：一段已有的对话，至少 6 轮，其中一条较长的回答里有一段代码块和一个很长的链接
+- 底部：输入框（可以多行输入）和发送按钮；输入后点发送，把消息加到对话末尾，并模拟一条 AI 回复
+- 桌面和手机都要能用
+
+把完整代码写到这个文件：……/run1.html
+```
+
+- 原样产出：[run1.html](/blog/lab/ai-chat-layout/run1.html)、[run2.html](/blog/lab/ai-chat-layout/run2.html)、[run3.html](/blog/lab/ai-chat-layout/run3.html)；修正在 [fixes.json](/blog/lab/ai-chat-layout/fixes.json)，[apply-fix.mjs](/blog/lab/ai-chat-layout/apply-fix.mjs) 把它套到原文件上。
+- 测量脚本：[probe.mjs](/blog/lab/ai-chat-layout/probe.mjs) 在 1440、1024、390 三个宽度下量消息列和输入框的边、最后一条消息到输入框的距离、长链接和代码块是否越界、输入框增高、往上翻时是否被拽回、手机抽屉；[extra.mjs](/blog/lab/ai-chat-layout/extra.mjs) 量常显滚动条下的偏移、输入框阴影是否被裁和 Tab 焦点。原始输出在 [data/](/blog/lab/ai-chat-layout/data/run1.json) 下。检查脚本 layout-check.mjs 是从这两个脚本整理出来的，又加了抽屉打开时的 Tab 检查，两边都有的几项读数一致。
+- 无头 Chrome 默认隐藏滚动条，第一次量出来滚动条宽度是 0。要加启动参数 `--disable-features=OverlayScrollbar`，并去掉 Playwright 默认的 `--hide-scrollbars`，才是 15&nbsp;px 的常显滚动条。
+- ChatGPT 的参照数据来自未登录的首页（没有发送任何消息）：1440、1024、768、390 四个宽度下输入框的位置和字号，以及页面加载的样式表。脚本是 [chatgpt-ref.mjs](/blog/lab/ai-chat-layout/chatgpt-ref.mjs)。Claude 的页面在无头浏览器里停在验证页，没有量到。Gemini 的 760&nbsp;px 来自未登录页的 HTML 里内联的样式，只确认了输入区，没有确认消息列也用这个值。
+- 工具对比在 2026-10-25 跑，版本：axe-core 4.14.0、Lighthouse 13.5.0、Pa11y 10.0.0、IBM accessibility-checker 4.0.34、Siteimprove Alfa 0.84.2、Galen 2.4.4、Playwright 1.64.1、BackstopJS 6.3.25、Lost Pixel 3.22.0、stylelint 17.16.0、impeccable 4.7.0，浏览器都是 Chrome 155。axe 的原始结果在 [tools-axe.json](/blog/lab/ai-chat-layout/data/tools-axe.json)，Lighthouse 和 IBM 的汇总在 [tools-summary.json](/blog/lab/ai-chat-layout/data/tools-summary.json)（Lighthouse 用的是它默认的 1350 和 412 宽，第 2 次另跑了一次 390 宽），Galen 的断言是 [chat.gspec](/blog/lab/ai-chat-layout/tools/chat.gspec)，axe 自定义规则是 [offscreen-tabbable.js](/blog/lab/ai-chat-layout/tools/offscreen-tabbable.js)。「AI 照 Vercel 准则审代码」每份文件只跑了一次，模型是 Claude Opus 5.5，结果每次可能不同，原样输出在 [run1](/blog/lab/ai-chat-layout/data/vercel-review-run1.md)、[run2](/blog/lab/ai-chat-layout/data/vercel-review-run2.md)、[run3](/blog/lab/ai-chat-layout/data/vercel-review-run3.md)。
+
+```bash
+npm i playwright-core
+node layout-check.mjs run2.html
+node probe.mjs run2.html data/run2.json
+node extra.mjs run2.html
+node apply-fix.mjs run2.html   # 生成 run2-fixed.html，再用上面几条量一遍
+```

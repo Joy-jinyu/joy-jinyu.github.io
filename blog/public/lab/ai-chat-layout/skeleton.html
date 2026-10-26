@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>对话页骨架</title>
+<style>
+  :root {
+    --side-w: 272px;
+    --col-w: 712px;   /* 消息列和输入框共用的内容宽度，不含左右留白 */
+    --gutter: 24px;   /* 内容宽度不够时，两边至少留这么多 */
+    --line: #e5e5e5;
+    --muted: #6b6b6b;
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+    color: #1a1a1a;
+    background: #fff;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+
+  .app { display: grid; grid-template-columns: var(--side-w) minmax(0, 1fr); height: 100vh; height: 100dvh; }
+  .sidebar { display: flex; flex-direction: column; min-height: 0; border-right: 1px solid var(--line); background: #f7f7f7; }
+  .sidebar nav { flex: 1; min-height: 0; overflow-y: auto; padding: 8px; }
+  .sidebar a { display: block; padding: 8px 12px; border-radius: 8px; color: inherit; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .main { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+  .topbar { display: flex; align-items: center; gap: 8px; height: 52px; padding: 0 16px; border-bottom: 1px solid var(--line); }
+  .topbar h1 { flex: 1; min-width: 0; margin: 0; font-size: 15px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #openNav, #closeNav, .scrim { display: none; }
+
+  /* 只有消息区滚动；输入框那一层也预留同样的滚动条位置，两层的中线才对得上 */
+  .scroller, .composer-wrap { scrollbar-gutter: stable both-edges; }
+  .scroller { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+  .composer-wrap { overflow: hidden; padding: 8px 0 max(16px, env(safe-area-inset-bottom)); }
+
+  /* 同一列只定义一次：宽度在这里算，左右留白不再写进各自的 padding */
+  .thread, .composer { width: min(var(--col-w), 100% - 2 * var(--gutter)); margin-inline: auto; }
+  .thread { display: flex; flex-direction: column; gap: 24px; padding-block: 24px 32px; }
+
+  .msg { min-width: 0; overflow-wrap: anywhere; }
+  .msg.user { align-self: flex-end; max-width: 85%; padding: 10px 16px; border-radius: 18px; background: #f0f0f0; }
+  .msg pre { overflow-x: auto; padding: 12px 16px; border-radius: 10px; background: #1e1e1e; color: #eee; font-size: 14px; }
+  .msg pre code { white-space: pre; overflow-wrap: normal; }
+
+  .composer { display: flex; align-items: flex-end; gap: 8px; padding: 8px 8px 8px 16px; border: 1px solid var(--line); border-radius: 24px; }
+  .composer:focus-within { border-color: var(--muted); }
+  #input { flex: 1; min-width: 0; max-height: 200px; padding: 6px 0; border: 0; outline: 0; resize: none; background: none; font: inherit; font-size: 16px; line-height: 24px; field-sizing: content; }
+  .composer button { flex: none; width: 36px; height: 36px; border: 0; border-radius: 50%; background: #1a1a1a; color: #fff; font-size: 18px; }
+
+  @media (max-width: 768px) {
+    :root { --gutter: 16px; }
+    .app { grid-template-columns: minmax(0, 1fr); }
+    .sidebar { position: fixed; inset: 0 auto 0 0; z-index: 2; width: min(84vw, 300px); transform: translateX(-100%); visibility: hidden; transition: transform .25s ease, visibility 0s .25s; }
+    .app.nav-open .sidebar { transform: none; visibility: visible; transition: transform .25s ease; }
+    #openNav, #closeNav { display: grid; place-items: center; width: 36px; height: 36px; border: 0; background: none; font-size: 18px; }
+    #closeNav { margin: 8px 8px 0 auto; }
+    .app.nav-open .scrim { display: block; position: fixed; inset: 0; z-index: 1; background: rgb(0 0 0 / .3); }
+  }
+  @media (prefers-reduced-motion: reduce) { .sidebar { transition: none; } }
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <aside class="sidebar" id="sidebar" aria-label="对话列表">
+    <button id="closeNav" type="button" aria-label="关闭侧边栏">×</button>
+    <nav>
+      <a href="#">新对话</a>
+      <a href="#">给 fetch 加超时和重试</a>
+      <a href="#">一个很长很长的对话标题，用来检查侧边栏里的省略号是否生效</a>
+    </nav>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+  <main class="main">
+    <header class="topbar">
+      <button id="openNav" type="button" aria-label="打开侧边栏" aria-controls="sidebar" aria-expanded="false">☰</button>
+      <h1>给 fetch 加超时和重试</h1>
+    </header>
+    <div class="scroller" id="scroller">
+      <div class="thread" id="thread" role="log">
+        <div class="msg user">fetch 怎么加超时？</div>
+        <div class="msg ai">
+          <p>用 <code>AbortSignal.timeout()</code>：</p>
+          <pre><code>const res = await fetch(url, { signal: AbortSignal.timeout(5000) }) // 5 秒后自动中止，抛出 TimeoutError</code></pre>
+          <p>文档在 <a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal/timeout_static">https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal/timeout_static</a>。</p>
+        </div>
+        <div class="msg user">重试呢？</div>
+        <div class="msg ai"><p>在外面包一层循环，只对网络错误和 5xx 重试，每次等待时间翻倍。</p></div>
+        <div class="msg user">第 1 个追问：重试几次合适？</div>
+        <div class="msg ai"><p>一般 3 次就够了。等待时间按 500&nbsp;ms、1&nbsp;s、2&nbsp;s 递增，再加一点随机抖动，避免所有客户端同时重试。超过 3 次还失败，说明问题不在网络抖动，继续重试只会加重服务端的负担。</p></div>
+        <div class="msg user">第 2 个追问：重试几次合适？</div>
+        <div class="msg ai"><p>一般 3 次就够了。等待时间按 500&nbsp;ms、1&nbsp;s、2&nbsp;s 递增，再加一点随机抖动，避免所有客户端同时重试。超过 3 次还失败，说明问题不在网络抖动，继续重试只会加重服务端的负担。</p></div>
+        <div class="msg user">第 3 个追问：重试几次合适？</div>
+        <div class="msg ai"><p>一般 3 次就够了。等待时间按 500&nbsp;ms、1&nbsp;s、2&nbsp;s 递增，再加一点随机抖动，避免所有客户端同时重试。超过 3 次还失败，说明问题不在网络抖动，继续重试只会加重服务端的负担。</p></div>
+        <div class="msg user">第 4 个追问：重试几次合适？</div>
+        <div class="msg ai"><p>一般 3 次就够了。等待时间按 500&nbsp;ms、1&nbsp;s、2&nbsp;s 递增，再加一点随机抖动，避免所有客户端同时重试。超过 3 次还失败，说明问题不在网络抖动，继续重试只会加重服务端的负担。</p></div>
+      </div>
+    </div>
+    <div class="composer-wrap">
+      <form class="composer" id="composer">
+        <textarea id="input" rows="1" placeholder="发消息" aria-label="发消息"></textarea>
+        <button type="submit" aria-label="发送">↑</button>
+      </form>
+    </div>
+  </main>
+</div>
+<script>
+  const $ = (id) => document.getElementById(id)
+  const scroller = $('scroller'), thread = $('thread'), input = $('input'), app = $('app')
+
+  // 用户离底部不到 120px 才跟着滚；往上翻着看历史时，新内容不能把人拽回去
+  const nearBottom = () => scroller.scrollHeight - scroller.scrollTop - scroller.clientHeight < 120
+  const append = (cls, text, force) => {
+    const follow = force || nearBottom()
+    const el = document.createElement('div')
+    el.className = 'msg ' + cls
+    el.textContent = text
+    thread.append(el)
+    if (follow) scroller.scrollTop = scroller.scrollHeight
+  }
+
+  // 不支持 field-sizing 的浏览器（Firefox 152、Safari 26.2 以前）用 JS 撑高
+  const autosize = () => { if (CSS.supports('field-sizing', 'content')) return; input.style.height = 'auto'; input.style.height = Math.min(input.scrollHeight, 200) + 'px' }
+  input.addEventListener('input', autosize)
+  input.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); $('composer').requestSubmit() } })
+  $('composer').addEventListener('submit', (e) => {
+    e.preventDefault()
+    const text = input.value.trim()
+    if (!text) return
+    append('user', text, true)
+    input.value = ''
+    autosize()
+    setTimeout(() => append('ai', '这是一条模拟回复。'), 1200)
+  })
+
+  // 当模态对话框做（WAI-ARIA APG）：打开时焦点移进抽屉、后面的页面 inert，关闭时焦点回到打开按钮
+  const setNav = (open) => {
+    const was = app.classList.contains('nav-open')
+    app.classList.toggle('nav-open', open)
+    document.querySelector('.main').inert = open  // 打开期间 Tab 不会跑到抽屉后面
+    $('openNav').setAttribute('aria-expanded', String(open))
+    if (open) $('closeNav').focus()
+    else if (was) $('openNav').focus()
+  }
+  $('openNav').addEventListener('click', () => setNav(true))
+  $('closeNav').addEventListener('click', () => setNav(false))
+  $('scrim').addEventListener('click', () => setNav(false))
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setNav(false) })
+  scroller.scrollTop = scroller.scrollHeight
+</script>
+</body>
+</html>

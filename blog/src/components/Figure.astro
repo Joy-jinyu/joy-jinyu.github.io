@@ -1,0 +1,53 @@
+---
+/** 文章插图：柔和的渐变底，内容居中，下面一行说明。图片、组件都放进 slot */
+interface Props {
+  caption: string
+}
+const { caption } = Astro.props
+---
+
+<figure class="fig not-prose">
+  <div class="fig-stage"><slot /></div>
+  <figcaption>{caption}</figcaption>
+</figure>
+
+<style is:global>
+  .fig { margin: 2.4em 0; }
+  .fig-stage {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 32px 24px;
+    border-radius: 12px;
+    background:
+      radial-gradient(120% 140% at 0% 0%, color-mix(in srgb, var(--brand) 16%, transparent), transparent 55%),
+      radial-gradient(120% 140% at 100% 100%, rgba(232, 140, 100, 0.16), transparent 55%),
+      var(--panel-hi);
+  }
+  .fig-stage img { display: block; max-width: 100%; height: auto; }
+  .fig figcaption { margin-top: 12px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+
+  /* 三张卡片并排：桌面三列；手机横向滑动，每张保持可读的宽度 */
+  .fig-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: end; gap: 12px; width: 100%; }
+  .fig-row figure { margin: 0; }
+  .fig-row figcaption { margin-top: 4px; color: var(--muted); font-size: 13px; line-height: 1.4; text-align: center; }
+  .fig-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; width: 100%; max-width: 640px; }
+  .fig-pair figure { margin: 0; }
+  /* 截图自带卡片的白底，这里补上圆角和投影，让它看起来就是一小块卡片 */
+  .fig-pair img { border-radius: 14px; background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 10px 28px -14px rgba(0, 0, 0, 0.25); }
+  .fig-pair figcaption { margin-top: 6px; color: var(--muted); font-size: 13px; text-align: center; }
+  /* 宽截图上下排，保持原宽，细节才看得清 */
+  .fig-stack { display: grid; gap: 16px; width: 100%; }
+  .fig-stack figure { margin: 0; }
+  .fig-stack img, .fig-shot { border-radius: 10px; background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 10px 28px -14px rgba(0, 0, 0, 0.25); }
+  .fig-stack figcaption { margin-top: 6px; color: var(--muted); font-size: 13px; text-align: center; }
+
+  @media (max-width: 640px) {
+    .fig-stage { padding: 24px 12px; }
+    .fig-row { grid-template-columns: repeat(3, 72%); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 4px; }
+    .fig-row figure { scroll-snap-align: center; }
+    .fig-pair { grid-template-columns: 1fr; }
+  }
+</style>
