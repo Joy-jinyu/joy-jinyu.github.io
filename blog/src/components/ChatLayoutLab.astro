@@ -1,0 +1,212 @@
+---
+/**
+ * 对话页实测对照：iframe 里加载 AI 三次生成的原样 HTML（blog/public/lab/ai-chat-layout/），可切换第几次、手机 / 桌面、是否套用修正、是否显示对齐线。
+ * 修正读自同目录的 fixes.json（CSS 追加、JS 按原文替换），测量脚本 apply-fix.mjs 用的也是这一份；下方读数从 iframe 里实时量出来。
+ * 用法：放在 <Figure> 里，渐变底和说明由 Figure 提供
+ */
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/')
+---
+
+<chat-layout-lab class="clb" data-base={`${base}lab/ai-chat-layout/`}>
+  <div class="clb-stage">
+    <div class="clb-device"><iframe class="clb-frame" title="AI 生成的对话页" loading="lazy"></iframe></div>
+  </div>
+
+  <div class="clb-controls">
+    <div class="clb-seg" role="group" aria-label="第几次生成">
+      {[1, 2, 3].map((n) => <button type="button" data-run={n} aria-pressed={n === 1 ? 'true' : 'false'}>第 {n} 次</button>)}
+    </div>
+    <div class="clb-seg" role="group" aria-label="设备">
+      <button type="button" data-view="desk" aria-pressed="true">桌面</button>
+      <button type="button" data-view="phone" aria-pressed="false">手机</button>
+    </div>
+    <button type="button" class="clb-switch" role="switch" aria-checked="true" data-toggle="guides"><span class="clb-knob" aria-hidden="true"></span>对齐线</button>
+    <button type="button" class="clb-switch" role="switch" aria-checked="false" data-toggle="fix"><span class="clb-knob" aria-hidden="true"></span>套用修正</button>
+  </div>
+
+  <dl class="clb-read" aria-live="polite">
+    <div><dt>输入框比消息列</dt><dd data-read="edge">—</dd></div>
+    <div><dt>这台设备的滚动条</dt><dd data-read="scrollbar">—</dd></div>
+    <div><dt>侧边栏收起时，Tab 能进去</dt><dd data-read="tab">—</dd></div>
+    <div>
+      <dt>往上翻时来了新回复</dt>
+      <dd data-read="yank"><button type="button" class="clb-test" data-test>测一下</button></dd>
+    </div>
+  </dl>
+</chat-layout-lab>
+
+<script>
+  type Fix = { css: string; js: { from: string; to: string }[] }
+  const VIEWS = { desk: { w: 1280, h: 800 }, phone: { w: 390, h: 760 } }
+  // 只为了嵌进插图：在 iframe 里画对齐线。蓝虚线是消息列的左右边，红实线是和它对不齐的输入框边
+  const GUIDES = '<script data-guides>' + `
+    addEventListener('load', () => setTimeout(() => {
+      const col = document.querySelector('.msg').parentElement, cs = getComputedStyle(col), c = col.getBoundingClientRect()
+      const l = c.left + parseFloat(cs.paddingLeft), r = c.right - parseFloat(cs.paddingRight)
+      const k = document.querySelector('.composer').getBoundingClientRect()
+      const line = (x, s) => { const d = document.createElement('div'); d.style.cssText = 'position:fixed;top:0;bottom:0;width:0;z-index:9999;pointer-events:none;left:' + (x - 1) + 'px;border-left:2px ' + s; document.body.append(d) }
+      line(l, 'dashed #2f6bff'); line(r, 'dashed #2f6bff')
+      if (Math.abs(k.left - l) > 0.5) line(k.left, 'solid #e5484d')
+      if (Math.abs(k.right - r) > 0.5) line(k.right, 'solid #e5484d')
+    }, 50))` + '</' + 'script>'
+
+  /** 消息所在的滚动容器：三次生成的类名不同，按「离 .msg 最近、能纵向滚动的祖先」找 */
+  const scrollerOf = (doc: Document) => {
+    let s = doc.querySelector('.msg')?.parentElement ?? null
+    while (s && !/(auto|scroll)/.test(getComputedStyle(s).overflowY)) s = s.parentElement
+    return s
+  }
+  const wait = (ms: number) => new Promise((r) => setTimeout(r, ms))
+
+  class ChatLayoutLab extends HTMLElement {
+    private state = { run: '1', view: 'desk' as keyof typeof VIEWS, fix: false, guides: true }
+    private cache = new Map<string, string>()
+    private fixes: Record<string, Fix> | null = null
+    private frame = this.querySelector<HTMLIFrameElement>('iframe')!
+
+    connectedCallback() {
+      this.querySelectorAll<HTMLButtonElement>('[data-run], [data-view], [data-toggle]').forEach((b) =>
+        b.addEventListener('click', () => {
+          if (b.dataset.run) this.state.run = b.dataset.run
+          if (b.dataset.view) this.state.view = b.dataset.view as keyof typeof VIEWS
+          if (b.dataset.toggle === 'fix') this.state.fix = !this.state.fix
+          if (b.dataset.toggle === 'guides') this.state.guides = !this.state.guides
+          this.render()
+        }),
+      )
+      // 窄屏上桌面视图要缩到三分之一，默认先给手机视图
+      if (this.querySelector<HTMLElement>('.clb-stage')!.clientWidth < 640) this.state.view = 'phone'
+      new ResizeObserver(() => this.fit()).observe(this.querySelector('.clb-stage')!)
+      this.render()
+    }
+
+    private async text(url: string) {
+      if (!this.cache.has(url)) this.cache.set(url, await (await fetch(url)).text())
+      return this.cache.get(url)!
+    }
+
+    /** iframe 按真实尺寸渲染（桌面 1280 宽），再整体缩小到插图的宽度 */
+    private fit() {
+      const v = VIEWS[this.state.view]
+      const stage = this.querySelector<HTMLElement>('.clb-stage')!
+      const device = this.querySelector<HTMLElement>('.clb-device')!
+      const scale = Math.min(1, stage.clientWidth / v.w)
+      this.frame.style.width = `${v.w}px`
+      this.frame.style.height = `${v.h}px`
+      this.frame.style.transform = `scale(${scale})`
+      device.style.width = `${v.w * scale}px`
+      device.style.height = `${v.h * scale}px`
+    }
+
+    private async render() {
+      const { run, view, fix, guides } = this.state
+      this.querySelectorAll<HTMLButtonElement>('[data-run]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.run === run)))
+      this.querySelectorAll<HTMLButtonElement>('[data-view]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === view)))
+      this.querySelector('[data-toggle="fix"]')!.setAttribute('aria-checked', String(fix))
+      this.querySelector('[data-toggle="guides"]')!.setAttribute('aria-checked', String(guides))
+      this.querySelector<HTMLElement>('[data-read="yank"]')!.innerHTML = '<button type="button" class="clb-test" data-test>测一下</button>'
+      this.querySelector('[data-test]')!.addEventListener('click', () => this.testYank())
+      this.fit()
+
+      this.fixes ??= JSON.parse(await this.text(`${this.dataset.base}fixes.json`))
+      let html = await this.text(`${this.dataset.base}run${run}.html`)
+      if (fix) {
+        const f = this.fixes![run]
+        for (const { from, to } of f.js) html = html.replace(from, to)
+        html = html.replace('</head>', `<style data-fix>${f.css}</style></head>`)
+      }
+      if (guides) html = html.replace('</body>', `${GUIDES}</body>`)
+      this.frame.onload = () => setTimeout(() => this.measure(), 120)
+      this.frame.srcdoc = html
+    }
+
+    private read(key: string, value: string, ok: boolean | null, note = '') {
+      const dd = this.querySelector<HTMLElement>(`[data-read="${key}"]`)!
+      dd.innerHTML = `${value}${note ? `<small>${note}</small>` : ''}`
+      if (ok === null) delete dd.dataset.ok
+      else dd.dataset.ok = String(ok)
+    }
+
+    private measure() {
+      const doc = this.frame.contentDocument
+      const win = this.frame.contentWindow
+      if (!doc || !win) return
+      const col = doc.querySelector('.msg')!.parentElement!
+      const cs = win.getComputedStyle(col)
+      const c = col.getBoundingClientRect()
+      const k = doc.querySelector('.composer')!.getBoundingClientRect()
+      const left = Math.round(c.left + parseFloat(cs.paddingLeft) - k.left)
+      const right = Math.round(k.right - (c.right - parseFloat(cs.paddingRight)))
+      this.read('edge', left || right ? `左宽 ${left}，右宽 ${right}` : '左右对齐', !left && !right, left || right ? 'px' : '')
+
+      const sc = scrollerOf(doc)
+      const sw = sc ? sc.offsetWidth - sc.clientWidth : 0
+      const sg = sc ? win.getComputedStyle(sc).scrollbarGutter : 'auto'
+      this.read('scrollbar', `${sw} px`, null, sw ? (sg.includes('both') ? '两侧都留了位置' : '只占消息区，中线偏 ' + sw / 2 + ' px') : '滚动条不占宽度，看不出这一项')
+
+      if (this.state.view !== 'phone') return this.read('tab', '—', null, '切到手机再看')
+      const side = doc.querySelector<HTMLElement>('#sidebar')!
+      const hidden = win.getComputedStyle(side).visibility === 'hidden' || side.inert
+      const n = hidden ? 0 : side.querySelectorAll('a[href], button, input, textarea, [tabindex]:not([tabindex="-1"])').length
+      this.read('tab', `${n} 个`, n === 0, n ? '看不见，但能聚焦' : '')
+    }
+
+    /** 发一条消息，马上翻回最上面，等回复写完，看滚动位置有没有被拽回底部 */
+    private async testYank() {
+      const doc = this.frame.contentDocument
+      const win = this.frame.contentWindow as (Window & typeof globalThis) | null
+      if (!doc || !win) return
+      this.read('yank', '测试中…', null, '大约 6 秒')
+      const input = doc.querySelector<HTMLTextAreaElement>('#input')!
+      input.value = '再解释一下'
+      input.dispatchEvent(new win.Event('input', { bubbles: true }))
+      doc.querySelector<HTMLFormElement>('.composer')!.requestSubmit()
+      await wait(150)
+      const sc = scrollerOf(doc)!
+      sc.scrollTop = 0
+      await wait(6000)
+      const pulled = sc.scrollTop > 40
+      this.read('yank', pulled ? '被拽回底部' : '停在原处', !pulled)
+    }
+  }
+  if (!customElements.get('chat-layout-lab')) customElements.define('chat-layout-lab', ChatLayoutLab)
+</script>
+
+<style is:global>
+  .clb { display: flex; flex-direction: column; align-items: center; gap: 16px; width: 100%; }
+  .clb-stage { display: flex; justify-content: center; width: 100%; }
+  .clb-device { overflow: hidden; border-radius: 10px; background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 12px 32px -16px rgba(0, 0, 0, 0.3); }
+  .clb-frame { display: block; border: 0; transform-origin: 0 0; background: #fff; color-scheme: light; }
+
+  .clb-controls { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; }
+  .clb-seg { display: inline-flex; padding: 3px; border-radius: 999px; background: rgba(var(--ink-rgb), 0.06); }
+  .clb-seg button,
+  .clb-switch,
+  .clb-test { min-height: 32px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); font: 500 13px/1 var(--sans); cursor: var(--cursor-pointer); -webkit-tap-highlight-color: transparent; transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease; }
+  .clb-seg button { padding: 0 14px; }
+  .clb-seg button[aria-pressed="true"] { background: var(--solid); color: var(--strong); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12); }
+  @media (hover: hover) { .clb-seg button:hover:not([aria-pressed="true"]) { color: var(--strong); } }
+  .clb-seg button:active, .clb-switch:active, .clb-test:active { opacity: 0.8; }
+  .clb-seg button:focus-visible, .clb-switch:focus-visible, .clb-test:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+  .clb-switch { display: inline-flex; align-items: center; gap: 8px; padding: 0 14px 0 6px; background: rgba(var(--ink-rgb), 0.06); color: var(--text); }
+  .clb-knob { position: relative; width: 30px; height: 18px; border-radius: 999px; background: rgba(var(--ink-rgb), 0.18); transition: background-color 0.18s ease; }
+  .clb-knob::after { content: ""; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25); transition: transform 0.18s var(--ease); }
+  .clb-switch[aria-checked="true"] .clb-knob { background: var(--brand); }
+  .clb-switch[aria-checked="true"] .clb-knob::after { transform: translateX(12px); }
+  .clb-test { min-height: 26px; padding: 0 12px; background: rgba(var(--ink-rgb), 0.08); color: var(--strong); font-size: 12px; }
+
+  .clb-read { display: grid; grid-template-columns: repeat(4, auto); justify-content: center; gap: 4px 28px; margin: 0; }
+  .clb-read div { display: flex; flex-direction: column; gap: 2px; }
+  .clb-read dt { color: var(--muted); font-size: 12px; line-height: 1.4; }
+  .clb-read dd { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 6px; margin: 0; color: var(--strong); font: 500 15px/1.4 var(--sans); font-variant-numeric: tabular-nums; }
+  .clb-read dd small { color: var(--muted); font-size: 12px; }
+  .clb-read dd[data-ok="false"], .clb-read dd[data-ok="false"] small { color: var(--danger); }
+
+  @media (max-width: 640px) {
+    .clb-read { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 20px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .clb-knob, .clb-knob::after { transition: none; }
+  }
+</style>

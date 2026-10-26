@@ -1,0 +1,14 @@
+# Galen 2.4.4 的布局 spec：输入框和消息列的左右边、中线都要对齐。
+# 第 1 次和 skeleton 的 AI 消息是 .msg.ai，跑那两份时改掉下面的选择器。
+# galen check chat.gspec --url <页面> --size 1440x900
+@objects
+    ai        css  .ai-msg
+    composer  css  .composer
+
+= Edges =
+    composer:
+        aligned vertically all ai 0px
+
+= Centers =
+    composer:
+        aligned vertically centered ai 0px

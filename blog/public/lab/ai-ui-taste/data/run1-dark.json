@@ -1,0 +1,432 @@
+{
+  "file": "run1.html",
+  "errors": [],
+  "cssFacts": {
+    "transitionAll": false,
+    "outlineNone": false,
+    "focusVisible": true,
+    "focusRule": false,
+    "active": true,
+    "hoverRules": 1,
+    "hoverInMediaHover": false,
+    "reducedMotion": true,
+    "tapHighlight": "transparent",
+    "tabularNums": true,
+    "safeArea": true,
+    "vh100": true,
+    "dvh": false,
+    "textWrap": false,
+    "cssVars": 28,
+    "transitions": [
+      "transform .1s ease, background-color .15s ease",
+      "opacity .15s ease, transform .15s ease, visibility 0s linear .15s",
+      "opacity .15s ease, transform .15s ease, visibility 0s",
+      "opacity .2s ease, transform .2s ease"
+    ],
+    "animations": [],
+    "keyframes": 0
+  },
+  "spacing": [
+    {
+      "v": 1,
+      "off4": true,
+      "who": [
+        "button.more「更多操作」 paddingTop",
+        "button.more「更多操作」 paddingBottom",
+        "button.btn「升级套餐」 paddingTop"
+      ]
+    },
+    {
+      "v": 3,
+      "off4": true,
+      "who": [
+        "span.dots「」 rowGap",
+        "span.dots「」 columnGap"
+      ]
+    },
+    {
+      "v": 6,
+      "off4": true,
+      "who": [
+        "button.more「更多操作」 paddingRight",
+        "button.more「更多操作」 paddingLeft",
+        "button.btn「升级套餐」 paddingRight"
+      ]
+    },
+    {
+      "v": 8,
+      "off4": false,
+      "who": [
+        "div.head「团队空间 Pro」 rowGap",
+        "div.head「团队空间 Pro」 columnGap",
+        "span.tag「Pro」 paddingRight"
+      ]
+    },
+    {
+      "v": 12,
+      "off4": false,
+      "who": [
+        "div.row「今日上传文件数 128」 paddingTop",
+        "div.row「今日上传文件数 128」 paddingBottom",
+        "div.row「已用空间 37.5 / 10」 paddingTop"
+      ]
+    },
+    {
+      "v": 16,
+      "off4": false,
+      "who": [
+        "div.toast「」 paddingRight",
+        "div.toast「」 paddingLeft"
+      ]
+    },
+    {
+      "v": 20,
+      "off4": false,
+      "who": [
+        "section.card「团队空间 Pro 本周通过 」 paddingTop",
+        "section.card「团队空间 Pro 本周通过 」 paddingRight",
+        "section.card「团队空间 Pro 本周通过 」 paddingBottom"
+      ]
+    },
+    {
+      "v": 40,
+      "off4": false,
+      "who": [
+        "div.head「团队空间 Pro」 paddingRight"
+      ]
+    }
+  ],
+  "fontSizes": [
+    {
+      "v": 12,
+      "who": [
+        "span.tag「Pro」"
+      ]
+    },
+    {
+      "v": 13,
+      "who": [
+        "small「/ 100 GB」"
+      ]
+    },
+    {
+      "v": 14,
+      "who": [
+        "p.desc「本周通过 Claude Co」",
+        "dt「今日上传文件数」",
+        "dt「已用空间」"
+      ]
+    },
+    {
+      "v": 15,
+      "who": [
+        "span「128」",
+        "dd「37.5 / 100 GB」",
+        "button.btn「升级套餐」"
+      ]
+    },
+    {
+      "v": 18,
+      "who": [
+        "h1「团队空间」"
+      ]
+    }
+  ],
+  "weights": [
+    "600",
+    "400"
+  ],
+  "radii": [
+    {
+      "v": 16,
+      "who": [
+        "section.card「团队空间 Pro 本周通过 」"
+      ]
+    },
+    {
+      "v": 10,
+      "who": [
+        "button.more「更多操作」",
+        "button.btn「升级套餐」",
+        "button.btn「管理成员」"
+      ]
+    },
+    {
+      "v": 50,
+      "who": [
+        "i「」",
+        "i「」",
+        "i「」"
+      ]
+    }
+  ],
+  "textColors": [
+    "rgb(240, 239, 234)",
+    "rgb(235, 167, 141)",
+    "rgb(163, 161, 153)",
+    "rgb(26, 26, 25)"
+  ],
+  "bgColors": 6,
+  "contrast": [
+    {
+      "who": "button.btn「升级套餐」",
+      "ratio": 5.58,
+      "fg": "rgb(26, 26, 25)",
+      "bg": "rgb(217, 119, 87)",
+      "size": 15,
+      "weight": "600"
+    },
+    {
+      "who": "p.desc「本周通过 Claude Co」",
+      "ratio": 6.44,
+      "fg": "rgb(163, 161, 153)",
+      "bg": "rgb(31, 30, 28)",
+      "size": 14,
+      "weight": "400"
+    },
+    {
+      "who": "dt「今日上传文件数」",
+      "ratio": 6.44,
+      "fg": "rgb(163, 161, 153)",
+      "bg": "rgb(31, 30, 28)",
+      "size": 14,
+      "weight": "400"
+    },
+    {
+      "who": "dt「已用空间」",
+      "ratio": 6.44,
+      "fg": "rgb(163, 161, 153)",
+      "bg": "rgb(31, 30, 28)",
+      "size": 14,
+      "weight": "400"
+    },
+    {
+      "who": "small「/ 100 GB」",
+      "ratio": 6.44,
+      "fg": "rgb(163, 161, 153)",
+      "bg": "rgb(31, 30, 28)",
+      "size": 13,
+      "weight": "400"
+    },
+    {
+      "who": "span.tag「Pro」",
+      "ratio": 6.8,
+      "fg": "rgb(235, 167, 141)",
+      "bg": "rgb(58, 42, 35)",
+      "size": 12,
+      "weight": "600"
+    },
+    {
+      "who": "h1「团队空间」",
+      "ratio": 14.47,
+      "fg": "rgb(240, 239, 234)",
+      "bg": "rgb(31, 30, 28)",
+      "size": 18,
+      "weight": "600"
+    },
+    {
+      "who": "span「128」",
+      "ratio": 14.47,
+      "fg": "rgb(240, 239, 234)",
+      "bg": "rgb(31, 30, 28)",
+      "size": 15,
+      "weight": "600"
+    }
+  ],
+  "nested": [
+    {
+      "child": "button.more「更多操作」",
+      "r": 10,
+      "parent": "section.card「团队空间 Pro 本周通过 」",
+      "pr": 16,
+      "inset": 12,
+      "ideal": 4
+    }
+  ],
+  "targets": [
+    {
+      "who": "button.more「更多操作」",
+      "w": 40,
+      "h": 40,
+      "visible": true
+    },
+    {
+      "who": "button「重命名」",
+      "w": 132.5,
+      "h": 38.4,
+      "visible": true
+    },
+    {
+      "who": "button「复制链接」",
+      "w": 132.5,
+      "h": 38.4,
+      "visible": true
+    },
+    {
+      "who": "button.danger「删除」",
+      "w": 132.5,
+      "h": 38.4,
+      "visible": true
+    },
+    {
+      "who": "button.btn「升级套餐」",
+      "w": 145.5,
+      "h": 44,
+      "visible": true
+    },
+    {
+      "who": "button.btn「管理成员」",
+      "w": 145.5,
+      "h": 44,
+      "visible": true
+    }
+  ],
+  "lefts": [
+    {
+      "x": 36,
+      "who": [
+        "h1「团队空间」",
+        "p.desc「本周通过 Claude Co」",
+        "dt「今日上传文件数」"
+      ]
+    },
+    {
+      "x": 78.75,
+      "who": [
+        "button.btn「升级套餐」"
+      ]
+    },
+    {
+      "x": 124,
+      "who": [
+        "span.tag「Pro」"
+      ]
+    },
+    {
+      "x": 236.25,
+      "who": [
+        "button.btn「管理成员」"
+      ]
+    },
+    {
+      "x": 248.14,
+      "who": [
+        "dd「37.5 / 100 GB」"
+      ]
+    },
+    {
+      "x": 285.52,
+      "who": [
+        "small「/ 100 GB」"
+      ]
+    },
+    {
+      "x": 310.09,
+      "who": [
+        "span「128」"
+      ]
+    }
+  ],
+  "rows": [],
+  "nonIntegerHeights": [
+    {
+      "who": "main「团队空间 Pro 本周通过 」",
+      "h": 296.39
+    },
+    {
+      "who": "section.card「团队空间 Pro 本周通过 」",
+      "h": 296.39
+    },
+    {
+      "who": "div.head「团队空间 Pro」",
+      "h": 23.39
+    },
+    {
+      "who": "h1「团队空间」",
+      "h": 23.39
+    },
+    {
+      "who": "div.row「今日上传文件数 128」",
+      "h": 47.5
+    },
+    {
+      "who": "dd「128」",
+      "h": 22.5
+    },
+    {
+      "who": "div.row「已用空间 37.5 / 10」",
+      "h": 42.5
+    },
+    {
+      "who": "dd「37.5 / 100 GB」",
+      "h": 22.5
+    }
+  ],
+  "copy": {
+    "text": "团队空间 Pro 本周通过 Claude Code 上传了 12GB 文件，还剩 63GB 可用 今日上传文件数 128 已用空间 37.5 / 100 GB 升级套餐 管理成员",
+    "cjkLatinNoSpace": 0,
+    "halfWidthPunctInCjk": 0,
+    "threeDots": false
+  },
+  "tick": {
+    "numeric": "tabular-nums",
+    "family": "-apple-system, \"system-ui\", \"PingFang SC\", \"Helvet",
+    "widths": [
+      "130@28.91",
+      "133@28.91",
+      "134@28.91",
+      "137@28.91",
+      "140@28.91",
+      "141@28.91"
+    ],
+    "rightAligned": "start"
+  },
+  "menu": {
+    "found": true,
+    "button": {
+      "w": 40,
+      "h": 40
+    },
+    "closed": {
+      "tag": "ul.menu",
+      "visible": false,
+      "opacity": "0",
+      "transform": "matrix(0.96, 0, 0, 0.96, 0, -3.84)",
+      "origin": "152px 0px",
+      "transition": "opacity 0.15s, transform 0.15s, visibility 0s linear 0.15s",
+      "animation": "none 0s",
+      "top": 76.2,
+      "right": 347
+    },
+    "frames": [
+      "0.00|matrix(0.96, 0, 0, 0.96,",
+      "0.35|matrix(0.973883, 0, 0, 0",
+      "0.85|matrix(0.994077, 0, 0, 0",
+      "0.99|matrix(0.999715, 0, 0, 0",
+      "1.00|none",
+      "1.00|none"
+    ],
+    "open": {
+      "tag": "ul.menu open",
+      "visible": true,
+      "opacity": "1",
+      "transform": "none",
+      "origin": "152px 0px",
+      "transition": "opacity 0.15s, transform 0.15s, visibility",
+      "animation": "none 0s",
+      "top": 80,
+      "right": 347
+    },
+    "ariaExpanded": "true",
+    "escCloses": true,
+    "outsideCloses": true,
+    "interrupt": [
+      "0.85|matrix(0.994074, 0, 0, 0",
+      "0.28|matrix(0.97122, 0, 0, 0.",
+      "0.07|matrix(0.962819, 0, 0, 0",
+      "0.00|matrix(0.96, 0, 0, 0.96,",
+      "0.00|matrix(0.96, 0, 0, 0.96,",
+      "0.00|matrix(0.96, 0, 0, 0.96,"
+    ]
+  }
+}

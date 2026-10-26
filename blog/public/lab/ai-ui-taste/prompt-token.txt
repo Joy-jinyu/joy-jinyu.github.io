@@ -1,0 +1,30 @@
+用 HTML + CSS + 少量原生 JS 写一个单文件页面：移动端 H5 的「团队空间」卡片。
+
+内容：
+- 标题「团队空间」，旁边一个套餐标签「Pro」
+- 一句描述：本周通过 Claude Code 上传了 12GB 文件，还剩 63GB 可用
+- 两行数据：今日上传文件数（每隔一秒刷新一次，数字会增长）、已用空间 37.5 / 100 GB，下面一个进度条
+- 两个按钮：升级套餐、管理成员
+- 右上角一个「更多」按钮，点开是一个下拉菜单：重命名、复制链接、删除
+
+必须使用下面这组设计变量，不要自己另选颜色、圆角和字号：
+
+```css
+:root {
+  --color-accent: #b65a3c;      /* 主色 */
+  --color-on-accent: #ffffff;   /* 主色上的文字 */
+  --color-text: #1c1c1a;
+  --color-text-2: #5f5e59;
+  --color-line: #e7e6e1;
+  --color-bg: #f4f4f1;
+  --color-card: #ffffff;
+  --radius-card: 16px;
+  --radius-control: 10px;
+  --font-sm: 13px;
+  --font-md: 15px;
+  --font-lg: 18px;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px;
+}
+```
+
+把完整代码写到这个文件：……/token1.html

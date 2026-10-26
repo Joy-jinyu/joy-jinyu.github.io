@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cut">
+<title>对话 · Assistant</title>
+<style>
+  :root {
+    --bg: #faf9f7;
+    --sidebar: #f2f0ec;
+    --surface: #ffffff;
+    --border: #e4e1db;
+    --text: #1f1e1c;
+    --muted: #6b6862;
+    --hover: #e8e5df;
+    --active: #e0dcd4;
+    --accent: #c96442;
+    --accent-text: #ffffff;
+    --user-bubble: #efece6;
+    --code-bg: #1e1e1e;
+    --code-text: #e6e6e6;
+    --link: #2f6fb0;
+    --focus: #2f6fb0;
+    --radius: 12px;
+    --sidebar-w: 268px;
+    --content-w: 760px;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1f1e1c;
+      --sidebar: #191817;
+      --surface: #2a2926;
+      --border: #3a3834;
+      --text: #ecebe8;
+      --muted: #a29f98;
+      --hover: #2c2b28;
+      --active: #35332f;
+      --accent: #d97757;
+      --user-bubble: #2f2e2a;
+      --code-bg: #141413;
+      --link: #7ab3ec;
+      --focus: #7ab3ec;
+      color-scheme: dark;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+  }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  .app { display: flex; height: 100vh; height: 100dvh; }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar {
+    width: var(--sidebar-w);
+    flex-shrink: 0;
+    background: var(--sidebar);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .sidebar-head { padding: 12px; display: flex; gap: 8px; align-items: center; }
+  .brand { font-weight: 600; font-size: 16px; padding: 0 4px; flex: 1; }
+  .new-chat {
+    margin: 0 12px 8px;
+    display: flex; align-items: center; gap: 8px;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 10px;
+    text-align: left;
+  }
+  .new-chat:hover { background: var(--hover); }
+  .new-chat .plus {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--accent); color: var(--accent-text);
+    display: grid; place-items: center; font-size: 15px; line-height: 1;
+  }
+  .section-label { font-size: 12px; color: var(--muted); padding: 12px 20px 4px; }
+  .history { list-style: none; margin: 0; padding: 0 8px 8px; overflow-y: auto; flex: 1; min-height: 0; }
+  .history button {
+    width: 100%;
+    display: block;
+    text-align: left;
+    background: none;
+    border: 0;
+    border-radius: 8px;
+    padding: 7px 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+  }
+  .history button:hover { background: var(--hover); }
+  .history button[aria-current="page"] { background: var(--active); font-weight: 500; }
+  .user {
+    border-top: 1px solid var(--border);
+    padding: 12px 16px;
+    display: flex; align-items: center; gap: 10px;
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+  }
+  .avatar {
+    width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+    background: #5b7c99; color: #fff;
+    display: grid; place-items: center; font-weight: 600; font-size: 14px;
+  }
+  .user-meta { min-width: 0; }
+  .user-name { font-weight: 500; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .user-plan { font-size: 12px; color: var(--muted); }
+
+  .icon-btn {
+    width: 36px; height: 36px; flex-shrink: 0;
+    display: grid; place-items: center;
+    border: 0; background: none; border-radius: 8px;
+  }
+  .icon-btn:hover { background: var(--hover); }
+  .icon-btn svg { width: 20px; height: 20px; }
+
+  /* ---------- Main ---------- */
+  .main { flex: 1; min-width: 0; display: flex; flex-direction: column; min-height: 0; }
+  .topbar {
+    height: 56px; flex-shrink: 0;
+    display: flex; align-items: center; gap: 8px;
+    padding: 0 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .menu-btn { display: none; }
+  .title {
+    flex: 1; min-width: 0; margin: 0;
+    font-size: 15px; font-weight: 500;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .share {
+    flex-shrink: 0;
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 8px;
+    font-size: 14px;
+  }
+  .share:hover { background: var(--hover); }
+  .share svg { width: 16px; height: 16px; }
+
+  .scroller { flex: 1; overflow-y: auto; min-height: 0; overscroll-behavior: contain; }
+  .thread { max-width: var(--content-w); margin: 0 auto; padding: 24px 16px 32px; }
+
+  .msg { margin: 0 0 24px; display: flex; gap: 12px; }
+  .msg.user-msg { justify-content: flex-end; }
+  .msg.user-msg .body {
+    background: var(--user-bubble);
+    padding: 10px 16px;
+    border-radius: 18px;
+    max-width: 85%;
+    white-space: pre-wrap;
+  }
+  .msg.ai-msg .ai-mark {
+    width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
+    background: var(--accent); color: var(--accent-text);
+    display: grid; place-items: center; font-size: 14px; font-weight: 700;
+    margin-top: 2px;
+  }
+  .msg.ai-msg .body { flex: 1; min-width: 0; }
+  .body { overflow-wrap: anywhere; }
+  .body p { margin: 0 0 12px; }
+  .body p:last-child, .body ul:last-child, .body pre:last-child { margin-bottom: 0; }
+  .body ul, .body ol { margin: 0 0 12px; padding-left: 22px; }
+  .body a { color: var(--link); text-decoration: underline; text-underline-offset: 2px; }
+  .body code { font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  .body :not(pre) > code { background: var(--user-bubble); padding: 1px 5px; border-radius: 4px; }
+
+  .code {
+    margin: 0 0 12px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--code-bg);
+    color: var(--code-text);
+  }
+  .code-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 6px 8px 6px 14px;
+    font-size: 12px; color: #a8a8a8;
+    background: rgba(255,255,255,.06);
+  }
+  .copy {
+    border: 0; background: none; color: inherit;
+    padding: 4px 8px; border-radius: 6px; font-size: 12px;
+  }
+  .copy:hover { background: rgba(255,255,255,.1); color: #fff; }
+  .code pre { margin: 0; padding: 14px; overflow-x: auto; }
+  .code pre code { white-space: pre; overflow-wrap: normal; }
+
+  .typing { display: inline-flex; gap: 4px; padding: 8px 0; }
+  .typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); animation: blink 1.2s infinite; }
+  .typing i:nth-child(2) { animation-delay: .2s; }
+  .typing i:nth-child(3) { animation-delay: .4s; }
+  @keyframes blink { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
+
+  /* ---------- Composer ---------- */
+  .composer-wrap {
+    flex-shrink: 0;
+    padding: 0 16px 16px;
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+  }
+  .composer {
+    max-width: var(--content-w); margin: 0 auto;
+    display: flex; align-items: flex-end; gap: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 8px 8px 8px 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.05);
+  }
+  .composer:focus-within { border-color: var(--muted); }
+  .composer textarea {
+    flex: 1; min-width: 0;
+    border: 0; outline: 0; resize: none;
+    background: transparent; color: var(--text);
+    font: inherit; font-size: 16px; line-height: 24px;
+    padding: 6px 0;
+    max-height: 200px;
+    height: 36px;
+  }
+  .composer textarea::placeholder { color: var(--muted); }
+  .send {
+    width: 36px; height: 36px; flex-shrink: 0;
+    border: 0; border-radius: 50%;
+    background: var(--accent); color: var(--accent-text);
+    display: grid; place-items: center;
+  }
+  .send:disabled { opacity: .4; cursor: not-allowed; }
+  .send svg { width: 18px; height: 18px; }
+  .hint { max-width: var(--content-w); margin: 6px auto 0; text-align: center; font-size: 12px; color: var(--muted); }
+
+  .toast {
+    position: fixed; left: 50%; bottom: 96px; transform: translateX(-50%);
+    background: var(--text); color: var(--bg);
+    padding: 8px 16px; border-radius: 8px; font-size: 14px;
+    opacity: 0; pointer-events: none; transition: opacity .2s;
+    z-index: 50;
+  }
+  .toast.show { opacity: 1; }
+
+  .backdrop { display: none; }
+
+  /* ---------- Mobile ---------- */
+  @media (max-width: 768px) {
+    .sidebar {
+      position: fixed; inset: 0 auto 0 0; z-index: 30;
+      width: min(84vw, 300px);
+      transform: translateX(-100%);
+      transition: transform .22s ease;
+      visibility: hidden;
+    }
+    .app.nav-open .sidebar { transform: none; visibility: visible; }
+    .app.nav-open .backdrop {
+      display: block; position: fixed; inset: 0; z-index: 20;
+      background: rgba(0,0,0,.4);
+    }
+    .menu-btn { display: grid; }
+    .topbar { padding: 0 8px; }
+    .share-label { display: none; }
+    .share { padding: 8px; }
+    .msg.user-msg .body { max-width: 90%; }
+    .hint { display: none; }
+  }
+  @media (min-width: 769px) {
+    .close-nav { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sidebar { transition: none; }
+    .typing i { animation: none; opacity: .6; }
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <aside class="sidebar" id="sidebar" aria-label="对话导航">
+    <div class="sidebar-head">
+      <span class="brand">Assistant</span>
+      <button class="icon-btn close-nav" id="closeNav" aria-label="关闭侧边栏">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <button class="new-chat" id="newChat"><span class="plus" aria-hidden="true">+</span>新对话</button>
+    <div class="section-label" id="recentLabel">最近</div>
+    <ul class="history" id="history" aria-labelledby="recentLabel"></ul>
+    <div class="user">
+      <div class="avatar" aria-hidden="true">锦</div>
+      <div class="user-meta">
+        <div class="user-name">锦逸</div>
+        <div class="user-plan">Pro 套餐</div>
+      </div>
+    </div>
+  </aside>
+  <div class="backdrop" id="backdrop"></div>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" id="openNav" aria-label="打开侧边栏" aria-controls="sidebar" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <h1 class="title" id="title">用 debounce 优化搜索框请求</h1>
+      <button class="share" id="share">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13M7 8l5-5 5 5M5 14v5a2 2 0 002 2h10a2 2 0 002-2v-5"/></svg>
+        <span class="share-label">分享</span>
+      </button>
+    </header>
+
+    <div class="scroller" id="scroller">
+      <section class="thread" id="thread" aria-live="polite" aria-label="对话内容">
+        <div class="msg user-msg"><div class="body">搜索框每输入一个字就发一次请求，接口压力很大，有什么办法？</div></div>
+
+        <div class="msg ai-msg"><div class="ai-mark" aria-hidden="true">A</div><div class="body">
+          <p>常见做法是给输入事件加 <strong>防抖（debounce）</strong>：用户停止输入一段时间（比如 300ms）后才真正发请求。这样连续输入「react hooks」只会发一次，而不是 11 次。</p>
+          <p>另外两个可以配合的手段：</p>
+          <ul>
+            <li>输入为空或与上次相同时不发请求；</li>
+            <li>新请求发出时取消上一个未完成的请求，避免旧结果覆盖新结果。</li>
+          </ul>
+        </div></div>
+
+        <div class="msg user-msg"><div class="body">能给个不依赖 lodash 的实现吗？最好把取消请求也带上。</div></div>
+
+        <div class="msg ai-msg"><div class="ai-mark" aria-hidden="true">A</div><div class="body">
+          <p>可以。下面这个版本只用原生 API：<code>setTimeout</code> 做防抖，<code>AbortController</code> 取消上一次请求。</p>
+          <div class="code">
+            <div class="code-head"><span>javascript</span><button class="copy" type="button">复制</button></div>
+            <pre><code>function debounce(fn, wait = 300) {
+  let timer = null;
+  return (...args) =&gt; {
+    clearTimeout(timer);
+    timer = setTimeout(() =&gt; fn(...args), wait);
+  };
+}
+
+let controller = null;
+
+async function search(keyword) {
+  const q = keyword.trim();
+  if (!q) return;
+  controller?.abort();                       // 取消上一次还没回来的请求
+  controller = new AbortController();
+  try {
+    const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`, { signal: controller.signal });
+    renderResults(await res.json());
+  } catch (err) {
+    if (err.name !== 'AbortError') showError(err);
+  }
+}
+
+input.addEventListener('input', debounce((e) =&gt; search(e.target.value), 300));</code></pre>
+          </div>
+          <p>几个要点：</p>
+          <ul>
+            <li><code>AbortError</code> 是主动取消产生的，不应该当作错误提示给用户；</li>
+            <li>300ms 是经验值，移动端输入较慢，可以放宽到 400–500ms；</li>
+            <li>如果结果列表需要「输入即出」的体感，可以先展示本地缓存的结果，再用接口结果替换。</li>
+          </ul>
+          <p>关于 <code>AbortController</code> 的浏览器兼容性和更多用法，可以参考 MDN 文档：<a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort?utm_source=assistant&amp;utm_medium=chat&amp;utm_campaign=debounce-search-optimization-reference-link-example#examples_aborting_a_fetch_request_with_a_signal" target="_blank" rel="noopener noreferrer">https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort?utm_source=assistant&amp;utm_medium=chat&amp;utm_campaign=debounce-search-optimization-reference-link-example#examples_aborting_a_fetch_request_with_a_signal</a></p>
+        </div></div>
+
+        <div class="msg user-msg"><div class="body">那 debounce 和 throttle 到底怎么选？</div></div>
+
+        <div class="msg ai-msg"><div class="ai-mark" aria-hidden="true">A</div><div class="body">
+          <p>看你关心的是「最后一次」还是「过程中的节奏」：</p>
+          <ul>
+            <li><strong>debounce</strong>：只在停下来之后执行一次。适合搜索联想、表单校验、窗口 resize 结束后重新布局。</li>
+            <li><strong>throttle</strong>：固定间隔最多执行一次。适合滚动监听、拖拽、上报埋点这类需要持续反馈的场景。</li>
+          </ul>
+          <p>搜索框用 debounce 就够了。</p>
+        </div></div>
+
+        <div class="msg user-msg"><div class="body">好的，最后一个问题：React 里怎么写才不会每次渲染都重新创建 debounce 函数？</div></div>
+
+        <div class="msg ai-msg"><div class="ai-mark" aria-hidden="true">A</div><div class="body">
+          <p>把防抖后的函数用 <code>useMemo</code> 或 <code>useRef</code> 保存起来，让它在组件生命周期内只创建一次；同时在组件卸载时清掉定时器并 abort 未完成的请求，避免卸载后还去 setState。</p>
+          <p>如果项目里已经有类似 <code>useDebouncedCallback</code> 的 hook，直接复用它最省事。</p>
+        </div></div>
+
+        <div class="msg user-msg"><div class="body">明白了，谢谢！</div></div>
+
+        <div class="msg ai-msg"><div class="ai-mark" aria-hidden="true">A</div><div class="body">
+          <p>不客气。上线后可以对比一下接口 QPS，防抖一般能让搜索请求量下降一个数量级。</p>
+        </div></div>
+      </section>
+    </div>
+
+    <div class="composer-wrap">
+      <form class="composer" id="composer">
+        <label class="sr-only" for="input">输入消息</label>
+        <textarea id="input" rows="1" placeholder="给 Assistant 发消息"></textarea>
+        <button class="send" id="send" type="submit" aria-label="发送" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+        </button>
+      </form>
+      <p class="hint">Enter 发送，Shift + Enter 换行。AI 生成的内容可能有误，请核实重要信息。</p>
+    </div>
+  </main>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(() => {
+  const chats = [
+    '用 debounce 优化搜索框请求',
+    '周报',
+    '帮我把这段 SQL 改写成窗口函数，并解释为什么原来的子查询在大表上会很慢',
+    'CSS Grid 和 Flex 的区别',
+    '东京五日游行程',
+    '如何向非技术同事解释什么是 API',
+    'Git rebase 冲突处理',
+    '给猫起名字',
+    'TypeScript 泛型约束里 extends keyof 的用法和常见坑',
+    '读书笔记：《思考，快与慢》第三章',
+    '面试自我介绍润色'
+  ];
+
+  const $ = (id) => document.getElementById(id);
+  const app = $('app');
+  const history = $('history');
+  const thread = $('thread');
+  const scroller = $('scroller');
+  const input = $('input');
+  const send = $('send');
+  const title = $('title');
+  const openNav = $('openNav');
+  let pending = false;
+
+  function renderHistory(activeIndex) {
+    history.replaceChildren(...chats.map((t, i) => {
+      const li = document.createElement('li');
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = t;
+      b.title = t;
+      if (i === activeIndex) b.setAttribute('aria-current', 'page');
+      b.addEventListener('click', () => {
+        renderHistory(i);
+        title.textContent = t;
+        closeNav();
+      });
+      li.append(b);
+      return li;
+    }));
+  }
+  renderHistory(0);
+
+  function setNav(open) {
+    app.classList.toggle('nav-open', open);
+    openNav.setAttribute('aria-expanded', String(open));
+    if (open) $('closeNav').focus();
+  }
+  function closeNav() { if (app.classList.contains('nav-open')) { setNav(false); openNav.focus(); } }
+  openNav.addEventListener('click', () => setNav(true));
+  $('closeNav').addEventListener('click', closeNav);
+  $('backdrop').addEventListener('click', closeNav);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeNav(); });
+
+  let toastTimer;
+  function toast(text) {
+    const el = $('toast');
+    el.textContent = text;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 1600);
+  }
+
+  async function copyText(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch (err) {
+      console.warn('clipboard write failed', err);
+      return false;
+    }
+  }
+
+  $('share').addEventListener('click', async () => {
+    toast(await copyText(location.href) ? '链接已复制' : '复制失败，请手动复制地址栏');
+  });
+
+  thread.addEventListener('click', async (e) => {
+    const btn = e.target.closest('.copy');
+    if (!btn) return;
+    const code = btn.closest('.code').querySelector('code').textContent;
+    const ok = await copyText(code);
+    btn.textContent = ok ? '已复制' : '复制失败';
+    setTimeout(() => { btn.textContent = '复制'; }, 1500);
+  });
+
+  $('newChat').addEventListener('click', () => {
+    thread.replaceChildren();
+    title.textContent = '新对话';
+    renderHistory(-1);
+    closeNav();
+    input.focus();
+  });
+
+  function autosize() {
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 200) + 'px';
+  }
+  function syncSend() { send.disabled = pending || !input.value.trim(); }
+  input.addEventListener('input', () => { autosize(); syncSend(); });
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey && !e.isComposing && e.keyCode !== 229) {
+      e.preventDefault();
+      $('composer').requestSubmit();
+    }
+  });
+
+  function scrollToEnd() { scroller.scrollTop = scroller.scrollHeight; }
+
+  function addMessage(role, text) {
+    const msg = document.createElement('div');
+    msg.className = 'msg ' + (role === 'user' ? 'user-msg' : 'ai-msg');
+    if (role === 'ai') {
+      const mark = document.createElement('div');
+      mark.className = 'ai-mark';
+      mark.setAttribute('aria-hidden', 'true');
+      mark.textContent = 'A';
+      msg.append(mark);
+    }
+    const body = document.createElement('div');
+    body.className = 'body';
+    if (role === 'user') {
+      body.textContent = text;
+    } else {
+      const p = document.createElement('p');
+      p.textContent = text;
+      body.append(p);
+    }
+    msg.append(body);
+    thread.append(msg);
+    scrollToEnd();
+    return body;
+  }
+
+  function fakeReply(question) {
+    const short = question.length > 24 ? question.slice(0, 24) + '…' : question;
+    const replies = [
+      `关于「${short}」，我的理解是你想先弄清楚它的适用场景。可以先说说你的具体约束（数据量、运行环境、时间要求），我再给更有针对性的建议。`,
+      `好问题。针对「${short}」，比较稳妥的做法是先做一个最小可行版本，验证核心假设，再逐步补充边界情况的处理。`,
+      `收到。「${short}」这件事可以拆成三步：明确目标、列出候选方案、用一个小实验比较它们。需要我展开其中哪一步？`
+    ];
+    return replies[Math.floor(Math.random() * replies.length)];
+  }
+
+  $('composer').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const text = input.value.trim();
+    if (!text || pending) return;
+
+    if (!thread.children.length) {
+      const t = text.length > 30 ? text.slice(0, 30) + '…' : text;
+      title.textContent = t;
+      chats.unshift(t);
+      renderHistory(0);
+    }
+
+    addMessage('user', text);
+    input.value = '';
+    autosize();
+    pending = true;
+    syncSend();
+
+    const msg = document.createElement('div');
+    msg.className = 'msg ai-msg';
+    msg.innerHTML = '<div class="ai-mark" aria-hidden="true">A</div><div class="body"><span class="typing" aria-label="正在回复"><i></i><i></i><i></i></span></div>';
+    thread.append(msg);
+    scrollToEnd();
+
+    setTimeout(() => {
+      msg.remove();
+      addMessage('ai', fakeReply(text));
+      pending = false;
+      syncSend();
+    }, 900 + Math.random() * 600);
+  });
+
+  scrollToEnd();
+})();
+</script>
+</body>
+</html>

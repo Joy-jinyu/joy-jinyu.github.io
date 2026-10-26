@@ -1,0 +1,241 @@
+{
+ "lighthouse": {
+  "run1-desktop": {
+   "version": "13.5.0",
+   "width": 1350,
+   "score": 0.96,
+   "failed": [
+    "color-contrast",
+    "label-content-name-mismatch"
+   ],
+   "manual": [
+    "focusable-controls",
+    "interactive-element-affordance",
+    "logical-tab-order",
+    "visual-order-follows-dom",
+    "focus-traps",
+    "managed-focus",
+    "use-landmarks",
+    "offscreen-content-hidden",
+    "custom-controls-labels",
+    "custom-controls-roles"
+   ]
+  },
+  "run1-mobile": {
+   "version": "13.5.0",
+   "width": 412,
+   "score": 0.96,
+   "failed": [
+    "color-contrast"
+   ],
+   "manual": [
+    "focusable-controls",
+    "interactive-element-affordance",
+    "logical-tab-order",
+    "visual-order-follows-dom",
+    "focus-traps",
+    "managed-focus",
+    "use-landmarks",
+    "offscreen-content-hidden",
+    "custom-controls-labels",
+    "custom-controls-roles"
+   ]
+  },
+  "run2-390": {
+   "version": "13.5.0",
+   "width": 390,
+   "score": 1,
+   "failed": [],
+   "manual": [
+    "focusable-controls",
+    "interactive-element-affordance",
+    "logical-tab-order",
+    "visual-order-follows-dom",
+    "focus-traps",
+    "managed-focus",
+    "use-landmarks",
+    "offscreen-content-hidden",
+    "custom-controls-labels",
+    "custom-controls-roles"
+   ]
+  },
+  "run2-desktop": {
+   "version": "13.5.0",
+   "width": 1350,
+   "score": 0.96,
+   "failed": [
+    "color-contrast"
+   ],
+   "manual": [
+    "focusable-controls",
+    "interactive-element-affordance",
+    "logical-tab-order",
+    "visual-order-follows-dom",
+    "focus-traps",
+    "managed-focus",
+    "use-landmarks",
+    "offscreen-content-hidden",
+    "custom-controls-labels",
+    "custom-controls-roles"
+   ]
+  },
+  "run2-mobile": {
+   "version": "13.5.0",
+   "width": 412,
+   "score": 1,
+   "failed": [],
+   "manual": [
+    "focusable-controls",
+    "interactive-element-affordance",
+    "logical-tab-order",
+    "visual-order-follows-dom",
+    "focus-traps",
+    "managed-focus",
+    "use-landmarks",
+    "offscreen-content-hidden",
+    "custom-controls-labels",
+    "custom-controls-roles"
+   ]
+  },
+  "run3-desktop": {
+   "version": "13.5.0",
+   "width": 1350,
+   "score": 1,
+   "failed": [],
+   "manual": [
+    "focusable-controls",
+    "interactive-element-affordance",
+    "logical-tab-order",
+    "visual-order-follows-dom",
+    "focus-traps",
+    "managed-focus",
+    "use-landmarks",
+    "offscreen-content-hidden",
+    "custom-controls-labels",
+    "custom-controls-roles"
+   ]
+  },
+  "run3-mobile": {
+   "version": "13.5.0",
+   "width": 412,
+   "score": 0.94,
+   "failed": [
+    "button-name"
+   ],
+   "manual": [
+    "focusable-controls",
+    "interactive-element-affordance",
+    "logical-tab-order",
+    "visual-order-follows-dom",
+    "focus-traps",
+    "managed-focus",
+    "use-landmarks",
+    "offscreen-content-hidden",
+    "custom-controls-labels",
+    "custom-controls-roles"
+   ]
+  },
+  "skeleton-desktop": {
+   "version": "13.5.0",
+   "width": 1350,
+   "score": 1,
+   "failed": [],
+   "manual": [
+    "focusable-controls",
+    "interactive-element-affordance",
+    "logical-tab-order",
+    "visual-order-follows-dom",
+    "focus-traps",
+    "managed-focus",
+    "use-landmarks",
+    "offscreen-content-hidden",
+    "custom-controls-labels",
+    "custom-controls-roles"
+   ]
+  },
+  "skeleton-mobile": {
+   "version": "13.5.0",
+   "width": 412,
+   "score": 1,
+   "failed": [],
+   "manual": [
+    "focusable-controls",
+    "interactive-element-affordance",
+    "logical-tab-order",
+    "visual-order-follows-dom",
+    "focus-traps",
+    "managed-focus",
+    "use-landmarks",
+    "offscreen-content-hidden",
+    "custom-controls-labels",
+    "custom-controls-roles"
+   ]
+  }
+ },
+ "ibm": {
+  "run1-1440": {
+   "potentialviolation:style_color_misuse": 1,
+   "potentialviolation:text_block_heading": 1,
+   "potentialviolation:style_focus_visible": 5,
+   "violation:text_contrast_sufficient": 13,
+   "violation:label_name_visible": 1,
+   "potentialviolation:element_tabbable_visible": 2,
+   "potentialviolation:input_label_visible": 1
+  },
+  "run1-390": {
+   "potentialviolation:style_color_misuse": 1,
+   "potentialviolation:element_tabbable_unobscured": 3,
+   "potentialviolation:style_focus_visible": 4,
+   "potentialviolation:input_label_visible": 2,
+   "potentialviolation:element_tabbable_visible": 2,
+   "violation:text_contrast_sufficient": 9
+  },
+  "run2-1440": {
+   "potentialviolation:style_color_misuse": 1,
+   "potentialviolation:text_block_heading": 13,
+   "potentialviolation:style_focus_visible": 4,
+   "violation:text_contrast_sufficient": 12,
+   "potentialviolation:element_tabbable_visible": 2,
+   "potentialviolation:input_label_visible": 1
+  },
+  "run2-390": {
+   "potentialviolation:style_color_misuse": 1,
+   "potentialviolation:element_tabbable_visible": 15,
+   "potentialviolation:style_focus_visible": 6,
+   "violation:text_contrast_sufficient": 5,
+   "potentialviolation:element_tabbable_unobscured": 3,
+   "potentialviolation:input_label_visible": 1
+  },
+  "run3-1440": {
+   "potentialviolation:style_color_misuse": 1,
+   "potentialviolation:text_block_heading": 11,
+   "potentialviolation:style_focus_visible": 15,
+   "violation:text_contrast_sufficient": 6,
+   "potentialviolation:element_tabbable_visible": 1,
+   "potentialviolation:input_label_visible": 1
+  },
+  "run3-390": {
+   "potentialviolation:style_color_misuse": 1,
+   "potentialviolation:element_tabbable_unobscured": 2,
+   "potentialviolation:style_focus_visible": 4,
+   "potentialviolation:input_label_visible": 2,
+   "violation:input_label_exists": 1,
+   "potentialviolation:text_block_heading": 10,
+   "violation:text_contrast_sufficient": 5,
+   "potentialviolation:element_tabbable_visible": 2
+  },
+  "skeleton-1440": {
+   "potentialviolation:style_color_misuse": 1,
+   "potentialviolation:element_tabbable_visible": 1,
+   "potentialviolation:style_focus_visible": 2,
+   "potentialviolation:input_label_visible": 1
+  },
+  "skeleton-390": {
+   "potentialviolation:style_color_misuse": 1,
+   "potentialviolation:element_tabbable_unobscured": 1,
+   "potentialviolation:element_tabbable_visible": 1,
+   "potentialviolation:style_focus_visible": 2,
+   "potentialviolation:input_label_visible": 1
+  }
+ }
+}
