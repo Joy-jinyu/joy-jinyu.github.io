@@ -1,0 +1,151 @@
+---
+title: AI 写得出动画，写不出分寸
+description: 交互与动效审美系列的第一篇。AI 几秒就能写出一个带动画的下拉菜单，但它好不好，现在没有什么在约束。这篇先用一个对比演示说明「好」和「能跑」差在哪，再整理哪些可以交给工具检查、哪些只能靠人看，最后给出一份我自己用的五维评分卡。
+date: 2026-10-23
+tags: [交互, 动效, AI, 审美]
+meta: 系列第六篇（底稿）
+draft: true
+---
+
+import Callout from '../../components/Callout.astro'
+import MotionCompare from '../../components/MotionCompare.astro'
+
+现在让 AI 写一个下拉菜单，几秒钟就有了：能点开，有动画，样式也不难看。代码 review 时挑不出语法问题，测试也能过。
+
+但用起来总有点不对：菜单像是从屏幕中间「蹦」出来的，点快了会闪，在手机上按下去没有反应。这些问题不会报错，不会让测试失败，截图里也看不出来。**它们只在「动起来」和「被手指碰到」的时候出现**，而这恰好是现在 AI 写代码的流程里最少被检查的部分。
+
+接下来几天我打算写一个系列，专门讲交互和动效的「分寸」：web、H5、原生 App 各自的规范是什么，哪些能写成规则让 AI 遵守，哪些只能靠人看。这是第一篇，先把问题和评分标准立起来。
+
+## 先看一个例子
+
+下面是同一个菜单的两种写法。先各点几下，再打开「慢放」看一遍，最后点「连点三下」，看动画没播完又被点了一下时两边怎么处理。
+
+<MotionCompare />
+
+A 是我在 AI 生成的代码里反复见到的写法，B 是按下文规则调过的。差别列一下：
+
+| | A 常见写法 | B 调过的写法 | 依据 |
+| --- | --- | --- | --- |
+| 从哪里出来 | `transform-origin` 默认在中心，从 `scale(0)` 放大 | 从按钮所在的角展开，起点是 `scale(0.96)` | 动画应该从它的来源处开始（Vercel、Rauno Freiberg） |
+| 时长 | 400ms | 打开 180ms，关闭 120ms | 界面动画一般控制在 300ms 以内（Emil Kowalski） |
+| 曲线 | `ease-in-out` | 进场 ease-out，退场 ease-in | 进场减速（Emil Kowalski、Material 3）；退场加速（Material 3） |
+| 被打断时 | 每次重播 keyframes，从 0 开始，会闪 | `transition` 从当前位置折返 | 动画必须能被用户输入打断（Apple HIG、Vercel） |
+| 关闭 | `display: none`，直接消失 | 有退场，比进场更短 | |
+| 按钮反馈 | `transition: all`，悬停上浮 2px | 按下缩到 0.97，悬停只改边框色 | 不写 `transition: all`；按下要有回应 |
+| 减少动态效果 | 不处理 | 去掉位移缩放，只保留淡入淡出 | `prefers-reduced-motion`：替换，而不是删掉（MDN、WCAG 2.3.3） |
+
+单看任何一行都不严重。但这七行叠在一起，就是「能用」和「好用」的差别。
+
+## 为什么 AI 会这么写
+
+### 它写的是最常见的写法
+
+Anthropic 在讲前端设计 skill 的文章里给这个现象起了个名字：**distributional convergence**（分布收敛）。没有额外指引时，模型会从训练数据里「概率最高的那一片」取样，所以生成的界面总是同一种字体、同一种紫色渐变、同一种布局。
+
+动效也一样。`transition: all 0.3s ease-in-out` 这种写法在网上的代码片段里随处可见，模型写出来也就不奇怪了。不过「它在训练数据里最常见」是我的推测，我没有找到统计数据。
+
+### 它看不到东西动起来的样子
+
+更根本的原因是检查方式。现在 AI 自检界面，多数靠截图：Anthropic 自己的 frontend-design skill、开源的 taste-skill，用的都是截图加自我评审。**截图是静止的。** 一张截图能看出颜色和布局，看不出 400ms 是不是太长，也看不出连点时会不会闪。
+
+做动效检查工具 MotionLint 的作者说得很直接：视觉回归工具能发现像素「变了」，但判断不了新的像素「好不好」。
+
+## 哪些能交给工具，哪些只能靠人
+
+我把调研到的工具和研究按「现在能不能自动检查」分了一下：
+
+| 能自动检查 | 现状 |
+| --- | --- |
+| 无障碍基础项 | axe、Lighthouse 这类工具。Deque 的统计是自动化测试能找出约 57% 的无障碍问题，剩下的要人工 |
+| 「AI 味」的外观 | Adrian Krebs 用 16 条确定性规则扫了 500 个 Show HN 网站：28% 用了渐变，23.5% 是默认 shadcn，17.1% 用了毛玻璃。impeccable 项目有 62 条类似规则 |
+| 写法层面的动效规则 | 有没有 `transition: all`、是不是只动 `transform` 和 `opacity`、有没有 `prefers-reduced-motion`，这些能用 grep 或 lint 查出来 |
+| 动效数值 | MotionLint 读取实际运行的时长和曲线，和标准对比（数据是作者自测的） |
+
+| 目前只能靠人（或让模型当裁判） | 现状 |
+| --- | --- |
+| 层次、清晰度 | impeccable 把这部分交给 LLM 评审，并在 README 里承认「检测器跑干净只是证据，不是视觉质量的证明」 |
+| 动画有没有在「解释因果」 | Vercel 和 Anthropic 都把它写成了原则，但没有检查器 |
+| 连贯性、节奏 | MotionLint 在每次交互后截 16 帧，让视觉模型评判 |
+| 手感：跟手、惯性、打断 | 我没有找到任何基准测试覆盖这部分 |
+
+看完这两张表，我的结论是（这是我的判断，不是调研里某一篇的结论）：
+
+<Callout title="现有约束大多是「负面清单」">
+  上面能自动查的规则，几乎都在说「不要这样」：不要紫色渐变，不要 `transition: all`，不要忘了 reduced motion。全部通过，只能证明它**不俗**，证明不了它**好**。而且 Anthropic 已经发现，把一组默认写法禁掉之后，模型会收敛到另一组新的默认写法上。
+</Callout>
+
+「好」需要一套正面的标准：时长该是多少，曲线该选哪条，什么时候根本不该有动画。这套标准其实早就有了，散落在 Apple、Google 的设计规范和几位交互设计师的文章里，只是很少有人把它们整理成 AI 和人都能对照着检查的形式。下面是我的第一版。
+
+## 我的评分卡
+
+五个维度，每条都尽量给出能核对的数字或判断方法，并标出出处。打分很简单：每条记「过 / 不过 / 不适用」。
+
+### 反馈：每次操作都有回应吗
+
+- **按下有变化。** 按钮在按下的那一刻就要有视觉变化，例如 `:active` 时缩到 0.97、用时 150ms 左右（Emil Kowalski）。H5 里如果把 `-webkit-tap-highlight-color` 设成透明，就必须自己补一个按下态（MDN）。
+- **响应够快。** 从点击到画面更新，INP 在 200ms 以内算「好」，超过 500ms 算「差」（web.dev）。
+- **加载状态不闪。** 请求可能很快返回时，先等 150–300ms 再显示 loading；一旦显示，至少保持 300–500ms，避免一闪而过（Vercel）。
+
+### 时间：时长和曲线对吗
+
+- **够短。** 普通界面动画一般在 300ms 以内（Emil Kowalski）。Material 3 的时长 token 从 50ms 到 1000ms，按动画范围选：小控件用 short（50–200ms），整屏转场才用 long（450–600ms）。
+- **距离越远，时长越长。** 这条来自 Material 的动效文档。所有动画都写 300ms，本身就是一个信号。
+- **曲线按用途选。** 进场用减速（ease-out）；已经在屏幕上的元素移动或变形用 ease-in-out；颜色、透明度这类悬停变化用 ease；`linear` 只用于匀速运动或进度条（Emil Kowalski 的 easing 规则）。退场两家说法不同：Material 3 用加速曲线，Emil Kowalski 建议进出都用 ease-out、尽量不用 ease-in，理由是 ease-in 会让界面显得迟钝。上面演示里 B 的退场按 Material 的做法，只有 120ms。Material 3 的曲线 token：standard `cubic-bezier(0.2, 0, 0, 1)`，emphasized-decelerate `cubic-bezier(0.05, 0.7, 0.1, 1)`。
+- **弹簧不要太弹。** Apple 在 WWDC23 的建议是：拿不准时用 bounce 0；0.15 左右显得利落，0.3 左右有明显回弹，超过 0.4 要谨慎。
+
+### 连续：动画和手、和来源接得上吗
+
+- **能被打断。** 不能让用户等动画播完才能下一步（Apple HIG）。在 web 上，用 `transition` 而不是每次重播 keyframes，状态反转时会从当前位置折返。
+- **从来源处开始。** 菜单从按钮处展开，弹窗从被点的卡片处放大：设置 `transform-origin`，而不是从屏幕中心出现（Vercel、Rauno Freiberg）。
+- **跟手。** 拖动时内容和手指 1:1 移动，抓住哪里就是哪里，不要把元素中心吸到手指下；松手后的动画要接上手指的速度（Apple WWDC18 *Designing Fluid Interfaces*、WWDC23 *Animate with springs*）。
+- **来回方向一致。** 从上面滑下来的面板，就应该往上收回去，而不是往旁边滑走（Apple HIG）。
+
+### 克制：这里真的需要动画吗
+
+- **高频操作不加动画。** 每天用几百次的东西，例如键盘触发的操作、命令面板、右键菜单，不要加动画（Apple HIG、Emil Kowalski）。Rauno Freiberg 的经验是：命令面板的动画用了几天就开始觉得拖沓。
+- **动画要解释因果。** 只有在帮用户理解「这个东西从哪来、到哪去」时才加动画（Vercel）。
+- **不给每一块都加入场动画。** 每个区块滚动进来时淡入上移、每张卡片都有悬停动画，Anthropic 的 frontend-design skill 直接把这列为「一看就是 AI 生成的」默认写法。
+
+### 适配：换个人、换台设备还成立吗
+
+- **尊重「减少动态效果」。** 响应 `prefers-reduced-motion: reduce`，把位移和缩放换成淡入淡出，而不是直接删掉动画，否则可能连状态变化都看不出来（MDN、WCAG 2.3.3）。
+- **点击区域够大。** Web 最低 24×24 CSS px（WCAG 2.5.8），手机上建议 44px；iOS 默认 44×44pt、最小 28×28pt（Apple HIG）；Android 至少 48×48dp。
+- **只动 `transform` 和 `opacity`。** web.dev 的测试里，用 `top`/`left` 做动画丢了一半的帧，用 `transform` 只丢了 1%。React Native 的原生驱动（native driver）也只能驱动 `transform`、`opacity` 这类不影响布局的属性。
+- **H5 的老问题。** 输入框字号至少 16px，否则 iOS 聚焦时会放大页面；悬停样式包在 `@media (hover: hover)` 里，否则手机上点过之后会一直保持悬停态；全屏布局用 `svh`/`dvh` 而不是 `100vh`；底部固定栏加上 `env(safe-area-inset-bottom)`。
+
+<Callout type="todo" title="评分卡的局限">
+  上面大部分条目能用代码或数字核对，但「连续」和「克制」里有几条只能靠人判断：这个动画在解释因果吗？跟手吗？它们正是现有工具最缺的部分，也是这个系列后面要重点写的。
+</Callout>
+
+## 两个土办法
+
+在有更好的工具之前，我自己检查动效靠两个办法：
+
+1. **慢放。** Chrome DevTools 的 Animations 面板可以把页面动画放慢到 25% 或 10%；iOS 模拟器的 Debug 菜单里有 Slow Animations。很多问题正常速度下只是「感觉不对」，放慢后一眼就能看出是哪里不对：从哪出来、曲线是不是先快后慢、有没有跳帧。
+2. **在动画播到一半时反向操作。** 菜单开到一半再点一下，抽屉拉到一半松手，页面转场途中按返回。能平滑折返的是好动画，闪一下、跳一下、卡住等它播完的，都不过关。
+
+最后，**一定要在真机上用手指试**。鼠标点不出手指按下没反馈、点击区域太小、悬停态卡住这些问题。
+
+## 这个系列接下来写什么
+
+| 篇 | 主题 | 主要内容 |
+| --- | --- | --- |
+| 二 | 时长与曲线 | 把 Emil Kowalski 的 easing 规则、Material 3 的 token、Apple 的 spring 参数放在一起对照，附一个能拖动曲线的演示 |
+| 三 | 手指上的 H5 | 点击反馈、300ms 延迟的来龙去脉、悬停卡住、安全区、`dvh`、16px 输入框 |
+| 四 | 弹簧与打断 | 原生 App 的转场为什么「跟手」：速度衔接、1:1 跟随、可打断；在 web 上怎么尽量做到 |
+| 五 | 页面切换 | push、容器变形、共享轴、Android 的预测性返回，以及 web 的 View Transitions（这个博客的标题跨页形变就是用它做的） |
+| 六 | 把审美写成约束 | 哪些规则能写进 AGENTS.md 或 skill，哪些能做成 lint，哪些只能留给人；整理成一份可以直接拿去用的规则文件 |
+
+## 参考
+
+- Anthropic，[Improving frontend design through skills](https://www.claude.com/blog/improving-frontend-design-through-skills)；[frontend-design SKILL.md](https://github.com/anthropics/skills/blob/main/skills/frontend-design/SKILL.md)
+- Vercel，[Web Interface Guidelines](https://github.com/vercel-labs/web-interface-guidelines)
+- Emil Kowalski，[You don't need animations](https://emilkowal.ski/ui/you-dont-need-animations)、[Great animations](https://emilkowal.ski/ui/great-animations)、[The easing blueprint](https://animations.dev/learn/animation-theory/the-easing-blueprint)
+- Rauno Freiberg，[Invisible Details of Interaction Design](https://rauno.me/craft/interaction-design)
+- Apple，[HIG: Motion](https://developer.apple.com/design/human-interface-guidelines/motion)、[HIG: Accessibility](https://developer.apple.com/design/human-interface-guidelines/accessibility)、[WWDC23 Animate with springs](https://developer.apple.com/videos/play/wwdc2023/10158/)、[WWDC18 Designing Fluid Interfaces](https://developer.apple.com/videos/play/wwdc2018/803/)
+- Material Design，[Motion（material-components-android 文档）](https://github.com/material-components/material-components-android/blob/master/docs/theming/Motion.md)
+- web.dev，[Animations guide](https://web.dev/articles/animations-guide)、[INP](https://web.dev/articles/inp)、[Viewport units](https://web.dev/blog/viewport-units)
+- W3C，[WCAG 2.3.3 Animation from Interactions](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html)、[WCAG 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)
+- Android，[Make apps more accessible](https://developer.android.com/guide/topics/ui/accessibility/apps)；React Native，[Performance](https://reactnative.dev/docs/performance)
+- Adrian Krebs，[design-slop](https://www.adriankrebs.ch/blog/design-slop/)；[impeccable](https://github.com/pbakaus/impeccable)；[MotionLint](https://github.com/bobaba99/motionlint)
+- Deque，[Automated accessibility testing coverage](https://www.deque.com/automated-accessibility-testing-coverage/)
