@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>分享面板</title>
+<style>
+  :root {
+    --bg: #f4f4f5;
+    --surface: #ffffff;
+    --text: #18181b;
+    --text-2: #71717a;
+    --line: #e4e4e7;
+    --press: #f4f4f5;
+    --scrim: rgba(0, 0, 0, 0.45);
+    --accent: #18181b;
+    --accent-text: #ffffff;
+
+    /* iOS 系统 sheet 的曲线：起步快、尾段很长地减速 */
+    --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+    --dur-open: 420ms;
+    --dur-close: 280ms;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #09090b;
+      --surface: #1c1c1f;
+      --text: #f4f4f5;
+      --text-2: #a1a1aa;
+      --line: #2e2e33;
+      --press: #27272a;
+      --scrim: rgba(0, 0, 0, 0.6);
+      --accent: #f4f4f5;
+      --accent-text: #18181b;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :root { --dur-open: 1ms; --dur-close: 1ms; }
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body.is-locked { overflow: hidden; }
+
+  /* ---------- 页面 ---------- */
+  .page {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 24px 16px calc(96px + env(safe-area-inset-bottom));
+  }
+  .page h1 { font-size: 22px; line-height: 1.35; margin: 8px 0 4px; }
+  .page .meta { color: var(--text-2); font-size: 13px; margin: 0 0 20px; }
+  .page p { margin: 0 0 14px; }
+
+  .share-bar {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+  }
+  .share-btn {
+    display: block;
+    width: 100%;
+    max-width: 528px;
+    margin: 0 auto;
+    height: 46px;
+    border: 0;
+    border-radius: 12px;
+    background: var(--accent);
+    color: var(--accent-text);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 120ms ease, opacity 120ms ease;
+  }
+  .share-btn:active { transform: scale(0.98); opacity: 0.9; }
+
+  /* ---------- 面板 ---------- */
+  .sheet-root {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    visibility: hidden;
+    pointer-events: none;
+    /* 关闭时等动画播完再隐藏 */
+    transition: visibility 0s linear var(--dur-close);
+  }
+  .sheet-root.is-open {
+    visibility: visible;
+    pointer-events: auto;
+    transition-delay: 0s;
+  }
+
+  .scrim {
+    position: absolute;
+    inset: 0;
+    background: var(--scrim);
+    opacity: 0;
+    transition: opacity var(--dur-close) ease;
+  }
+  .is-open .scrim {
+    opacity: 1;
+    transition: opacity var(--dur-open) ease;
+  }
+
+  .sheet {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    max-width: 560px;
+    margin: 0 auto;
+    background: var(--surface);
+    border-radius: 16px 16px 0 0;
+    padding: 0 0 calc(8px + env(safe-area-inset-bottom));
+    transform: translateY(100%);
+    transition: transform var(--dur-close) var(--ease-sheet);
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    will-change: transform;
+    outline: none;
+  }
+  /* 往上拖有橡皮筋位移，补一截同色底，免得底部露缝 */
+  .sheet::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; top: 100%;
+    height: 120px;
+    background: var(--surface);
+  }
+  .is-open .sheet {
+    transform: translateY(0);
+    transition: transform var(--dur-open) var(--ease-sheet);
+  }
+
+  .grabber {
+    display: flex;
+    justify-content: center;
+    padding: 8px 0 4px;
+    cursor: grab;
+  }
+  .grabber::before {
+    content: "";
+    width: 36px;
+    height: 5px;
+    border-radius: 3px;
+    background: var(--line);
+  }
+  .sheet-title {
+    margin: 4px 0 0;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-2);
+  }
+
+  .channels {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+    list-style: none;
+    margin: 0;
+    padding: 18px 8px 20px;
+  }
+  .channel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 6px 0;
+    border: 0;
+    background: none;
+    color: var(--text);
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .channel-icon {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    transition: transform 140ms ease, filter 140ms ease;
+  }
+  .channel:active .channel-icon { transform: scale(0.92); filter: brightness(0.92); }
+  .channel:focus-visible { outline: none; }
+  .channel:focus-visible .channel-icon { box-shadow: 0 0 0 3px var(--surface), 0 0 0 5px var(--text-2); }
+
+  .ic-wechat   { background: #07c160; }
+  .ic-moments  { background: #3c9a5f; }
+  .ic-qq       { background: #12b7f5; }
+  .ic-weibo    { background: #e6162d; }
+  .ic-link     { background: #71717a; }
+
+  .cancel {
+    display: block;
+    width: calc(100% - 32px);
+    margin: 0 16px;
+    height: 48px;
+    border: 0;
+    border-radius: 12px;
+    background: var(--press);
+    color: var(--text);
+    font: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    transition: filter 120ms ease;
+  }
+  .cancel:active { filter: brightness(0.94); }
+
+  /* ---------- 轻提示 ---------- */
+  .toast {
+    position: fixed;
+    left: 50%;
+    top: 40%;
+    z-index: 200;
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: rgba(24, 24, 27, 0.88);
+    color: #fff;
+    font-size: 14px;
+    opacity: 0;
+    transform: translate(-50%, 6px);
+    transition: opacity 180ms ease, transform 180ms ease;
+    pointer-events: none;
+  }
+  .toast.is-show { opacity: 1; transform: translate(-50%, 0); }
+</style>
+</head>
+<body>
+
+<main class="page">
+  <h1>周末去哪儿：城郊五条徒步路线</h1>
+  <p class="meta">阅读约 4 分钟</p>
+  <p>天气转凉，正是走山路的好时候。下面五条路线都能当天往返，从市区出发一小时内可达，难度从轻松到中等不等。</p>
+  <p>第一条沿着水库北岸走，全程平缓，适合带小孩。第二条要爬两段台阶，山顶能看到整片城区。</p>
+  <p>第三条和第四条连在一起，可以按体力选择走一半还是走全程。最后一条是林间土路，雨后会比较滑，记得穿抓地好的鞋。</p>
+  <p>出发前看一眼天气，带够水。觉得有用的话，分享给一起出门的朋友。</p>
+</main>
+
+<div class="share-bar">
+  <button type="button" class="share-btn" id="openBtn" aria-haspopup="dialog" aria-controls="sheet">分享</button>
+</div>
+
+<div class="sheet-root" id="sheetRoot">
+  <div class="scrim" id="scrim"></div>
+  <section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" tabindex="-1">
+    <div class="grabber" aria-hidden="true"></div>
+    <h2 class="sheet-title" id="sheetTitle">分享到</h2>
+    <ul class="channels">
+      <li><button type="button" class="channel" data-channel="微信"><span class="channel-icon ic-wechat" aria-hidden="true">微</span>微信</button></li>
+      <li><button type="button" class="channel" data-channel="朋友圈"><span class="channel-icon ic-moments" aria-hidden="true">圈</span>朋友圈</button></li>
+      <li><button type="button" class="channel" data-channel="QQ"><span class="channel-icon ic-qq" aria-hidden="true">QQ</span>QQ</button></li>
+      <li><button type="button" class="channel" data-channel="微博"><span class="channel-icon ic-weibo" aria-hidden="true">博</span>微博</button></li>
+      <li><button type="button" class="channel" data-channel="copy"><span class="channel-icon ic-link" aria-hidden="true">链</span>复制链接</button></li>
+    </ul>
+    <button type="button" class="cancel" id="cancelBtn">取消</button>
+  </section>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+  const root = document.getElementById('sheetRoot');
+  const sheet = document.getElementById('sheet');
+  const scrim = document.getElementById('scrim');
+  const openBtn = document.getElementById('openBtn');
+  const cancelBtn = document.getElementById('cancelBtn');
+  const toastEl = document.getElementById('toast');
+
+  const EASE = 'cubic-bezier(0.32, 0.72, 0, 1)';
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  /* 手势参数：位移超过面板高度 25%，或松手速度超过 0.5px/ms 向下，就关闭 */
+  const DRAG_START_PX = 6;
+  const CLOSE_RATIO = 0.25;
+  const FLING_VELOCITY = 0.5;
+  const RUBBER_LIMIT = 48;
+
+  let isOpen = false;
+  let lastFocus = null;
+
+  function setOpen(next) {
+    if (next === isOpen) return;
+    isOpen = next;
+    clearInline();
+    root.classList.toggle('is-open', next);
+    document.body.classList.toggle('is-locked', next);
+    if (next) {
+      lastFocus = document.activeElement;
+      sheet.focus({ preventScroll: true });
+    } else if (lastFocus && typeof lastFocus.focus === 'function') {
+      lastFocus.focus({ preventScroll: true });
+    }
+  }
+
+  function clearInline() {
+    sheet.style.transition = '';
+    sheet.style.transform = '';
+    scrim.style.transition = '';
+    scrim.style.opacity = '';
+  }
+
+  openBtn.addEventListener('click', () => setOpen(true));
+  cancelBtn.addEventListener('click', () => setOpen(false));
+  scrim.addEventListener('click', () => setOpen(false));
+
+  document.addEventListener('keydown', (e) => {
+    if (!isOpen) return;
+    if (e.key === 'Escape') { setOpen(false); return; }
+    if (e.key === 'Tab') trapFocus(e);
+  });
+
+  function trapFocus(e) {
+    const items = sheet.querySelectorAll('button');
+    const first = items[0];
+    const last = items[items.length - 1];
+    if (e.shiftKey && (document.activeElement === first || document.activeElement === sheet)) {
+      e.preventDefault(); last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault(); first.focus();
+    }
+  }
+
+  /* ---------- 渠道 ---------- */
+  sheet.querySelector('.channels').addEventListener('click', (e) => {
+    const btn = e.target.closest('.channel');
+    if (!btn) return;
+    const channel = btn.dataset.channel;
+    setOpen(false);
+    if (channel === 'copy') {
+      copyText(location.href).then(
+        () => showToast('链接已复制'),
+        () => showToast('复制失败，请手动复制地址栏')
+      );
+    } else {
+      showToast('即将打开' + channel);
+    }
+  });
+
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text);
+    }
+    return new Promise((resolve, reject) => {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.cssText = 'position:fixed;top:-1000px;opacity:0;';
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      ok ? resolve() : reject(new Error('execCommand copy failed'));
+    });
+  }
+
+  let toastTimer = 0;
+  function showToast(text) {
+    toastEl.textContent = text;
+    toastEl.classList.add('is-show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('is-show'), 1600);
+  }
+
+  /* ---------- 下拉关闭 ---------- */
+  let pointerId = null;
+  let startX = 0;
+  let startY = 0;
+  let dragging = false;
+  let offset = 0;
+  let height = 0;
+  let samples = [];
+  let suppressClick = false;
+
+  /* 往上拖越拖越沉，最多挪 RUBBER_LIMIT 像素 */
+  function rubber(distance) {
+    return RUBBER_LIMIT * (1 - 1 / (distance / RUBBER_LIMIT + 1));
+  }
+
+  sheet.addEventListener('pointerdown', (e) => {
+    if (!isOpen || pointerId !== null) return;
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    pointerId = e.pointerId;
+    startX = e.clientX;
+    startY = e.clientY;
+    dragging = false;
+    samples = [{ y: e.clientY, t: e.timeStamp }];
+  });
+
+  /* move/up 挂在 window：还没过拖动阈值前没有 capture，指针一出面板 sheet 就收不到 up，pointerId 会卡死 */
+  window.addEventListener('pointermove', (e) => {
+    if (e.pointerId !== pointerId) return;
+    const dy = e.clientY - startY;
+    const dx = e.clientX - startX;
+
+    if (!dragging) {
+      if (Math.abs(dy) < DRAG_START_PX || Math.abs(dy) < Math.abs(dx)) return;
+      dragging = true;
+      height = sheet.getBoundingClientRect().height;
+      /* 接住正在播的开关动画：从当前实际位置起拖，不跳 */
+      const current = new DOMMatrix(getComputedStyle(sheet).transform).m42;
+      startY = e.clientY - current;
+      sheet.setPointerCapture(pointerId);
+      sheet.style.transition = 'none';
+      scrim.style.transition = 'none';
+    }
+
+    const raw = e.clientY - startY;
+    offset = raw >= 0 ? raw : -rubber(-raw);
+    sheet.style.transform = `translateY(${offset}px)`;
+    scrim.style.opacity = String(Math.max(0, 1 - Math.max(offset, 0) / height));
+
+    samples.push({ y: e.clientY, t: e.timeStamp });
+    const cutoff = e.timeStamp - 100;
+    while (samples.length > 2 && samples[0].t < cutoff) samples.shift();
+  });
+
+  function endDrag(e) {
+    if (e.pointerId !== pointerId) return;
+    pointerId = null;
+    if (!dragging) return;
+    dragging = false;
+    suppressClick = true;
+    setTimeout(() => { suppressClick = false; }, 0);
+
+    /* 只看松手前 100ms：拖完停住再松手，速度应当是 0，不能沿用停顿前的甩动速度 */
+    const recent = samples.filter((s) => s.t >= e.timeStamp - 100);
+    const first = recent[0];
+    const dt = first ? e.timeStamp - first.t : 0;
+    const velocity = dt > 0 ? (e.clientY - first.y) / dt : 0;
+
+    const pastDistance = offset > height * CLOSE_RATIO && velocity > -0.2;
+    const flungDown = velocity > FLING_VELOCITY && offset > 0;
+
+    if (e.type !== 'pointercancel' && (pastDistance || flungDown)) {
+      closeFromDrag(velocity);
+    } else {
+      springBack();
+    }
+  }
+  window.addEventListener('pointerup', endDrag);
+  window.addEventListener('pointercancel', endDrag);
+
+  /* 拖动后系统还会补发一次 click，吞掉，避免误触渠道 */
+  sheet.addEventListener('click', (e) => {
+    if (suppressClick) { e.stopPropagation(); e.preventDefault(); }
+  }, true);
+
+  function closeFromDrag(velocity) {
+    const remaining = Math.max(height - offset, 0);
+    /* 按松手速度续上剩余路程，快甩就快走，限制在 160–280ms（不超过 --dur-close，否则 visibility 会先隐藏） */
+    const byVelocity = velocity > 0 ? remaining / velocity : Infinity;
+    const duration = reduceMotion.matches ? 1 : Math.round(Math.min(280, Math.max(160, byVelocity)));
+
+    isOpen = false;
+    root.classList.remove('is-open');
+    document.body.classList.remove('is-locked');
+    sheet.style.transition = `transform ${duration}ms cubic-bezier(0.2, 0.6, 0.35, 1)`;
+    sheet.style.transform = 'translateY(100%)';
+    scrim.style.transition = `opacity ${duration}ms ease`;
+    scrim.style.opacity = '0';
+    if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus({ preventScroll: true });
+
+    const done = () => { if (!isOpen) clearInline(); };
+    onTransformEnd(done, duration);
+  }
+
+  function springBack() {
+    const duration = reduceMotion.matches ? 1 : 360;
+    sheet.style.transition = `transform ${duration}ms ${EASE}`;
+    sheet.style.transform = 'translateY(0)';
+    scrim.style.transition = `opacity ${duration}ms ease`;
+    scrim.style.opacity = '1';
+    onTransformEnd(() => { if (isOpen && !dragging) clearInline(); }, duration);
+  }
+
+  function onTransformEnd(fn, duration) {
+    let called = false;
+    const run = () => {
+      if (called) return;
+      called = true;
+      sheet.removeEventListener('transitionend', handler);
+      fn();
+    };
+    const handler = (ev) => { if (ev.target === sheet && ev.propertyName === 'transform') run(); };
+    sheet.addEventListener('transitionend', handler);
+    setTimeout(run, duration + 80);
+  }
+})();
+</script>
+</body>
+</html>

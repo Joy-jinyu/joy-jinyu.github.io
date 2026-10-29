@@ -1,0 +1,9 @@
+opacity:0                          看得见 否 | 点得到 是 | 能聚焦 是 | 读屏能读到 是
+transform 移出屏幕                     看得见 否 | 点得到 否 | 能聚焦 是 | 读屏能读到 是
+pointer-events:none + opacity:0    看得见 否 | 点得到 否 | 能聚焦 是 | 读屏能读到 是
+visibility:hidden                  看得见 否 | 点得到 否 | 能聚焦 否 | 读屏能读到 否
+display:none                       看得见 否 | 点得到 否 | 能聚焦 否 | 读屏能读到 否
+aria-hidden=true                   看得见 是 | 点得到 是 | 能聚焦 是 | 读屏能读到 否
+inert                              看得见 是 | 点得到 否 | 能聚焦 否 | 读屏能读到 否
+height:0;overflow:hidden           看得见 否 | 点得到 否 | 能聚焦 是 | 读屏能读到 是
+chrome 156.0.8078.48

@@ -1,151 +1,324 @@
 ---
-title: AI 写得出动画，写不出分寸
-description: 交互与动效审美系列的第一篇。AI 几秒就能写出一个带动画的下拉菜单，但它好不好，现在没有什么在约束。这篇先用一个对比演示说明「好」和「能跑」差在哪，再整理哪些可以交给工具检查、哪些只能靠人看，最后给出一份我自己用的五维评分卡。
-date: 2026-10-23
+title: 动效的六条判断：从一帧走多远说起
+description: 动画好不好，先看一帧走多远。六条动效判断，每条讲原理、两分钟怎么验、代码怎么写，证据来自 AI 写的 8 个组件的逐帧测量。
+date: 2026-10-29
 tags: [交互, 动效, AI, 审美]
-meta: 系列第六篇（底稿）
-draft: true
+column: ui-taste
+meta: 系列第二篇 · 动效
+draft: false
 ---
 
-import Callout from '../../components/Callout.astro'
-import MotionCompare from '../../components/MotionCompare.astro'
+import Figure from '../../components/Figure.astro'
+import MotionTrace from '../../components/MotionTrace.astro'
+import AccordionCompare from '../../components/AccordionCompare.astro'
 
-现在让 AI 写一个下拉菜单，几秒钟就有了：能点开，有动画，样式也不难看。代码 review 时挑不出语法问题，测试也能过。
+动效没法靠截图验收。截图只能看到动画结束以后的样子，看不到它半路被打断时会不会跳、手指拖着时跟不跟手、关上的那一瞬间还能不能点到里面的按钮。
 
-但用起来总有点不对：菜单像是从屏幕中间「蹦」出来的，点快了会闪，在手机上按下去没有反应。这些问题不会报错，不会让测试失败，截图里也看不出来。**它们只在「动起来」和「被手指碰到」的时候出现**，而这恰好是现在 AI 写代码的流程里最少被检查的部分。
+这篇讲六条判断：一条关于速度，四条关于动画播放过程中用户又做了什么，一条关于系统设置。每条都说清楚为什么、怎么用两分钟自己验出来、代码怎么写。读完以后，你能验收任何一个带动画的组件，也能用一个公式算出一段动画会不会「快得像瞬移」。
 
-接下来几天我打算写一个系列，专门讲交互和动效的「分寸」：web、H5、原生 App 各自的规范是什么，哪些能写成规则让 AI 遵守，哪些只能靠人看。这是第一篇，先把问题和评分标准立起来。
+证据来自两种 AI 写的 8 个组件：下拉菜单两份由 Codex 的 subagent 在 2026-10-26 生成；折叠面板、通知、可以往下拖的底部面板各两份，由 Claude Code 的 subagent（Claude Opus 5.5）在 2026-10-29 生成。prompt 里都只写了需求。我们在 Chrome 里逐帧采样（菜单是 10-26 在 Chrome 155 上量的，其余是 10-29 在 Chrome 156 上），触屏用 Chrome 模拟，没有上真机。原本以为动效是 AI 最容易翻车的地方，量下来，后五条它大多做到了；漏掉的是第一条。prompt、原样文件、测量脚本都在附录。
 
-## 先看一个例子
+<Figure caption="同一份折叠面板里最长和最短的两题，展开时每一帧的高度。Chrome 156，390 px 宽的手机视口。">
+  <MotionTrace variant="duration" />
+</Figure>
 
-下面是同一个菜单的两种写法。先各点几下，再打开「慢放」看一遍，最后点「连点三下」，看动画没播完又被点了一下时两边怎么处理。
+**要点速览**
 
-<MotionCompare />
+- **时长要跟着距离走。** 一帧走多远约等于「曲线最陡处的斜率 × 距离 ÷ 时长」。距离长了，时长要加，曲线也要缓一些。
+- **动画要能半路掉头。** 开到一半又关上，要从当前位置往回走，不能跳回起点重播。transition 天生如此，keyframes 不行。
+- **跟手的时候不要动画，松手时看速度。** 拖动期间关掉过渡；松手时快甩就关，慢慢放下按距离判断。
+- **一个元素走了，旁边的要跟着补位。** 被拿走的那块空间，也要用动画收起来。
+- **先收交互，再收画面。** 关闭的那一刻就让它点不到、Tab 不到；淡出可以慢慢来，收尾等动画自己的结束事件。
+- **减少动态效果：去掉位移，留下结果。** 而且这段设置要放在样式表里最后说了算的位置。
 
-A 是我在 AI 生成的代码里反复见到的写法，B 是按下文规则调过的。差别列一下：
+## 速度：一帧走多远
 
-| | A 常见写法 | B 调过的写法 | 依据 |
-| --- | --- | --- | --- |
-| 从哪里出来 | `transform-origin` 默认在中心，从 `scale(0)` 放大 | 从按钮所在的角展开，起点是 `scale(0.96)` | 动画应该从它的来源处开始（Vercel、Rauno Freiberg） |
-| 时长 | 400ms | 打开 180ms，关闭 120ms | 界面动画一般控制在 300ms 以内（Emil Kowalski） |
-| 曲线 | `ease-in-out` | 进场 ease-out，退场 ease-in | 进场减速（Emil Kowalski、Material 3）；退场加速（Material 3） |
-| 被打断时 | 每次重播 keyframes，从 0 开始，会闪 | `transition` 从当前位置折返 | 动画必须能被用户输入打断（Apple HIG、Vercel） |
-| 关闭 | `display: none`，直接消失 | 有退场，比进场更短 | |
-| 按钮反馈 | `transition: all`，悬停上浮 2px | 按下缩到 0.97，悬停只改边框色 | 不写 `transition: all`；按下要有回应 |
-| 减少动态效果 | 不处理 | 去掉位移缩放，只保留淡入淡出 | `prefers-reduced-motion`：替换，而不是删掉（MDN、WCAG 2.3.3） |
+### 时长要跟着距离走
 
-单看任何一行都不严重。但这七行叠在一起，就是「能用」和「好用」的差别。
+人眼感受到的不是动画「花了多久」，而是它「有多快」。速度是距离除以时长：展开 73&nbsp;px 用 280&nbsp;ms，速度很温和；展开 513&nbsp;px 也用 280&nbsp;ms，就快了 7 倍。
 
-## 为什么 AI 会这么写
+曲线会把这个差距再放大。缓动曲线不是匀速的，最陡的那一段速度最快。一段动画里，相邻两帧之间走得最远的距离，大约是：
 
-### 它写的是最常见的写法
+```text title="一帧最多走多远"
+每帧最大位移 ≈ 曲线最陡处的斜率 × 距离 × 16.7 ÷ 时长（ms）
+```
 
-Anthropic 在讲前端设计 skill 的文章里给这个现象起了个名字：**distributional convergence**（分布收敛）。没有额外指引时，模型会从训练数据里「概率最高的那一片」取样，所以生成的界面总是同一种字体、同一种紫色渐变、同一种布局。
+斜率 1 就是匀速；斜率 4.5，就是那一段的速度是平均速度的 4.5 倍。典型的减速曲线（ease-out）最陡的地方在起点，`cubic-bezier(x1, y1, x2, y2)` 起点的斜率就是 `y1 ÷ x1`。一条起步极猛的减速曲线 `cubic-bezier(0.22, 1, 0.36, 1)`，起点斜率是 1 ÷ 0.22 ≈ 4.55，开头那一下的速度是平均速度的 4.5 倍多。也有曲线最陡处在中段，比如 `cubic-bezier(0.2, 0, 0, 1)` 起点斜率是 0，中段却陡到 4.05；这时要看整条曲线，[cubic-bezier.com](https://cubic-bezier.com/) 这类工具把曲线画出来，最陡的那一段一眼就能看到。
 
-动效也一样。`transition: all 0.3s ease-in-out` 这种写法在网上的代码片段里随处可见，模型写出来也就不奇怪了。不过「它在训练数据里最常见」是我的推测，我没有找到统计数据。
+两份折叠面板都漏了这一条：所有题目共用一个时长，第 1 份还用的正是上面这条 4.5 倍的曲线。我们量了第 1 份展开最长和最短的两题：最长一题（513&nbsp;px）相邻两帧之间最多走了 129&nbsp;px，最短一题（73&nbsp;px）只有 18&nbsp;px。用上面的公式算，4.55 × 513 × 16.7 ÷ 280 ≈ 139&nbsp;px，和实测的 129&nbsp;px 是一个量级。129&nbsp;px 差不多是手机屏幕高度的六分之一，在一帧里走完，看起来是「啪」地弹开，不是展开。第 2 份用的是 `cubic-bezier(0.2, 0, 0, 1)`，起点平缓、中段陡到 4.05，最长一题也有 126&nbsp;px。反过来，两份底部面板都做对了：松手后关闭的时长按「剩下的距离 ÷ 松手时的速度」来算，拉得越远、甩得越快，剩下的动画就越短。
 
-### 它看不到东西动起来的样子
+Material Design 的旧版动效指南写得很直接：[不要所有动画共用一个时长，要按移动的距离、速度和面积变化来调](https://material.io/archive/guidelines/motion/duration-easing.html)；同一页里也说，超过 400&nbsp;ms 的过渡可能就太慢了。
 
-更根本的原因是检查方式。现在 AI 自检界面，多数靠截图：Anthropic 自己的 frontend-design skill、开源的 taste-skill，用的都是截图加自我评审。**截图是静止的。** 一张截图能看出颜色和布局，看不出 400ms 是不是太长，也看不出连点时会不会闪。
+**怎么看出来。** 找页面上最长的那块内容展开一次，再找最短的展开一次，比一比。长的那个像是弹出来的、一开头就到了大半，就是这个问题。DevTools 的 Animations 面板可以把速度降到 10%，慢放着看更清楚。
 
-做动效检查工具 MotionLint 的作者说得很直接：视觉回归工具能发现像素「变了」，但判断不了新的像素「好不好」。
+**怎么写对。** 两处一起改：时长按内容高度算，放在 200–450&nbsp;ms 之间；曲线换成最陡处斜率只有 2 的温和减速曲线。还是减速，点下去立刻有反应，只是开头没那么猛：
 
-## 哪些能交给工具，哪些只能靠人
+```js title="展开前按内容高度定时长"
+const h = item.querySelector('.faq-content').scrollHeight
+// 原来所有题目都是 280ms
+const dur = Math.round(Math.min(450, Math.max(200, 160 + h * 0.5)))
+item.style.setProperty('--open-dur', dur + 'ms')
+item.style.setProperty('--close-dur', Math.round(dur * 0.8) + 'ms')
+```
 
-我把调研到的工具和研究按「现在能不能自动检查」分了一下：
+```css title="高度用最陡处斜率 2 的减速曲线"
+@media (prefers-reduced-motion: no-preference) {
+  /* 原来是 cubic-bezier(0.22, 1, 0.36, 1)，起点斜率 4.5 */
+  .faq-item { --row-ease: cubic-bezier(0.5, 1, 0.89, 1); }
+  .faq-panel {
+    transition: grid-template-rows var(--close-dur) var(--row-ease),
+                visibility 0s linear var(--close-dur);
+  }
+  .faq-item.is-open .faq-panel {
+    transition: grid-template-rows var(--open-dur) var(--row-ease),
+                visibility 0s linear 0s;
+  }
+}
+```
 
-| 能自动检查 | 现状 |
-| --- | --- |
-| 无障碍基础项 | axe、Lighthouse 这类工具。Deque 的统计是自动化测试能找出约 57% 的无障碍问题，剩下的要人工 |
-| 「AI 味」的外观 | Adrian Krebs 用 16 条确定性规则扫了 500 个 Show HN 网站：28% 用了渐变，23.5% 是默认 shadcn，17.1% 用了毛玻璃。impeccable 项目有 62 条类似规则 |
-| 写法层面的动效规则 | 有没有 `transition: all`、是不是只动 `transform` 和 `opacity`、有没有 `prefers-reduced-motion`，这些能用 grep 或 lint 查出来 |
-| 动效数值 | MotionLint 读取实际运行的时长和曲线，和标准对比（数据是作者自测的） |
+改完再量：最长一题每帧最多走 40&nbsp;px，不到原来的三分之一；最短一题从 18&nbsp;px 变成 12&nbsp;px。公式算出来是 2 × 513 × 16.7 ÷ 417 ≈ 41&nbsp;px（513&nbsp;px 按公式得到的时长是 417&nbsp;ms）。
 
-| 目前只能靠人（或让模型当裁判） | 现状 |
-| --- | --- |
-| 层次、清晰度 | impeccable 把这部分交给 LLM 评审，并在 README 里承认「检测器跑干净只是证据，不是视觉质量的证明」 |
-| 动画有没有在「解释因果」 | Vercel 和 Anthropic 都把它写成了原则，但没有检查器 |
-| 连贯性、节奏 | MotionLint 在每次交互后截 16 帧，让视觉模型评判 |
-| 手感：跟手、惯性、打断 | 我没有找到任何基准测试覆盖这部分 |
+为什么不换成先慢后快再慢的标准曲线 `cubic-bezier(0.4, 0, 0.2, 1)`？我们第一版修正就是这么改的，最长一题量出来是 56&nbsp;px。标准曲线起点斜率是 0，最陡处在中段，斜率 2.73，峰值反而更高，而且点下去的头几帧几乎不动，会显得迟钝。Emil Kowalski 在 [Great Animations](https://emilkowal.ski/ui/great-animations) 里也建议界面上的进场动画用减速曲线，因为它一开始就在动，感觉更快。所以要换的不是曲线的类型，而是它起步有多陡。
 
-看完这两张表，我的结论是（这是我的判断，不是调研里某一篇的结论）：
+上限 450&nbsp;ms 是取舍。它超过了 Material 说的 400&nbsp;ms，也超过了 Emil 建议的「通常短于 300&nbsp;ms」。这两条说的是常见的小动画；一次要推开大半屏内容的展开，要么接受更长的时长，要么减少移动的距离，不能两头都要。超过 450&nbsp;ms 就会拖沓，所以内容特别长时，更好的办法是只展开一部分，剩下的让用户滚动。
 
-<Callout title="现有约束大多是「负面清单」">
-  上面能自动查的规则，几乎都在说「不要这样」：不要紫色渐变，不要 `transition: all`，不要忘了 reduced motion。全部通过，只能证明它**不俗**，证明不了它**好**。而且 Anthropic 已经发现，把一组默认写法禁掉之后，模型会收敛到另一组新的默认写法上。
-</Callout>
+下面是原样文件和修正版，按钮会同时展开两边最长的一题。打开慢放可以看清开头那几帧：
 
-「好」需要一套正面的标准：时长该是多少，曲线该选哪条，什么时候根本不该有动画。这套标准其实早就有了，散落在 Apple、Google 的设计规范和几位交互设计师的文章里，只是很少有人把它们整理成 AI 和人都能对照着检查的形式。下面是我的第一版。
+<Figure caption="左：AI 原样文件；右：只改了时长和曲线。两边都是 iframe 里的真实页面，读数是每次展开时逐帧量出来的。">
+  <AccordionCompare />
+</Figure>
 
-## 我的评分卡
+几个值得注意的地方：
 
-五个维度，每条都尽量给出能核对的数字或判断方法，并标出出处。打分很简单：每条记「过 / 不过 / 不适用」。
+- **看两边的比例，不要看绝对值。** 读数和 iframe 的宽度、屏幕刷新率都有关，掉一帧读数就会翻倍；慢放时读数也会变小。我们在 1280 和 375 宽的页面上各点了一次，读数见附录，每次都是原样明显更大。
+- **收起也按同样的比例。** 修正版收起用展开时长的 0.8 倍，退场比进场稍快。这一条 8 份 AI 产出里有 7 份自己就做到了，见下面的表。
 
-### 反馈：每次操作都有回应吗
+8 份的主动画时长都在 140–420&nbsp;ms 之间（松手后续走、减少动态效果时的短时长不算），小的东西快，大的东西慢；7 份退场比进场短，和 Material 旧版指南里「离开屏幕的元素需要的注意力更少，可以更短」一致。新组件可以从这里起步，再按距离调：
 
-- **按下有变化。** 按钮在按下的那一刻就要有视觉变化，例如 `:active` 时缩到 0.97、用时 150ms 左右（Emil Kowalski）。H5 里如果把 `-webkit-tap-highlight-color` 设成透明，就必须自己补一个按下态（MDN）。
-- **响应够快。** 从点击到画面更新，INP 在 200ms 以内算「好」，超过 500ms 算「差」（web.dev）。
-- **加载状态不闪。** 请求可能很快返回时，先等 150–300ms 再显示 loading；一旦显示，至少保持 300–500ms，避免一闪而过（Vercel）。
-
-### 时间：时长和曲线对吗
-
-- **够短。** 普通界面动画一般在 300ms 以内（Emil Kowalski）。Material 3 的时长 token 从 50ms 到 1000ms，按动画范围选：小控件用 short（50–200ms），整屏转场才用 long（450–600ms）。
-- **距离越远，时长越长。** 这条来自 Material 的动效文档。所有动画都写 300ms，本身就是一个信号。
-- **曲线按用途选。** 进场用减速（ease-out）；已经在屏幕上的元素移动或变形用 ease-in-out；颜色、透明度这类悬停变化用 ease；`linear` 只用于匀速运动或进度条（Emil Kowalski 的 easing 规则）。退场两家说法不同：Material 3 用加速曲线，Emil Kowalski 建议进出都用 ease-out、尽量不用 ease-in，理由是 ease-in 会让界面显得迟钝。上面演示里 B 的退场按 Material 的做法，只有 120ms。Material 3 的曲线 token：standard `cubic-bezier(0.2, 0, 0, 1)`，emphasized-decelerate `cubic-bezier(0.05, 0.7, 0.1, 1)`。
-- **弹簧不要太弹。** Apple 在 WWDC23 的建议是：拿不准时用 bounce 0；0.15 左右显得利落，0.3 左右有明显回弹，超过 0.4 要谨慎。
-
-### 连续：动画和手、和来源接得上吗
-
-- **能被打断。** 不能让用户等动画播完才能下一步（Apple HIG）。在 web 上，用 `transition` 而不是每次重播 keyframes，状态反转时会从当前位置折返。
-- **从来源处开始。** 菜单从按钮处展开，弹窗从被点的卡片处放大：设置 `transform-origin`，而不是从屏幕中心出现（Vercel、Rauno Freiberg）。
-- **跟手。** 拖动时内容和手指 1:1 移动，抓住哪里就是哪里，不要把元素中心吸到手指下；松手后的动画要接上手指的速度（Apple WWDC18 *Designing Fluid Interfaces*、WWDC23 *Animate with springs*）。
-- **来回方向一致。** 从上面滑下来的面板，就应该往上收回去，而不是往旁边滑走（Apple HIG）。
-
-### 克制：这里真的需要动画吗
-
-- **高频操作不加动画。** 每天用几百次的东西，例如键盘触发的操作、命令面板、右键菜单，不要加动画（Apple HIG、Emil Kowalski）。Rauno Freiberg 的经验是：命令面板的动画用了几天就开始觉得拖沓。
-- **动画要解释因果。** 只有在帮用户理解「这个东西从哪来、到哪去」时才加动画（Vercel）。
-- **不给每一块都加入场动画。** 每个区块滚动进来时淡入上移、每张卡片都有悬停动画，Anthropic 的 frontend-design skill 直接把这列为「一看就是 AI 生成的」默认写法。
-
-### 适配：换个人、换台设备还成立吗
-
-- **尊重「减少动态效果」。** 响应 `prefers-reduced-motion: reduce`，把位移和缩放换成淡入淡出，而不是直接删掉动画，否则可能连状态变化都看不出来（MDN、WCAG 2.3.3）。
-- **点击区域够大。** Web 最低 24×24 CSS px（WCAG 2.5.8），手机上建议 44px；iOS 默认 44×44pt、最小 28×28pt（Apple HIG）；Android 至少 48×48dp。
-- **只动 `transform` 和 `opacity`。** web.dev 的测试里，用 `top`/`left` 做动画丢了一半的帧，用 `transform` 只丢了 1%。React Native 的原生驱动（native driver）也只能驱动 `transform`、`opacity` 这类不影响布局的属性。
-- **H5 的老问题。** 输入框字号至少 16px，否则 iOS 聚焦时会放大页面；悬停样式包在 `@media (hover: hover)` 里，否则手机上点过之后会一直保持悬停态；全屏布局用 `svh`/`dvh` 而不是 `100vh`；底部固定栏加上 `env(safe-area-inset-bottom)`。
-
-<Callout type="todo" title="评分卡的局限">
-  上面大部分条目能用代码或数字核对，但「连续」和「克制」里有几条只能靠人判断：这个动画在解释因果吗？跟手吗？它们正是现有工具最缺的部分，也是这个系列后面要重点写的。
-</Callout>
-
-## 两个土办法
-
-在有更好的工具之前，我自己检查动效靠两个办法：
-
-1. **慢放。** Chrome DevTools 的 Animations 面板可以把页面动画放慢到 25% 或 10%；iOS 模拟器的 Debug 菜单里有 Slow Animations。很多问题正常速度下只是「感觉不对」，放慢后一眼就能看出是哪里不对：从哪出来、曲线是不是先快后慢、有没有跳帧。
-2. **在动画播到一半时反向操作。** 菜单开到一半再点一下，抽屉拉到一半松手，页面转场途中按返回。能平滑折返的是好动画，闪一下、跳一下、卡住等它播完的，都不过关。
-
-最后，**一定要在真机上用手指试**。鼠标点不出手指按下没反馈、点击区域太小、悬停态卡住这些问题。
-
-## 这个系列接下来写什么
-
-| 篇 | 主题 | 主要内容 |
+| 组件 | 进场 | 退场 |
 | --- | --- | --- |
-| 二 | 时长与曲线 | 把 Emil Kowalski 的 easing 规则、Material 3 的 token、Apple 的 spring 参数放在一起对照，附一个能拖动曲线的演示 |
-| 三 | 手指上的 H5 | 点击反馈、300ms 延迟的来龙去脉、悬停卡住、安全区、`dvh`、16px 输入框 |
-| 四 | 弹簧与打断 | 原生 App 的转场为什么「跟手」：速度衔接、1:1 跟随、可打断；在 web 上怎么尽量做到 |
-| 五 | 页面切换 | push、容器变形、共享轴、Android 的预测性返回，以及 web 的 View Transitions（这个博客的标题跨页形变就是用它做的） |
-| 六 | 把审美写成约束 | 哪些规则能写进 AGENTS.md 或 skill，哪些能做成 lint，哪些只能留给人；整理成一份可以直接拿去用的规则文件 |
+| 下拉菜单 | 180&nbsp;ms | 140&nbsp;ms；另一份和进场相同 |
+| 折叠面板 | 280&nbsp;ms | 220&nbsp;ms、200&nbsp;ms |
+| 通知 | 360&nbsp;ms、420&nbsp;ms | 220&nbsp;ms、200&nbsp;ms |
+| 底部面板 | 360&nbsp;ms、420&nbsp;ms | 220&nbsp;ms、280&nbsp;ms |
 
-## 参考
+**还有哪里会这样。** 从一个小按钮展开成全屏的弹窗，和只放大一点点的气泡，不该是同一个时长；大屏幕上的页面转场，移动的距离比手机上远；列表重新排序时，挪了一行和挪了十行的元素用同一个时长，就会有的慢有的飞。凡是「同一个动画、不同的距离」，都拿上面的公式算一下。
 
-- Anthropic，[Improving frontend design through skills](https://www.claude.com/blog/improving-frontend-design-through-skills)；[frontend-design SKILL.md](https://github.com/anthropics/skills/blob/main/skills/frontend-design/SKILL.md)
-- Vercel，[Web Interface Guidelines](https://github.com/vercel-labs/web-interface-guidelines)
-- Emil Kowalski，[You don't need animations](https://emilkowal.ski/ui/you-dont-need-animations)、[Great animations](https://emilkowal.ski/ui/great-animations)、[The easing blueprint](https://animations.dev/learn/animation-theory/the-easing-blueprint)
-- Rauno Freiberg，[Invisible Details of Interaction Design](https://rauno.me/craft/interaction-design)
-- Apple，[HIG: Motion](https://developer.apple.com/design/human-interface-guidelines/motion)、[HIG: Accessibility](https://developer.apple.com/design/human-interface-guidelines/accessibility)、[WWDC23 Animate with springs](https://developer.apple.com/videos/play/wwdc2023/10158/)、[WWDC18 Designing Fluid Interfaces](https://developer.apple.com/videos/play/wwdc2018/803/)
-- Material Design，[Motion（material-components-android 文档）](https://github.com/material-components/material-components-android/blob/master/docs/theming/Motion.md)
-- web.dev，[Animations guide](https://web.dev/articles/animations-guide)、[INP](https://web.dev/articles/inp)、[Viewport units](https://web.dev/blog/viewport-units)
-- W3C，[WCAG 2.3.3 Animation from Interactions](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html)、[WCAG 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)
-- Android，[Make apps more accessible](https://developer.android.com/guide/topics/ui/accessibility/apps)；React Native，[Performance](https://reactnative.dev/docs/performance)
-- Adrian Krebs，[design-slop](https://www.adriankrebs.ch/blog/design-slop/)；[impeccable](https://github.com/pbakaus/impeccable)；[MotionLint](https://github.com/bobaba99/motionlint)
-- Deque，[Automated accessibility testing coverage](https://www.deque.com/automated-accessibility-testing-coverage/)
+## 过程：被打断、被拖动、被拿走
+
+动画播放的那几百毫秒里，用户不会停下来等。下面四条讲的都是这段时间里用户又做了什么。
+
+### 动画要能半路掉头
+
+开到一半又关上，动画要从**当前位置**往回走，而不是跳回起点再播一遍。用户不会等动画播完：菜单开到一半又点了一下，折叠面板刚展开就想收起，都很平常。
+
+CSS 的 transition 天生就是这样：属性的目标值变了，新的过渡从当前的计算值出发，[CSS 规范](https://drafts.csswg.org/css-transitions/)还专门规定了往回走时，要按已经走过的比例缩短时长。`@keyframes` 动画不一样，每次重新触发都从第一帧开始，半路掉头就会跳回起点。Sonner 的作者 Emil Kowalski [讲过这件事](https://emilkowal.ski/ui/building-a-toast-component)：他最早用 keyframes 做通知的进场，连续添加时旧的通知会跳位，因为 keyframes 不能被打断，后来改成了 transition。
+
+菜单、折叠面板、通知一共 6 份逐帧测过，都接住了：两份通知在进场一半时被关掉，透明度分别从 0.64 和 0.58 往下走，没有先跳回 1。两份菜单都用 transition：以第 1 份为例，75&nbsp;ms 时关闭，透明度从 0.93 开始往下走；125&nbsp;ms 时重开，又从 0.32 往回涨，没有从 0 重来。折叠面板展开到 120&nbsp;ms 时再点一下，高度从当时的位置平滑地退回去：
+
+<Figure caption="原样折叠面板，展开最长一题，120 ms 时再点一下。高度先冲到 489 px，然后从当前位置往回退，约 330 ms 时回到 0，中间没有跳变。">
+  <MotionTrace variant="interrupt" />
+</Figure>
+
+用 JavaScript 的 Web Animations API 时，要自己从当前状态开始播。第 2 份通知的退场就是这样写的，进场播到一半就被关掉也不会跳：
+
+```js title="从当前画面开始退场（通知第 2 份的代码，删掉了减少动态效果的分支）"
+// 从当前画面状态起退场，进场没播完就被关掉时也不会跳帧
+const cs = getComputedStyle(card)
+const fromTransform = cs.transform === 'none' ? 'translateY(0) scale(1)' : cs.transform
+card._motion?.cancel()
+card.animate(
+  [{ opacity: cs.opacity, transform: fromTransform }, { opacity: 0, transform: to }],
+  { duration: 200, easing: EASE_IN, fill: 'forwards' }
+)
+```
+
+**怎么验。** 快速连点两下开关，或者开到一半就关，看它是不是从当前位置折返。慢放到 10% 更容易看出跳没跳。
+
+**还有哪里会这样。** 悬停时放大、移开时缩回的卡片；标签页切换时的下划线；按住时变小、松开时弹回的按钮。凡是状态可能在动画中途再变一次的地方，都用 transition，或者从计算样式起播。
+
+### 跟手的时候不要动画，松手时看速度
+
+手指拖着面板时，面板要和手指一步不差。如果拖动期间 `transition` 还开着，面板每一步都要花一两百毫秒去追手指，就会感觉「黏黏的」。松手以后才轮到动画：根据手指离开时的速度和位置，决定是关掉还是弹回去。
+
+两份底部面板都是这么做的。拖动开始时把 `transition` 设成 `none`。我们用模拟触屏每 16&nbsp;ms 往下拖 8&nbsp;px，第一步被代码用来判断是拖动还是点击（阈值是 6&nbsp;px），之后面板一直落后手指 8&nbsp;px 左右（第 2 份最后一次采样落后 16&nbsp;px，相当于晚了一步），拖到 120&nbsp;px 也没有越落越远。松手时，两份的代码都看两个条件：
+
+- **速度：** 往下的速度超过 0.5&nbsp;px/ms 就关。
+- **距离：** 拉过面板高度的 30%（第 1 份）或 25%（第 2 份）就关，否则弹回去。弹回从松手的位置开始，每帧最多走 8&nbsp;px。
+
+实测：慢慢拉到 20% 松手，两份都弹回；拉过一半，两份都关；往上拖有阻尼，拖 60&nbsp;px 面板只上移 10&nbsp;px 和 24&nbsp;px。作为参照，Emil Kowalski 的抽屉组件 Vaul 在[源码](https://github.com/emilkowalski/vaul/blob/main/src/constants.ts)里用的是 0.4&nbsp;px/ms 和 25%，数量级一样。
+
+```js title="拖动时关掉过渡，跟手（底部面板第 2 份的代码，节选）"
+sheet.setPointerCapture(pointerId)
+sheet.style.transition = 'none'
+scrim.style.transition = 'none'
+// ……每次 pointermove：
+sheet.style.transform = `translateY(${offset}px)`
+```
+
+**怎么验。** 用手机或 DevTools 的触屏模拟，按住拖一段，看面板有没有落在手指后面。然后试三种松手：慢慢拉一点点放下（该弹回）、快速一甩（该关）、拉很远再停住等一会儿再放（按距离判断，不能当成快甩）。
+
+**还有哪里会这样。** 左滑删除、轮播图拖动、下拉刷新、滑块。凡是手指直接操纵的东西，拖动期间都不该有过渡，松手时都该看速度。
+
+### 一个元素走了，旁边的要跟着补位
+
+被拿走的那块空间，也要用动画收起来。关掉一条通知，它自己的退场再好看，旁边的通知如果「啪」地一下补上来，整体还是在跳。
+
+两份通知都做到了，原理一样：离开的那条淡出，同时把它占的高度动画到 0，旁边的通知就跟着这块空间一起滑过来。第 1 份把每条通知包在一个 grid 槽位里，淡出和收高度同时开始；第 2 份用 Web Animations API 把高度和内边距动画到 0，比淡出晚 80&nbsp;ms 开始。新通知进来、把其他通知往外推时，第 2 份还用了 FLIP：先记下每条的位置，改完 DOM 再量一次，然后用 `transform` 从旧位置动画到新位置。
+
+```css title="用 grid 槽位收起空间（通知第 1 份的代码，删掉了进场用的 .is-pre）"
+/* 外层 slot 负责高度收合，让下面/上面的通知平滑补位，而不是瞬间跳位 */
+.slot {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows var(--dur-collapse) var(--ease-out);
+}
+.slot > .clip { min-height: 0; overflow: visible; }
+.slot.is-leaving { grid-template-rows: 0fr; }
+.slot.is-leaving > .clip { overflow: hidden; }
+```
+
+在 1280 宽的桌面上弹出三条，关掉中间那条，相邻那条滑了 85&nbsp;px 补过来，每帧最多走 20&nbsp;px（第 2 份是 14&nbsp;px）。开着减少动态效果时，同样的位移（84&nbsp;px）在一帧里到位：
+
+<Figure caption="通知第 1 份，1280 px 宽，关掉三条里中间那一条，相邻那条的位移。">
+  <MotionTrace variant="toast" />
+</Figure>
+
+**怎么验。** 连续弹出三条，关掉中间那条，盯住它旁边的那条。
+
+**还有哪里会这样。** 列表里删掉一行；折叠面板展开时把下面的内容往下推；购物车里移除一件商品。Chrome 129 开始支持的 [`interpolate-size: allow-keywords`](https://developer.chrome.com/docs/css-ui/animate-to-height-auto) 能直接从 `0` 过渡到 `auto`，但 Safari 和 Firefox 还不支持，grid 槽位的写法目前更通用。
+
+### 先收交互，再收画面
+
+关闭一个菜单时，「看不见」和「点不到」不用同时发生。动画只是给眼睛看的过渡；对手指、键盘和读屏软件来说，关闭的那一刻它就该消失了。反过来，打开时交互要立刻就绪，不用等进场播完。
+
+[上一篇](/blog/ai-chat-layout/)量过：`opacity` 和 `transform` 只藏住了像素。所以退场动画播放期间，要另外处理点击和焦点。两份菜单在关闭的那一帧就把菜单设成了 `inert`，那时透明度还在 0.9 左右；两份折叠面板把 `visibility: hidden` 延迟到收起动画结束（`visibility 0s linear var(--close-dur)`），收起期间还看得见，收完就 Tab 不进去了；第 2 份通知离场时设了 `pointer-events: none`。
+
+动画结束以后的收尾（移除节点、设 `hidden`）要等动画自己的结束事件，定时器只做兜底：
+
+```js title="等过渡结束再移除，定时器只做兜底（通知第 1 份的代码，节选）"
+slot.addEventListener('transitionend', function (e) {
+  if (e.target === slot && e.propertyName === 'grid-template-rows') remove()
+})
+setTimeout(remove, REMOVE_FALLBACK_MS)  // transitionend 没触发时，不让节点残留
+```
+
+两份菜单用的是另一种写法：CSS 里写一个过渡时长，JS 里再写一个差不多长的定时器去设 `hidden`，第 1 份是 140 和 160&nbsp;ms，第 2 份是 180 和 190&nbsp;ms。现在没出错，但同一个时长写了两遍；哪天有人把 CSS 改成 250&nbsp;ms，菜单就会在动画播完之前消失。等 `transitionend` 或者 `animation.finished`，时长就只写在一处。
+
+**怎么验。** 打开菜单，按 Esc 关闭，在它淡出的那一瞬间按 Tab，或者点它原来的位置：焦点不该落进菜单，也不该点到里面的按钮。
+
+**还有哪里会这样。** 淡出中的弹窗遮罩还挡着下面的页面；滑出中的抽屉还能被 Tab 进去；正在消失的提示气泡还挡着鼠标。凡是有退场动画的东西，都要问一句：动画播放的这段时间里，它还能被点到吗？
+
+## 环境：减少动态效果
+
+### 去掉位移，留下结果
+
+打开「减少动态效果」，是在说「别让东西在屏幕上大幅移动」，不是「别给我反馈」。[WCAG 2.3.3 的说明](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html)里写到，页面元素的移动可能引发前庭障碍，症状包括头晕、恶心和头痛。[MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) 对这个设置的描述是：用户希望界面移除、减弱或替换基于运动的动画，三种都可以。菜单该开还是开，通知该消失还是消失，只是不再飞来飞去。
+
+8 份都处理了，做法各不相同：
+
+- **直接到位**：两份菜单、两份折叠面板、第 1 份底部面板，去掉过渡或者把时长设成 0。
+- **替换成淡入淡出**：第 2 份通知去掉位移和缩放，进场只留 180&nbsp;ms 的透明度，退场 150&nbsp;ms；第 1 份通知去掉了位移，进退场缩短到 160 和 120&nbsp;ms。
+- **留一个极短的时长**：第 2 份底部面板把时长设成 `1ms`，而不是 0，第 1 份通知收起空间时也是 `1ms`。这样 `transitionend` 照样会触发，靠它收尾的代码不用另写一条分支。
+
+```css title="减少动态效果时保留结束事件（底部面板第 2 份的代码）"
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-open: 1ms; --dur-close: 1ms; }
+}
+```
+
+**这段设置要放在最后说了算的位置。** 我们第一版修正折叠面板时，把新的 `transition` 直接追加在了样式表末尾。原文件的减少动态效果写在前面，把时长设成 0；后写的规则优先级相同、位置更靠后，就把它盖掉了。开着减少动态效果再量，展开时高度从 0 一帧一帧涨到 1.9&nbsp;px、8.1&nbsp;px，又动起来了（[第一版补丁](/blog/lab/ai-motion-taste/accordion1-fixed-v1.html)）。要么把所有动画都写在 `@media (prefers-reduced-motion: no-preference)` 里，默认不动；要么把 `reduce` 那段放在样式表的最后。
+
+**怎么验。** macOS 在「系统设置 → 辅助功能 → 显示」里打开「减少动态效果」，或者在 DevTools 的 Rendering 面板里模拟 `prefers-reduced-motion: reduce`，把每个动画再触发一遍：大幅的位移和缩放应该没有了，操作的结果还在。
+
+**还有哪里会这样。** 主题里覆盖组件库的动画时长、给某个页面单独加转场、引入一个新的动画库，都可能把前面写好的减少动态效果盖掉。每次改动画，都开着这个设置再看一遍。
+
+## 两分钟验收一个动效
+
+拿到一个带动画的组件，按顺序做这五件事。不用脚本，浏览器和 DevTools 就够了：
+
+1. **最长和最短的各展开一次。** 长的那个是不是像弹出来的。
+2. **半路打断。** 开到一半关、关到一半开，看会不会跳回起点。
+3. **慢放到 10%。** DevTools 的 Animations 面板，看每一帧是不是连续的。
+4. **拖着不放，再换三种方式松手。** 手势组件才需要：跟不跟手，快甩、慢放、停住再放分别对不对。
+5. **开减少动态效果，再做一遍。** 位移和缩放没有了，操作的结果还在。
+
+## 附录：AGENTS.md 规则
+
+只收 AI 产出里没做到的两条；其余几条这次的 8 份产出大多做到了，不用再写。第 2 条来自读代码：两份菜单现在都没出错，但同一个时长写了两遍，改 CSS 时就会出错。
+
+```markdown title="AGENTS.md · 动效"
+## 动效
+
+- 同一个动画要走不同距离时（折叠面板的长短答案、大小不一的弹层），
+  时长按距离算，不要共用一个固定值：例如 clamp(200ms, 160ms + 0.5ms × 高度, 450ms)。
+  曲线最陡处的斜率不超过 2，例如 cubic-bezier(0.5, 1, 0.89, 1)；
+  减速曲线最陡处在起点，斜率是 y1 ÷ x1；起点平缓的曲线要看整条（cubic-bezier(0.2, 0, 0, 1) 中段是 4.05）。
+  估算：每帧最大位移 ≈ 最陡处斜率 × 距离 × 16.7 ÷ 时长，控制在 60px 以内。
+- 动画结束后的收尾（移除节点、设 hidden）等 transitionend 或 animation.finished，
+  定时器只做兜底；不要在 JS 里再写一个和 CSS 差不多长的时长。
+```
+
+「每帧 60&nbsp;px 以内」是从这次的数据里取的经验值，不是规范：修正前的 126–129&nbsp;px 看起来是弹开，修正后的 40&nbsp;px 和第一版补丁的 56&nbsp;px 看起来是展开。
+
+## 附录：修正后的折叠面板
+
+[accordion1-fixed.html](/blog/lab/ai-motion-taste/accordion1-fixed.html) 是在 AI 原样文件 [accordion1.html](/blog/lab/ai-motion-taste/accordion1.html) 上只改了两处：样式表末尾加一段，点击处理里加四行。[accordion1-fixed-v1.html](/blog/lab/ai-motion-taste/accordion1-fixed-v1.html) 是第一版补丁，用的是标准曲线，而且没有包在 `no-preference` 里。
+
+```html title="样式表末尾追加"
+<style>
+  /* 包在 no-preference 里：写在减少动态效果那段后面的 transition 会把它盖掉 */
+  @media (prefers-reduced-motion: no-preference) {
+    .faq-item { --row-ease: cubic-bezier(0.5, 1, 0.89, 1); }
+    .faq-panel {
+      transition: grid-template-rows var(--close-dur) var(--row-ease),
+                  visibility 0s linear var(--close-dur);
+    }
+    .faq-item.is-open .faq-panel {
+      transition: grid-template-rows var(--open-dur) var(--row-ease),
+                  visibility 0s linear 0s;
+    }
+  }
+</style>
+```
+
+```js title="点击处理"
+document.querySelectorAll('.faq-trigger').forEach((button) => {
+  button.addEventListener('click', () => {
+    const item = button.closest('.faq-item')
+    // 内容越高，时长越长，200–450ms 之间；收起用展开的 0.8 倍
+    const h = item.querySelector('.faq-content').scrollHeight
+    const dur = Math.round(Math.min(450, Math.max(200, 160 + h * 0.5)))
+    item.style.setProperty('--open-dur', dur + 'ms')
+    item.style.setProperty('--close-dur', Math.round(dur * 0.8) + 'ms')
+    const open = item.classList.toggle('is-open')
+    button.setAttribute('aria-expanded', String(open))
+  })
+})
+```
+
+## 附录：实测材料
+
+**样本。** 8 份单文件 HTML，prompt 里都只有功能需求，没有设计规范：
+
+- 下拉菜单 [run1.html](/blog/lab/ai-motion-taste/run1.html)、[run2.html](/blog/lab/ai-motion-taste/run2.html)：Codex 的独立 subagent，2026-10-26，继承父会话的模型，工具没有返回具体版本；要求只生成一次、不运行、不修改。prompt 在 [prompt.txt](/blog/lab/ai-motion-taste/prompt.txt)，采样记录在 [provenance.json](/blog/lab/ai-motion-taste/provenance.json)。
+- 折叠面板 [accordion1](/blog/lab/ai-motion-taste/accordion1.html)、[accordion2](/blog/lab/ai-motion-taste/accordion2.html)，通知 [toast1](/blog/lab/ai-motion-taste/toast1.html)、[toast2](/blog/lab/ai-motion-taste/toast2.html)，底部面板 [sheet1](/blog/lab/ai-motion-taste/sheet1.html)、[sheet2](/blog/lab/ai-motion-taste/sheet2.html)：Claude Code 的全新 subagent，Claude Opus 5.5，2026-10-29，每份一个。prompt 在 [prompt-claude.txt](/blog/lab/ai-motion-taste/prompt-claude.txt)。除了折叠面板第 1 份，其余 5 份都自己在无头浏览器里跑过检查；底部面板第 2 份检查后自己改过几处，按它的交付说明，主要是两处：拖动的监听从面板挪到 `window` 上，松手速度改成只看最后 100&nbsp;ms。
+- **它们继承了什么。** Claude Code 的 subagent 会继承这台机器的全局配置 `~/.claude/CLAUDE.md` 和 skill 列表，测到的是「这台机器上的 AI」，不是空白模型。skill 里有一份团队 UI 规范，其中动效部分写了「尊重 `prefers-reduced-motion`」和「打断时从当前采样值平滑反向」。我们查了 6 个 subagent 的完整记录：它们都没有调用任何 skill，记录里也没有出现这份规范的正文，只有 skill 列表里的一行名字和简介；全局 `CLAUDE.md` 里没有动效相关的条目。所以这两条做对，不是因为读了规则。Codex 的两份菜单没有做这项核对。
+
+**测量。** 脚本在 [tools/](/blog/lab/ai-motion-taste/tools/m-accordion.mjs) 下，要和 [rec.js](/blog/lab/ai-motion-taste/tools/rec.js) 放在同一个目录运行。每个脚本都在页面里用 `requestAnimationFrame` 每帧采样一次。浏览器是 Chrome 156.0.8078.48（[env.json](/blog/lab/ai-motion-taste/data/env.json)）。
+
+- [m-accordion.mjs](/blog/lab/ai-motion-taste/tools/m-accordion.mjs)：390&nbsp;px 宽；每一题展开后的高度，最长和最短一题的展开、收起曲线，展开 120&nbsp;ms 时再点一下，60&nbsp;ms 间隔连点 5 次，展开期间的布局次数，减少动态效果。原样、修正版、第一版补丁都量了。结果在 [m-accordion.json](/blog/lab/ai-motion-taste/data/m-accordion.json)。
+- [m-toast.mjs](/blog/lab/ai-motion-taste/tools/m-toast.mjs)：1280 和 390 两种宽度；进场曲线，关掉中间一条时另外两条的位移，悬停 5.5 秒和键盘聚焦 5 秒是否暂停，连点 8 次是否重叠，进场一半就关，减少动态效果。结果在 [m-toast.json](/blog/lab/ai-motion-taste/data/m-toast.json)。
+- [m-sheet.mjs](/blog/lab/ai-motion-taste/tools/m-sheet.mjs)、[m-flick.mjs](/blog/lab/ai-motion-taste/tools/m-flick.mjs)：390&nbsp;px 宽，用 CDP 的 `Input.dispatchTouchEvent` 模拟手指；每 16&nbsp;ms 下拉 8&nbsp;px 时面板和手指的距离，不同距离和速度松手的结果，往上拖的阻尼，减少动态效果。结果在 [m-sheet.json](/blog/lab/ai-motion-taste/data/m-sheet.json) 和 [m-flick.json](/blog/lab/ai-motion-taste/data/m-flick.json)。CDP 每发一个触摸事件都有十几毫秒的开销，「快甩」按整段平均只有 0.43–0.65&nbsp;px/ms：第 1 份拉了 60&nbsp;px（26%，不到它 30% 的距离线）就关了，说明它确实在看速度；第 2 份拉 60&nbsp;px 没关，推测是因为它只看最后 100&nbsp;ms 的速度，那一段没过 0.5&nbsp;px/ms。所以正文里「看速度」这一条的依据是两份的源码，测量只确认了第 1 份。
+- 下拉菜单的测量是 2026-10-26 做的：[measure.mjs](/blog/lab/ai-motion-taste/measure.mjs)、[measurements.json](/blog/lab/ai-motion-taste/measurements.json)，开、关、再开分别在 75 和 125&nbsp;ms 左右触发，用的是 DOM 的 `click()`，不是真实指针。
+- 对照演示的读数：[demo-readouts.txt](/blog/lab/ai-motion-taste/data/demo-readouts.txt)，在 1280 和 375 宽的页面上各点一次。
+
+```bash
+npm i playwright-core
+cd tools
+node m-accordion.mjs <样本所在目录的绝对路径> ./m-accordion.json
+node m-toast.mjs <样本所在目录的绝对路径> ./m-toast.json
+node m-sheet.mjs <样本所在目录的绝对路径> ./m-sheet.json
+```
+
+Chrome 不在 macOS 的默认路径时，用环境变量 `CHROME_PATH` 指定。逐帧的时间戳会随机器负载变化，复跑时数字不会逐字一致，量级应该一样；尤其「相邻两帧最多走多少」对掉帧很敏感，采样正好落在曲线最陡的那一帧前后，读数就会差十几个像素。
