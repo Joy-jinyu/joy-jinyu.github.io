@@ -1,0 +1,115 @@
+---
+/**
+ * 动效逐帧曲线：把浏览器里逐帧采样的数据画成折线（构建时生成静态 SVG，不需要脚本）。
+ * 数据来自 blog/public/lab/ai-motion-taste/data/，由同目录 tools/ 下的 m-*.mjs 量出。
+ * variant：duration = 折叠面板长短两题的展开高度；interrupt = 展开到一半再点一下；toast = 关掉中间一条通知时相邻那条的位移
+ */
+import acc from '../../public/lab/ai-motion-taste/data/m-accordion.json'
+import toast from '../../public/lab/ai-motion-taste/data/m-toast.json'
+
+interface Props {
+  variant: 'duration' | 'interrupt' | 'toast'
+}
+type Pt = { t: number; v: number }
+type Series = { label: string; pts: Pt[]; tone: 'warn' | 'brand' | 'muted'; dash?: boolean }
+
+const { variant } = Astro.props
+const W = 640
+const H = 280
+const pad = { l: 56, r: 16, t: 16, b: 40 }
+
+/** 相邻两帧之间最大的变化量，四舍五入到整数 */
+const peak = (pts: Pt[]) => Math.round(Math.max(...pts.slice(1).map((p, i) => Math.abs(p.v - pts[i].v))))
+const h = (tr: { t: number; h: number }[]) => tr.map((x) => ({ t: x.t, v: x.h }))
+
+let series: Series[] = []
+let xMax = 500
+let yMax = 520
+const yUnit = 'px'
+let marker: { t: number; label: string } | undefined
+let yLabel = '高度'
+
+if (variant === 'duration') {
+  const long = h(acc.accordion1.openLong)
+  const fixed = h(acc['accordion1-fixed'].openLong)
+  const short = h(acc.accordion1.openShort)
+  series = [
+    { label: `原样 · 最长一题 513 px · 每帧最多走 ${peak(long)} px`, pts: long, tone: 'warn' },
+    { label: `修正后 · 同一题 · 每帧最多走 ${peak(fixed)} px`, pts: fixed, tone: 'brand' },
+    { label: `原样 · 最短一题 73 px · 每帧最多走 ${peak(short)} px`, pts: short, tone: 'muted', dash: true },
+  ]
+} else if (variant === 'interrupt') {
+  const tr = h(acc.accordion1.interruptLong)
+  series = [{ label: '原样 · 最长一题：展开，120 ms 时再点一下', pts: tr, tone: 'brand' }]
+  marker = { t: 120, label: '再点一下' }
+} else {
+  const pick = (tr: { t: number; ys: number[] }[]) => {
+    const j = tr[0].ys.findIndex((y, k) => Math.abs(tr.at(-1)!.ys[k] - y) > 1)
+    return tr.map((x) => ({ t: x.t, v: Math.abs(x.ys[j] - tr[0].ys[j]) }))
+  }
+  const normal = pick(toast['toast1@1280'].dismissMiddle)
+  const reduced = pick(toast['toast1@1280'].reducedDismiss)
+  series = [
+    { label: `默认 · 相邻那条滑过来补位 · 每帧最多走 ${peak(normal)} px`, pts: normal, tone: 'brand' },
+    { label: `减少动态效果 · 一帧到位 · ${peak(reduced)} px`, pts: reduced, tone: 'muted', dash: true },
+  ]
+  xMax = 500
+  yMax = 100
+  yLabel = '位移'
+}
+
+const x = (t: number) => pad.l + (Math.min(t, xMax) / xMax) * (W - pad.l - pad.r)
+const y = (v: number) => H - pad.b - (v / yMax) * (H - pad.t - pad.b)
+const path = (pts: Pt[]) =>
+  pts.filter((p) => p.t <= xMax).map((p, i) => `${i ? 'L' : 'M'}${x(p.t).toFixed(1)},${y(p.v).toFixed(1)}`).join('')
+const xTicks = [0, 100, 200, 300, 400, 500].filter((t) => t <= xMax)
+const yTicks = [0, yMax / 2, yMax]
+---
+
+<div class="mt not-prose">
+  <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={series.map((s) => s.label).join('；')}>
+    {yTicks.map((v) => (
+      <g>
+        <line class="mt-grid" x1={pad.l} x2={W - pad.r} y1={y(v)} y2={y(v)} />
+        <text class="mt-tick" x={pad.l - 10} y={y(v) + 5} text-anchor="end">{v}</text>
+      </g>
+    ))}
+    {xTicks.map((t) => <text class="mt-tick" x={x(t)} y={H - pad.b + 24} text-anchor="middle">{t}</text>)}
+    {marker && (
+      <g>
+        <line class="mt-mark" x1={x(marker.t)} x2={x(marker.t)} y1={pad.t} y2={H - pad.b} />
+        <text class="mt-tick" x={x(marker.t) + 8} y={H - pad.b - 12}>{marker.label}</text>
+      </g>
+    )}
+    {series.map((s) => <path class={`mt-line is-${s.tone}${s.dash ? ' is-dash' : ''}`} d={path(s.pts)} />)}
+  </svg>
+  <ul class="mt-legend">
+    {series.map((s) => <li class={`is-${s.tone}${s.dash ? ' is-dash' : ''}`}><i aria-hidden="true"></i>{s.label}</li>)}
+  </ul>
+  <p class="mt-axis">横轴：从点击开始的时间（ms）；纵轴：{yLabel}（{yUnit}）；每一帧采样一次</p>
+</div>
+
+<style is:global>
+  .mt { width: 100%; max-width: 640px; }
+  .mt svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .mt-grid { stroke: var(--line-hi); stroke-width: 1; }
+  .mt-mark { stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 4 4; }
+  .mt-tick { fill: var(--muted); font: 500 18px var(--mono); }
+  .mt-line { fill: none; stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
+  .mt-line.is-warn { stroke: var(--warn); }
+  .mt-line.is-brand { stroke: var(--brand); }
+  .mt-line.is-muted { stroke: var(--muted); }
+  .mt-line.is-dash { stroke-dasharray: 7 6; }
+  .mt-legend { display: grid; gap: 6px; margin: 14px 0 0; padding: 0; list-style: none; color: var(--text); font-size: 14px; line-height: 1.5; font-variant-numeric: tabular-nums; }
+  .mt-legend li { display: flex; align-items: center; gap: 10px; margin: 0; }
+  .mt-legend i { flex: none; width: 22px; height: 0; border-top: 3px solid currentColor; }
+  .mt-legend .is-warn i { color: var(--warn); }
+  .mt-legend .is-brand i { color: var(--brand); }
+  .mt-legend .is-muted i { color: var(--muted); }
+  .mt-legend .is-dash i { border-top-style: dashed; }
+  .mt-axis { margin: 8px 0 0; color: var(--muted); font-size: 13px; }
+  @media (max-width: 640px) {
+    .mt-tick { font-size: 24px; }
+    .mt-legend { font-size: 13px; }
+  }
+</style>

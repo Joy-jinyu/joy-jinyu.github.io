@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content'
 import { glob } from 'astro/loaders'
 import { z } from 'astro/zod'
+import { COLUMN_IDS } from './lib/columns'
 
 export const collections = {
   posts: defineCollection({
@@ -14,6 +15,8 @@ export const collections = {
       tags: z.array(z.string()).default([]),
       /** 首页卡片上的一行小字，例如「约 55 分钟 · 三部分」 */
       meta: z.string().optional(),
+      /** 所属专栏，见 lib/columns.ts */
+      column: z.enum(COLUMN_IDS),
       draft: z.boolean().default(false),
     }),
   }),
