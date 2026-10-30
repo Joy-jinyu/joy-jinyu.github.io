@@ -1,0 +1,77 @@
+---
+/**
+ * 在当前文章上运行间距 X 光，或者把脚本复制走。脚本本身在 blog/public/lab/ai-spacing/xray-snippet.js，
+ * 每运行一次切换一次开关（它自己判断页面上有没有画过）。
+ */
+import '../styles/spacing-lab.css'
+const src = `${import.meta.env.BASE_URL.replace(/\/?$/, '/')}lab/ai-spacing/xray-snippet.js`
+---
+
+<xray-run class="xrr sx-panel not-prose" data-src={src}>
+  <div class="xrr-row">
+    <button type="button" class="xrr-go" aria-pressed="false">在这篇文章上打开 X 光</button>
+    <button type="button" class="xrr-copy">复制脚本</button>
+    <a class="xrr-src" href={src} target="_blank" rel="noopener">看源码</a>
+  </div>
+  <p class="xrr-msg" aria-live="polite">打开以后往下滚：<span class="sx-w">蓝虚线</span>是行盒，<span class="sx-s">红框</span>是墨迹，标签是这块文字到正下方最近一块东西的「写 · 看」间距，看到的比写的多 4 px 以上标红。只画当前屏幕上下各一屏。</p>
+</xray-run>
+
+<script>
+  const OVERLAY = '__spacing_xray__'
+
+  class XrayRun extends HTMLElement {
+    connectedCallback() {
+      const src = this.dataset.src!
+      const go = this.querySelector<HTMLButtonElement>('.xrr-go')!
+      const copy = this.querySelector<HTMLButtonElement>('.xrr-copy')!
+      const msg = this.querySelector('.xrr-msg')!
+      go.addEventListener('click', () => {
+        const s = document.createElement('script')
+        // 每次都要重新执行，加时间戳绕开缓存里「已执行过」的同一个脚本
+        s.src = `${src}?t=${Date.now()}`
+        s.onload = () => {
+          s.remove()
+          const on = !!document.getElementById(OVERLAY)
+          go.setAttribute('aria-pressed', String(on))
+          go.textContent = on ? '关掉 X 光' : '在这篇文章上打开 X 光'
+        }
+        s.onerror = () => { s.remove(); msg.textContent = '脚本没加载成功，可以点「看源码」复制到控制台运行。' }
+        document.body.append(s)
+      })
+      copy.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(await (await fetch(src)).text())
+          copy.textContent = '已复制'
+          msg.textContent = '已复制。打开任意页面的 DevTools，粘到 Console 里回车；再运行一次就关掉。'
+        } catch {
+          msg.textContent = '复制没成功（浏览器可能不允许读写剪贴板），点「看源码」手动复制。'
+        }
+      })
+    }
+  }
+  customElements.define('xray-run', XrayRun)
+</script>
+
+<style is:global>
+  .xrr-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+  .xrr-go, .xrr-copy {
+    min-height: 40px;
+    padding: 0 18px;
+    border-radius: 10px;
+    font: 600 14px/1 var(--sans);
+    cursor: var(--cursor-pointer);
+    transition: background-color 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease);
+  }
+  .xrr-go { border: 1px solid var(--brand); background: var(--brand); color: #04201f; }
+  .xrr-go:hover { background: color-mix(in srgb, var(--brand) 85%, #fff 15%); }
+  .xrr-go[aria-pressed="true"] { background: transparent; color: var(--brand-ink); }
+  .xrr-copy { border: 1px solid var(--line-hi); background: var(--panel); color: var(--strong); }
+  .xrr-copy:hover { border-color: var(--brand); }
+  .xrr-go:focus-visible, .xrr-copy:focus-visible, .xrr-src:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+  .xrr-src { color: var(--brand-ink); font-size: 14px; text-decoration: underline; text-underline-offset: 3px; }
+  .xrr-msg { margin: 14px 0 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
+  @media (max-width: 640px) {
+    .xrr-go { flex: 1 1 100%; }
+    .xrr-copy { flex: 1; }
+  }
+</style>

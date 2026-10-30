@@ -1,0 +1,218 @@
+---
+/**
+ * 间距 X 光（文章开头的大图）：AI 写的设置页截图上，叠出每段文字的行盒（蓝）和墨迹（红），以及几处间距的位置。
+ * 「按 CSS 量 / 按眼睛量」切换时，框和间距条从一种量法形变到另一种；右边的表是同一组数字。
+ * 数据来自 blog/public/lab/ai-spacing/data/：xray.mjs 逐像素量墨迹，relate.mjs 算间距。
+ */
+import '../styles/spacing-lab.css'
+import rel from '../../public/lab/ai-spacing/data/relations.json'
+import s1 from '../../public/lab/ai-spacing/data/settings1.json'
+import s2 from '../../public/lab/ai-spacing/data/settings2.json'
+import s3 from '../../public/lab/ai-spacing/data/settings3.json'
+import sf from '../../public/lab/ai-spacing/data/settings1-fixed.json'
+
+type Box = { x: number; y: number; w: number; h: number }
+type Atom = { kind: string; text: string; lineBox?: Box; ink?: Box | null }
+type Page = { page: { w: number; h: number }; atoms: Atom[] }
+type Rel = { name: string; x: number; written: number; seen: number; writtenSpan: number[]; seenSpan: number[] }
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/')
+const W = 375
+/** [relate.mjs 里的关系名, 表里的叫法] */
+const SHOW = [
+  ['分组标题「通知」和上一块', '分组之间'],
+  ['分组标题「通知」和它的分组', '分组标题 → 卡片'],
+  ['昵称和 ID', '昵称 → ID'],
+  ['「邮件摘要」和它的说明', '标题 → 说明'],
+  ['说明和下一行', '说明 → 下一行'],
+  ['标签「邮箱」和输入框', '标签 → 输入框'],
+  ['输入框和提示', '输入框 → 提示'],
+  ['退出登录和版本号', '按钮 → 版本号'],
+]
+const pages = [
+  { key: 'r1', tab: '第 1 份', file: 'settings1', data: s1, note: '' },
+  { key: 'r2', tab: '第 2 份', file: 'settings2', data: s2, note: '这一份的 subagent 自己读了团队 UI 规范' },
+  { key: 'r3', tab: '第 3 份', file: 'settings3', data: s3, note: '' },
+  { key: 'fix', tab: '修正后', file: 'settings1-fixed', data: sf, note: '第 1 份加上 text-box 裁剪，间距按看到的重排（作者改的）' },
+]
+const pct = (v: number, of: number) => `${((v / of) * 100).toFixed(3)}%`
+const fmt = (v: number) => String(Math.round(v * 10) / 10)
+
+const runs = pages.map((p) => {
+  const page = p.data as unknown as Page
+  const H = page.page.h
+  const all = (rel as unknown as { file: string; relations: Rel[] }[]).find((r) => r.file === `${p.file}.html`)!.relations
+  const rels = SHOW.map(([name, label], i) => ({ i: i + 1, label, ...all.find((r) => r.name === name)! }))
+  const texts = page.atoms.filter((a) => a.kind === 'text' && a.lineBox && a.ink) as Required<Atom>[]
+  const by = (n: string) => rels.find((r) => r.name === n)!
+  const inner = by('「邮件摘要」和它的说明'), outer = by('说明和下一行')
+  return { ...p, H, rels, texts, ratio: { w: outer.written / inner.written, s: outer.seen / inner.seen }, inner, outer }
+})
+const boxVars = (l: Box, k: Box, H: number) =>
+  `--wt:${pct(l.y, H)};--wl:${pct(l.x, W)};--ww:${pct(l.w, W)};--wh:${pct(l.h, H)};--st:${pct(k.y, H)};--sl:${pct(k.x, W)};--sw:${pct(k.w, W)};--sh:${pct(k.h, H)}`
+const gapVars = (r: Rel, H: number) => {
+  const left = Math.max(r.x - 6, 22)
+  return `--l:${pct(left, W)};--w:${pct(Math.min(150, W - 16 - left), W)};--wt:${pct(r.writtenSpan[0], H)};--wh:${pct(r.writtenSpan[1] - r.writtenSpan[0], H)};--st:${pct(r.seenSpan[0], H)};--sh:${pct(r.seenSpan[1] - r.seenSpan[0], H)}`
+}
+---
+
+<spacing-xray class="xr sx-panel sx-bleed not-prose" data-mode="w">
+  <div class="xr-bar">
+    <div class="sx-seg" role="group" aria-label="选择页面">
+      {runs.map((r, i) => <button type="button" data-run-btn={r.key} aria-pressed={i === 0 ? 'true' : 'false'}>{r.tab}</button>)}
+    </div>
+    <div class="sx-seg xr-mode" role="group" aria-label="量法">
+      <button type="button" data-mode-btn="w" aria-pressed="true"><i class="xr-dot is-w" aria-hidden="true"></i>按 CSS 量</button>
+      <button type="button" data-mode-btn="s" aria-pressed="false"><i class="xr-dot is-s" aria-hidden="true"></i>按眼睛量</button>
+    </div>
+  </div>
+
+  {runs.map((r, ri) => (
+    <div class="xr-run" data-run={r.key} hidden={ri !== 0}>
+      <div class="xr-phone" style={`aspect-ratio:${W}/${r.H}`}>
+        <img src={`${base}lab/ai-spacing/img/${r.file}.webp`} width={W} height={r.H} loading={ri === 0 ? 'eager' : 'lazy'} alt={`${r.tab}「账户设置」页的整页截图`} />
+        <div class="xr-ov" aria-hidden="true">
+          {r.texts.map((a) => <i class="xr-box" style={boxVars(a.lineBox, a.ink, r.H)} />)}
+          {r.rels.map((g) => <b class="xr-gap" data-i={g.i} style={gapVars(g, r.H)}><i>{g.i}</i></b>)}
+        </div>
+      </div>
+      <div class="xr-side">
+        {r.note && <p class="xr-note">{r.note}</p>}
+        <table class="xr-table">
+          <caption class="xr-sr">{r.tab}：八处间距，写的和看到的（px）</caption>
+          <thead><tr><th scope="col">#</th><th scope="col">位置</th><th scope="col" class="is-w">写的</th><th scope="col" class="is-s">看到的</th><th scope="col">多出</th></tr></thead>
+          <tbody>
+            {r.rels.map((g) => (
+              <tr data-i={g.i}>
+                <td><i class="xr-num">{g.i}</i></td>
+                <th scope="row">{g.label}</th>
+                <td class="is-w">{fmt(g.written)}</td>
+                <td class="is-s">{fmt(g.seen)}</td>
+                <td class="xr-plus">{g.seen - g.written >= 0 ? '+' : '−'}{fmt(Math.abs(g.seen - g.written))}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p class="xr-sum">
+          <span>标题 → 说明是组内，说明 → 下一行是组间。</span>
+          <span>写的：<b class="sx-w">{fmt(r.inner.written)}</b> 对 <b class="sx-w">{fmt(r.outer.written)}</b>，差 <b class="sx-w">{r.ratio.w.toFixed(1)} 倍</b></span>
+          <span>看到的：<b class="sx-s">{fmt(r.inner.seen)}</b> 对 <b class="sx-s">{fmt(r.outer.seen)}</b>，差 <b class="sx-s">{r.ratio.s.toFixed(1)} 倍</b></span>
+        </p>
+      </div>
+    </div>
+  ))}
+  <p class="sx-cap">
+    蓝色虚线框是每段文字的行盒，CSS 的间距从它算起；红框是墨迹，也就是屏幕上真正有颜色的像素。色条标出八处间距，编号对应右边的表。
+    Chrome 156，375 px 宽的手机视口，macOS 系统字体。
+  </p>
+</spacing-xray>
+
+<script>
+  class SpacingXray extends HTMLElement {
+    private touched = false
+
+    connectedCallback() {
+      const modeBtns = [...this.querySelectorAll<HTMLButtonElement>('[data-mode-btn]')]
+      const runBtns = [...this.querySelectorAll<HTMLButtonElement>('[data-run-btn]')]
+      modeBtns.forEach((b) => b.addEventListener('click', () => { this.touched = true; this.setMode(b.dataset.modeBtn!) }))
+      runBtns.forEach((b) => b.addEventListener('click', () => {
+        this.touched = true
+        runBtns.forEach((x) => x.setAttribute('aria-pressed', String(x === b)))
+        this.querySelectorAll<HTMLElement>('[data-run]').forEach((el) => (el.hidden = el.dataset.run !== b.dataset.runBtn))
+      }))
+      // 表里的一行和图上的色条互相高亮
+      this.addEventListener('pointerover', (e) => this.hot((e.target as HTMLElement).closest('[data-i]')?.getAttribute('data-i') ?? null))
+      this.addEventListener('pointerleave', () => this.hot(null))
+      // 第一次滚到眼前时自己切一次，让人先看到「跳」的那一下；减少动态效果时不自动切
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return
+      const io = new IntersectionObserver(([en]) => {
+        if (!en.isIntersecting) return
+        io.disconnect()
+        setTimeout(() => { if (!this.touched) this.setMode('s') }, 1200)
+      }, { threshold: 0.4 })
+      io.observe(this)
+    }
+
+    private setMode(m: string) {
+      this.dataset.mode = m
+      this.querySelectorAll<HTMLButtonElement>('[data-mode-btn]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.modeBtn === m)))
+    }
+
+    private hot(i: string | null) {
+      this.querySelectorAll('.is-hot').forEach((el) => el.classList.remove('is-hot'))
+      if (i) this.querySelectorAll(`[data-run]:not([hidden]) [data-i="${i}"]`).forEach((el) => el.classList.add('is-hot'))
+    }
+  }
+  customElements.define('spacing-xray', SpacingXray)
+</script>
+
+<style is:global>
+  .xr-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; margin-bottom: 20px; }
+  .xr-dot { display: inline-block; width: 8px; height: 8px; margin-right: 7px; border-radius: 50%; vertical-align: 1px; }
+  .xr-dot.is-w { background: var(--sx-w); }
+  .xr-dot.is-s { background: var(--sx-s); }
+  .xr-run { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 28px; align-items: start; }
+  .xr-run[hidden] { display: none; }
+
+  /* 截图永远是浅色页面，叠加层用固定的深蓝和深红，不跟博客主题走 */
+  .xr-phone {
+    --c-w: #2563eb;
+    --c-s: #e11d48;
+    position: relative;
+    overflow: hidden;
+    border-radius: 22px;
+    background: #f4f5f7;
+    box-shadow: 0 0 0 1px var(--line-hi), 0 28px 60px -32px rgba(0, 0, 0, 0.55);
+  }
+  .xr-phone img { display: block; width: 100%; height: 100%; }
+  .xr-ov { position: absolute; inset: 0; pointer-events: none; }
+  .xr-box, .xr-gap {
+    position: absolute;
+    transition: top 0.8s var(--ease), left 0.8s var(--ease), width 0.8s var(--ease), height 0.8s var(--ease), background-color 0.4s var(--ease), border-color 0.4s var(--ease);
+  }
+  .xr-box { top: var(--wt); left: var(--wl); width: var(--ww); height: var(--wh); border: 1px dashed var(--c-w); background: rgba(37, 99, 235, 0.07); opacity: 0.7; }
+  .xr[data-mode="s"] .xr-box { top: var(--st); left: var(--sl); width: var(--sw); height: var(--sh); border: 1px solid var(--c-s); background: transparent; }
+  .xr-gap { top: var(--wt); left: var(--l); width: var(--w); height: var(--wh); border-block: 1px solid var(--c-w); background: rgba(37, 99, 235, 0.3); }
+  .xr[data-mode="s"] .xr-gap { top: var(--st); height: var(--sh); border-color: var(--c-s); background: rgba(225, 29, 72, 0.3); }
+  .xr-gap i, .xr-num {
+    display: inline-grid;
+    place-items: center;
+    min-width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    color: #fff;
+    font: 600 10px/1 var(--mono);
+    font-style: normal;
+  }
+  .xr-gap i { position: absolute; top: 50%; right: 100%; margin-right: 3px; transform: translateY(-50%); background: var(--c-w); transition: background-color 0.4s var(--ease); }
+  .xr[data-mode="s"] .xr-gap i { background: var(--c-s); }
+  .xr-gap.is-hot { box-shadow: 0 0 0 2px #111827; }
+
+  .xr-side { min-width: 0; }
+  .xr-note { margin: 0 0 12px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+  .xr-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .xr-table { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+  .xr-table th, .xr-table td { padding: 9px 8px; border-bottom: 1px solid var(--line); text-align: left; font-weight: 400; }
+  .xr-table thead th { color: var(--muted); font: 500 11px/1.4 var(--mono); letter-spacing: 0.06em; }
+  .xr-table tbody th { color: var(--text); }
+  .xr-table td.is-w, .xr-table td.is-s, .xr-table td.xr-plus, .xr-table thead th:nth-child(n + 3) { text-align: right; font-family: var(--mono); }
+  .xr-table td.is-w { color: var(--sx-w); }
+  .xr-table td.is-s { color: var(--sx-s); }
+  .xr-table td.xr-plus { color: var(--muted); }
+  .xr[data-mode="w"] td.is-w, .xr[data-mode="s"] td.is-s { font-weight: 700; }
+  .xr-num { background: var(--panel-hi); color: var(--text); box-shadow: inset 0 0 0 1px var(--line-hi); }
+  .xr-table tr.is-hot { background: var(--panel-hi); }
+  .xr-sum { display: grid; gap: 4px; margin: 16px 0 0; color: var(--text); font-size: 14px; line-height: 1.6; font-variant-numeric: tabular-nums; }
+  .xr-sum span:first-child { color: var(--muted); font-size: 13px; }
+
+  @media (max-width: 640px) {
+    .xr-bar { flex-direction: column; align-items: stretch; }
+    .xr-bar .sx-seg { justify-content: space-between; }
+    .xr-bar .sx-seg button { flex: 1; padding: 0 6px; }
+    .xr-run { grid-template-columns: minmax(0, 1fr); }
+    .xr-phone { width: min(100%, 340px); margin: 0 auto; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .xr-box, .xr-gap, .xr-gap i { transition: none; }
+  }
+</style>
