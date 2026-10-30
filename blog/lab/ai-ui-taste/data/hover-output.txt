@@ -1,0 +1,15 @@
+== run1.html
+更多     before ["rgba(0, 0, 0, 0)","false",false] after open+close ["rgba(0, 0, 0, 0)","false",true]
+.btn-primary   before ["rgb(201, 100, 66)",null,false] after tap ["rgb(201, 100, 66)",null,true]
+.btn-secondary before ["rgba(0, 0, 0, 0)",null,false] after tap ["rgba(0, 0, 0, 0)",null,true]
+菜单项   after tap+reopen ["rgba(0, 0, 0, 0)",null,false]
+== run2.html
+更多     before ["rgba(0, 0, 0, 0)","false",false] after open+close ["rgb(242, 242, 239)","false",true]
+.btn-primary   before ["rgb(196, 98, 58)",null,false] after tap ["rgb(169, 81, 46)",null,true]
+.btn-secondary before ["rgba(0, 0, 0, 0)",null,false] after tap ["rgb(242, 242, 239)",null,true]
+菜单项   after tap+reopen ["rgba(0, 0, 0, 0)",null,false]
+== run3.html
+更多     before ["rgba(0, 0, 0, 0)","false",false] after open+close ["rgba(0, 0, 0, 0)","false",true]
+.btn-primary   before ["rgb(47, 91, 234)",null,false] after tap ["rgb(47, 91, 234)",null,true]
+.btn-secondary before ["rgba(0, 0, 0, 0)",null,false] after tap ["rgba(0, 0, 0, 0)",null,true]
+菜单项   after tap+reopen ["rgba(0, 0, 0, 0)",null,false]

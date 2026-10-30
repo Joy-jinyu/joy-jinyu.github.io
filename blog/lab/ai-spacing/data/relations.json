@@ -1,0 +1,1575 @@
+[
+ {
+  "file": "settings1.html",
+  "relations": [
+   {
+    "name": "分组标题「通知」和上一块",
+    "anchor": "通知",
+    "dir": "up",
+    "x": 32.5,
+    "written": 24,
+    "seen": 27,
+    "writtenSpan": [
+     144,
+     168
+    ],
+    "seenSpan": [
+     144,
+     171
+    ],
+    "writtenTo": "section.card.profile 的边",
+    "seenTo": "section.card.profile 的边"
+   },
+   {
+    "name": "分组标题「通知」和它的分组",
+    "anchor": "通知",
+    "dir": "down",
+    "x": 32.5,
+    "written": 8,
+    "seen": 10.7,
+    "writtenSpan": [
+     186.2,
+     194.2
+    ],
+    "seenSpan": [
+     183.5,
+     194.2
+    ],
+    "writtenTo": "ul.card.list 的边",
+    "seenTo": "ul.card.list 的边"
+   },
+   {
+    "name": "分组标题「安全」和上一块",
+    "anchor": "安全",
+    "dir": "up",
+    "x": 32.5,
+    "written": 24,
+    "seen": 27.2,
+    "writtenSpan": [
+     372.8,
+     396.8
+    ],
+    "seenSpan": [
+     372.8,
+     400
+    ],
+    "writtenTo": "ul.card.list 的边",
+    "seenTo": "ul.card.list 的边"
+   },
+   {
+    "name": "分组标题「安全」和它的分组",
+    "anchor": "安全",
+    "dir": "down",
+    "x": 32.5,
+    "written": 8,
+    "seen": 10.5,
+    "writtenSpan": [
+     415,
+     423
+    ],
+    "seenSpan": [
+     412.5,
+     423
+    ],
+    "writtenTo": "ul.card.list 的边",
+    "seenTo": "ul.card.list 的边"
+   },
+   {
+    "name": "分组标题「联系邮箱」和上一块",
+    "anchor": "联系邮箱",
+    "dir": "up",
+    "x": 32.5,
+    "written": 24,
+    "seen": 27,
+    "writtenSpan": [
+     591,
+     615
+    ],
+    "seenSpan": [
+     591,
+     618
+    ],
+    "writtenTo": "ul.card.list 的边",
+    "seenTo": "ul.card.list 的边"
+   },
+   {
+    "name": "分组标题「联系邮箱」和它的分组",
+    "anchor": "联系邮箱",
+    "dir": "down",
+    "x": 32.5,
+    "written": 8,
+    "seen": 10.6,
+    "writtenSpan": [
+     633.1,
+     641.1
+    ],
+    "seenSpan": [
+     630.5,
+     641.1
+    ],
+    "writtenTo": "div.card.field 的边",
+    "seenTo": "div.card.field 的边"
+   },
+   {
+    "name": "昵称和 ID",
+    "anchor": "林小满",
+    "dir": "down",
+    "x": 100.5,
+    "written": 2,
+    "seen": 11.5,
+    "writtenSpan": [
+     102.5,
+     104.5
+    ],
+    "seenSpan": [
+     98,
+     109.5
+    ],
+    "writtenTo": "p.profile__id「ID 8812 33」",
+    "seenTo": "p.profile__id「ID 8812 33」"
+   },
+   {
+    "name": "「邮件摘要」和它的说明",
+    "anchor": "邮件摘要",
+    "dir": "down",
+    "x": 77,
+    "written": 2,
+    "seen": 9,
+    "writtenSpan": [
+     284.6,
+     286.6
+    ],
+    "seenSpan": [
+     281,
+     290
+    ],
+    "writtenTo": "span.row__desc「每周一早上 9 点发」",
+    "seenTo": "span.row__desc「每周一早上 9 点发」"
+   },
+   {
+    "name": "说明和下一行",
+    "anchor": "每周一早上 9 点发送",
+    "dir": "down",
+    "x": 76.5,
+    "written": 12.2,
+    "seen": 14.5,
+    "writtenSpan": [
+     304.8,
+     317
+    ],
+    "seenSpan": [
+     302.5,
+     317
+    ],
+    "writtenTo": "button.row::before「」",
+    "seenTo": "button.row::before「」"
+   },
+   {
+    "name": "标签「邮箱」和输入框",
+    "anchor": "邮箱",
+    "dir": "down",
+    "x": 33,
+    "written": 8,
+    "seen": 11.2,
+    "writtenSpan": [
+     676.7,
+     684.7
+    ],
+    "seenSpan": [
+     673.5,
+     684.7
+    ],
+    "writtenTo": "input.field__input 的边",
+    "seenTo": "input.field__input 的边"
+   },
+   {
+    "name": "输入框和提示",
+    "anchor": "用于接收账单和安全提醒",
+    "dir": "up",
+    "x": 32.5,
+    "written": 8,
+    "seen": 11.3,
+    "writtenSpan": [
+     728.7,
+     736.7
+    ],
+    "seenSpan": [
+     728.7,
+     740
+    ],
+    "writtenTo": "input.field__input 的边",
+    "seenTo": "input.field__input 的边"
+   },
+   {
+    "name": "提示和下面",
+    "anchor": "用于接收账单和安全提醒",
+    "dir": "down",
+    "x": 32.5,
+    "written": 16,
+    "seen": 18.4,
+    "writtenSpan": [
+     754.9,
+     770.9
+    ],
+    "seenSpan": [
+     752.5,
+     770.9
+    ],
+    "writtenTo": "div.card.field 的边",
+    "seenTo": "div.card.field 的边"
+   },
+   {
+    "name": "退出登录和版本号",
+    "anchor": "版本 3.8.2",
+    "dir": "up",
+    "x": 160,
+    "written": 12,
+    "seen": 14.1,
+    "writtenSpan": [
+     850.9,
+     862.9
+    ],
+    "seenSpan": [
+     850.9,
+     865
+    ],
+    "writtenTo": "button.logout「退出登录」",
+    "seenTo": "button.logout 的边"
+   }
+  ],
+  "centering": [
+   {
+    "box": "header.nav",
+    "text": "账户设置",
+    "font": {
+     "size": 17,
+     "lineHeight": 17,
+     "weight": "600",
+     "family": "-apple-system",
+     "color": "rgb(29, 33, 41)"
+    },
+    "boxH": 44,
+    "lineOff": 0,
+    "inkOff": -0.2,
+    "inkTop": 13.5,
+    "inkBottom": 14
+   },
+   {
+    "box": "div.avatar",
+    "text": "林",
+    "font": {
+     "size": 22,
+     "lineHeight": 33,
+     "weight": "600",
+     "family": "-apple-system",
+     "color": "rgb(255, 255, 255)"
+    },
+    "boxH": 56,
+    "lineOff": 0,
+    "inkOff": 0,
+    "inkTop": 17.5,
+    "inkBottom": 17.5
+   },
+   {
+    "box": "button.btn-outline",
+    "text": "编辑资料",
+    "font": {
+     "size": 14,
+     "lineHeight": 21,
+     "weight": "400",
+     "family": "-apple-system",
+     "color": "rgb(29, 33, 41)"
+    },
+    "boxH": 32,
+    "lineOff": 0,
+    "inkOff": 1,
+    "inkTop": 10.5,
+    "inkBottom": 8.5
+   },
+   {
+    "box": "span.tag",
+    "text": "未开启",
+    "font": {
+     "size": 12,
+     "lineHeight": 18,
+     "weight": "500",
+     "family": "-apple-system",
+     "color": "rgb(181, 71, 8)"
+    },
+    "boxH": 22,
+    "lineOff": 0,
+    "inkOff": -0.2,
+    "inkTop": 5,
+    "inkBottom": 5.5
+   },
+   {
+    "box": "button.logout",
+    "text": "退出登录",
+    "font": {
+     "size": 16,
+     "lineHeight": 24,
+     "weight": "500",
+     "family": "-apple-system",
+     "color": "rgb(217, 45, 32)"
+    },
+    "boxH": 48,
+    "lineOff": 0,
+    "inkOff": 0.3,
+    "inkTop": 16.6,
+    "inkBottom": 15.9
+   }
+  ]
+ },
+ {
+  "file": "settings2.html",
+  "relations": [
+   {
+    "name": "分组标题「通知」和上一块",
+    "anchor": "通知",
+    "dir": "up",
+    "x": 32.5,
+    "written": 24,
+    "seen": 27,
+    "writtenSpan": [
+     148,
+     172
+    ],
+    "seenSpan": [
+     148,
+     175
+    ],
+    "writtenTo": "section.card.profile 的边",
+    "seenTo": "section.card.profile 的边"
+   },
+   {
+    "name": "分组标题「通知」和它的分组",
+    "anchor": "通知",
+    "dir": "down",
+    "x": 32.5,
+    "written": 8,
+    "seen": 10.7,
+    "writtenSpan": [
+     190.2,
+     198.2
+    ],
+    "seenSpan": [
+     187.5,
+     198.2
+    ],
+    "writtenTo": "ul.card.list 的边",
+    "seenTo": "ul.card.list 的边"
+   },
+   {
+    "name": "分组标题「安全」和上一块",
+    "anchor": "安全",
+    "dir": "up",
+    "x": 32.5,
+    "written": 24,
+    "seen": 27.2,
+    "writtenSpan": [
+     362.8,
+     386.8
+    ],
+    "seenSpan": [
+     362.8,
+     390
+    ],
+    "writtenTo": "ul.card.list 的边",
+    "seenTo": "ul.card.list 的边"
+   },
+   {
+    "name": "分组标题「安全」和它的分组",
+    "anchor": "安全",
+    "dir": "down",
+    "x": 32.5,
+    "written": 8,
+    "seen": 10.5,
+    "writtenSpan": [
+     405,
+     413
+    ],
+    "seenSpan": [
+     402.5,
+     413
+    ],
+    "writtenTo": "ul.card.list 的边",
+    "seenTo": "ul.card.list 的边"
+   },
+   {
+    "name": "分组标题「联系邮箱」和上一块",
+    "anchor": "联系邮箱",
+    "dir": "up",
+    "x": 32.5,
+    "written": 24,
+    "seen": 27,
+    "writtenSpan": [
+     557,
+     581
+    ],
+    "seenSpan": [
+     557,
+     584
+    ],
+    "writtenTo": "ul.card.list 的边",
+    "seenTo": "ul.card.list 的边"
+   },
+   {
+    "name": "分组标题「联系邮箱」和它的分组",
+    "anchor": "联系邮箱",
+    "dir": "down",
+    "x": 32.5,
+    "written": 8,
+    "seen": 10.6,
+    "writtenSpan": [
+     599.1,
+     607.1
+    ],
+    "seenSpan": [
+     596.5,
+     607.1
+    ],
+    "writtenTo": "form.card.field 的边",
+    "seenTo": "form.card.field 的边"
+   },
+   {
+    "name": "昵称和 ID",
+    "anchor": "林小满",
+    "dir": "down",
+    "x": 100.5,
+    "written": 4,
+    "seen": 13.5,
+    "writtenSpan": [
+     105.5,
+     109.5
+    ],
+    "seenSpan": [
+     101,
+     114.5
+    ],
+    "writtenTo": "p.profile-id「ID 8812 33」",
+    "seenTo": "p.profile-id「ID 8812 33」"
+   },
+   {
+    "name": "「邮件摘要」和它的说明",
+    "anchor": "邮件摘要",
+    "dir": "down",
+    "x": 69,
+    "written": 4,
+    "seen": 11,
+    "writtenSpan": [
+     280.6,
+     284.6
+    ],
+    "seenSpan": [
+     277,
+     288
+    ],
+    "writtenTo": "span.row-desc「每周一早上 9 点发」",
+    "seenTo": "span.row-desc「每周一早上 9 点发」"
+   },
+   {
+    "name": "说明和下一行",
+    "anchor": "每周一早上 9 点发送",
+    "dir": "down",
+    "x": 68.5,
+    "written": 12.2,
+    "seen": 14.5,
+    "writtenSpan": [
+     302.8,
+     315
+    ],
+    "seenSpan": [
+     300.5,
+     315
+    ],
+    "writtenTo": "li::before「」",
+    "seenTo": "li::before「」"
+   },
+   {
+    "name": "标签「邮箱」和输入框",
+    "anchor": "邮箱",
+    "dir": "down",
+    "x": 69,
+    "written": 8.8,
+    "seen": 12.1,
+    "writtenSpan": [
+     642.3,
+     651.1
+    ],
+    "seenSpan": [
+     639,
+     651.1
+    ],
+    "writtenTo": "input.field-input 的边",
+    "seenTo": "input.field-input 的边"
+   },
+   {
+    "name": "输入框和提示",
+    "anchor": "用于接收账单和安全提醒",
+    "dir": "up",
+    "x": 68.5,
+    "written": 8,
+    "seen": 10.9,
+    "writtenSpan": [
+     695.1,
+     703.1
+    ],
+    "seenSpan": [
+     695.1,
+     706
+    ],
+    "writtenTo": "input.field-input 的边",
+    "seenTo": "input.field-input 的边"
+   },
+   {
+    "name": "提示和下面",
+    "anchor": "用于接收账单和安全提醒",
+    "dir": "down",
+    "x": 68.5,
+    "written": 16,
+    "seen": 18.8,
+    "writtenSpan": [
+     721.3,
+     737.3
+    ],
+    "seenSpan": [
+     718.5,
+     737.3
+    ],
+    "writtenTo": "form.card.field 的边",
+    "seenTo": "form.card.field 的边"
+   },
+   {
+    "name": "退出登录和版本号",
+    "anchor": "版本 3.8.2",
+    "dir": "up",
+    "x": 160,
+    "written": 16,
+    "seen": 18.7,
+    "writtenSpan": [
+     817.3,
+     833.3
+    ],
+    "seenSpan": [
+     817.3,
+     836
+    ],
+    "writtenTo": "button.btn-logout 的边",
+    "seenTo": "button.btn-logout 的边"
+   }
+  ],
+  "centering": [
+   {
+    "box": "div.avatar",
+    "text": "林",
+    "font": {
+     "size": 22,
+     "lineHeight": 33,
+     "weight": "600",
+     "family": "-apple-system",
+     "color": "rgb(29, 95, 214)"
+    },
+    "boxH": 56,
+    "lineOff": 0,
+    "inkOff": 0,
+    "inkTop": 17.5,
+    "inkBottom": 17.5
+   },
+   {
+    "box": "button.btn-outline",
+    "text": "编辑资料",
+    "font": {
+     "size": 14,
+     "lineHeight": 21,
+     "weight": "400",
+     "family": "-apple-system",
+     "color": "rgb(23, 25, 28)"
+    },
+    "boxH": 32,
+    "lineOff": 0,
+    "inkOff": 1,
+    "inkTop": 10.5,
+    "inkBottom": 8.5
+   },
+   {
+    "box": "span.tag",
+    "text": "未开启",
+    "font": {
+     "size": 12,
+     "lineHeight": 18,
+     "weight": "500",
+     "family": "-apple-system",
+     "color": "rgb(138, 69, 0)"
+    },
+    "boxH": 22,
+    "lineOff": 0,
+    "inkOff": -0.2,
+    "inkTop": 5,
+    "inkBottom": 5.5
+   },
+   {
+    "box": "button.btn-logout",
+    "text": "退出登录",
+    "font": {
+     "size": 16,
+     "lineHeight": 24,
+     "weight": "500",
+     "family": "-apple-system",
+     "color": "rgb(200, 41, 29)"
+    },
+    "boxH": 48,
+    "lineOff": 0,
+    "inkOff": -0.1,
+    "inkTop": 16.2,
+    "inkBottom": 16.3
+   }
+  ]
+ },
+ {
+  "file": "settings3.html",
+  "relations": [
+   {
+    "name": "分组标题「通知」和上一块",
+    "anchor": "通知",
+    "dir": "up",
+    "x": 32.5,
+    "written": 24,
+    "seen": 27,
+    "writtenSpan": [
+     144,
+     168
+    ],
+    "seenSpan": [
+     144,
+     171
+    ],
+    "writtenTo": "section.card.profile 的边",
+    "seenTo": "section.card.profile 的边"
+   },
+   {
+    "name": "分组标题「通知」和它的分组",
+    "anchor": "通知",
+    "dir": "down",
+    "x": 32.5,
+    "written": 8,
+    "seen": 10.5,
+    "writtenSpan": [
+     186,
+     194
+    ],
+    "seenSpan": [
+     183.5,
+     194
+    ],
+    "writtenTo": "ul.card.list 的边",
+    "seenTo": "ul.card.list 的边"
+   },
+   {
+    "name": "分组标题「安全」和上一块",
+    "anchor": "安全",
+    "dir": "up",
+    "x": 32.5,
+    "written": 24,
+    "seen": 27,
+    "writtenSpan": [
+     364,
+     388
+    ],
+    "seenSpan": [
+     364,
+     391
+    ],
+    "writtenTo": "ul.card.list 的边",
+    "seenTo": "ul.card.list 的边"
+   },
+   {
+    "name": "分组标题「安全」和它的分组",
+    "anchor": "安全",
+    "dir": "down",
+    "x": 32.5,
+    "written": 8,
+    "seen": 10.5,
+    "writtenSpan": [
+     406,
+     414
+    ],
+    "seenSpan": [
+     403.5,
+     414
+    ],
+    "writtenTo": "ul.card.list 的边",
+    "seenTo": "ul.card.list 的边"
+   },
+   {
+    "name": "分组标题「联系邮箱」和上一块",
+    "anchor": "联系邮箱",
+    "dir": "up",
+    "x": 32.5,
+    "written": 24,
+    "seen": 27,
+    "writtenSpan": [
+     570,
+     594
+    ],
+    "seenSpan": [
+     570,
+     597
+    ],
+    "writtenTo": "ul.card.list 的边",
+    "seenTo": "ul.card.list 的边"
+   },
+   {
+    "name": "分组标题「联系邮箱」和它的分组",
+    "anchor": "联系邮箱",
+    "dir": "down",
+    "x": 32.5,
+    "written": 8,
+    "seen": 10.5,
+    "writtenSpan": [
+     612,
+     620
+    ],
+    "seenSpan": [
+     609.5,
+     620
+    ],
+    "writtenTo": "form.card.field 的边",
+    "seenTo": "form.card.field 的边"
+   },
+   {
+    "name": "昵称和 ID",
+    "anchor": "林小满",
+    "dir": "down",
+    "x": 100.5,
+    "written": 4,
+    "seen": 12.5,
+    "writtenSpan": [
+     101,
+     105
+    ],
+    "seenSpan": [
+     97,
+     109.5
+    ],
+    "writtenTo": "p.profile__id「ID 8812 33」",
+    "seenTo": "p.profile__id「ID 8812 33」"
+   },
+   {
+    "name": "「邮件摘要」和它的说明",
+    "anchor": "邮件摘要",
+    "dir": "down",
+    "x": 73,
+    "written": 2,
+    "seen": 8,
+    "writtenSpan": [
+     280,
+     282
+    ],
+    "seenSpan": [
+     277,
+     285
+    ],
+    "writtenTo": "span.row__desc「每周一早上 9 点发」",
+    "seenTo": "span.row__desc「每周一早上 9 点发」"
+   },
+   {
+    "name": "说明和下一行",
+    "anchor": "每周一早上 9 点发送",
+    "dir": "down",
+    "x": 72,
+    "written": 12,
+    "seen": 14.5,
+    "writtenSpan": [
+     300,
+     312
+    ],
+    "seenSpan": [
+     297.5,
+     312
+    ],
+    "writtenTo": "button.row::before「」",
+    "seenTo": "button.row::before「」"
+   },
+   {
+    "name": "标签「邮箱」和输入框",
+    "anchor": "邮箱",
+    "dir": "down",
+    "x": 33,
+    "written": 8,
+    "seen": 10,
+    "writtenSpan": [
+     656,
+     664
+    ],
+    "seenSpan": [
+     654,
+     664
+    ],
+    "writtenTo": "input.field__input 的边",
+    "seenTo": "input.field__input 的边"
+   },
+   {
+    "name": "输入框和提示",
+    "anchor": "用于接收账单和安全提醒",
+    "dir": "up",
+    "x": 32.5,
+    "written": 8,
+    "seen": 11,
+    "writtenSpan": [
+     708,
+     716
+    ],
+    "seenSpan": [
+     708,
+     719
+    ],
+    "writtenTo": "input.field__input 的边",
+    "seenTo": "input.field__input 的边"
+   },
+   {
+    "name": "提示和下面",
+    "anchor": "用于接收账单和安全提醒",
+    "dir": "down",
+    "x": 32.5,
+    "written": 16,
+    "seen": 18.5,
+    "writtenSpan": [
+     734,
+     750
+    ],
+    "seenSpan": [
+     731.5,
+     750
+    ],
+    "writtenTo": "form.card.field 的边",
+    "seenTo": "form.card.field 的边"
+   },
+   {
+    "name": "退出登录和版本号",
+    "anchor": "版本 3.8.2",
+    "dir": "up",
+    "x": 160,
+    "written": 12,
+    "seen": 14,
+    "writtenSpan": [
+     830,
+     842
+    ],
+    "seenSpan": [
+     830,
+     844
+    ],
+    "writtenTo": "button.logout「退出登录」",
+    "seenTo": "button.logout 的边"
+   }
+  ],
+  "centering": [
+   {
+    "box": "div.profile__avatar",
+    "text": "林",
+    "font": {
+     "size": 22,
+     "lineHeight": 30.8,
+     "weight": "600",
+     "family": "-apple-system",
+     "color": "rgb(255, 255, 255)"
+    },
+    "boxH": 56,
+    "lineOff": 0,
+    "inkOff": 0,
+    "inkTop": 17.5,
+    "inkBottom": 17.5
+   },
+   {
+    "box": "button.profile__edit",
+    "text": "编辑资料",
+    "font": {
+     "size": 14,
+     "lineHeight": 19.6,
+     "weight": "400",
+     "family": "-apple-system",
+     "color": "rgb(78, 89, 105)"
+    },
+    "boxH": 32,
+    "lineOff": 0,
+    "inkOff": -0.2,
+    "inkTop": 9,
+    "inkBottom": 9.5
+   },
+   {
+    "box": "span.tag",
+    "text": "未开启",
+    "font": {
+     "size": 12,
+     "lineHeight": 16.8,
+     "weight": "400",
+     "family": "-apple-system",
+     "color": "rgb(194, 86, 12)"
+    },
+    "boxH": 22,
+    "lineOff": 0,
+    "inkOff": -0.2,
+    "inkTop": 5,
+    "inkBottom": 5.5
+   },
+   {
+    "box": "button.logout",
+    "text": "退出登录",
+    "font": {
+     "size": 16,
+     "lineHeight": 22.4,
+     "weight": "500",
+     "family": "-apple-system",
+     "color": "rgb(229, 56, 59)"
+    },
+    "boxH": 48,
+    "lineOff": 0,
+    "inkOff": 0.3,
+    "inkTop": 16.5,
+    "inkBottom": 16
+   }
+  ]
+ },
+ {
+  "file": "settings1-fixed.html",
+  "relations": [
+   {
+    "name": "分组标题「通知」和上一块",
+    "anchor": "通知",
+    "dir": "up",
+    "x": 32.5,
+    "written": 24,
+    "seen": 24,
+    "writtenSpan": [
+     144,
+     168
+    ],
+    "seenSpan": [
+     144,
+     168
+    ],
+    "writtenTo": "section.card.profile 的边",
+    "seenTo": "section.card.profile 的边"
+   },
+   {
+    "name": "分组标题「通知」和它的分组",
+    "anchor": "通知",
+    "dir": "down",
+    "x": 32.5,
+    "written": 8,
+    "seen": 8.3,
+    "writtenSpan": [
+     180.8,
+     188.8
+    ],
+    "seenSpan": [
+     180.5,
+     188.8
+    ],
+    "writtenTo": "ul.card.list 的边",
+    "seenTo": "ul.card.list 的边"
+   },
+   {
+    "name": "分组标题「安全」和上一块",
+    "anchor": "安全",
+    "dir": "up",
+    "x": 32.5,
+    "written": 24,
+    "seen": 24.7,
+    "writtenSpan": [
+     357.3,
+     381.3
+    ],
+    "seenSpan": [
+     357.3,
+     382
+    ],
+    "writtenTo": "ul.card.list 的边",
+    "seenTo": "ul.card.list 的边"
+   },
+   {
+    "name": "分组标题「安全」和它的分组",
+    "anchor": "安全",
+    "dir": "down",
+    "x": 32.5,
+    "written": 8,
+    "seen": 7.6,
+    "writtenSpan": [
+     394.1,
+     402.1
+    ],
+    "seenSpan": [
+     394.5,
+     402.1
+    ],
+    "writtenTo": "ul.card.list 的边",
+    "seenTo": "ul.card.list 的边"
+   },
+   {
+    "name": "分组标题「联系邮箱」和上一块",
+    "anchor": "联系邮箱",
+    "dir": "up",
+    "x": 32.5,
+    "written": 24,
+    "seen": 23.9,
+    "writtenSpan": [
+     570.1,
+     594.1
+    ],
+    "seenSpan": [
+     570.1,
+     594
+    ],
+    "writtenTo": "ul.card.list 的边",
+    "seenTo": "ul.card.list 的边"
+   },
+   {
+    "name": "分组标题「联系邮箱」和它的分组",
+    "anchor": "联系邮箱",
+    "dir": "down",
+    "x": 32.5,
+    "written": 8,
+    "seen": 8.4,
+    "writtenSpan": [
+     606.9,
+     614.9
+    ],
+    "seenSpan": [
+     606.5,
+     614.9
+    ],
+    "writtenTo": "div.card.field 的边",
+    "seenTo": "div.card.field 的边"
+   },
+   {
+    "name": "昵称和 ID",
+    "anchor": "林小满",
+    "dir": "down",
+    "x": 100.5,
+    "written": 4,
+    "seen": 6.5,
+    "writtenSpan": [
+     100.5,
+     104.5
+    ],
+    "seenSpan": [
+     100,
+     106.5
+    ],
+    "writtenTo": "p.profile__id「ID 8812 33」",
+    "seenTo": "p.profile__id「ID 8812 33」"
+   },
+   {
+    "name": "「邮件摘要」和它的说明",
+    "anchor": "邮件摘要",
+    "dir": "down",
+    "x": 77,
+    "written": 4,
+    "seen": 4,
+    "writtenSpan": [
+     272.5,
+     276.5
+    ],
+    "seenSpan": [
+     273,
+     277
+    ],
+    "writtenTo": "span.row__desc「每周一早上 9 点发」",
+    "seenTo": "span.row__desc「每周一早上 9 点发」"
+   },
+   {
+    "name": "说明和下一行",
+    "anchor": "每周一早上 9 点发送",
+    "dir": "down",
+    "x": 76.5,
+    "written": 11.7,
+    "seen": 11.5,
+    "writtenSpan": [
+     289.3,
+     301
+    ],
+    "seenSpan": [
+     289.5,
+     301
+    ],
+    "writtenTo": "button.row::before「」",
+    "seenTo": "button.row::before「」"
+   },
+   {
+    "name": "标签「邮箱」和输入框",
+    "anchor": "邮箱",
+    "dir": "down",
+    "x": 33,
+    "written": 8,
+    "seen": 8.1,
+    "writtenSpan": [
+     644.6,
+     652.6
+    ],
+    "seenSpan": [
+     644.5,
+     652.6
+    ],
+    "writtenTo": "input.field__input 的边",
+    "seenTo": "input.field__input 的边"
+   },
+   {
+    "name": "输入框和提示",
+    "anchor": "用于接收账单和安全提醒",
+    "dir": "up",
+    "x": 32.5,
+    "written": 6,
+    "seen": 6.4,
+    "writtenSpan": [
+     696.6,
+     702.6
+    ],
+    "seenSpan": [
+     696.6,
+     703
+    ],
+    "writtenTo": "input.field__input 的边",
+    "seenTo": "input.field__input 的边"
+   },
+   {
+    "name": "提示和下面",
+    "anchor": "用于接收账单和安全提醒",
+    "dir": "down",
+    "x": 32.5,
+    "written": 16,
+    "seen": 15.9,
+    "writtenSpan": [
+     715.4,
+     731.4
+    ],
+    "seenSpan": [
+     715.5,
+     731.4
+    ],
+    "writtenTo": "div.card.field 的边",
+    "seenTo": "div.card.field 的边"
+   },
+   {
+    "name": "退出登录和版本号",
+    "anchor": "版本 3.8.2",
+    "dir": "up",
+    "x": 160,
+    "written": 12,
+    "seen": 12.6,
+    "writtenSpan": [
+     811.4,
+     823.4
+    ],
+    "seenSpan": [
+     811.4,
+     824
+    ],
+    "writtenTo": "button.logout「退出登录」",
+    "seenTo": "button.logout 的边"
+   }
+  ],
+  "centering": [
+   {
+    "box": "header.nav",
+    "text": "账户设置",
+    "font": {
+     "size": 17,
+     "lineHeight": 17,
+     "weight": "600",
+     "family": "-apple-system",
+     "color": "rgb(29, 33, 41)"
+    },
+    "boxH": 44,
+    "lineOff": 0,
+    "inkOff": -0.2,
+    "inkTop": 13.5,
+    "inkBottom": 14
+   },
+   {
+    "box": "div.avatar",
+    "text": "林",
+    "font": {
+     "size": 22,
+     "lineHeight": 33,
+     "weight": "600",
+     "family": "-apple-system",
+     "color": "rgb(255, 255, 255)"
+    },
+    "boxH": 56,
+    "lineOff": 0,
+    "inkOff": 0,
+    "inkTop": 17.5,
+    "inkBottom": 17.5
+   },
+   {
+    "box": "button.btn-outline",
+    "text": "编辑资料",
+    "font": {
+     "size": 14,
+     "lineHeight": 21,
+     "weight": "400",
+     "family": "-apple-system",
+     "color": "rgb(29, 33, 41)"
+    },
+    "boxH": 32,
+    "lineOff": 0,
+    "inkOff": 1,
+    "inkTop": 10.5,
+    "inkBottom": 8.5
+   },
+   {
+    "box": "span.tag",
+    "text": "未开启",
+    "font": {
+     "size": 12,
+     "lineHeight": 18,
+     "weight": "500",
+     "family": "-apple-system",
+     "color": "rgb(181, 71, 8)"
+    },
+    "boxH": 22,
+    "lineOff": 0,
+    "inkOff": -0.3,
+    "inkTop": 4.9,
+    "inkBottom": 5.6
+   },
+   {
+    "box": "button.logout",
+    "text": "退出登录",
+    "font": {
+     "size": 16,
+     "lineHeight": 24,
+     "weight": "500",
+     "family": "-apple-system",
+     "color": "rgb(217, 45, 32)"
+    },
+    "boxH": 48,
+    "lineOff": 0,
+    "inkOff": -0.2,
+    "inkTop": 16.1,
+    "inkBottom": 16.4
+   }
+  ]
+ },
+ {
+  "file": "settings1-zero.html",
+  "relations": [
+   {
+    "name": "分组标题「通知」和上一块",
+    "anchor": "通知",
+    "dir": "up",
+    "x": 32.5,
+    "written": 24,
+    "seen": 27,
+    "writtenSpan": [
+     144,
+     168
+    ],
+    "seenSpan": [
+     144,
+     171
+    ],
+    "writtenTo": "section.card.profile 的边",
+    "seenTo": "section.card.profile 的边"
+   },
+   {
+    "name": "分组标题「通知」和它的分组",
+    "anchor": "通知",
+    "dir": "down",
+    "x": 32.5,
+    "written": 0,
+    "seen": 2.7,
+    "writtenSpan": [
+     186.2,
+     186.2
+    ],
+    "seenSpan": [
+     183.5,
+     186.2
+    ],
+    "writtenTo": "ul.card.list 的边",
+    "seenTo": "ul.card.list 的边"
+   },
+   {
+    "name": "分组标题「安全」和上一块",
+    "anchor": "安全",
+    "dir": "up",
+    "x": 32.5,
+    "written": 24,
+    "seen": 27.2,
+    "writtenSpan": [
+     362.8,
+     386.8
+    ],
+    "seenSpan": [
+     362.8,
+     390
+    ],
+    "writtenTo": "ul.card.list 的边",
+    "seenTo": "ul.card.list 的边"
+   },
+   {
+    "name": "分组标题「安全」和它的分组",
+    "anchor": "安全",
+    "dir": "down",
+    "x": 32.5,
+    "written": 0,
+    "seen": 2.5,
+    "writtenSpan": [
+     405,
+     405
+    ],
+    "seenSpan": [
+     402.5,
+     405
+    ],
+    "writtenTo": "ul.card.list 的边",
+    "seenTo": "ul.card.list 的边"
+   },
+   {
+    "name": "分组标题「联系邮箱」和上一块",
+    "anchor": "联系邮箱",
+    "dir": "up",
+    "x": 32.5,
+    "written": 24,
+    "seen": 27,
+    "writtenSpan": [
+     573,
+     597
+    ],
+    "seenSpan": [
+     573,
+     600
+    ],
+    "writtenTo": "ul.card.list 的边",
+    "seenTo": "ul.card.list 的边"
+   },
+   {
+    "name": "分组标题「联系邮箱」和它的分组",
+    "anchor": "联系邮箱",
+    "dir": "down",
+    "x": 32.5,
+    "written": 0,
+    "seen": 2.6,
+    "writtenSpan": [
+     615.1,
+     615.1
+    ],
+    "seenSpan": [
+     612.5,
+     615.1
+    ],
+    "writtenTo": "div.card.field 的边",
+    "seenTo": "div.card.field 的边"
+   },
+   {
+    "name": "昵称和 ID",
+    "anchor": "林小满",
+    "dir": "down",
+    "x": 100.5,
+    "written": 0,
+    "seen": 9.5,
+    "writtenSpan": [
+     103.5,
+     103.5
+    ],
+    "seenSpan": [
+     99,
+     108.5
+    ],
+    "writtenTo": "p.profile__id「ID 8812 33」",
+    "seenTo": "p.profile__id「ID 8812 33」"
+   },
+   {
+    "name": "「邮件摘要」和它的说明",
+    "anchor": "邮件摘要",
+    "dir": "down",
+    "x": 77,
+    "written": 0,
+    "seen": 7,
+    "writtenSpan": [
+     276.6,
+     276.6
+    ],
+    "seenSpan": [
+     273,
+     280
+    ],
+    "writtenTo": "span.row__desc「每周一早上 9 点发」",
+    "seenTo": "span.row__desc「每周一早上 9 点发」"
+   },
+   {
+    "name": "说明和下一行",
+    "anchor": "每周一早上 9 点发送",
+    "dir": "down",
+    "x": 76.5,
+    "written": 12.2,
+    "seen": 14.5,
+    "writtenSpan": [
+     294.8,
+     307
+    ],
+    "seenSpan": [
+     292.5,
+     307
+    ],
+    "writtenTo": "button.row::before「」",
+    "seenTo": "button.row::before「」"
+   },
+   {
+    "name": "标签「邮箱」和输入框",
+    "anchor": "邮箱",
+    "dir": "down",
+    "x": 33,
+    "written": 0,
+    "seen": 3.2,
+    "writtenSpan": [
+     650.7,
+     650.7
+    ],
+    "seenSpan": [
+     647.5,
+     650.7
+    ],
+    "writtenTo": "input.field__input 的边",
+    "seenTo": "input.field__input 的边"
+   },
+   {
+    "name": "输入框和提示",
+    "anchor": "用于接收账单和安全提醒",
+    "dir": "up",
+    "x": 32.5,
+    "written": 0,
+    "seen": 3.3,
+    "writtenSpan": [
+     694.7,
+     694.7
+    ],
+    "seenSpan": [
+     694.7,
+     698
+    ],
+    "writtenTo": "input.field__input 的边",
+    "seenTo": "input.field__input 的边"
+   },
+   {
+    "name": "提示和下面",
+    "anchor": "用于接收账单和安全提醒",
+    "dir": "down",
+    "x": 32.5,
+    "written": 16,
+    "seen": 18.4,
+    "writtenSpan": [
+     712.9,
+     728.9
+    ],
+    "seenSpan": [
+     710.5,
+     728.9
+    ],
+    "writtenTo": "div.card.field 的边",
+    "seenTo": "div.card.field 的边"
+   },
+   {
+    "name": "退出登录和版本号",
+    "anchor": "版本 3.8.2",
+    "dir": "up",
+    "x": 160,
+    "written": 12,
+    "seen": 14.1,
+    "writtenSpan": [
+     808.9,
+     820.9
+    ],
+    "seenSpan": [
+     808.9,
+     823
+    ],
+    "writtenTo": "button.logout「退出登录」",
+    "seenTo": "button.logout 的边"
+   }
+  ],
+  "centering": [
+   {
+    "box": "header.nav",
+    "text": "账户设置",
+    "font": {
+     "size": 17,
+     "lineHeight": 17,
+     "weight": "600",
+     "family": "-apple-system",
+     "color": "rgb(29, 33, 41)"
+    },
+    "boxH": 44,
+    "lineOff": 0,
+    "inkOff": -0.2,
+    "inkTop": 13.5,
+    "inkBottom": 14
+   },
+   {
+    "box": "div.avatar",
+    "text": "林",
+    "font": {
+     "size": 22,
+     "lineHeight": 33,
+     "weight": "600",
+     "family": "-apple-system",
+     "color": "rgb(255, 255, 255)"
+    },
+    "boxH": 56,
+    "lineOff": 0,
+    "inkOff": 0,
+    "inkTop": 17.5,
+    "inkBottom": 17.5
+   },
+   {
+    "box": "button.btn-outline",
+    "text": "编辑资料",
+    "font": {
+     "size": 14,
+     "lineHeight": 21,
+     "weight": "400",
+     "family": "-apple-system",
+     "color": "rgb(29, 33, 41)"
+    },
+    "boxH": 32,
+    "lineOff": 0,
+    "inkOff": 1,
+    "inkTop": 10.5,
+    "inkBottom": 8.5
+   },
+   {
+    "box": "span.tag",
+    "text": "未开启",
+    "font": {
+     "size": 12,
+     "lineHeight": 18,
+     "weight": "500",
+     "family": "-apple-system",
+     "color": "rgb(181, 71, 8)"
+    },
+    "boxH": 22,
+    "lineOff": 0,
+    "inkOff": -0.2,
+    "inkTop": 5,
+    "inkBottom": 5.5
+   },
+   {
+    "box": "button.logout",
+    "text": "退出登录",
+    "font": {
+     "size": 16,
+     "lineHeight": 24,
+     "weight": "500",
+     "family": "-apple-system",
+     "color": "rgb(217, 45, 32)"
+    },
+    "boxH": 48,
+    "lineOff": 0,
+    "inkOff": 0.3,
+    "inkTop": 16.6,
+    "inkBottom": 15.9
+   }
+  ]
+ }
+]

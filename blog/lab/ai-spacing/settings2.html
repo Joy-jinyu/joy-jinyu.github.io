@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>账户设置</title>
+<style>
+  :root {
+    /* 间距阶梯：每一档对应一种关系，不用 20 / 28 */
+    --space-2: 2px;   /* 光学微调 */
+    --space-4: 4px;   /* 同一控件内部：标题与描述、数值与箭头 */
+    --space-8: 8px;   /* 紧密相关：分组标题与卡片、标签与输入框 */
+    --space-12: 12px; /* 一行之内的列：图标 / 文字 / 尾部 */
+    --space-16: 16px; /* 卡片内边距、页面左右边距 */
+    --space-24: 24px; /* 不同区块之间 */
+    --space-32: 32px; /* 主要区域边界：内容区与页脚 */
+
+    --icon-size: 1.5rem; /* 跟随字号缩放，保持图标与文字的比例 */
+    --row-pad-y: var(--space-12);
+    --row-pad-x: var(--space-16);
+    --row-gap: var(--space-12);
+    /* 文字列的起始边：分隔线、表单字段都对齐这条线 */
+    --text-inset: calc(var(--row-pad-x) + var(--icon-size) + var(--row-gap));
+
+    --nav-height: 44px;
+    --touch-min: 44px; /* 移动端触摸目标下限 */
+    --control-height: 44px;
+    --radius-card: 12px;
+    --radius-control: 8px;
+    --hairline: 1px;
+
+    --switch-w: 44px;
+    --switch-h: 24px;
+    --switch-inset: var(--space-2);
+
+    --font: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+
+    --color-bg: #f2f3f5;
+    --color-surface: #ffffff;
+    --color-surface-hover: #f7f8f9;
+    --color-surface-pressed: #eceef1;
+    --color-text: #17191c;
+    --color-text-secondary: #5c626b;
+    --color-separator: #e3e5e8;
+    --color-control-border: #858b94;
+    --color-switch-off: #858b94;
+    --color-accent: #1d5fd6;
+    --color-accent-soft: #e3ecfb;
+    --color-danger: #c8291d;
+    --color-warning-bg: #fdf0dc;
+    --color-warning-text: #8a4500;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-bg: #0f1012;
+      --color-surface: #1c1d20;
+      --color-surface-hover: #232428;
+      --color-surface-pressed: #2b2d31;
+      --color-text: #f1f2f4;
+      --color-text-secondary: #a3a9b2;
+      --color-separator: #2e3035;
+      --color-control-border: #747a84;
+      --color-switch-off: #747a84;
+      --color-accent: #6b9bff;
+      --color-accent-soft: #23314d;
+      --color-danger: #ff7a6e;
+      --color-warning-bg: #3a2a12;
+      --color-warning-text: #ffbf6b;
+    }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font);
+    font-size: 1rem;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button, input { font: inherit; color: inherit; }
+
+  button { cursor: pointer; }
+
+  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+
+  .app { max-width: 480px; margin: 0 auto; min-height: 100vh; }
+
+  .icon {
+    flex: none;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* 导航栏 */
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    min-height: calc(var(--nav-height) + env(safe-area-inset-top));
+    padding: env(safe-area-inset-top) var(--space-16) 0;
+    background: var(--color-bg);
+    border-bottom: var(--hairline) solid var(--color-separator);
+  }
+
+  .navbar-title {
+    margin: 0;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  /* 返回按钮：图标贴页面左边距，点击区域用伪元素扩到 44px */
+  .nav-back {
+    position: relative;
+    justify-self: start;
+    display: flex;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--color-text);
+  }
+
+  .nav-back::before {
+    content: "";
+    position: absolute;
+    inset: calc((var(--touch-min) - 18px) / -2) calc((var(--touch-min) - 10px) / -2);
+  }
+
+  .nav-back .icon { width: 10px; height: 18px; stroke-width: 2; }
+
+  .nav-back:active { opacity: .5; }
+
+  /* 内容区 */
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+    padding: var(--space-16) var(--space-16) 0;
+  }
+
+  .card { background: var(--color-surface); border-radius: var(--radius-card); }
+
+  /* 个人信息卡 */
+  /* 放不下时「编辑资料」整体换到下一行，不把昵称挤成一字一行 */
+  .profile {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-12);
+    padding: var(--space-16);
+  }
+
+  .avatar {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--color-accent-soft);
+    color: var(--color-accent);
+    font-size: 1.375rem;
+    font-weight: 600;
+  }
+
+  .profile-text { flex: 1 1 6em; min-width: 0; }
+
+  .profile-name {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+
+  .profile-id {
+    margin: var(--space-4) 0 0;
+    color: var(--color-text-secondary);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .btn-outline {
+    position: relative;
+    min-height: 32px;
+    padding: var(--space-4) var(--space-12);
+    border: var(--hairline) solid var(--color-control-border);
+    border-radius: 999px;
+    background: var(--color-surface);
+    font-size: 0.875rem;
+    white-space: nowrap;
+  }
+
+  .btn-outline::before { content: ""; position: absolute; inset: calc((var(--touch-min) - 32px) / -2) 0; }
+
+  @media (hover: hover) { .btn-outline:hover { background: var(--color-surface-hover); } }
+  .btn-outline:active { background: var(--color-surface-pressed); }
+
+  /* 分组 */
+  .group { display: flex; flex-direction: column; gap: var(--space-8); }
+
+  .group-title {
+    margin: 0;
+    padding: 0 var(--row-pad-x);
+    color: var(--color-text-secondary);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .list { margin: 0; padding: 0; list-style: none; overflow: hidden; }
+
+  .list > li { position: relative; }
+
+  /* 分隔线归列表所有，从文字列起画 */
+  .list > li + li::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: var(--text-inset);
+    right: 0;
+    height: var(--hairline);
+    background: var(--color-separator);
+  }
+
+  @media (min-resolution: 2dppx) {
+    .list > li + li::before { transform: scaleY(.5); transform-origin: top; }
+  }
+
+  /* 行 = 主体（图标 + 文字）+ 尾部；一行放不下时尾部整体换到下一行靠右，不挤标题也不重叠 */
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: var(--row-gap);
+    row-gap: var(--space-4);
+    width: 100%;
+    padding: var(--row-pad-y) var(--row-pad-x);
+    border: 0;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .row:focus-visible { outline-offset: -2px; }
+
+  @media (hover: hover) { .row:hover { background: var(--color-surface-hover); } }
+  .row:active { background: var(--color-surface-pressed); }
+
+  .row-icon { color: var(--color-text-secondary); }
+
+  .row-main {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    gap: var(--row-gap);
+    min-width: 0;
+  }
+
+  .row > .row-main + * { margin-left: auto; }
+
+  .row-text { display: flex; flex: 1 1 auto; flex-direction: column; gap: var(--space-4); min-width: 0; }
+
+  .row-title { font-size: 1rem; line-height: 1.4; }
+
+  .row-desc { color: var(--color-text-secondary); font-size: 0.8125rem; line-height: 1.4; }
+
+  .row-trail {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    color: var(--color-text-secondary);
+    font-size: 0.9375rem;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .chevron { width: 0.5rem; height: 0.875rem; }
+
+  .tag {
+    padding: var(--space-2) var(--space-8);
+    border-radius: 999px;
+    background: var(--color-warning-bg);
+    color: var(--color-warning-text);
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.5;
+    white-space: nowrap;
+  }
+
+  /* 开关 */
+  .switch {
+    appearance: none;
+    -webkit-appearance: none;
+    position: relative;
+    flex: none;
+    width: var(--switch-w);
+    height: var(--switch-h);
+    margin: 0;
+    border-radius: 999px;
+    background: var(--color-switch-off);
+    cursor: pointer;
+    transition: background-color .2s;
+  }
+
+  .switch::after {
+    content: "";
+    position: absolute;
+    top: var(--switch-inset);
+    left: var(--switch-inset);
+    width: calc(var(--switch-h) - 2 * var(--switch-inset));
+    height: calc(var(--switch-h) - 2 * var(--switch-inset));
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 2px rgb(0 0 0 / .25);
+    transition: transform .2s;
+  }
+
+  .switch:checked { background: var(--color-accent); }
+
+  .switch:checked::after { transform: translateX(calc(var(--switch-w) - var(--switch-h))); }
+
+  /* 邮箱表单：与列表行共用图标列和文字列 */
+  .field {
+    display: grid;
+    grid-template-columns: var(--icon-size) 1fr;
+    grid-template-areas:
+      "icon label"
+      ".    input"
+      ".    msg";
+    align-items: center;
+    column-gap: var(--row-gap);
+    row-gap: var(--space-8);
+    margin: 0;
+    padding: var(--row-pad-y) var(--row-pad-x) var(--space-16);
+  }
+
+  .field-icon { grid-area: icon; color: var(--color-text-secondary); }
+
+  .field-label { grid-area: label; font-size: 1rem; line-height: 1.4; }
+
+  .field-input {
+    grid-area: input;
+    width: 100%;
+    min-height: var(--control-height);
+    padding: 0 var(--space-12);
+    border: var(--hairline) solid var(--color-control-border);
+    border-radius: var(--radius-control);
+    background: var(--color-surface);
+    font-size: 1rem;
+  }
+
+  .field-input::placeholder { color: var(--color-text-secondary); opacity: 1; }
+
+  .field-input:focus-visible { outline-offset: 0; border-color: var(--color-accent); }
+
+  .field-msg {
+    grid-area: msg;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+  }
+
+  .field-msg .icon { display: none; width: 16px; height: 16px; margin-top: 1px; }
+
+  .field.is-error .field-input { border-color: var(--color-danger); }
+  .field.is-error .field-input:focus-visible { outline-color: var(--color-danger); }
+  .field.is-error .field-msg { color: var(--color-danger); }
+  .field.is-error .field-msg .icon { display: block; }
+
+  /* 页脚 */
+  .page-footer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    padding: var(--space-32) var(--space-16) calc(var(--space-32) + env(safe-area-inset-bottom));
+  }
+
+  .btn-logout {
+    min-height: 48px;
+    padding: var(--space-12) var(--space-16);
+    border: 0;
+    border-radius: var(--radius-card);
+    background: var(--color-surface);
+    color: var(--color-danger);
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  @media (hover: hover) { .btn-logout:hover { background: var(--color-surface-hover); } }
+  .btn-logout:active { background: var(--color-surface-pressed); }
+
+  .version {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 0.75rem;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-back" viewBox="0 0 10 18"><path d="M9 1 1 9l8 8"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 8 14"><path d="m1 1 6 6-6 6"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-devices" viewBox="0 0 24 24"><path d="M18 8V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h8"/><path d="M10 19v-4"/><path d="M7 19h5"/><rect x="16" y="12" width="6" height="10" rx="2"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></symbol>
+</svg>
+
+<div class="app">
+  <header class="navbar">
+    <button class="nav-back" type="button" aria-label="返回" title="返回">
+      <svg class="icon" aria-hidden="true"><use href="#i-back"/></svg>
+    </button>
+    <h1 class="navbar-title">账户设置</h1>
+  </header>
+
+  <main class="content">
+    <section class="card profile" aria-label="个人信息">
+      <div class="avatar" aria-hidden="true">林</div>
+      <div class="profile-text">
+        <p class="profile-name">林小满</p>
+        <p class="profile-id">ID 8812 3390</p>
+      </div>
+      <button class="btn-outline" type="button">编辑资料</button>
+    </section>
+
+    <section class="group" aria-labelledby="g-notify">
+      <h2 class="group-title" id="g-notify">通知</h2>
+      <ul class="card list">
+        <li>
+          <label class="row" for="sw-push">
+            <span class="row-main">
+              <svg class="icon row-icon" aria-hidden="true"><use href="#i-bell"/></svg>
+              <span class="row-text"><span class="row-title" id="t-push">推送通知</span></span>
+            </span>
+            <input class="switch" id="sw-push" type="checkbox" role="switch" aria-labelledby="t-push" checked>
+          </label>
+        </li>
+        <li>
+          <label class="row" for="sw-digest">
+            <span class="row-main">
+              <svg class="icon row-icon" aria-hidden="true"><use href="#i-inbox"/></svg>
+              <span class="row-text">
+                <span class="row-title" id="t-digest">邮件摘要</span>
+                <span class="row-desc" id="d-digest">每周一早上 9 点发送</span>
+              </span>
+            </span>
+            <input class="switch" id="sw-digest" type="checkbox" role="switch" aria-labelledby="t-digest" aria-describedby="d-digest">
+          </label>
+        </li>
+        <li>
+          <button class="row" type="button">
+            <span class="row-main">
+              <svg class="icon row-icon" aria-hidden="true"><use href="#i-moon"/></svg>
+              <span class="row-text"><span class="row-title">免打扰时段</span></span>
+            </span>
+            <span class="row-trail">22:00–08:00<svg class="icon chevron" aria-hidden="true"><use href="#i-chevron"/></svg></span>
+          </button>
+        </li>
+      </ul>
+    </section>
+
+    <section class="group" aria-labelledby="g-security">
+      <h2 class="group-title" id="g-security">安全</h2>
+      <ul class="card list">
+        <li>
+          <button class="row" type="button">
+            <span class="row-main">
+              <svg class="icon row-icon" aria-hidden="true"><use href="#i-lock"/></svg>
+              <span class="row-text"><span class="row-title">登录密码</span></span>
+            </span>
+            <span class="row-trail">修改<svg class="icon chevron" aria-hidden="true"><use href="#i-chevron"/></svg></span>
+          </button>
+        </li>
+        <li>
+          <button class="row" type="button">
+            <span class="row-main">
+              <svg class="icon row-icon" aria-hidden="true"><use href="#i-shield"/></svg>
+              <span class="row-text"><span class="row-title">两步验证</span></span>
+            </span>
+            <span class="tag">未开启</span>
+          </button>
+        </li>
+        <li>
+          <button class="row" type="button">
+            <span class="row-main">
+              <svg class="icon row-icon" aria-hidden="true"><use href="#i-devices"/></svg>
+              <span class="row-text"><span class="row-title">登录设备</span></span>
+            </span>
+            <span class="row-trail">3 台<svg class="icon chevron" aria-hidden="true"><use href="#i-chevron"/></svg></span>
+          </button>
+        </li>
+      </ul>
+    </section>
+
+    <section class="group" aria-labelledby="g-email">
+      <h2 class="group-title" id="g-email">联系邮箱</h2>
+      <form class="card field" id="email-form" novalidate>
+        <svg class="icon field-icon" aria-hidden="true"><use href="#i-mail"/></svg>
+        <label class="field-label" for="email">邮箱</label>
+        <input class="field-input" id="email" type="email" inputmode="email" autocomplete="email"
+               autocapitalize="off" spellcheck="false" placeholder="name@example.com"
+               aria-describedby="email-msg" aria-invalid="false">
+        <p class="field-msg" id="email-msg" aria-live="polite">
+          <svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg>
+          <span id="email-msg-text">用于接收账单和安全提醒</span>
+        </p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    <button class="btn-logout" type="button">退出登录</button>
+    <p class="version">版本 3.8.2</p>
+  </footer>
+</div>
+
+<script>
+  document.querySelector('.nav-back').addEventListener('click', () => {
+    if (history.length > 1) history.back();
+  });
+
+  const form = document.getElementById('email-form');
+  const input = document.getElementById('email');
+  const msgText = document.getElementById('email-msg-text');
+  const HINT = msgText.textContent;
+  const ERROR = '格式不对，示例：name@example.com';
+  const EMAIL_RE = /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/;
+
+  /** 空值不算错误，显示用途提示；有值且格式不对时切换成错误提示。 */
+  function validate() {
+    const value = input.value.trim();
+    const invalid = value !== '' && !EMAIL_RE.test(value);
+    form.classList.toggle('is-error', invalid);
+    input.setAttribute('aria-invalid', String(invalid));
+    msgText.textContent = invalid ? ERROR : HINT;
+  }
+
+  input.addEventListener('blur', validate);
+  // 已经报错时边输边校验，改对的那一刻错误就消失；没报错时不打断输入
+  input.addEventListener('input', () => {
+    if (input.getAttribute('aria-invalid') === 'true') validate();
+  });
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    validate();
+  });
+</script>
+</body>
+</html>

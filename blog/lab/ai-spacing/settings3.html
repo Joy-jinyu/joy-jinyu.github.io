@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f5f6f8">
+<title>账户设置</title>
+<style>
+  :root {
+    --bg: #f5f6f8;
+    --surface: #ffffff;
+    --text: #1d2129;
+    --text-2: #4e5969;
+    --text-3: #86909c;
+    --divider: #e5e6eb;
+    --border: #d9dce1;
+    --brand: #2f6bff;
+    --brand-soft: #eaf0ff;
+    --danger: #e5383b;
+    --warning: #c2560c;
+    --warning-soft: #fff1e6;
+    --switch-off: #d9dce1;
+    --switch-on: #2f6bff;
+
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-6: 24px;
+    --space-8: 32px;
+
+    --radius-card: 12px;
+    --radius-control: 8px;
+    --icon-box: 28px;
+    --row-min-h: 52px;
+    --gutter: 16px;
+    --row-pad-x: 16px;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  button,
+  input {
+    font: inherit;
+    color: inherit;
+  }
+
+  button {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+  }
+
+  .page {
+    max-width: 480px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding-bottom: calc(var(--space-8) + env(safe-area-inset-bottom));
+  }
+
+  /* 顶部导航栏 */
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding-top: env(safe-area-inset-top);
+    background: var(--bg);
+  }
+
+  .navbar__inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 44px;
+    padding: 0 var(--space-1);
+  }
+
+  .navbar__back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-control);
+    color: var(--text);
+  }
+
+  .navbar__back svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .navbar__title {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+  .main {
+    padding: var(--space-3) var(--gutter) 0;
+  }
+
+  /* 卡片与分组 */
+  .card {
+    background: var(--surface);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+  }
+
+  .section {
+    margin-top: var(--space-6);
+  }
+
+  .section__title {
+    margin: 0 0 var(--space-2);
+    padding: 0 var(--row-pad-x);
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 18px;
+    color: var(--text-3);
+  }
+
+  /* 个人信息卡 */
+  .profile {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4);
+  }
+
+  .profile__avatar {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6f9bff, #2f6bff);
+    color: #fff;
+    font-size: 22px;
+    font-weight: 600;
+  }
+
+  .profile__info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .profile__name {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 24px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .profile__id {
+    margin: var(--space-1) 0 0;
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--text-3);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .profile__edit {
+    flex: none;
+    height: 32px;
+    padding: 0 var(--space-3);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    font-size: 14px;
+    color: var(--text-2);
+  }
+
+  .profile__edit:active {
+    background: var(--bg);
+  }
+
+  /* 设置行 */
+  .list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    width: 100%;
+    min-height: var(--row-min-h);
+    padding: var(--space-3) var(--row-pad-x);
+    text-align: left;
+  }
+
+  button.row:active,
+  label.row:active {
+    background: #f2f3f5;
+  }
+
+  label.row {
+    cursor: pointer;
+  }
+
+  .list > li + li .row::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: calc(var(--row-pad-x) + var(--icon-box) + var(--space-3));
+    height: 1px;
+    background: var(--divider);
+    transform: scaleY(0.5);
+    transform-origin: top;
+  }
+
+  .row__icon {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--icon-box);
+    height: var(--icon-box);
+    border-radius: var(--radius-control);
+    background: var(--brand-soft);
+    color: var(--brand);
+  }
+
+  .row__icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .row__main {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .row__title {
+    display: block;
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  .row__desc {
+    display: block;
+    margin-top: 2px;
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--text-3);
+  }
+
+  .row__extra {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: var(--space-1);
+    font-size: 15px;
+    color: var(--text-3);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .row__chevron {
+    width: 16px;
+    height: 16px;
+    color: #c9cdd4;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    height: 22px;
+    padding: 0 var(--space-2);
+    border-radius: 11px;
+    background: var(--warning-soft);
+    color: var(--warning);
+    font-size: 12px;
+  }
+
+  /* 开关 */
+  .switch {
+    position: relative;
+    flex: none;
+    width: 48px;
+    height: 28px;
+    margin: 0;
+    border-radius: 14px;
+    background: var(--switch-off);
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .switch::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+  }
+
+  .switch:checked {
+    background: var(--switch-on);
+  }
+
+  .switch:checked::after {
+    transform: translateX(20px);
+  }
+
+  /* 联系邮箱表单 */
+  .field {
+    padding: var(--space-4);
+  }
+
+  .field__label {
+    display: block;
+    margin-bottom: var(--space-2);
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 20px;
+  }
+
+  .field__control {
+    position: relative;
+  }
+
+  .field__icon {
+    position: absolute;
+    top: 50%;
+    left: var(--space-3);
+    width: 18px;
+    height: 18px;
+    color: var(--text-3);
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  .field__input {
+    display: block;
+    width: 100%;
+    height: 44px;
+    padding: 0 var(--space-3) 0 40px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-control);
+    background: var(--surface);
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .field__input::placeholder {
+    color: #b5bac2;
+  }
+
+  .field__input:focus {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px rgba(47, 107, 255, 0.15);
+  }
+
+  .field__hint {
+    margin: var(--space-2) 0 0;
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--text-3);
+  }
+
+  .field.is-invalid .field__input {
+    border-color: var(--danger);
+  }
+
+  .field.is-invalid .field__input:focus {
+    box-shadow: 0 0 0 3px rgba(229, 56, 59, 0.15);
+  }
+
+  .field.is-invalid .field__icon,
+  .field.is-invalid .field__hint {
+    color: var(--danger);
+  }
+
+  /* 底部 */
+  .footer {
+    margin-top: var(--space-8);
+    text-align: center;
+  }
+
+  .logout {
+    display: block;
+    width: 100%;
+    height: 48px;
+    border-radius: var(--radius-card);
+    background: var(--surface);
+    color: var(--danger);
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .logout:active {
+    background: #f2f3f5;
+  }
+
+  .version {
+    margin: var(--space-3) 0 0;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--text-3);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="navbar">
+    <div class="navbar__inner">
+      <button class="navbar__back" type="button" aria-label="返回" id="backBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <h1 class="navbar__title">账户设置</h1>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="card profile" aria-label="个人信息">
+      <div class="profile__avatar" aria-hidden="true">林</div>
+      <div class="profile__info">
+        <p class="profile__name">林小满</p>
+        <p class="profile__id">ID 8812 3390</p>
+      </div>
+      <button class="profile__edit" type="button">编辑资料</button>
+    </section>
+
+    <section class="section" aria-labelledby="sec-notify">
+      <h2 class="section__title" id="sec-notify">通知</h2>
+      <ul class="card list">
+        <li>
+          <label class="row">
+            <span class="row__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            </span>
+            <span class="row__main">
+              <span class="row__title">推送通知</span>
+            </span>
+            <input class="switch" type="checkbox" role="switch" checked>
+          </label>
+        </li>
+        <li>
+          <label class="row">
+            <span class="row__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+            </span>
+            <span class="row__main">
+              <span class="row__title">邮件摘要</span>
+              <span class="row__desc">每周一早上 9 点发送</span>
+            </span>
+            <input class="switch" type="checkbox" role="switch">
+          </label>
+        </li>
+        <li>
+          <button class="row" type="button">
+            <span class="row__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </span>
+            <span class="row__main">
+              <span class="row__title">免打扰时段</span>
+            </span>
+            <span class="row__extra">
+              22:00–08:00
+              <svg class="row__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+            </span>
+          </button>
+        </li>
+      </ul>
+    </section>
+
+    <section class="section" aria-labelledby="sec-security">
+      <h2 class="section__title" id="sec-security">安全</h2>
+      <ul class="card list">
+        <li>
+          <button class="row" type="button">
+            <span class="row__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+            </span>
+            <span class="row__main">
+              <span class="row__title">登录密码</span>
+            </span>
+            <span class="row__extra">
+              修改
+              <svg class="row__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+            </span>
+          </button>
+        </li>
+        <li>
+          <button class="row" type="button">
+            <span class="row__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+            </span>
+            <span class="row__main">
+              <span class="row__title">两步验证</span>
+            </span>
+            <span class="row__extra">
+              <span class="tag">未开启</span>
+            </span>
+          </button>
+        </li>
+        <li>
+          <button class="row" type="button">
+            <span class="row__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg>
+            </span>
+            <span class="row__main">
+              <span class="row__title">登录设备</span>
+            </span>
+            <span class="row__extra">
+              3 台
+              <svg class="row__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+            </span>
+          </button>
+        </li>
+      </ul>
+    </section>
+
+    <section class="section" aria-labelledby="sec-email">
+      <h2 class="section__title" id="sec-email">联系邮箱</h2>
+      <form class="card field" id="emailField" novalidate>
+        <label class="field__label" for="email">邮箱</label>
+        <div class="field__control">
+          <svg class="field__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"/><path d="M16 12v1.5a2.5 2.5 0 0 0 5 0V12a9 9 0 1 0-3.5 7.1"/></svg>
+          <input
+            class="field__input"
+            id="email"
+            name="email"
+            type="email"
+            inputmode="email"
+            autocomplete="email"
+            enterkeyhint="done"
+            placeholder="name@example.com"
+            aria-describedby="emailHint"
+          >
+        </div>
+        <p class="field__hint" id="emailHint" aria-live="polite">用于接收账单和安全提醒</p>
+      </form>
+    </section>
+
+    <div class="footer">
+      <button class="logout" type="button">退出登录</button>
+      <p class="version">版本 3.8.2</p>
+    </div>
+  </main>
+</div>
+
+<script>
+  (function () {
+    var HINT_TEXT = '用于接收账单和安全提醒';
+    var ERROR_TEXT = '邮箱格式不正确，请检查后重新输入';
+    var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    var form = document.getElementById('emailField');
+    var input = document.getElementById('email');
+    var hint = document.getElementById('emailHint');
+    var touched = false;
+
+    function validate() {
+      var value = input.value.trim();
+      var invalid = value !== '' && !EMAIL_RE.test(value);
+      form.classList.toggle('is-invalid', invalid);
+      input.setAttribute('aria-invalid', String(invalid));
+      hint.textContent = invalid ? ERROR_TEXT : HINT_TEXT;
+      return !invalid;
+    }
+
+    input.addEventListener('blur', function () {
+      touched = true;
+      validate();
+    });
+
+    // 首次失焦前不打断输入；出错后边改边校验，改对了立即恢复提示
+    input.addEventListener('input', function () {
+      if (touched) validate();
+    });
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      touched = true;
+      if (validate()) input.blur();
+    });
+
+    document.getElementById('backBtn').addEventListener('click', function () {
+      if (history.length > 1) history.back();
+    });
+  })();
+</script>
+</body>
+</html>

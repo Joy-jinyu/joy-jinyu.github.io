@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>常见问题</title>
+<style>
+  :root {
+    --bg: #f6f6f4;
+    --surface: #ffffff;
+    --text: #1c1c1a;
+    --text-2: #5d5d58;
+    --border: #e3e2dd;
+    --hover: #f1f0ec;
+    --focus: #2f6fdf;
+
+    --dur-open: 280ms;
+    --dur-close: 200ms;
+    --ease-open: cubic-bezier(0.2, 0, 0, 1);
+    --ease-close: cubic-bezier(0.4, 0, 1, 1);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141413;
+      --surface: #1d1d1b;
+      --text: #ecebe6;
+      --text-2: #a5a49d;
+      --border: #2f2f2c;
+      --hover: #262624;
+      --focus: #7aa7ff;
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
+      "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 48px 16px 80px;
+  }
+
+  h1 {
+    margin: 0 0 24px;
+    font-size: 28px;
+    line-height: 1.3;
+    font-weight: 650;
+    letter-spacing: 0.01em;
+  }
+
+  .faq {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .item + .item { border-top: 1px solid var(--border); }
+
+  .item h2 { margin: 0; font-size: inherit; font-weight: inherit; }
+
+  .trigger {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    min-height: 56px;
+    padding: 14px 20px;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 150ms ease;
+  }
+  .trigger:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: -2px;
+    border-radius: 12px;
+  }
+  @media (hover: hover) {
+    .trigger:hover { background: var(--hover); }
+  }
+
+  .trigger-text { flex: 1; }
+
+  .chevron {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    color: var(--text-2);
+    transition: transform var(--dur-close) var(--ease-close);
+  }
+  .item.is-open .chevron {
+    transform: rotate(180deg);
+    transition: transform var(--dur-open) var(--ease-open);
+  }
+
+  /* 高度动画：grid 行从 0fr 过渡到 1fr，不需要 JS 量高度 */
+  .panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition:
+      grid-template-rows var(--dur-close) var(--ease-close),
+      visibility 0s linear var(--dur-close);
+  }
+  .item.is-open .panel {
+    grid-template-rows: 1fr;
+    visibility: visible;
+    transition:
+      grid-template-rows var(--dur-open) var(--ease-open),
+      visibility 0s linear 0s;
+  }
+
+  .panel-clip {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .panel-body {
+    padding: 0 20px 20px;
+    color: var(--text-2);
+    opacity: 0;
+    transform: translateY(-4px);
+    transition:
+      opacity 120ms ease,
+      transform var(--dur-close) var(--ease-close);
+  }
+  .item.is-open .panel-body {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 200ms ease 60ms,
+      transform var(--dur-open) var(--ease-open);
+  }
+
+  .panel-body p { margin: 0; }
+  .panel-body p + p,
+  .panel-body p + ul,
+  .panel-body ul + p { margin-top: 12px; }
+  .panel-body ul { margin: 0; padding-left: 1.25em; }
+  .panel-body li + li { margin-top: 4px; }
+  .panel-body a { color: var(--focus); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .panel, .item.is-open .panel,
+    .panel-body, .item.is-open .panel-body,
+    .chevron, .item.is-open .chevron {
+      transition: none;
+    }
+  }
+
+  @media (min-width: 640px) {
+    main { padding-top: 72px; }
+    h1 { font-size: 32px; margin-bottom: 32px; }
+    .trigger { padding: 18px 24px; }
+    .panel-body { padding: 0 24px 24px; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>常见问题</h1>
+
+  <div class="faq">
+    <div class="item">
+      <h2>
+        <button class="trigger" type="button" aria-expanded="false" aria-controls="faq-1" id="faq-1-btn">
+          <span class="trigger-text">如何注册账号？</span>
+          <svg class="chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </h2>
+      <div class="panel" id="faq-1" role="region" aria-labelledby="faq-1-btn">
+        <div class="panel-clip">
+          <div class="panel-body">
+            <p>点击页面右上角的「注册」，填写手机号并输入短信验证码即可，整个过程大约一分钟。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <h2>
+        <button class="trigger" type="button" aria-expanded="false" aria-controls="faq-2" id="faq-2-btn">
+          <span class="trigger-text">支持哪些付款方式？</span>
+          <svg class="chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </h2>
+      <div class="panel" id="faq-2" role="region" aria-labelledby="faq-2-btn">
+        <div class="panel-clip">
+          <div class="panel-body">
+            <p>目前支持微信支付、支付宝和主流银行卡（Visa、Mastercard、银联）。企业客户还可以选择对公转账，按月开具发票。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <h2>
+        <button class="trigger" type="button" aria-expanded="false" aria-controls="faq-3" id="faq-3-btn">
+          <span class="trigger-text">可以随时取消订阅吗？</span>
+          <svg class="chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </h2>
+      <div class="panel" id="faq-3" role="region" aria-labelledby="faq-3-btn">
+        <div class="panel-clip">
+          <div class="panel-body">
+            <p>可以。在「设置 - 订阅管理」中点击「取消订阅」，当前计费周期结束前服务照常可用，到期后不再扣费。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <h2>
+        <button class="trigger" type="button" aria-expanded="false" aria-controls="faq-4" id="faq-4-btn">
+          <span class="trigger-text">我的数据安全如何保障？</span>
+          <svg class="chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </h2>
+      <div class="panel" id="faq-4" role="region" aria-labelledby="faq-4-btn">
+        <div class="panel-clip">
+          <div class="panel-body">
+            <p>我们把数据安全当作产品的底线。所有数据在传输过程中使用 TLS 1.3 加密，存储时使用 AES-256 加密，密钥由独立的密钥管理服务托管，与业务数据分开存放。</p>
+            <p>在访问控制上，只有经过授权的少数工程师能在排查故障时接触生产环境，每一次访问都会留下审计日志，并在事后复核。我们不会出于广告或任何商业目的出售、出租你的个人信息。</p>
+            <p>此外，我们定期接受第三方安全审计，并采取以下措施：</p>
+            <ul>
+              <li>每日自动备份，备份数据保存在不同地域的机房；</li>
+              <li>账号支持两步验证，异地登录会立即通知；</li>
+              <li>每季度进行一次渗透测试，并公开漏洞奖励计划；</li>
+              <li>注销账号后 30 天内彻底删除全部数据。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <h2>
+        <button class="trigger" type="button" aria-expanded="false" aria-controls="faq-5" id="faq-5-btn">
+          <span class="trigger-text">忘记密码怎么办？</span>
+          <svg class="chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </h2>
+      <div class="panel" id="faq-5" role="region" aria-labelledby="faq-5-btn">
+        <div class="panel-clip">
+          <div class="panel-body">
+            <p>在登录页点击「忘记密码」，用注册手机号接收验证码后即可设置新密码。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <h2>
+        <button class="trigger" type="button" aria-expanded="false" aria-controls="faq-6" id="faq-6-btn">
+          <span class="trigger-text">如何联系客服？</span>
+          <svg class="chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </h2>
+      <div class="panel" id="faq-6" role="region" aria-labelledby="faq-6-btn">
+        <div class="panel-clip">
+          <div class="panel-body">
+            <p>工作日 9:00–21:00 可以在应用内点击「帮助 - 在线客服」与我们交谈，通常 5 分钟内回复。其他时间请发送邮件至 <a href="mailto:support@example.com">support@example.com</a>，我们会在下一个工作日内处理。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+  document.querySelectorAll('.faq .trigger').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var open = btn.getAttribute('aria-expanded') !== 'true';
+      btn.setAttribute('aria-expanded', String(open));
+      btn.closest('.item').classList.toggle('is-open', open);
+    });
+  });
+</script>
+</body>
+</html>

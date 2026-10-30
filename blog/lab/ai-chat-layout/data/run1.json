@@ -1,0 +1,241 @@
+{
+  "desk-1440": {
+    "pageOverflowX": 0,
+    "scroller": "scroller",
+    "scrollbarW": 0,
+    "scrollbarGutter": "auto",
+    "main": {
+      "l": 272,
+      "r": 1440,
+      "center": 856
+    },
+    "column": {
+      "l": 500,
+      "r": 1212,
+      "w": 712,
+      "center": 856
+    },
+    "composer": {
+      "l": 476,
+      "r": 1236,
+      "w": 760,
+      "t": 798.2,
+      "b": 856.2,
+      "center": 856
+    },
+    "edgeDiff": {
+      "left": -24,
+      "right": 24
+    },
+    "link": {
+      "r": 1209.1,
+      "overColumn": -2.9,
+      "wrap": "break-all/anywhere"
+    },
+    "pre": {
+      "r": 1211,
+      "overColumn": -1,
+      "clientW": 668,
+      "scrollW": 851,
+      "overflowX": "auto"
+    },
+    "input": {
+      "fontSize": "16px",
+      "lineHeight": "24px",
+      "h": 32
+    },
+    "send": {
+      "w": 36,
+      "h": 36,
+      "centerY": 827.2
+    },
+    "inputCenterY": 829.2,
+    "sidebar": {
+      "l": 0,
+      "r": 272,
+      "t": 0,
+      "b": 900,
+      "w": 272,
+      "h": 900,
+      "visibility": "visible",
+      "display": "flex"
+    },
+    "openNav": null,
+    "lastMsgToComposer": 31.8,
+    "grow": {
+      "h": 200,
+      "innerScroll": true,
+      "sendBottomGap": 0,
+      "sendTopGap": 164
+    },
+    "shrinkH": 32,
+    "yank": {
+      "scrollTop": 0,
+      "max": 1314
+    },
+    "errors": []
+  },
+  "desk-1024": {
+    "pageOverflowX": 0,
+    "scroller": "scroller",
+    "scrollbarW": 0,
+    "scrollbarGutter": "auto",
+    "main": {
+      "l": 272,
+      "r": 1024,
+      "center": 648
+    },
+    "column": {
+      "l": 296,
+      "r": 1000,
+      "w": 704,
+      "center": 648
+    },
+    "composer": {
+      "l": 296,
+      "r": 1000,
+      "w": 704,
+      "t": 666.2,
+      "b": 724.2,
+      "center": 648
+    },
+    "edgeDiff": {
+      "left": 0,
+      "right": 0
+    },
+    "link": {
+      "r": 996.3,
+      "overColumn": -3.7,
+      "wrap": "break-all/anywhere"
+    },
+    "pre": {
+      "r": 999,
+      "overColumn": -1,
+      "clientW": 660,
+      "scrollW": 851,
+      "overflowX": "auto"
+    },
+    "input": {
+      "fontSize": "16px",
+      "lineHeight": "24px",
+      "h": 32
+    },
+    "send": {
+      "w": 36,
+      "h": 36,
+      "centerY": 695.2
+    },
+    "inputCenterY": 697.2,
+    "sidebar": {
+      "l": 0,
+      "r": 272,
+      "t": 0,
+      "b": 768,
+      "w": 272,
+      "h": 768,
+      "visibility": "visible",
+      "display": "flex"
+    },
+    "openNav": null,
+    "lastMsgToComposer": 31.8,
+    "grow": {
+      "h": 200,
+      "innerScroll": true,
+      "sendBottomGap": 0,
+      "sendTopGap": 164
+    },
+    "shrinkH": 32,
+    "yank": {
+      "scrollTop": 0,
+      "max": 1446
+    },
+    "errors": []
+  },
+  "phone-390": {
+    "pageOverflowX": 0,
+    "scroller": "scroller",
+    "scrollbarW": 0,
+    "scrollbarGutter": "auto",
+    "main": {
+      "l": 0,
+      "r": 390,
+      "center": 195
+    },
+    "column": {
+      "l": 16,
+      "r": 374,
+      "w": 358,
+      "center": 195
+    },
+    "composer": {
+      "l": 12,
+      "r": 378,
+      "w": 366,
+      "t": 776,
+      "b": 834,
+      "center": 195
+    },
+    "edgeDiff": {
+      "left": -4,
+      "right": 4
+    },
+    "link": {
+      "r": 373.6,
+      "overColumn": -0.4,
+      "wrap": "break-all/anywhere"
+    },
+    "pre": {
+      "r": 373,
+      "overColumn": -1,
+      "clientW": 356,
+      "scrollW": 851,
+      "overflowX": "auto"
+    },
+    "input": {
+      "fontSize": "16px",
+      "lineHeight": "24px",
+      "h": 32
+    },
+    "send": {
+      "w": 36,
+      "h": 36,
+      "centerY": 805
+    },
+    "inputCenterY": 807,
+    "sidebar": {
+      "l": -300,
+      "r": 0,
+      "t": 0,
+      "b": 844,
+      "w": 300,
+      "h": 844,
+      "visibility": "hidden",
+      "display": "flex"
+    },
+    "openNav": {
+      "w": 36,
+      "h": 36
+    },
+    "lastMsgToComposer": 23.8,
+    "grow": {
+      "h": 200,
+      "innerScroll": true,
+      "sendBottomGap": 0,
+      "sendTopGap": 164
+    },
+    "shrinkH": 32,
+    "yank": {
+      "scrollTop": 0,
+      "max": 2013
+    },
+    "drawer": {
+      "l": 0,
+      "w": 300,
+      "focusInside": true,
+      "focus": "newChat",
+      "bodyOverflow": "visible"
+    },
+    "drawerAfterEsc": -300,
+    "errors": []
+  }
+}

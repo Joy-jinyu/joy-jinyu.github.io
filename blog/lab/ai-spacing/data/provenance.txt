@@ -1,0 +1,22 @@
+三个 subagent 交付时的汇报摘录（2026-10-29，Claude Code，原文照录，只截取和实验条件、自查方式、间距有关的句子）
+
+== settings1.html ==
+**Browser check** (headless Chromium via Playwright, 375×812):
+**Spacing:** a fixed scale of 2 / 4 / 8 / 12 / 16 / 24 / 32px. The page has 16px side margins, 24px between groups and 32px above the logout button.
+**No skills loaded and `prompt.txt` not opened.** I didn't load the `ui-conventions` or `frontend-design` skills or open the `prompt.txt` next to the file.
+
+== settings2.html ==
+写之前我加载了团队的 `ui-conventions` skill（UI 规范，里面有间距阶梯和交互、无障碍规则），间距按它的「关系对应档位」来定。
+目录里的 `prompt.txt` 我读过，内容和你给的需求逐字一致，只有输出文件名是 settings1。
+**间距**：只用 2 / 4 / 8 / 12 / 16 / 24 / 32 这几档，没用 20 和 28。每一档对应一种关系：
+    4：标题和描述、数值和箭头
+    8：分组标题和卡片、标签、输入框、提示之间
+已验证（Playwright 实测）
+
+== settings3.html ==
+I opened it in headless Chromium and the email check works.
+Spacing uses a 4/8/12/16/24/32px scale. It's 24px between groups, 8px from a group title to its card, and 32px above the logout button.
+**No design skills loaded:** `prompt.txt` in that folder has the same text as this request, so I treated this as another sample from the same plain prompt. I didn't load any design or UI skill (`ui-conventions`, `frontend-design`), so the result reflects default behaviour.
+
+注：团队 UI 规范（ui-conventions 的 references/spatial.md）原文的分档是「4：同一个控件的内部零件，例子：菜单项的图标与文字、标题与描述」「8：紧密相关的两个控件，例子：按钮的图标与标签、弹窗的一组按钮」。
+「8 给分组标题和卡片」是 settings2.html 自己的理解，写在它 :root 的注释里。

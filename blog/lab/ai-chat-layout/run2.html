@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>对话 · Chat Layout</title>
+<style>
+  :root {
+    --bg: #faf9f7;
+    --sidebar-bg: #f2f0ec;
+    --surface: #ffffff;
+    --text: #1f1e1c;
+    --text-2: #5f5c57;
+    --text-3: #8f8b84;
+    --border: #e4e1db;
+    --hover: #e8e5df;
+    --active: #e0ddd6;
+    --accent: #c96442;
+    --accent-text: #ffffff;
+    --user-bubble: #efece6;
+    --code-bg: #1e1e1e;
+    --code-text: #e6e6e6;
+    --link: #2f6fb3;
+    --focus: #2f6fb3;
+    --sidebar-w: 268px;
+    --content-w: 760px;
+    --radius: 12px;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1f1e1c;
+      --sidebar-bg: #181715;
+      --surface: #2a2926;
+      --text: #ecebe8;
+      --text-2: #b4b0a9;
+      --text-3: #85817a;
+      --border: #3a3834;
+      --hover: #2c2b28;
+      --active: #35332f;
+      --accent: #d97757;
+      --user-bubble: #33312d;
+      --code-bg: #121211;
+      --link: #7fb0e6;
+      --focus: #7fb0e6;
+      color-scheme: dark;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font: 15px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+  button, textarea { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+  .app {
+    display: flex;
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  /* ---------- 侧边栏 ---------- */
+  .sidebar {
+    width: var(--sidebar-w);
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--border);
+    min-height: 0;
+  }
+  .sidebar-top {
+    padding: 12px;
+    padding-top: max(12px, env(safe-area-inset-top));
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 6px;
+    font-weight: 600;
+    font-size: 16px;
+  }
+  .new-chat {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    text-align: left;
+    font-weight: 500;
+  }
+  .new-chat:hover { background: var(--hover); }
+  .new-chat .plus {
+    display: inline-grid;
+    place-items: center;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--accent-text);
+    font-size: 16px;
+    line-height: 1;
+  }
+  .history {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 4px 8px 12px;
+  }
+  .history h2 {
+    margin: 12px 8px 6px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-3);
+  }
+  .history ul { list-style: none; margin: 0; padding: 0; }
+  .history a {
+    display: block;
+    padding: 7px 10px;
+    border-radius: 8px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .history a:hover { background: var(--hover); }
+  .history a[aria-current="page"] { background: var(--active); font-weight: 500; }
+
+  .user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 8px;
+    padding: 12px 8px;
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+    border-top: 1px solid var(--border);
+    min-width: 0;
+  }
+  .avatar {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: #5b7c99;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .user-meta { min-width: 0; }
+  .user-name { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .user-plan { font-size: 12px; color: var(--text-3); }
+
+  /* ---------- 主区域 ---------- */
+  .main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .topbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 52px;
+    padding: 0 16px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .topbar h1 {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    font-size: 15px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .icon-btn {
+    display: none;
+    width: 36px; height: 36px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    font-size: 18px;
+    line-height: 1;
+  }
+  .icon-btn:hover { background: var(--hover); }
+  .share {
+    flex-shrink: 0;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    font-size: 14px;
+  }
+  .share:hover { background: var(--hover); }
+
+  .thread {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .thread-inner {
+    max-width: var(--content-w);
+    margin: 0 auto;
+    padding: 24px 24px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .msg { min-width: 0; }
+  .msg.user-msg {
+    align-self: flex-end;
+    max-width: 85%;
+    padding: 10px 16px;
+    border-radius: 18px;
+    background: var(--user-bubble);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .msg.ai-msg {
+    display: flex;
+    gap: 14px;
+  }
+  .ai-mark {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 28px; height: 28px;
+    margin-top: 1px;
+    border-radius: 8px;
+    background: var(--accent);
+    color: var(--accent-text);
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .ai-body {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .ai-body > :first-child { margin-top: 0; }
+  .ai-body > :last-child { margin-bottom: 0; }
+  .ai-body p, .ai-body ul, .ai-body ol { margin: 0 0 12px; }
+  .ai-body ul, .ai-body ol { padding-left: 22px; }
+  .ai-body li + li { margin-top: 4px; }
+  .ai-body a { color: var(--link); }
+  .ai-body code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.88em;
+    padding: 1px 5px;
+    border-radius: 5px;
+    background: var(--user-bubble);
+  }
+  .code-block {
+    margin: 0 0 12px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--code-bg);
+    color: var(--code-text);
+  }
+  .code-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: #a9a9a9;
+    background: rgba(255,255,255,.06);
+  }
+  .copy {
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 5px;
+  }
+  .copy:hover { background: rgba(255,255,255,.1); color: #fff; }
+  .code-block pre {
+    margin: 0;
+    padding: 14px 16px;
+    overflow-x: auto;
+    font: 13px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    tab-size: 2;
+  }
+  .code-block pre code { background: none; padding: 0; font-size: inherit; white-space: pre; overflow-wrap: normal; }
+
+  .typing span {
+    display: inline-block;
+    width: 6px; height: 6px;
+    margin-right: 4px;
+    border-radius: 50%;
+    background: var(--text-3);
+    animation: blink 1.2s infinite ease-in-out;
+  }
+  .typing span:nth-child(2) { animation-delay: .2s; }
+  .typing span:nth-child(3) { animation-delay: .4s; }
+  @keyframes blink { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
+
+  /* ---------- 输入区 ---------- */
+  .composer-wrap {
+    flex-shrink: 0;
+    padding: 0 24px 16px;
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+  }
+  .composer {
+    max-width: var(--content-w);
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 10px 10px 10px 16px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: var(--surface);
+    box-shadow: 0 2px 12px rgba(0,0,0,.05);
+  }
+  .composer:focus-within { border-color: var(--text-3); }
+  .composer textarea {
+    flex: 1;
+    min-width: 0;
+    min-height: 26px;
+    max-height: 200px;
+    padding: 4px 0;
+    border: 0;
+    outline: none;
+    resize: none;
+    background: transparent;
+    line-height: 1.5;
+    font-size: 16px; /* 不低于 16px，避免 iOS 聚焦时自动放大 */
+  }
+  .composer textarea::placeholder { color: var(--text-3); }
+  .send {
+    flex-shrink: 0;
+    width: 36px; height: 36px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--accent-text);
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .send:disabled { opacity: .35; cursor: not-allowed; }
+  .hint {
+    max-width: var(--content-w);
+    margin: 8px auto 0;
+    font-size: 12px;
+    color: var(--text-3);
+    text-align: center;
+  }
+
+  .toast {
+    position: fixed;
+    left: 50%;
+    top: 64px;
+    transform: translateX(-50%);
+    padding: 8px 14px;
+    border-radius: 8px;
+    background: var(--text);
+    color: var(--bg);
+    font-size: 13px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s;
+    z-index: 30;
+  }
+  .toast.show { opacity: 1; }
+
+  .scrim { display: none; }
+
+  /* ---------- 手机 ---------- */
+  @media (max-width: 768px) {
+    .sidebar {
+      position: fixed;
+      inset: 0 auto 0 0;
+      width: min(84vw, 300px);
+      z-index: 20;
+      transform: translateX(-100%);
+      transition: transform .25s ease;
+      box-shadow: 4px 0 24px rgba(0,0,0,.12);
+    }
+    .app.nav-open .sidebar { transform: none; }
+    .scrim {
+      display: block;
+      position: fixed;
+      inset: 0;
+      z-index: 15;
+      background: rgba(0,0,0,.35);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s;
+    }
+    .app.nav-open .scrim { opacity: 1; pointer-events: auto; }
+    .icon-btn { display: inline-grid; place-items: center; }
+    .topbar { padding: 0 8px; padding-top: env(safe-area-inset-top); height: calc(52px + env(safe-area-inset-top)); }
+    .topbar h1 { text-align: center; }
+    .thread-inner { padding: 16px 16px 24px; gap: 22px; }
+    .msg.user-msg { max-width: 90%; }
+    .msg.ai-msg { gap: 0; }
+    .ai-mark { display: none; }
+    .composer-wrap { padding: 0 12px 12px; padding-bottom: max(12px, env(safe-area-inset-bottom)); }
+    .hint { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sidebar, .scrim, .toast { transition: none; }
+    .typing span { animation: none; opacity: .6; }
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <aside class="sidebar" id="sidebar" aria-label="对话历史">
+    <div class="sidebar-top">
+      <div class="brand">
+        <span>Pairwise Chat</span>
+        <button class="icon-btn" id="closeNav" type="button" aria-label="关闭侧边栏">×</button>
+      </div>
+      <button class="new-chat" id="newChat" type="button"><span class="plus" aria-hidden="true">+</span>新对话</button>
+    </div>
+    <nav class="history" aria-label="最近的对话">
+      <h2>今天</h2>
+      <ul>
+        <li><a href="#" aria-current="page">Nginx 反向代理 WebSocket 断连排查</a></li>
+        <li><a href="#">周报</a></li>
+        <li><a href="#">把一段 Python 脚本改写成 TypeScript，并保留原来的错误处理和日志格式</a></li>
+      </ul>
+      <h2>昨天</h2>
+      <ul>
+        <li><a href="#">CSS Grid 和 Flex 怎么选</a></li>
+        <li><a href="#">东京五日游行程</a></li>
+        <li><a href="#">解释一下 React Server Components 的数据流和缓存失效机制</a></li>
+      </ul>
+      <h2>过去 7 天</h2>
+      <ul>
+        <li><a href="#">SQL 慢查询</a></li>
+        <li><a href="#">给猫取名字</a></li>
+        <li><a href="#">如何向非技术同事解释为什么这个需求需要两周而不是两天</a></li>
+        <li><a href="#">正则：匹配中文</a></li>
+        <li><a href="#">Git rebase 冲突</a></li>
+      </ul>
+    </nav>
+    <div class="user">
+      <div class="avatar" aria-hidden="true">锦</div>
+      <div class="user-meta">
+        <div class="user-name">王锦逸</div>
+        <div class="user-plan">Pro 计划</div>
+      </div>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn" id="openNav" type="button" aria-label="打开侧边栏" aria-controls="sidebar" aria-expanded="false">☰</button>
+      <h1 id="chatTitle">Nginx 反向代理 WebSocket 断连排查</h1>
+      <button class="share" id="share" type="button">分享</button>
+    </header>
+
+    <section class="thread" id="thread" aria-label="对话内容">
+      <div class="thread-inner" id="messages" role="log" aria-live="polite">
+        <div class="msg user-msg">我的 WebSocket 服务挂在 Nginx 后面，连上之后大概一分钟就会自动断开，直连后端没问题。这是什么原因？</div>
+        <div class="msg ai-msg"><div class="ai-mark" aria-hidden="true">P</div><div class="ai-body">
+          <p>“直连正常、过 Nginx 约 60 秒断开”几乎可以确定是 Nginx 的 <code>proxy_read_timeout</code>。它的默认值正好是 60 秒：如果这段时间内上游没有发来任何数据，Nginx 就会关闭连接。</p>
+          <p>WebSocket 连接空闲时不传数据，所以会撞上这个超时。</p>
+        </div></div>
+
+        <div class="msg user-msg">那我应该怎么配？</div>
+        <div class="msg ai-msg"><div class="ai-mark" aria-hidden="true">P</div><div class="ai-body">
+          <p>需要做两件事：一是正确转发 Upgrade 握手，二是调大读写超时。一份可用的配置如下：</p>
+          <div class="code-block">
+            <div class="code-head"><span>nginx</span><button class="copy" type="button">复制</button></div>
+<pre><code>map $http_upgrade $connection_upgrade {
+  default upgrade;
+  ''      close;
+}
+
+server {
+  listen 443 ssl;
+  server_name chat.example.com;
+
+  location /ws/ {
+    proxy_pass http://127.0.0.1:8080;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $connection_upgrade;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+    # 空闲超过这个时间才会断开；配合应用层心跳使用
+    proxy_read_timeout 3600s;
+    proxy_send_timeout 3600s;
+  }
+}</code></pre>
+          </div>
+          <p>几点说明：</p>
+          <ul>
+            <li><code>proxy_http_version 1.1</code> 必须写，默认的 1.0 不支持 Upgrade。</li>
+            <li><code>map</code> 让普通 HTTP 请求也能走同一个 location，不会被强行加上 <code>Connection: upgrade</code>。</li>
+            <li>超时调大只是兜底，更稳的做法是客户端每 30 秒发一次 ping。</li>
+          </ul>
+          <p>官方文档里关于这几个指令的说明在这里：<a href="https://nginx.org/en/docs/http/ngx_http_proxy_module.html?utm_source=pairwise-chat&amp;utm_medium=assistant-answer&amp;utm_campaign=websocket-timeout-troubleshooting&amp;ref=conversation-8f3a2c71-4d9e-4b1a-9c55-e2f7a01b6d38#proxy_read_timeout" target="_blank" rel="noopener noreferrer">https://nginx.org/en/docs/http/ngx_http_proxy_module.html?utm_source=pairwise-chat&amp;utm_medium=assistant-answer&amp;utm_campaign=websocket-timeout-troubleshooting&amp;ref=conversation-8f3a2c71-4d9e-4b1a-9c55-e2f7a01b6d38#proxy_read_timeout</a></p>
+        </div></div>
+
+        <div class="msg user-msg">前面还有一层云厂商的负载均衡，会不会也有超时？</div>
+        <div class="msg ai-msg"><div class="ai-mark" aria-hidden="true">P</div><div class="ai-body">
+          <p>会。负载均衡通常有自己的“空闲超时”，常见默认值是 60 秒或 350 秒。整条链路的实际超时取最短的那一段，所以 LB、Nginx、应用三层都要检查。</p>
+          <p>最省心的办法仍然是心跳：只要间隔小于链路上最短的超时，连接就不会因为空闲被断。</p>
+        </div></div>
+
+        <div class="msg user-msg">心跳间隔设多少合适？</div>
+        <div class="msg ai-msg"><div class="ai-mark" aria-hidden="true">P</div><div class="ai-body">
+          <p>取链路最短超时的一半左右。比如最短是 60 秒，就设 25–30 秒。太短会白白增加流量和服务器负担，移动端还会更耗电。</p>
+        </div></div>
+
+        <div class="msg user-msg">改完之后怎么验证？</div>
+        <div class="msg ai-msg"><div class="ai-mark" aria-hidden="true">P</div><div class="ai-body">
+          <ol>
+            <li>执行 <code>nginx -t</code> 检查语法，再 <code>nginx -s reload</code>。</li>
+            <li>先关掉客户端心跳，用 <code>websocat wss://chat.example.com/ws/</code> 连上后保持空闲，看是否还在 60 秒时断开。</li>
+            <li>确认不断之后再打开心跳，观察几小时的连接时长。</li>
+          </ol>
+        </div></div>
+
+        <div class="msg user-msg">好的，已经不断了，谢谢！</div>
+        <div class="msg ai-msg"><div class="ai-mark" aria-hidden="true">P</div><div class="ai-body">
+          <p>不客气。后面如果遇到别的问题，比如部署后连接数突然变多，可以把 Nginx 的 error log 发给我一起看。</p>
+        </div></div>
+      </div>
+    </section>
+
+    <div class="composer-wrap">
+      <form class="composer" id="composer">
+        <label for="input" class="visually-hidden" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">输入消息</label>
+        <textarea id="input" rows="1" placeholder="输入消息，Shift + Enter 换行"></textarea>
+        <button class="send" id="send" type="submit" aria-label="发送" disabled>↑</button>
+      </form>
+      <p class="hint">回复由 AI 生成，可能有误，请核对重要信息。</p>
+    </div>
+  </main>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function () {
+  var app = document.getElementById('app');
+  var thread = document.getElementById('thread');
+  var messages = document.getElementById('messages');
+  var form = document.getElementById('composer');
+  var input = document.getElementById('input');
+  var send = document.getElementById('send');
+  var openNav = document.getElementById('openNav');
+  var toastEl = document.getElementById('toast');
+  var replying = false;
+  var toastTimer;
+
+  var replies = [
+    '收到。我先确认一下理解：你想要的是一个能直接落地的方案，对吗？如果方便，可以补充一下运行环境和你已经试过的做法。',
+    '好问题。简单说有两种思路：改配置，或者在应用层处理。前者改动小，后者更可控，具体取决于你能否修改服务端代码。',
+    '明白了。建议先缩小范围：只保留一个最小可复现的例子，确认问题还在，再逐步加回其他部分。'
+  ];
+
+  function scrollToBottom() {
+    thread.scrollTop = thread.scrollHeight;
+  }
+
+  function autosize() {
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 200) + 'px';
+    send.disabled = replying || input.value.trim() === '';
+  }
+
+  function addUser(text) {
+    var el = document.createElement('div');
+    el.className = 'msg user-msg';
+    el.textContent = text;
+    messages.appendChild(el);
+  }
+
+  function addAi() {
+    var wrap = document.createElement('div');
+    wrap.className = 'msg ai-msg';
+    var mark = document.createElement('div');
+    mark.className = 'ai-mark';
+    mark.setAttribute('aria-hidden', 'true');
+    mark.textContent = 'P';
+    var body = document.createElement('div');
+    body.className = 'ai-body';
+    body.innerHTML = '<span class="typing" aria-label="正在回复"><span></span><span></span><span></span></span>';
+    wrap.appendChild(mark);
+    wrap.appendChild(body);
+    messages.appendChild(wrap);
+    return body;
+  }
+
+  function streamText(body, text, done) {
+    var p = document.createElement('p');
+    body.replaceChildren(p);
+    var i = 0;
+    var timer = setInterval(function () {
+      i += 2;
+      p.textContent = text.slice(0, i);
+      scrollToBottom();
+      if (i >= text.length) { clearInterval(timer); done(); }
+    }, 30);
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var text = input.value.trim();
+    if (!text || replying) return;
+    replying = true;
+    addUser(text);
+    input.value = '';
+    autosize();
+    var body = addAi();
+    scrollToBottom();
+    setTimeout(function () {
+      var reply = replies[messages.children.length % replies.length];
+      streamText(body, reply, function () {
+        replying = false;
+        autosize();
+      });
+    }, 700);
+  });
+
+  input.addEventListener('input', autosize);
+  input.addEventListener('keydown', function (e) {
+    // 输入法组字时按回车是确认候选词，不能当发送
+    if (e.key === 'Enter' && !e.shiftKey && !e.isComposing && e.keyCode !== 229) {
+      e.preventDefault();
+      form.requestSubmit();
+    }
+  });
+
+  function setNav(open) {
+    app.classList.toggle('nav-open', open);
+    openNav.setAttribute('aria-expanded', String(open));
+  }
+  openNav.addEventListener('click', function () { setNav(true); });
+  document.getElementById('closeNav').addEventListener('click', function () { setNav(false); });
+  document.getElementById('scrim').addEventListener('click', function () { setNav(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setNav(false); });
+
+  document.querySelectorAll('.history a').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      document.querySelectorAll('.history a[aria-current]').forEach(function (x) { x.removeAttribute('aria-current'); });
+      a.setAttribute('aria-current', 'page');
+      document.getElementById('chatTitle').textContent = a.textContent;
+      setNav(false);
+    });
+  });
+
+  document.getElementById('newChat').addEventListener('click', function () {
+    document.querySelectorAll('.history a[aria-current]').forEach(function (x) { x.removeAttribute('aria-current'); });
+    document.getElementById('chatTitle').textContent = '新对话';
+    messages.replaceChildren();
+    setNav(false);
+    input.focus();
+  });
+
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.classList.remove('show'); }, 1600);
+  }
+
+  function copyText(text, okMsg) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { toast(okMsg); }, function () { toast('复制失败，请手动复制'); });
+    } else {
+      toast('当前环境不支持自动复制');
+    }
+  }
+
+  document.getElementById('share').addEventListener('click', function () {
+    copyText(location.href, '链接已复制');
+  });
+
+  messages.addEventListener('click', function (e) {
+    var btn = e.target.closest('.copy');
+    if (!btn) return;
+    copyText(btn.closest('.code-block').querySelector('code').textContent, '代码已复制');
+  });
+
+  autosize();
+  scrollToBottom();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>通知演示</title>
+<style>
+  :root {
+    --bg: #f6f6f4;
+    --surface: #ffffff;
+    --text: #1d1d1f;
+    --text-muted: #6b6b70;
+    --border: rgba(0, 0, 0, 0.08);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.10);
+    --btn-bg: #ffffff;
+    --btn-bg-hover: #f0f0ee;
+    --success: #1f9d55;
+    --error: #d64545;
+    --info: #3b6fe0;
+
+    /* 进场用减速曲线，退场用加速曲线：进来时落定，离开时干脆 */
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-in: cubic-bezier(0.55, 0, 1, 0.45);
+    --dur-enter: 360ms;
+    --dur-exit: 220ms;
+    --dur-collapse: 240ms;
+
+    --enter-x: 24px;
+    --enter-y: 0px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #141416;
+      --surface: #222226;
+      --text: #f2f2f4;
+      --text-muted: #9a9aa2;
+      --border: rgba(255, 255, 255, 0.08);
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.5);
+      --btn-bg: #222226;
+      --btn-bg-hover: #2c2c31;
+      --success: #3ecf7a;
+      --error: #f06a6a;
+      --info: #6f95f2;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #141416;
+    --surface: #222226;
+    --text: #f2f2f4;
+    --text-muted: #9a9aa2;
+    --border: rgba(255, 255, 255, 0.08);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.5);
+    --btn-bg: #222226;
+    --btn-bg-hover: #2c2c31;
+    --success: #3ecf7a;
+    --error: #f06a6a;
+    --info: #6f95f2;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font: 15px/1.5 -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+    display: grid;
+    place-items: center;
+    padding: 16px;
+  }
+
+  main { text-align: center; max-width: 480px; }
+  h1 { font-size: 20px; font-weight: 600; margin: 0 0 6px; }
+  main p { margin: 0 0 24px; color: var(--text-muted); font-size: 14px; }
+
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+  .actions button {
+    font: inherit;
+    color: var(--text);
+    background: var(--btn-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 18px;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    transition: background-color 120ms, transform 120ms var(--ease-out);
+  }
+  .actions button:hover { background: var(--btn-bg-hover); }
+  .actions button:active { transform: scale(0.97); }
+  .actions button:focus-visible { outline: 2px solid var(--info); outline-offset: 2px; }
+
+  /* ---------- 通知容器：桌面右下角，新通知在最下面（贴近屏幕边缘） ---------- */
+  .toaster {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 360px;
+    max-width: calc(100vw - 32px);
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    pointer-events: none;
+  }
+
+  /* 外层 slot 负责高度收合，让下面/上面的通知平滑补位，而不是瞬间跳位 */
+  .slot {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition: grid-template-rows var(--dur-collapse) var(--ease-out);
+  }
+  .slot > .clip { min-height: 0; overflow: visible; }
+  .slot.is-pre, .slot.is-leaving { grid-template-rows: 0fr; }
+  .slot.is-pre > .clip, .slot.is-leaving > .clip { overflow: hidden; }
+  .slot.is-leaving { transition-timing-function: var(--ease-in); }
+
+  .toast {
+    pointer-events: auto;
+    position: relative;
+    margin: 5px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 14px 16px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition:
+      transform var(--dur-enter) var(--ease-out),
+      opacity var(--dur-enter) var(--ease-out);
+  }
+  .slot.is-pre .toast {
+    opacity: 0;
+    transform: translate(var(--enter-x), var(--enter-y)) scale(0.96);
+  }
+  .slot.is-leaving .toast {
+    opacity: 0;
+    transform: translate(calc(var(--enter-x) * 0.6), var(--enter-y)) scale(0.97);
+    transition-duration: var(--dur-exit);
+    transition-timing-function: var(--ease-in);
+  }
+
+  .toast__icon {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+    margin-top: 1px;
+    background: var(--accent);
+  }
+  .toast__body { flex: 1; min-width: 0; text-align: left; }
+  .toast__title { font-weight: 600; font-size: 14px; }
+  .toast__desc { color: var(--text-muted); font-size: 13px; margin-top: 2px; }
+
+  .toast__close {
+    flex: none;
+    width: 28px;
+    height: 28px;
+    margin: -4px -4px 0 0;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 120ms, color 120ms;
+  }
+  .toast__close:hover { background: var(--btn-bg-hover); color: var(--text); }
+  .toast__close:focus-visible { outline: 2px solid var(--info); outline-offset: 1px; }
+
+  /* 剩余时间进度条：悬停时随计时一起暂停 */
+  .toast__progress {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 100%;
+    background: var(--accent);
+    opacity: 0.55;
+    transform-origin: left center;
+    animation: countdown var(--life) linear forwards;
+  }
+  .toast.is-paused .toast__progress { animation-play-state: paused; }
+  @keyframes countdown { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+
+  .toast[data-type="success"] { --accent: var(--success); }
+  .toast[data-type="error"]   { --accent: var(--error); }
+  .toast[data-type="info"]    { --accent: var(--info); }
+
+  /* ---------- 手机：顶部居中，新通知在最上面，从上往下滑入 ---------- */
+  @media (max-width: 640px) {
+    :root { --enter-x: 0px; --enter-y: -16px; }
+    .toaster {
+      top: 12px;
+      bottom: auto;
+      left: 16px;
+      right: 16px;
+      width: auto;
+      max-width: none;
+      flex-direction: column-reverse;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --enter-x: 0px;
+      --enter-y: 0px;
+      --dur-enter: 160ms;
+      --dur-exit: 120ms;
+      --dur-collapse: 1ms;
+    }
+    .slot.is-pre .toast, .slot.is-leaving .toast { transform: none; }
+    .actions button:active { transform: none; }
+  }
+</style>
+</head>
+<body>
+  <main>
+    <h1>通知演示</h1>
+    <p>点按钮弹出通知。4 秒后自动消失，鼠标悬停时暂停计时，也可以点 × 关掉。</p>
+    <div class="actions">
+      <button type="button" data-toast="success">保存成功</button>
+      <button type="button" data-toast="error">上传失败</button>
+      <button type="button" data-toast="info">新消息</button>
+    </div>
+  </main>
+
+  <section class="toaster" aria-live="polite" aria-label="通知"></section>
+
+<script>
+  (function () {
+    var LIFE_MS = 4000;
+    /* 兜底时长要大于 CSS 里最长的退场过渡，防止 transitionend 没触发时节点残留 */
+    var REMOVE_FALLBACK_MS = 500;
+
+    var PRESETS = {
+      success: { icon: "✓", title: "保存成功", desc: "你的修改已保存。" },
+      error:   { icon: "!", title: "上传失败", desc: "网络连接中断，请稍后重试。" },
+      info:    { icon: "•", title: "新消息",   desc: "小林：下午的评审改到 3 点。" }
+    };
+
+    var toaster = document.querySelector(".toaster");
+
+    function createToastEl(type) {
+      var preset = PRESETS[type];
+      var slot = document.createElement("div");
+      slot.className = "slot is-pre";
+      slot.innerHTML =
+        '<div class="clip">' +
+          '<div class="toast" role="' + (type === "error" ? "alert" : "status") + '" data-type="' + type + '" style="--life:' + LIFE_MS + 'ms">' +
+            '<span class="toast__icon" aria-hidden="true"></span>' +
+            '<div class="toast__body">' +
+              '<div class="toast__title"></div>' +
+              '<div class="toast__desc"></div>' +
+            '</div>' +
+            '<button type="button" class="toast__close" aria-label="关闭通知">×</button>' +
+            '<span class="toast__progress" aria-hidden="true"></span>' +
+          '</div>' +
+        '</div>';
+      slot.querySelector(".toast__icon").textContent = preset.icon;
+      slot.querySelector(".toast__title").textContent = preset.title;
+      slot.querySelector(".toast__desc").textContent = preset.desc;
+      return slot;
+    }
+
+    function showToast(type) {
+      if (!PRESETS[type]) return;
+      var slot = createToastEl(type);
+      var toast = slot.querySelector(".toast");
+      var remaining = LIFE_MS;
+      var startedAt = 0;
+      var timer = null;
+      var closed = false;
+
+      function startTimer() {
+        startedAt = Date.now();
+        timer = setTimeout(dismiss, remaining);
+        toast.classList.remove("is-paused");
+      }
+      function pauseTimer() {
+        if (closed || timer === null) return;
+        clearTimeout(timer);
+        timer = null;
+        remaining = Math.max(0, remaining - (Date.now() - startedAt));
+        toast.classList.add("is-paused");
+      }
+      function resumeTimer() {
+        if (closed || timer !== null) return;
+        startTimer();
+      }
+
+      function dismiss() {
+        if (closed) return;
+        closed = true;
+        clearTimeout(timer);
+        slot.classList.add("is-leaving");
+        var removed = false;
+        function remove() {
+          if (removed) return;
+          removed = true;
+          slot.remove();
+        }
+        slot.addEventListener("transitionend", function (e) {
+          if (e.target === slot && e.propertyName === "grid-template-rows") remove();
+        });
+        setTimeout(remove, REMOVE_FALLBACK_MS);
+      }
+
+      slot.querySelector(".toast__close").addEventListener("click", dismiss);
+      toast.addEventListener("mouseenter", pauseTimer);
+      toast.addEventListener("mouseleave", resumeTimer);
+      toast.addEventListener("focusin", pauseTimer);
+      toast.addEventListener("focusout", resumeTimer);
+
+      toaster.appendChild(slot);
+      /* 先让浏览器按 is-pre 的初始状态排一次版，下一帧再去掉，过渡才会生效 */
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          slot.classList.remove("is-pre");
+        });
+      });
+      startTimer();
+    }
+
+    document.querySelector(".actions").addEventListener("click", function (e) {
+      var btn = e.target.closest("button[data-toast]");
+      if (btn) showToast(btn.getAttribute("data-toast"));
+    });
+  })();
+</script>
+</body>
+</html>

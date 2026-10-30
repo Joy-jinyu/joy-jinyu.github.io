@@ -1,0 +1,1013 @@
+{
+ "file": "settings2.html",
+ "browser": "156.0.8078.48",
+ "viewport": "375x812@2x",
+ "scheme": "light",
+ "page": {
+  "w": 375,
+  "h": 883
+ },
+ "errors": [],
+ "atoms": [
+  {
+   "kind": "box",
+   "el": "1",
+   "who": "header.navbar",
+   "text": "账户设置",
+   "rect": {
+    "x": 0,
+    "y": 0,
+    "w": 375,
+    "h": 44
+   },
+   "fill": false,
+   "sides": [
+    "bottom"
+   ],
+   "radius": 0,
+   "bg": "rgb(242, 243, 245)"
+  },
+  {
+   "kind": "icon",
+   "el": "3",
+   "who": "svg",
+   "text": "",
+   "ink": {
+    "x": 16,
+    "y": 13,
+    "w": 10,
+    "h": 18
+   }
+  },
+  {
+   "kind": "text",
+   "el": "4",
+   "who": "h1.navbar-title",
+   "text": "账户设置",
+   "lineBox": {
+    "x": 153.5,
+    "y": 8.75,
+    "w": 68,
+    "h": 25.5
+   },
+   "font": {
+    "size": 17,
+    "lineHeight": 25.5,
+    "weight": "600",
+    "family": "-apple-system",
+    "color": "rgb(23, 25, 28)"
+   },
+   "ink": {
+    "x": 154,
+    "y": 12.5,
+    "w": 67,
+    "h": 16.5
+   }
+  },
+  {
+   "kind": "box",
+   "el": "5",
+   "who": "section.card.profile",
+   "text": "林 林小满 ID 8812 3390 编辑资料",
+   "rect": {
+    "x": 16,
+    "y": 60,
+    "w": 343,
+    "h": 88
+   },
+   "fill": true,
+   "sides": [],
+   "radius": 12,
+   "bg": "rgb(255, 255, 255)"
+  },
+  {
+   "kind": "text",
+   "el": "6",
+   "who": "div.avatar",
+   "text": "林",
+   "lineBox": {
+    "x": 49,
+    "y": 76,
+    "w": 22,
+    "h": 56
+   },
+   "font": {
+    "size": 22,
+    "lineHeight": 33,
+    "weight": "600",
+    "family": "-apple-system",
+    "color": "rgb(29, 95, 214)"
+   },
+   "ink": {
+    "x": 49.5,
+    "y": 93.5,
+    "w": 21,
+    "h": 21
+   }
+  },
+  {
+   "kind": "box",
+   "el": "6",
+   "who": "div.avatar",
+   "text": "林",
+   "rect": {
+    "x": 32,
+    "y": 76,
+    "w": 56,
+    "h": 56
+   },
+   "fill": true,
+   "sides": [],
+   "radius": 50,
+   "bg": "rgb(227, 236, 251)"
+  },
+  {
+   "kind": "text",
+   "el": "7",
+   "who": "p.profile-name",
+   "text": "林小满",
+   "lineBox": {
+    "x": 100,
+    "y": 80.3125,
+    "w": 54,
+    "h": 25.1875
+   },
+   "font": {
+    "size": 18,
+    "lineHeight": 25.2,
+    "weight": "600",
+    "family": "-apple-system",
+    "color": "rgb(23, 25, 28)"
+   },
+   "ink": {
+    "x": 100.5,
+    "y": 84,
+    "w": 53,
+    "h": 17
+   }
+  },
+  {
+   "kind": "text",
+   "el": "8",
+   "who": "p.profile-id",
+   "text": "ID 8812 3390",
+   "lineBox": {
+    "x": 100,
+    "y": 109.5,
+    "w": 84.84375,
+    "h": 18.1875
+   },
+   "font": {
+    "size": 13,
+    "lineHeight": 18.2,
+    "weight": "400",
+    "family": "-apple-system",
+    "color": "rgb(92, 98, 107)"
+   },
+   "ink": {
+    "x": 101,
+    "y": 114.5,
+    "w": 83.5,
+    "h": 10
+   }
+  },
+  {
+   "kind": "text",
+   "el": "9",
+   "who": "button.btn-outline",
+   "text": "编辑资料",
+   "lineBox": {
+    "x": 274,
+    "y": 93,
+    "w": 56,
+    "h": 22
+   },
+   "font": {
+    "size": 14,
+    "lineHeight": 21,
+    "weight": "400",
+    "family": "-apple-system",
+    "color": "rgb(23, 25, 28)"
+   },
+   "ink": {
+    "x": 274.5,
+    "y": 98.5,
+    "w": 55,
+    "h": 13
+   }
+  },
+  {
+   "kind": "box",
+   "el": "9",
+   "who": "button.btn-outline",
+   "text": "编辑资料",
+   "rect": {
+    "x": 261,
+    "y": 88,
+    "w": 82,
+    "h": 32
+   },
+   "fill": false,
+   "sides": [
+    "top",
+    "right",
+    "bottom",
+    "left"
+   ],
+   "radius": 999,
+   "bg": "rgb(255, 255, 255)"
+  },
+  {
+   "kind": "text",
+   "el": "10",
+   "who": "h2.group-title",
+   "text": "通知",
+   "lineBox": {
+    "x": 32,
+    "y": 172,
+    "w": 26,
+    "h": 18.1875
+   },
+   "font": {
+    "size": 13,
+    "lineHeight": 18.2,
+    "weight": "500",
+    "family": "-apple-system",
+    "color": "rgb(92, 98, 107)"
+   },
+   "ink": {
+    "x": 32.5,
+    "y": 175,
+    "w": 24.5,
+    "h": 12.5
+   }
+  },
+  {
+   "kind": "box",
+   "el": "11",
+   "who": "ul.card.list",
+   "text": "推送通知 邮件摘要 每周一早上 9 点发送 免打",
+   "rect": {
+    "x": 16,
+    "y": 198.1875,
+    "w": 343,
+    "h": 164.578125
+   },
+   "fill": true,
+   "sides": [],
+   "radius": 12,
+   "bg": "rgb(255, 255, 255)"
+  },
+  {
+   "kind": "icon",
+   "el": "12",
+   "who": "svg",
+   "text": "",
+   "ink": {
+    "x": 34,
+    "y": 211,
+    "w": 20,
+    "h": 22
+   }
+  },
+  {
+   "kind": "text",
+   "el": "13",
+   "who": "span.row-title",
+   "text": "推送通知",
+   "lineBox": {
+    "x": 68,
+    "y": 210.984375,
+    "w": 64,
+    "h": 22.390625
+   },
+   "font": {
+    "size": 16,
+    "lineHeight": 22.4,
+    "weight": "400",
+    "family": "-apple-system",
+    "color": "rgb(23, 25, 28)"
+   },
+   "ink": {
+    "x": 68.5,
+    "y": 214.5,
+    "w": 62.5,
+    "h": 15.5
+   }
+  },
+  {
+   "kind": "pseudo",
+   "el": "14",
+   "who": "input.switch::after",
+   "text": "",
+   "ink": {
+    "x": 320.5,
+    "y": 212,
+    "w": 21,
+    "h": 22
+   }
+  },
+  {
+   "kind": "box",
+   "el": "14",
+   "who": "input.switch",
+   "text": "",
+   "rect": {
+    "x": 299,
+    "y": 210.1875,
+    "w": 44,
+    "h": 24
+   },
+   "fill": true,
+   "sides": [],
+   "radius": 999,
+   "bg": "rgb(29, 95, 214)"
+  },
+  {
+   "kind": "pseudo",
+   "el": "15",
+   "who": "li::before",
+   "text": "",
+   "ink": {
+    "x": 68,
+    "y": 246,
+    "w": 291,
+    "h": 0.5
+   }
+  },
+  {
+   "kind": "icon",
+   "el": "16",
+   "who": "svg",
+   "text": "",
+   "ink": {
+    "x": 33,
+    "y": 271,
+    "w": 22,
+    "h": 18
+   }
+  },
+  {
+   "kind": "text",
+   "el": "17",
+   "who": "span.row-title",
+   "text": "邮件摘要",
+   "lineBox": {
+    "x": 68,
+    "y": 258.1875,
+    "w": 64,
+    "h": 22.390625
+   },
+   "font": {
+    "size": 16,
+    "lineHeight": 22.4,
+    "weight": "400",
+    "family": "-apple-system",
+    "color": "rgb(23, 25, 28)"
+   },
+   "ink": {
+    "x": 69,
+    "y": 261.5,
+    "w": 62.5,
+    "h": 15.5
+   }
+  },
+  {
+   "kind": "text",
+   "el": "18",
+   "who": "span.row-desc",
+   "text": "每周一早上 9 点发送",
+   "lineBox": {
+    "x": 68,
+    "y": 284.578125,
+    "w": 119.375,
+    "h": 18.1875
+   },
+   "font": {
+    "size": 13,
+    "lineHeight": 18.2,
+    "weight": "400",
+    "family": "-apple-system",
+    "color": "rgb(92, 98, 107)"
+   },
+   "ink": {
+    "x": 68.5,
+    "y": 288,
+    "w": 118.5,
+    "h": 12.5
+   }
+  },
+  {
+   "kind": "pseudo",
+   "el": "19",
+   "who": "input.switch::after",
+   "text": "",
+   "ink": {
+    "x": 300.5,
+    "y": 270,
+    "w": 21,
+    "h": 21.5
+   }
+  },
+  {
+   "kind": "box",
+   "el": "19",
+   "who": "input.switch",
+   "text": "",
+   "rect": {
+    "x": 299,
+    "y": 268.46875,
+    "w": 44,
+    "h": 24
+   },
+   "fill": true,
+   "sides": [],
+   "radius": 999,
+   "bg": "rgb(133, 139, 148)"
+  },
+  {
+   "kind": "pseudo",
+   "el": "20",
+   "who": "li::before",
+   "text": "",
+   "ink": {
+    "x": 68,
+    "y": 315,
+    "w": 291,
+    "h": 0.5
+   }
+  },
+  {
+   "kind": "icon",
+   "el": "21",
+   "who": "svg",
+   "text": "",
+   "ink": {
+    "x": 34,
+    "y": 329,
+    "w": 20,
+    "h": 20
+   }
+  },
+  {
+   "kind": "text",
+   "el": "22",
+   "who": "span.row-title",
+   "text": "免打扰时段",
+   "lineBox": {
+    "x": 68,
+    "y": 327.5625,
+    "w": 80,
+    "h": 22.390625
+   },
+   "font": {
+    "size": 16,
+    "lineHeight": 22.4,
+    "weight": "400",
+    "family": "-apple-system",
+    "color": "rgb(23, 25, 28)"
+   },
+   "ink": {
+    "x": 68.5,
+    "y": 331.5,
+    "w": 79,
+    "h": 15.5
+   }
+  },
+  {
+   "kind": "text",
+   "el": "23",
+   "who": "span.row-trail",
+   "text": "22:00–08:00",
+   "lineBox": {
+    "x": 240.328125,
+    "y": 327.265625,
+    "w": 90.671875,
+    "h": 22.5
+   },
+   "font": {
+    "size": 15,
+    "lineHeight": 22.5,
+    "weight": "400",
+    "family": "-apple-system",
+    "color": "rgb(92, 98, 107)"
+   },
+   "ink": {
+    "x": 241.5,
+    "y": 334,
+    "w": 89,
+    "h": 11.5
+   }
+  },
+  {
+   "kind": "icon",
+   "el": "24",
+   "who": "svg",
+   "text": "",
+   "ink": {
+    "x": 335,
+    "y": 332,
+    "w": 8,
+    "h": 14
+   }
+  },
+  {
+   "kind": "text",
+   "el": "25",
+   "who": "h2.group-title",
+   "text": "安全",
+   "lineBox": {
+    "x": 32,
+    "y": 386.765625,
+    "w": 26,
+    "h": 18.1875
+   },
+   "font": {
+    "size": 13,
+    "lineHeight": 18.2,
+    "weight": "500",
+    "family": "-apple-system",
+    "color": "rgb(92, 98, 107)"
+   },
+   "ink": {
+    "x": 32.5,
+    "y": 390,
+    "w": 25,
+    "h": 12.5
+   }
+  },
+  {
+   "kind": "box",
+   "el": "26",
+   "who": "ul.card.list",
+   "text": "登录密码 修改 两步验证 未开启 登录设备 3 ",
+   "rect": {
+    "x": 16,
+    "y": 412.953125,
+    "w": 343,
+    "h": 144
+   },
+   "fill": true,
+   "sides": [],
+   "radius": 12,
+   "bg": "rgb(255, 255, 255)"
+  },
+  {
+   "kind": "icon",
+   "el": "27",
+   "who": "svg",
+   "text": "",
+   "ink": {
+    "x": 35,
+    "y": 427,
+    "w": 18,
+    "h": 20
+   }
+  },
+  {
+   "kind": "text",
+   "el": "28",
+   "who": "span.row-title",
+   "text": "登录密码",
+   "lineBox": {
+    "x": 68,
+    "y": 425.75,
+    "w": 64,
+    "h": 22.390625
+   },
+   "font": {
+    "size": 16,
+    "lineHeight": 22.4,
+    "weight": "400",
+    "family": "-apple-system",
+    "color": "rgb(23, 25, 28)"
+   },
+   "ink": {
+    "x": 68.5,
+    "y": 429.5,
+    "w": 62.5,
+    "h": 15.5
+   }
+  },
+  {
+   "kind": "text",
+   "el": "29",
+   "who": "span.row-trail",
+   "text": "修改",
+   "lineBox": {
+    "x": 301,
+    "y": 425.453125,
+    "w": 30,
+    "h": 22.5
+   },
+   "font": {
+    "size": 15,
+    "lineHeight": 22.5,
+    "weight": "400",
+    "family": "-apple-system",
+    "color": "rgb(92, 98, 107)"
+   },
+   "ink": {
+    "x": 301.5,
+    "y": 430.5,
+    "w": 29,
+    "h": 14
+   }
+  },
+  {
+   "kind": "icon",
+   "el": "30",
+   "who": "svg",
+   "text": "",
+   "ink": {
+    "x": 335,
+    "y": 430,
+    "w": 8,
+    "h": 14
+   }
+  },
+  {
+   "kind": "pseudo",
+   "el": "31",
+   "who": "li::before",
+   "text": "",
+   "ink": {
+    "x": 68,
+    "y": 461,
+    "w": 291,
+    "h": 0.5
+   }
+  },
+  {
+   "kind": "icon",
+   "el": "32",
+   "who": "svg",
+   "text": "",
+   "ink": {
+    "x": 35,
+    "y": 474,
+    "w": 18,
+    "h": 22
+   }
+  },
+  {
+   "kind": "text",
+   "el": "33",
+   "who": "span.row-title",
+   "text": "两步验证",
+   "lineBox": {
+    "x": 68,
+    "y": 473.75,
+    "w": 64,
+    "h": 22.390625
+   },
+   "font": {
+    "size": 16,
+    "lineHeight": 22.4,
+    "weight": "400",
+    "family": "-apple-system",
+    "color": "rgb(23, 25, 28)"
+   },
+   "ink": {
+    "x": 68.5,
+    "y": 477.5,
+    "w": 63,
+    "h": 15.5
+   }
+  },
+  {
+   "kind": "text",
+   "el": "34",
+   "who": "span.tag",
+   "text": "未开启",
+   "lineBox": {
+    "x": 299,
+    "y": 475.953125,
+    "w": 36,
+    "h": 18
+   },
+   "font": {
+    "size": 12,
+    "lineHeight": 18,
+    "weight": "500",
+    "family": "-apple-system",
+    "color": "rgb(138, 69, 0)"
+   },
+   "ink": {
+    "x": 299.5,
+    "y": 479,
+    "w": 34.5,
+    "h": 11.5
+   }
+  },
+  {
+   "kind": "box",
+   "el": "34",
+   "who": "span.tag",
+   "text": "未开启",
+   "rect": {
+    "x": 291,
+    "y": 473.953125,
+    "w": 52,
+    "h": 22
+   },
+   "fill": true,
+   "sides": [],
+   "radius": 999,
+   "bg": "rgb(253, 240, 220)"
+  },
+  {
+   "kind": "pseudo",
+   "el": "35",
+   "who": "li::before",
+   "text": "",
+   "ink": {
+    "x": 68,
+    "y": 509,
+    "w": 291,
+    "h": 0.5
+   }
+  },
+  {
+   "kind": "icon",
+   "el": "36",
+   "who": "svg",
+   "text": "",
+   "ink": {
+    "x": 33,
+    "y": 524,
+    "w": 22,
+    "h": 20
+   }
+  },
+  {
+   "kind": "text",
+   "el": "37",
+   "who": "span.row-title",
+   "text": "登录设备",
+   "lineBox": {
+    "x": 68,
+    "y": 521.75,
+    "w": 64,
+    "h": 22.390625
+   },
+   "font": {
+    "size": 16,
+    "lineHeight": 22.4,
+    "weight": "400",
+    "family": "-apple-system",
+    "color": "rgb(23, 25, 28)"
+   },
+   "ink": {
+    "x": 68.5,
+    "y": 525.5,
+    "w": 63,
+    "h": 15.5
+   }
+  },
+  {
+   "kind": "text",
+   "el": "38",
+   "who": "span.row-trail",
+   "text": "3 台",
+   "lineBox": {
+    "x": 302.796875,
+    "y": 521.453125,
+    "w": 28.203125,
+    "h": 22.5
+   },
+   "font": {
+    "size": 15,
+    "lineHeight": 22.5,
+    "weight": "400",
+    "family": "-apple-system",
+    "color": "rgb(92, 98, 107)"
+   },
+   "ink": {
+    "x": 303.5,
+    "y": 526.5,
+    "w": 27,
+    "h": 14
+   }
+  },
+  {
+   "kind": "icon",
+   "el": "39",
+   "who": "svg",
+   "text": "",
+   "ink": {
+    "x": 335,
+    "y": 526,
+    "w": 8,
+    "h": 14
+   }
+  },
+  {
+   "kind": "text",
+   "el": "40",
+   "who": "h2.group-title",
+   "text": "联系邮箱",
+   "lineBox": {
+    "x": 32,
+    "y": 580.953125,
+    "w": 52,
+    "h": 18.1875
+   },
+   "font": {
+    "size": 13,
+    "lineHeight": 18.2,
+    "weight": "500",
+    "family": "-apple-system",
+    "color": "rgb(92, 98, 107)"
+   },
+   "ink": {
+    "x": 32.5,
+    "y": 584,
+    "w": 51,
+    "h": 12.5
+   }
+  },
+  {
+   "kind": "box",
+   "el": "41",
+   "who": "form.card.field",
+   "text": "邮箱 用于接收账单和安全提醒",
+   "rect": {
+    "x": 16,
+    "y": 607.140625,
+    "w": 343,
+    "h": 130.1875
+   },
+   "fill": true,
+   "sides": [],
+   "radius": 12,
+   "bg": "rgb(255, 255, 255)"
+  },
+  {
+   "kind": "icon",
+   "el": "42",
+   "who": "svg",
+   "text": "",
+   "ink": {
+    "x": 33,
+    "y": 622,
+    "w": 22,
+    "h": 18
+   }
+  },
+  {
+   "kind": "text",
+   "el": "43",
+   "who": "label.field-label",
+   "text": "邮箱",
+   "lineBox": {
+    "x": 68,
+    "y": 619.9375,
+    "w": 32,
+    "h": 22.390625
+   },
+   "font": {
+    "size": 16,
+    "lineHeight": 22.4,
+    "weight": "400",
+    "family": "-apple-system",
+    "color": "rgb(23, 25, 28)"
+   },
+   "ink": {
+    "x": 69,
+    "y": 623.5,
+    "w": 30.5,
+    "h": 15.5
+   }
+  },
+  {
+   "kind": "placeholder",
+   "el": "44",
+   "who": "input.field-input",
+   "text": "name@example.com",
+   "font": {
+    "size": 16,
+    "lineHeight": 24,
+    "family": "-apple-system"
+   },
+   "ink": {
+    "x": 82,
+    "y": 667,
+    "w": 149,
+    "h": 15
+   }
+  },
+  {
+   "kind": "box",
+   "el": "44",
+   "who": "input.field-input",
+   "text": "",
+   "rect": {
+    "x": 68,
+    "y": 651.140625,
+    "w": 275,
+    "h": 44
+   },
+   "fill": false,
+   "sides": [
+    "top",
+    "right",
+    "bottom",
+    "left"
+   ],
+   "radius": 8,
+   "bg": "rgb(255, 255, 255)"
+  },
+  {
+   "kind": "text",
+   "el": "45",
+   "who": "span",
+   "text": "用于接收账单和安全提醒",
+   "lineBox": {
+    "x": 68,
+    "y": 703.140625,
+    "w": 143,
+    "h": 18.1875
+   },
+   "font": {
+    "size": 13,
+    "lineHeight": 18.2,
+    "weight": "400",
+    "family": "-apple-system",
+    "color": "rgb(92, 98, 107)"
+   },
+   "ink": {
+    "x": 68.5,
+    "y": 706,
+    "w": 142,
+    "h": 12.5
+   }
+  },
+  {
+   "kind": "text",
+   "el": "46",
+   "who": "button.btn-logout",
+   "text": "退出登录",
+   "lineBox": {
+    "x": 155.5,
+    "y": 781.328125,
+    "w": 64,
+    "h": 24
+   },
+   "font": {
+    "size": 16,
+    "lineHeight": 24,
+    "weight": "500",
+    "family": "-apple-system",
+    "color": "rgb(200, 41, 29)"
+   },
+   "ink": {
+    "x": 156,
+    "y": 785.5,
+    "w": 62.5,
+    "h": 15.5
+   }
+  },
+  {
+   "kind": "box",
+   "el": "46",
+   "who": "button.btn-logout",
+   "text": "退出登录",
+   "rect": {
+    "x": 16,
+    "y": 769.328125,
+    "w": 343,
+    "h": 48
+   },
+   "fill": true,
+   "sides": [],
+   "radius": 12,
+   "bg": "rgb(255, 255, 255)"
+  },
+  {
+   "kind": "text",
+   "el": "47",
+   "who": "p.version",
+   "text": "版本 3.8.2",
+   "lineBox": {
+    "x": 159.765625,
+    "y": 833.328125,
+    "w": 55.46875,
+    "h": 18
+   },
+   "font": {
+    "size": 12,
+    "lineHeight": 18,
+    "weight": "400",
+    "family": "-apple-system",
+    "color": "rgb(92, 98, 107)"
+   },
+   "ink": {
+    "x": 160,
+    "y": 836,
+    "w": 54.5,
+    "h": 11.5
+   }
+  }
+ ]
+}

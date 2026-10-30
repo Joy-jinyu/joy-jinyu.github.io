@@ -1,0 +1,38 @@
+{
+ "sheet1": {
+  "甩 60px，约 50ms": {
+   "closed": true,
+   "moveMs": 139
+  },
+  "甩 90px，约 50ms": {
+   "closed": true,
+   "moveMs": 161
+  },
+  "快拉 90px 后停 300ms 再松": {
+   "closed": true,
+   "moveMs": 119
+  },
+  "慢拉 45px（约 20%）": {
+   "closed": false,
+   "moveMs": 395
+  }
+ },
+ "sheet2": {
+  "甩 60px，约 50ms": {
+   "closed": false,
+   "moveMs": 118
+  },
+  "甩 90px，约 50ms": {
+   "closed": true,
+   "moveMs": 138
+  },
+  "快拉 90px 后停 300ms 再松": {
+   "closed": true,
+   "moveMs": 113
+  },
+  "慢拉 45px（约 20%）": {
+   "closed": false,
+   "moveMs": 349
+  }
+ }
+}

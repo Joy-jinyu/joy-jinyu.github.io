@@ -1,0 +1,2 @@
+scrollbar-gutter:auto  打开弹窗锁滚动前 x=332.5  锁滚动后 x=340  位移 7.5px
+scrollbar-gutter:stable  打开弹窗锁滚动前 x=332.5  锁滚动后 x=332.5  位移 0px

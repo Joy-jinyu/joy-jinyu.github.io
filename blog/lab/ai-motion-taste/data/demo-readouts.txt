@@ -1,0 +1,2 @@
+1280 normal [ '143 px', '42 px' ] slow [ '37 px（慢放中）', '11 px（慢放中）' ] btn [ '收起第 4 题', 'true', 119 ] errors []
+375 normal [ '163 px', '47 px' ] slow [ '43 px（慢放中）', '12 px（慢放中）' ] btn [ '收起第 4 题', 'true', 119 ] errors []
