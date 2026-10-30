@@ -1,0 +1,91 @@
+---
+/**
+ * 眯眼测试：原样的第 1 份和修正版并排，一起加模糊。模糊以后看不清字，只剩一团一团的块，分组对不对一眼就能看出来。
+ * 截图在 blog/public/lab/ai-spacing/img/，由 xray.mjs 截下。
+ */
+import '../styles/spacing-lab.css'
+import s1 from '../../public/lab/ai-spacing/data/settings1.json'
+import sf from '../../public/lab/ai-spacing/data/settings1-fixed.json'
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/')
+const SIDES = [
+  { file: 'settings1', h: s1.page.h, title: '原样', note: 'AI 写的第 1 份' },
+  { file: 'settings1-fixed', h: sf.page.h, title: '修正后', note: '加 text-box 裁剪，间距按看到的重排' },
+]
+---
+
+<squint-compare class="sq sx-panel sx-bleed not-prose">
+  <div class="sq-ctrl">
+    <label class="sq-blur">
+      <span>模糊</span>
+      <input type="range" min="0" max="8" step="0.5" value="0" />
+      <output>0 px</output>
+    </label>
+    <button type="button" class="sq-quick" aria-pressed="false">眯眼看</button>
+  </div>
+  <div class="sq-grid">
+    {SIDES.map((s) => (
+      <figure>
+        <div class="sq-shot"><img src={`${base}lab/ai-spacing/img/${s.file}.webp`} width="375" height={s.h} loading="lazy" alt={`${s.title}：${s.note}，「账户设置」页整页截图`} /></div>
+        <figcaption><b>{s.title}</b>{s.note}</figcaption>
+      </figure>
+    ))}
+  </div>
+  <p class="sx-cap">拉到 5 px 左右再看：左边每样东西之间都隔着差不多的距离，右边的昵称和 ID、标题和说明、输入框和提示各自抱成一团。</p>
+</squint-compare>
+
+<script>
+  class SquintCompare extends HTMLElement {
+    connectedCallback() {
+      const range = this.querySelector<HTMLInputElement>('input[type=range]')!
+      const out = this.querySelector('output')!
+      const quick = this.querySelector<HTMLButtonElement>('.sq-quick')!
+      const set = (v: number) => {
+        range.value = String(v)
+        out.value = `${v} px`
+        this.style.setProperty('--blur', `${v}px`)
+        quick.setAttribute('aria-pressed', String(v > 0))
+      }
+      range.addEventListener('input', () => set(Number(range.value)))
+      quick.addEventListener('click', () => set(Number(range.value) > 0 ? 0 : 5))
+    }
+  }
+  customElements.define('squint-compare', SquintCompare)
+</script>
+
+<style is:global>
+  .sq-ctrl { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; margin-bottom: 20px; }
+  .sq-blur { display: inline-flex; align-items: center; gap: 10px; color: var(--muted); font-size: 13px; }
+  .sq-blur input { width: 180px; accent-color: var(--brand); }
+  .sq-blur output { min-width: 3.4em; color: var(--strong); font: 500 13px/1 var(--mono); font-variant-numeric: tabular-nums; }
+  .sq-quick {
+    min-height: 34px;
+    padding: 0 14px;
+    border: 1px solid var(--line-hi);
+    border-radius: 10px;
+    background: var(--panel);
+    color: var(--strong);
+    font: 500 13px/1 var(--sans);
+    cursor: var(--cursor-pointer);
+    transition: border-color 0.2s var(--ease), background-color 0.2s var(--ease);
+  }
+  .sq-quick:hover { border-color: var(--brand); }
+  .sq-quick[aria-pressed="true"] { border-color: var(--brand); background: color-mix(in srgb, var(--brand) 14%, transparent); }
+  .sq-quick:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+  .sq-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-items: start; }
+  .sq-grid figure { margin: 0; }
+  .sq-shot { overflow: hidden; border-radius: 18px; background: #f4f5f7; box-shadow: 0 0 0 1px var(--line-hi), 0 24px 50px -30px rgba(0, 0, 0, 0.5); }
+  .sq-shot img { display: block; width: 100%; height: auto; filter: blur(var(--blur, 0px)); transition: filter 0.3s var(--ease); }
+  .sq-grid figcaption { display: flex; flex-wrap: wrap; gap: 4px 8px; margin-top: 10px; color: var(--muted); font-size: 13px; line-height: 1.5; }
+  .sq-grid figcaption b { color: var(--strong); font-weight: 600; }
+
+  @media (max-width: 640px) {
+    .sq-grid { gap: 10px; }
+    .sq-shot { border-radius: 12px; }
+    .sq-blur { flex: 1; }
+    .sq-blur input { flex: 1; width: auto; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sq-shot img { transition: none; }
+  }
+</style>

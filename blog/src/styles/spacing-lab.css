@@ -1,0 +1,54 @@
+/**
+ * 间距篇（ai-spacing）几个演示共用的颜色和版式。
+ * 全篇只有两种颜色的含义：蓝 = 按 CSS 量（写的），红 = 按墨迹量（看到的）
+ */
+:root {
+  --sx-w: #6ea8ff;
+  --sx-w-soft: rgba(110, 168, 255, 0.18);
+  --sx-s: #ff6b85;
+  --sx-s-soft: rgba(255, 107, 133, 0.2);
+  --sx-stage: color-mix(in srgb, var(--bg) 82%, #1a2233 18%);
+}
+:root[data-theme="light"] {
+  --sx-w: #2563eb;
+  --sx-w-soft: rgba(37, 99, 235, 0.12);
+  --sx-s: #e11d48;
+  --sx-s-soft: rgba(225, 29, 72, 0.12);
+  --sx-stage: #f3f5f8;
+}
+
+/* 演示组件多是自定义元素，默认 display: inline，padding 和边框会失效 */
+.sx-panel {
+  display: block;
+  margin: 2.4em 0;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--sx-stage);
+}
+.sx-cap { margin-top: 14px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+.sx-w { color: var(--sx-w); }
+.sx-s { color: var(--sx-s); }
+
+/* 分段按钮：几个演示共用 */
+.sx-seg { display: inline-flex; padding: 3px; border: 1px solid var(--line-hi); border-radius: 10px; background: var(--panel); }
+.sx-seg button {
+  min-height: 32px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted);
+  font: 500 13px/1 var(--sans);
+  cursor: var(--cursor-pointer);
+  transition: background-color 0.2s var(--ease), color 0.2s var(--ease);
+}
+.sx-seg button:hover { color: var(--strong); }
+.sx-seg button[aria-pressed="true"] { background: var(--panel-hi); color: var(--strong); box-shadow: inset 0 0 0 1px var(--line-hi); }
+.sx-seg button:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; }
+.sx-seg button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* 手机宽度下铺满屏幕：正文两边各有 16px 的页边距（[...slug].astro 的 .layout） */
+@media (max-width: 640px) {
+  .sx-bleed { margin-inline: -16px; padding-inline: 16px; border-inline: 0; border-radius: 0; }
+}
