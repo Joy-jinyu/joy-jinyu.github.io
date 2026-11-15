@@ -45,6 +45,31 @@ const options = [
 		document.querySelectorAll<JoyThemeSwitch>('joy-theme-switch').forEach((el) => el.sync(theme));
 	}
 
+	/**
+	 * 新主题从点击处以圆形扩散铺满全屏（View Transitions + clip-path），和简历页、博客同一套动效；
+	 * 看到的颜色不变（比如选“跟随系统”且系统正好是当前色）、不支持 View Transitions 或开了减少动效时直接切换
+	 */
+	function reveal(theme: Theme, from: HTMLElement, e?: MouseEvent) {
+		const root = document.documentElement;
+		const visible = theme === 'auto' ? systemTheme() : theme;
+		if (visible === root.dataset.theme || !document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) return applyTheme(theme);
+		const r = from.getBoundingClientRect();
+		const x = e?.detail ? e.clientX : r.left + r.width / 2;
+		const y = e?.detail ? e.clientY : r.top + r.height / 2;
+		const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+		root.classList.add('theme-reveal');
+		const t = document.startViewTransition(() => applyTheme(theme));
+		t.ready
+			.then(() => {
+				root.animate(
+					{ clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+					{ duration: 500, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', pseudoElement: '::view-transition-new(root)' },
+				);
+			})
+			.catch(() => {});
+		t.finished.finally(() => root.classList.remove('theme-reveal'));
+	}
+
 	matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => {
 		if (loadTheme() === 'auto') applyTheme('auto');
 	});
@@ -53,7 +78,7 @@ const options = [
 		connectedCallback() {
 			this.sync(loadTheme());
 			this.querySelectorAll<HTMLButtonElement>('button').forEach((btn) => {
-				btn.addEventListener('click', () => applyTheme(parseTheme(btn.dataset.value)));
+				btn.addEventListener('click', (e) => reveal(parseTheme(btn.dataset.value), btn, e));
 			});
 			// radiogroup 键盘约定：左右方向键切换并立即生效
 			this.addEventListener('keydown', (e) => {
@@ -61,8 +86,10 @@ const options = [
 				e.preventDefault();
 				const step = e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 1;
 				const next = order[(order.indexOf(loadTheme()) + step + order.length) % order.length]!;
-				applyTheme(next);
-				this.querySelector<HTMLButtonElement>(`button[data-value="${next}"]`)?.focus();
+				const target = this.querySelector<HTMLButtonElement>(`button[data-value="${next}"]`);
+				if (target) reveal(next, target);
+				else applyTheme(next);
+				target?.focus();
 			});
 		}
 		sync(theme: Theme) {
@@ -78,6 +105,12 @@ const options = [
 </script>
 
 <style>
+	/* 圆形扩散时关掉默认的交叉淡入，新画面由脚本用 clip-path 展开 */
+	:global(.theme-reveal::view-transition-old(root)),
+	:global(.theme-reveal::view-transition-new(root)) {
+		animation: none;
+		mix-blend-mode: normal;
+	}
 	.seg {
 		position: relative;
 		display: grid;

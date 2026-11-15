@@ -1,6 +1,6 @@
 # joy-jinyu.github.io
 
-个人站点，发布到 GitHub Pages：<https://joy-jinyu.github.io/>
+个人站点，发布到 GitHub Pages：<https://www.pairwise.site/>（自定义域名见 `site/CNAME`）
 
 | 路径 | 来源 | 说明 |
 | --- | --- | --- |
