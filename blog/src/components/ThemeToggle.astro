@@ -50,7 +50,8 @@
 </script>
 
 <style>
-  /* 圆形扩散时关掉默认的交叉淡入，新画面由脚本用 clip-path 展开 */
+  /* 圆形扩散时关掉默认的交叉淡入，新画面由脚本用 clip-path 展开；文章标题的 view-transition-name 是切页形变用的，换主题时撤掉，否则标题会单独瞬间切换 */
+  :global(.theme-reveal *) { view-transition-name: none !important; }
   :global(.theme-reveal::view-transition-old(root)),
   :global(.theme-reveal::view-transition-new(root)) { animation: none; mix-blend-mode: normal; }
   .theme {

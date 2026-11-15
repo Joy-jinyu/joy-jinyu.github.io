@@ -105,9 +105,17 @@ const options = [
 </script>
 
 <style>
-	/* 圆形扩散时关掉默认的交叉淡入，新画面由脚本用 clip-path 展开 */
+	/*
+	 * 圆形扩散时关掉默认的交叉淡入，新画面由脚本用 clip-path 展开。
+	 * 切页过渡给顶栏、侧边栏、目录、正文起了 view-transition-name，还隐藏了旧的 root 快照（theme.css）；
+	 * 换主题时这些都要撤掉，否则它们会单独截图、盖在圆圈上面瞬间切换，圆圈外面也看不到旧画面
+	 */
+	:global(.theme-reveal *) {
+		view-transition-name: none !important;
+	}
 	:global(.theme-reveal::view-transition-old(root)),
 	:global(.theme-reveal::view-transition-new(root)) {
+		display: block;
 		animation: none;
 		mix-blend-mode: normal;
 	}

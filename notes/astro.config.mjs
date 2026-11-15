@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config'
 import starlight from '@astrojs/starlight'
+import sitemap from '@astrojs/sitemap'
 import sidebar from './sidebar.mjs'
 
 export default defineConfig({
@@ -10,6 +11,14 @@ export default defineConfig({
   // 输出 xxx.html，保持和原 VuePress 一样的文章 URL
   build: { format: 'file' },
   integrations: [
+    // 自己挂 sitemap（Starlight 发现已有就不再挂默认的）：文章按 xxx.html 输出，站内链接和 canonical 都带 .html，
+    // 默认 sitemap 却写成不带后缀的地址，两个地址都能打开，搜索引擎会当成重复页面。这里改成和 canonical 一致
+    sitemap({
+      serialize(item) {
+        item.url = item.url.endsWith('/') ? `${item.url}index.html` : `${item.url}.html`
+        return item
+      },
+    }),
     starlight({
       title: 'Joy 的技术笔记',
       description: '前端工程师的技术笔记：JavaScript、框架、工程化、性能、浏览器与常用工具',
