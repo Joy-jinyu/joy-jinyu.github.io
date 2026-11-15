@@ -3,19 +3,18 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<script>document.documentElement.dataset.theme = new URLSearchParams(location.search).get("theme") === "light" ? "light" : "dark";
-if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("reveal-ready");</script>
+<script>document.documentElement.dataset.theme = new URLSearchParams(location.search).get("theme") === "light" ? "light" : "dark";</script>
 <script src="/notes/hero-bg.js" defer></script>
 <!-- 右下角 3D 小猫（three.js），只在简历页 -->
-<script type="module" src="/pet.js"></script>
+<script type="module" src="/pet.js?v=8"></script>
 <title>Joy · AI 应用前端工程师</title>
 <link rel="icon" type="image/png" href="/favicon.png" />
+<link rel="preload" as="image" href="/favicon.png" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <!-- 字体按 text= 子集化，只下页面（含 pet.js 气泡文案）用到的非中文字符；中文走系统字体。改文案时新增的英文 / 数字 / 符号要补进 text=，否则该字会回退成系统字体 -->
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=block&text=%20%25%27%2B%2C-.%2F0123456789%40ABCDEFGHIJKLMNOPQRSTUVWZ_abcdefghijklmnoprstuvwxyz%C2%B7%C3%97%E2%80%93%E2%80%94%E2%86%97%E2%8C%98%E2%9D%AF" rel="stylesheet" />
-<link href="https://fonts.googleapis.com/css2?family=Mrs+Saint+Delafield&display=block&text=Joy" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=optional&text=%20%25%27%2B%2C-.%2F0123456789%40ABCDEFGHIJKLMNOPQRSTUVWZ_abcdefghijklmnoprstuvwxyz%C2%B7%C3%97%E2%80%93%E2%80%94%E2%86%97%E2%8C%98%E2%9D%AF" rel="stylesheet" />
 <style>
   :root {
     --bg: #07090f;
@@ -104,12 +103,8 @@ if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: re
   }
   .hero > * { position: relative; }
   /* 签名 Logo：占据 rail 列，与下方各节编号同一竖线对齐 */
-  .sig { position: relative; width: var(--rail); height: var(--rail); border-radius: 22px; padding: 1.5px; background: conic-gradient(from 200deg, var(--brand), var(--brand-2), rgba(var(--ink-rgb), .15), var(--brand)); box-shadow: 0 10px 40px -8px var(--brand-glow); }
-  .sig .in { position: relative; width: 100%; height: 100%; border-radius: 20.5px; overflow: hidden; display: grid; place-items: center;
-    background: radial-gradient(80% 70% at 30% 20%, rgba(94,234,212,.18), transparent 70%), linear-gradient(160deg, var(--sig-a), var(--sig-b)); }
-  .sig .in::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, transparent 10%, var(--sig-fade) 78%), linear-gradient(rgba(var(--ink-rgb), .05) 1px, transparent 1px) 0 0 / 11px 11px, linear-gradient(90deg, rgba(var(--ink-rgb), .05) 1px, transparent 1px) 0 0 / 11px 11px; }
-  .sig .name { position: relative; margin: -6px 0 0 -4px; font: 400 60px/1 "Mrs Saint Delafield", cursive; letter-spacing: 0; transform: rotate(-8deg);
-    background: linear-gradient(110deg, var(--hi-1) 25%, var(--hi-2) 55%, var(--brand) 95%); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 0 8px rgba(94,234,212,.35)); }
+  .sig { position: relative; width: var(--rail); height: var(--rail); border-radius: 22px; box-shadow: 0 10px 40px -8px var(--brand-glow); }
+  .sig img { display: block; width: 100%; height: 100%; border-radius: inherit; }
   .id { position: relative; align-self: center; }
   .eyebrow { font: 500 9.5px/1 var(--mono); letter-spacing: 0.22em; color: var(--brand-2); text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
   .eyebrow::before { content: ""; width: 18px; height: 1px; background: var(--brand-2); }
@@ -203,30 +198,28 @@ if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: re
   .site-nav { position: fixed; top: 16px; right: 16px; z-index: 10; display: flex; gap: 8px; font: 500 11px/1 var(--mono); }
   .site-nav a { padding: 7px 11px; border-radius: 999px; color: var(--strong); border: 1px solid var(--line-hi); background: rgba(var(--ink-rgb), .06); backdrop-filter: blur(8px); }
   .site-nav a:hover { border-color: var(--brand); color: var(--brand-2); }
+  #pet-launcher { position: fixed; right: 18px; bottom: 18px; z-index: 21; height: 32px; padding: 0 12px; border: 1px solid var(--line-hi); border-radius: 999px; background: color-mix(in srgb, var(--bg) 80%, transparent); color: var(--muted); font: 500 12px/1 var(--mono); cursor: pointer; }
+  #pet-launcher:hover { color: var(--brand-2); border-color: var(--brand); }
   @media print { .site-nav { display: none; } }
+  @media print { #pet-launcher { display: none; } }
   @media screen and (max-width: 820px) { body { padding-top: 48px; } .site-nav { position: absolute; top: 10px; } }
 
   /* 纸面外的动态背景：hero-bg 组件（与笔记站共用 /notes/hero-bg.js）。组件注入的样式只铺首屏，这里改成固定铺满视口；打印时组件自己会隐藏 */
   body > hero-bg { position: fixed; inset: 0; height: 100vh; max-height: none; z-index: -1; -webkit-mask-image: none; mask-image: none; }
 
-  /*
-   * 屏幕上纸面半透明 + 毛玻璃，让背景动画透出来；打印 / 导出 PDF 仍用上面的不透明底色，不受影响。
-   * 头部网格原来靠「用 --bg 盖住边缘」做渐隐，纸面透明后会露出一块实色矩形，这里改用 mask 渐隐
-   */
+  /* 屏幕上纸面保留少量透明度，避免整页毛玻璃随着背景动画逐帧重绘；打印仍用不透明底色。 */
   @media screen {
     .page {
       background:
         radial-gradient(700px 360px at 88% -6%, rgba(0, 184, 184, 0.16), transparent 62%),
         radial-gradient(520px 300px at -10% 104%, rgba(94, 234, 212, 0.07), transparent 60%),
-        color-mix(in srgb, var(--bg) 60%, transparent);
-      -webkit-backdrop-filter: blur(4px) saturate(130%);
-      backdrop-filter: blur(4px) saturate(130%);
+        color-mix(in srgb, var(--bg) 88%, transparent);
     }
     :root[data-theme="light"] .page {
       background:
         radial-gradient(700px 360px at 88% -6%, rgba(0, 184, 184, 0.10), transparent 62%),
         radial-gradient(520px 300px at -10% 104%, rgba(0, 184, 184, 0.05), transparent 60%),
-        color-mix(in srgb, var(--bg) 65%, transparent);
+        color-mix(in srgb, var(--bg) 90%, transparent);
     }
     .hero::before {
       background:
@@ -238,20 +231,22 @@ if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: re
   }
 
   /*
-   * 入场动画：只在屏幕上、且 head 脚本加了 .reveal-ready 时才先隐藏再淡入；
-   * 打印 / 导出 PDF、没有 JS、要求减少动效时内容始终直接可见
+   * 鼠标悬停时纸面 3D 倾斜 + 跟随指针的柔光。角度由下方脚本按指针位置写进 transform 和 --gx / --gy / --glare；
+   * 只在有鼠标的设备上生效，触屏、减少动效、打印都不受影响
    */
-  @media screen {
-    .reveal-ready .page { opacity: 0; transform: translateY(28px) scale(0.985); transition: opacity 0.7s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1); }
-    .reveal-ready .page.is-in { opacity: 1; transform: none; }
-    /* 要入场的元素直接用选择器命中，首帧就是隐藏状态；JS 只负责写 --i（错峰序号），不能靠 JS 打标记，否则会先显示再淡出 */
-    /* 不做 blur 渐显：几十个元素同时过渡 filter 会逐帧重新栅格化，叠加纸面 backdrop-filter 时入场明显掉帧；opacity / transform 只走合成 */
-    .reveal-ready :is(.sig, .eyebrow, .id h1, .prompt, .contact, .kpi, section > .rail, .hl .card, .sk, .proj, .job) { opacity: 0; transform: translateY(12px); transition: opacity 0.6s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1); transition-delay: calc(var(--i, 0) * 60ms + 180ms); }
-    .reveal-ready .page .sig { transform: scale(0.7) rotate(-12deg); } /* 加 .page 才能压过上一条 :is() 的优先级 */
-    .reveal-ready .is-in :is(.sig, .eyebrow, .id h1, .prompt, .contact, .kpi, section > .rail, .hl .card, .sk, .proj, .job) { opacity: 1; transform: none; }
-    .reveal-ready .meter i.on { transform: scaleX(0); transform-origin: left; transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1); transition-delay: calc(var(--i, 0) * 60ms + 420ms + var(--j, 0) * 70ms); }
-    .reveal-ready .is-in .meter i.on { transform: none; }
+  @media screen and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .page.tilting { will-change: transform; }
+    .page::after {
+      content: ""; position: absolute; inset: 0; z-index: 5; pointer-events: none; border-radius: inherit;
+      background: radial-gradient(600px circle at var(--gx, 50%) var(--gy, 30%), rgba(94, 234, 212, 0.09), rgba(255, 255, 255, 0.025) 40%, transparent 70%);
+      opacity: var(--glare, 0);
+    }
+    :root[data-theme="light"] .page::after {
+      background: radial-gradient(600px circle at var(--gx, 50%) var(--gy, 30%), rgba(255, 255, 255, 0.55), rgba(0, 184, 184, 0.04) 40%, transparent 70%);
+    }
   }
+  @media print { .page { transform: none !important; } .page::after { display: none !important; } }
+
 </style>
 </head>
 <body>
@@ -261,6 +256,7 @@ if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: re
   <a href="/blog/">Blog ↗</a>
   <a href="/notes/">Notes ↗</a>
 </nav>
+<button id="pet-launcher" type="button" aria-label="叫小猫出来" hidden>🐾 猫</button>
 <script>
   if (document.documentElement.dataset.theme === "light") {
     var t = document.getElementById("theme-toggle"); t.href = "./"; t.textContent = "Dark";
@@ -273,35 +269,69 @@ if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: re
   addEventListener("DOMContentLoaded", fitPage);
   addEventListener("resize", fitPage);
 
-  // 入场动画：每页的元素按顺序编号（--i 控制错峰），页面进入视口时加 .is-in 触发过渡
+  // 纸面倾斜：鼠标在纸面上时，按指针相对“可见部分中心”的位置绕该点做 3D 倾斜，离开时缓缓回正
   addEventListener("DOMContentLoaded", function () {
-    if (!document.documentElement.classList.contains("reveal-ready")) return;
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); } });
-    }, { threshold: 0.12 });
-    document.querySelectorAll(".page").forEach(function (page) {
-      // 选择器与 <style> 里入场动画的 :is(...) 列表保持一致
-      var items = page.querySelectorAll(".sig, .eyebrow, .id h1, .prompt, .contact, .kpi, section > .rail, .hl .card, .sk, .proj, .job");
-      items.forEach(function (el, i) {
-        el.style.setProperty("--i", Math.min(i, 18));
-        el.querySelectorAll(".meter i.on").forEach(function (bar, j) { bar.style.setProperty("--i", Math.min(i, 18)); bar.style.setProperty("--j", j); });
+    if (!matchMedia("(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)").matches) return;
+    var MAX_X = 2.2, MAX_Y = 3.2; // 最大倾斜角（度）：纸面很高，角度要克制
+    var pages = [].slice.call(document.querySelectorAll(".page"));
+    var pointer = null; // 最后一次指针位置（视口坐标）
+    var raf = 0;
+    var states = pages.map(function (el) { return { el: el, rx: 0, ry: 0, g: 0, tx: 0, ty: 0, tg: 0, on: false }; });
+
+    function target(s) {
+      var r = s.el.getBoundingClientRect();
+      var inside = pointer && pointer.x >= r.left && pointer.x <= r.right && pointer.y >= r.top && pointer.y <= r.bottom;
+      if (!inside) { s.tx = 0; s.ty = 0; s.tg = 0; return; }
+      // 以纸面在视口里可见的那一段为准，长纸面滚到哪里都以眼前这块为中心
+      var top = Math.max(r.top, 0), bottom = Math.min(r.bottom, innerHeight);
+      var nx = (pointer.x - r.left) / r.width * 2 - 1;
+      var ny = (pointer.y - (top + bottom) / 2) / Math.max(1, (bottom - top) / 2);
+      s.ty = Math.max(-1, Math.min(1, nx)) * MAX_Y;
+      s.tx = -Math.max(-1, Math.min(1, ny)) * MAX_X;
+      s.tg = 1;
+      s.origin = ((top + bottom) / 2 - r.top) / r.height * 100;
+      s.el.style.setProperty("--gx", (pointer.x - r.left) / r.width * 100 + "%");
+      s.el.style.setProperty("--gy", (pointer.y - r.top) / r.height * 100 + "%");
+    }
+    function frame() {
+      raf = 0;
+      var moving = false;
+      states.forEach(function (s) {
+        target(s);
+        s.rx += (s.tx - s.rx) * 0.12;
+        s.ry += (s.ty - s.ry) * 0.12;
+        s.g += (s.tg - s.g) * 0.12;
+        var settled = Math.abs(s.rx - s.tx) < 0.005 && Math.abs(s.ry - s.ty) < 0.005 && Math.abs(s.g - s.tg) < 0.005;
+        if (!settled) moving = true;
+        var rest = settled && s.tg === 0;
+        if (rest) {
+          // 回正后去掉 transform，文字保持清晰
+          if (s.on) { s.el.style.transform = ""; s.el.style.transformOrigin = ""; s.el.style.setProperty("--glare", 0); s.el.classList.remove("tilting"); s.on = false }
+          s.rx = s.ry = s.g = 0;
+          return;
+        }
+        s.on = true;
+        s.el.classList.add("tilting");
+        if (s.origin != null) s.el.style.transformOrigin = "50% " + s.origin + "%";
+        s.el.style.transform = "perspective(2400px) rotateX(" + s.rx.toFixed(3) + "deg) rotateY(" + s.ry.toFixed(3) + "deg) scale(" + (1 + s.g * 0.006).toFixed(4) + ")";
+        s.el.style.setProperty("--glare", s.g.toFixed(3));
       });
-    });
-    // 字体用的是 display=block，字体到之前文字不可见；等字体下载完再开始入场，否则动画在看不见的时候就播完了（最多等 1.5s）。
-    // 不能只等 document.fonts.ready：DOM 刚就绪时字体可能还没开始请求，它会立即 resolve，所以显式 load 用到的字体
-    // 子集字体带 unicode-range，load 必须传实际文字，默认的空格匹配不到签名字体（它只有 Joy 三个字）
-    var fonts = Promise.all([['700 50px Geist', 'Joy'], ['500 13px "Geist Mono"', 'AI'], ['400 60px "Mrs Saint Delafield"', 'Joy']].map(function (f) { return document.fonts.load(f[0], f[1]); }));
-    Promise.race([fonts, new Promise(function (r) { setTimeout(r, 1500); })]).catch(function () {}).then(function () {
-      document.querySelectorAll(".page").forEach(function (page) { io.observe(page); });
-    });
+      if (moving) raf = requestAnimationFrame(frame);
+    }
+    function kick() { if (!raf) raf = requestAnimationFrame(frame); }
+    addEventListener("pointermove", function (e) { if (e.pointerType === "mouse") { pointer = { x: e.clientX, y: e.clientY }; kick(); } }, { passive: true });
+    addEventListener("scroll", kick, { passive: true });
+    document.documentElement.addEventListener("pointerleave", function () { pointer = null; kick(); });
+    addEventListener("blur", function () { pointer = null; kick(); });
   });
+
 </script>
 
 <!-- ===================== PAGE 1 ===================== -->
 <main class="page">
 
   <header class="hero">
-    <div class="sig" role="img" aria-label="Joy 签名 Logo"><div class="in"><span class="name">Joy</span></div></div>
+    <div class="sig" role="img" aria-label="Joy 签名 Logo"><img src="/favicon.png" alt="" width="92" height="92" fetchpriority="high" /></div>
     <div class="id">
       <div class="eyebrow">AI Application Frontend Engineer</div>
       <h1>Joy</h1>
