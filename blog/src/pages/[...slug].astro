@@ -17,7 +17,12 @@ const minutes = readingMinutes(post.body)
 const base = import.meta.env.BASE_URL
 ---
 
-<Base title={`${post.data.title} · Joy`} description={post.data.description} bgIntensity={0.32}>
+<Base
+  title={`${post.data.title} · Joy`}
+  description={post.data.description}
+  bgIntensity={0.32}
+  article={{ published: post.data.date, updated: post.data.updated, tags: post.data.tags }}
+>
   <div class="progress" aria-hidden="true"><span></span></div>
   <div class="layout">
     <aside class="side">

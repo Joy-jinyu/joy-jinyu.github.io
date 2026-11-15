@@ -3,9 +3,11 @@ import mdx from '@astrojs/mdx'
 import expressiveCode from 'astro-expressive-code'
 import { satteri } from '@astrojs/markdown-satteri'
 import { tableWrap } from './src/lib/satteri-prose.mjs'
+import sitemap from '@astrojs/sitemap'
 
 export default defineConfig({
-  site: 'https://joy-jinyu.github.io',
+  // 正式域名（site/CNAME）：canonical、sitemap 都用它；github.io 会 301 跳过来
+  site: 'https://www.pairwise.site',
   // 博客挂在 /blog/ 子路径下，根路径是简历页（site/index.html），/notes/ 是笔记站
   base: '/blog',
   trailingSlash: 'always',
@@ -33,5 +35,6 @@ export default defineConfig({
       },
     }),
     mdx(),
+    sitemap(),
   ],
 })

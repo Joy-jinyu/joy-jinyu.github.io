@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 全站 sitemap 入口：简历首页 + 博客、笔记站各自由 @astrojs/sitemap 生成的 sitemap -->
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap><loc>https://www.pairwise.site/sitemap-home.xml</loc></sitemap>
+  <sitemap><loc>https://www.pairwise.site/blog/sitemap-index.xml</loc></sitemap>
+  <sitemap><loc>https://www.pairwise.site/notes/sitemap-index.xml</loc></sitemap>
+</sitemapindex>

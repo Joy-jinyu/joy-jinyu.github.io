@@ -3,15 +3,16 @@ import starlight from '@astrojs/starlight'
 import sidebar from './sidebar.mjs'
 
 export default defineConfig({
-  site: 'https://joy-jinyu.github.io',
+  // 正式域名（site/CNAME）：canonical、sitemap 都用它；github.io 会 301 跳过来
+  site: 'https://www.pairwise.site',
   // 笔记站挂在 /notes/ 子路径下，根路径留给简历页（site/index.html）
   base: '/notes',
   // 输出 xxx.html，保持和原 VuePress 一样的文章 URL
   build: { format: 'file' },
   integrations: [
     starlight({
-      title: '有爱心安 - 花期',
-      description: '杂乱无章的技术博客',
+      title: 'Joy 的技术笔记',
+      description: '前端工程师的技术笔记：JavaScript、框架、工程化、性能、浏览器与常用工具',
       locales: { root: { label: '简体中文', lang: 'zh-CN' } },
       // 站点图标：简历页里的 Joy 签名头像（同一份图也放在 site/ 给简历页用）
       favicon: '/favicon.png',
@@ -39,6 +40,11 @@ export default defineConfig({
             "try{for(const p of ['sidebar','toc'])if(localStorage.getItem('joy-'+p)==='collapsed')document.documentElement.dataset[p]='collapsed'}catch{}",
         },
         { tag: 'link', attrs: { rel: 'apple-touch-icon', href: '/notes/apple-touch-icon.png' } },
+        // 分享卡片的图片（site/og.png，部署后在站点根目录）
+        { tag: 'meta', attrs: { property: 'og:image', content: 'https://www.pairwise.site/og.png' } },
+        { tag: 'meta', attrs: { property: 'og:image:width', content: '1200' } },
+        { tag: 'meta', attrs: { property: 'og:image:height', content: '630' } },
+        { tag: 'meta', attrs: { name: 'twitter:image', content: 'https://www.pairwise.site/og.png' } },
         // 全站动态背景：waves 场景，组件拷贝自 learning/html（public/hero-bg.js），铺满视口的样式见 theme.css
         { tag: 'script', attrs: { src: '/notes/hero-bg.js', defer: true } },
         {

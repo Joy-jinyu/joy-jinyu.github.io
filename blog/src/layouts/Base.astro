@@ -8,10 +8,14 @@ interface Props {
   description: string
   /** hero-bg 的强度：文章页压低一点，避免干扰阅读 */
   bgIntensity?: number
+  /** 文章页传入：og:type 变成 article，并带上发布 / 更新时间和标签 */
+  article?: { published: Date; updated?: Date; tags?: string[] }
 }
-const { title, description, bgIntensity = 0.55 } = Astro.props
+const { title, description, bgIntensity = 0.55, article } = Astro.props
 const base = import.meta.env.BASE_URL
 const canonical = new URL(Astro.url.pathname, Astro.site)
+// 分享卡片的图片：site/og.png，部署后在站点根目录
+const ogImage = new URL('/og.png', Astro.site)
 ---
 
 <!doctype html>
@@ -22,9 +26,24 @@ const canonical = new URL(Astro.url.pathname, Astro.site)
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <link rel="sitemap" href={`${base}sitemap-index.xml`} />
+    <meta name="author" content="Joy" />
+    <meta property="og:site_name" content="Pairwise" />
+    <meta property="og:locale" content="zh_CN" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="article" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    {article && <meta property="article:published_time" content={article.published.toISOString()} />}
+    {article?.updated && <meta property="article:modified_time" content={article.updated.toISOString()} />}
+    {article?.tags?.map((t) => <meta property="article:tag" content={t} />)}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     {/* 首帧前恢复主题，避免闪烁；和笔记站共用 starlight-theme 这个 key，两边切换互相同步 */}
