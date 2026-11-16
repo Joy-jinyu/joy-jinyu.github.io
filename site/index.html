@@ -139,11 +139,12 @@
   .page + .page section + section { margin-top: 20px; }
   .page + .page .job { padding-bottom: 12px; }
   .page + .page .proj + .proj { margin-top: 12px; }
-  .page + .page section:last-child { margin-top: auto; }
   @media screen {
     body { padding: 32px 0; }
     .page { box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(var(--ink-rgb), 0.06); border-radius: 10px; }
     .page + .page { margin-top: 32px; }
+    /* 最后一页内容不满一页，屏幕上按内容收高，打印仍是 A4 */
+    .page:last-of-type { height: auto; }
   }
 
   /* ---------- header ---------- */
@@ -469,6 +470,7 @@
     </div>
   </section>
 
+  <!-- 暂时隐藏；恢复时直接 git revert 隐藏这段经历的那次提交（版面是一起调整的）
   <section>
     <div class="rail"><div class="no">03</div><h2>项目经历</h2><div class="en">Projects</div></div>
     <div>
@@ -488,6 +490,31 @@
       </article>
     </div>
   </section>
+  -->
+
+  <section>
+    <div class="rail"><div class="no">03</div><h2>工作经历</h2><div class="en">Experience</div></div>
+    <div>
+      <!-- 暂时隐藏；恢复时直接 git revert 隐藏这段经历的那次提交（版面是一起调整的）
+      <div class="job">
+        <h3>某港美股互联网券商 <span>· 前端开发工程师（Infra 方向）</span></h3><span class="date">2025.05 — NOW</span>
+        <div class="body"><p>负责公司 AI Agent 投资平台的前端基建与核心功能（详见项目经历），平台覆盖 Web、移动 Web 与 App 内嵌页。</p><ul class="ticks"><li><b>前端基建</b>：维护对话、富文本编辑等基础 npm 包，供多个业务接入；统一组件层与设计 token。</li><li><b>业务交付</b>：交付工作空间与成员协作、AI 记忆与偏好、Workflow 与 MCP 连接器管理、分享等功能。</li></ul></div>
+      </div>
+      -->
+      <div class="job">
+        <h3>成都牛投邦科技咨询有限公司 <span>· 前端开发工程师（技术研发中心）</span></h3><span class="date">2022.12 — 2025.05</span>
+        <div class="body"><p>为大型金融机构和全国性财富管理机构提供营销与数字化解决方案，产品形态包括小程序、服务号、App 与 Web。</p><ul class="ticks"><li><b>多业务线交付</b>：负责「亮点系统」核心开发；参与富国、广发、永赢等业务线开发，沉淀通用组件库，提升代码复用率。</li><li><b>技术预研与升级</b>：预研并落地 Word 文档生成、PPT 导入等功能；推动老项目升级到 Vue3、改造为 React Hooks 写法，并在团队内分享。</li></ul></div>
+      </div>
+      <div class="job">
+        <h3>成都斯达领科网络科技有限公司 <span>· 前端开发工程师（技术研发中心）</span></h3><span class="date">2020.11 — 2022.10</span>
+        <div class="body"><p>为业务部门的内部系统和跨境电商商城提供前端技术支持。</p><ul class="ticks"><li><b>系统建设</b>：ERP 中 PDM 模块核心开发者；参与 SRM 系统从 0 到 1 的建设；全程参与 Vivaia 商城重构。</li><li><b>团队基建</b>：基于业务实践提炼通用基础函数与组件库，推动团队内统一使用；负责新人入职带教。</li></ul></div>
+      </div>
+      <div class="job">
+        <h3>珠海格力电器股份有限公司 <span>· 前端全栈开发工程师（计算机中心）</span></h3><span class="date">2017.06 — 2020.11</span>
+        <div class="body"><p>为合同管理、绩效管理等内部系统及公司电商平台提供技术支持。</p><ul class="ticks"><li><b>核心项目</b>：担任公司核心项目「格力万人万店」的核心开发者。</li><li><b>研发效能</b>：推动从 Eclipse 迁移到 IDEA / VS Code，引入 Jenkins 持续集成，推广 Spring Boot + Vue 技术体系。</li></ul></div>
+      </div>
+    </div>
+  </section>
 
 </main>
 
@@ -495,7 +522,7 @@
 <main class="page">
 
   <section style="border-top: 0; padding-top: 6px;">
-    <div class="rail" aria-hidden="true"></div>
+    <div class="rail"><div class="no">04</div><h2>项目经历</h2><div class="en">Projects</div></div>
     <div>
       <article class="proj">
         <div class="ph"><h3>亮点系统 · 低代码平台</h3><span class="date">2022.12 — 2025.05</span></div>
@@ -519,28 +546,6 @@
         </ul>
         <div class="stack"><span>Vue</span><span>Nuxt</span><span>React</span><span>Node.js</span><span>TypeScript</span><span>Sass</span></div>
       </article>
-    </div>
-  </section>
-
-  <section>
-    <div class="rail"><div class="no">04</div><h2>工作经历</h2><div class="en">Experience</div></div>
-    <div>
-      <div class="job">
-        <h3>某港美股互联网券商 <span>· 前端开发工程师（Infra 方向）</span></h3><span class="date">2025.05 — NOW</span>
-        <div class="body"><p>负责公司 AI Agent 投资平台的前端基建与核心功能（详见项目经历），平台覆盖 Web、移动 Web 与 App 内嵌页。</p><ul class="ticks"><li><b>前端基建</b>：维护对话、富文本编辑等基础 npm 包，供多个业务接入；统一组件层与设计 token。</li><li><b>业务交付</b>：交付工作空间与成员协作、AI 记忆与偏好、Workflow 与 MCP 连接器管理、分享等功能。</li></ul></div>
-      </div>
-      <div class="job">
-        <h3>成都牛投邦科技咨询有限公司 <span>· 前端开发工程师（技术研发中心）</span></h3><span class="date">2022.12 — 2025.05</span>
-        <div class="body"><p>为大型金融机构和全国性财富管理机构提供营销与数字化解决方案，产品形态包括小程序、服务号、App 与 Web。</p><ul class="ticks"><li><b>多业务线交付</b>：负责「亮点系统」核心开发；参与富国、广发、永赢等业务线开发，沉淀通用组件库，提升代码复用率。</li><li><b>技术预研与升级</b>：预研并落地 Word 文档生成、PPT 导入等功能；推动老项目升级到 Vue3、改造为 React Hooks 写法，并在团队内分享。</li></ul></div>
-      </div>
-      <div class="job">
-        <h3>成都斯达领科网络科技有限公司 <span>· 前端开发工程师（技术研发中心）</span></h3><span class="date">2020.11 — 2022.10</span>
-        <div class="body"><p>为业务部门的内部系统和跨境电商商城提供前端技术支持。</p><ul class="ticks"><li><b>系统建设</b>：ERP 中 PDM 模块核心开发者；参与 SRM 系统从 0 到 1 的建设；全程参与 Vivaia 商城重构。</li><li><b>团队基建</b>：基于业务实践提炼通用基础函数与组件库，推动团队内统一使用；负责新人入职带教。</li></ul></div>
-      </div>
-      <div class="job">
-        <h3>珠海格力电器股份有限公司 <span>· 前端全栈开发工程师（计算机中心）</span></h3><span class="date">2017.06 — 2020.11</span>
-        <div class="body"><p>为合同管理、绩效管理等内部系统及公司电商平台提供技术支持。</p><ul class="ticks"><li><b>核心项目</b>：担任公司核心项目「格力万人万店」的核心开发者。</li><li><b>研发效能</b>：推动从 Eclipse 迁移到 IDEA / VS Code，引入 Jenkins 持续集成，推广 Spring Boot + Vue 技术体系。</li></ul></div>
-      </div>
     </div>
   </section>
 
