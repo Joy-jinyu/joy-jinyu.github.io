@@ -1,0 +1,97 @@
+---
+/**
+ * 写的 → 看到的：五处间距、三份页面，每行一个蓝点（按 CSS 量）和一个红点（按墨迹量）。
+ * 斜纹是「写 0 也去不掉的部分」：第 1 份把这些间距改成 0 以后（settings1-zero.html）量到的值，只画在第 1 份那一行。
+ * 数据来自 blog/public/lab/ai-spacing/data/relations.json，构建时生成，不需要脚本。
+ */
+import '../styles/spacing-lab.css'
+import rel from '../../public/lab/ai-spacing/data/relations.json'
+
+type Rel = { name: string; written: number; seen: number }
+const pages = rel as unknown as { file: string; relations: Rel[] }[]
+const get = (file: string, name: string) => pages.find((p) => p.file === file)!.relations.find((r) => r.name === name)!
+
+const MAX = 30
+const GROUPS = [
+  { name: '「邮件摘要」和它的说明', label: '标题 → 说明', kind: '组内' },
+  { name: '说明和下一行', label: '说明 → 下一行', kind: '组间' },
+  { name: '昵称和 ID', label: '昵称 → ID', kind: '组内' },
+  { name: '分组标题「通知」和它的分组', label: '分组标题 → 卡片', kind: '组内' },
+  { name: '分组标题「通知」和上一块', label: '分组之间', kind: '组间' },
+].map((g) => {
+  const zero = get('settings1-zero.html', g.name)
+  return {
+    ...g,
+    floor: zero.written === 0 ? zero.seen : null,
+    rows: ['settings1.html', 'settings2.html', 'settings3.html'].map((f, i) => ({ run: i + 1, ...get(f, g.name) })),
+  }
+})
+const at = (v: number) => `${(Math.min(v, MAX) / MAX) * 100}%`
+const fmt = (v: number) => String(Math.round(v * 10) / 10)
+---
+
+<figure class="gd sx-panel not-prose">
+  <div class="gd-legend" aria-hidden="true">
+    <span><i class="gd-key is-w"></i>写的（按 CSS 量）</span>
+    <span><i class="gd-key is-s"></i>看到的（按墨迹量）</span>
+    <span><i class="gd-key is-floor"></i>写 0 也去不掉的部分（第 1 份）</span>
+  </div>
+  <div class="gd-scale" aria-hidden="true">
+    {[0, 5, 10, 15, 20, 25, 30].map((v) => <span style={`left:${at(v)}`}>{v}</span>)}
+  </div>
+  {GROUPS.map((g) => (
+    <section class="gd-g">
+      <p class="gd-h">{g.label}<small>{g.kind}</small></p>
+      {g.rows.map((r) => (
+        <div class="gd-row">
+          <span class="gd-run">第 {r.run} 份</span>
+          <div class="gd-track" role="img" aria-label={`${g.label}，第 ${r.run} 份：写 ${fmt(r.written)} px，看到 ${fmt(r.seen)} px`}>
+            {g.floor != null && r.run === 1 && <i class="gd-floor" style={`width:${at(g.floor)}`} />}
+            <i class="gd-line" style={`left:${at(r.written)};width:calc(${at(r.seen)} - ${at(r.written)})`} />
+            <i class="gd-dot is-w" style={`left:${at(r.written)}`} />
+            <i class="gd-dot is-s" style={`left:${at(r.seen)}`} />
+            <span class="gd-val" style={`left:${at(r.seen)}`}><b class="sx-w">{fmt(r.written)}</b> → <b class="sx-s">{fmt(r.seen)}</b></span>
+          </div>
+        </div>
+      ))}
+    </section>
+  ))}
+  <figcaption class="sx-cap">
+    单位 px。图里这几处间距都多出差不多的一截：两行字之间多 6–9.5 px，文字和分隔线、卡片边之间多 2.3–3 px。大间距多这一截不显眼，
+    小间距被放大了好几倍。斜纹只画在第 1 份那一行：把第 1 份的这些间距全改成 0 以后，看到的还有这么多。
+  </figcaption>
+</figure>
+
+<style is:global>
+  .gd { margin-inline: 0; }
+  .gd-legend { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-bottom: 18px; color: var(--muted); font-size: 13px; }
+  .gd-legend span { display: inline-flex; align-items: center; gap: 8px; }
+  .gd-key { display: inline-block; width: 10px; height: 10px; border-radius: 50%; }
+  .gd-key.is-w { background: var(--sx-w); }
+  .gd-key.is-s { background: var(--sx-s); }
+  .gd-key.is-floor { width: 18px; height: 10px; border-radius: 3px; background: repeating-linear-gradient(-45deg, var(--line-hi) 0 2px, transparent 2px 5px); }
+
+  /* 左边 76px 放「第 n 份」，刻度和轨道都从这里起算，右边留 70px 给读数 */
+  .gd-scale, .gd-track { position: relative; margin-left: 76px; margin-right: 70px; }
+  .gd-scale { height: 16px; color: var(--muted); font: 500 11px/1 var(--mono); }
+  .gd-scale span { position: absolute; transform: translateX(-50%); }
+  .gd-g + .gd-g { margin-top: 14px; }
+  .gd-h { display: flex; align-items: baseline; gap: 8px; margin: 10px 0 4px; color: var(--strong); font: 600 14px/1.4 var(--sans); }
+  .gd-h small { color: var(--muted); font: 500 11px/1 var(--mono); }
+  .gd-row { display: flex; align-items: center; height: 24px; }
+  .gd-run { flex: none; width: 76px; color: var(--muted); font-size: 12px; }
+  .gd-row .gd-track { flex: 1; height: 100%; margin-left: 0; background: linear-gradient(var(--line), var(--line)) 0 50% / 100% 1px no-repeat; }
+  .gd-floor { position: absolute; top: 5px; bottom: 5px; left: 0; border-radius: 3px; background: repeating-linear-gradient(-45deg, var(--line-hi) 0 2px, transparent 2px 5px); }
+  .gd-line { position: absolute; top: 50%; height: 2px; margin-top: -1px; background: linear-gradient(90deg, var(--sx-w), var(--sx-s)); }
+  .gd-dot { position: absolute; top: 50%; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; box-shadow: 0 0 0 2px var(--sx-stage); }
+  .gd-dot.is-w { background: var(--sx-w); }
+  .gd-dot.is-s { background: var(--sx-s); }
+  .gd-val { position: absolute; top: 50%; margin-left: 10px; transform: translateY(-50%); color: var(--muted); font: 500 12px/1 var(--mono); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .gd-val b { font-weight: 600; }
+
+  @media (max-width: 640px) {
+    .gd-scale, .gd-track { margin-left: 52px; margin-right: 64px; }
+    .gd-run { width: 52px; font-size: 11px; }
+    .gd-val { font-size: 11px; }
+  }
+</style>

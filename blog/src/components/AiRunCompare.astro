@@ -1,0 +1,202 @@
+---
+/**
+ * 实测对照：iframe 里加载 AI 三次生成的原样 HTML（blog/public/lab/ai-ui-taste/），可切换第几次、浅色 / 深色、是否套用修正。
+ * 修正在原文件后面追加一段 CSS，并在 iframe 的 CSSOM 里把 :hover 规则挪进 @media (hover: hover)，原文件不改；下方读数从 iframe 里实时量出来。
+ * 用法：放在 <Figure> 里，渐变底和说明由 Figure 提供
+ */
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/')
+---
+
+<ai-run-compare class="arc" data-base={`${base}lab/ai-ui-taste/`}>
+  <iframe class="arc-frame" title="AI 生成的团队空间卡片" loading="lazy"></iframe>
+
+  <div class="arc-controls">
+    <div class="arc-seg" role="group" aria-label="第几次生成">
+      {[1, 2, 3].map((n) => <button type="button" data-run={n} aria-pressed={n === 1 ? 'true' : 'false'}>第 {n} 次</button>)}
+    </div>
+    <div class="arc-seg" role="group" aria-label="主题">
+      <button type="button" data-scheme="light" aria-pressed="true">浅色</button>
+      <button type="button" data-scheme="dark" aria-pressed="false">深色</button>
+    </div>
+    <button type="button" class="arc-switch" role="switch" aria-checked="false" data-fix><span class="arc-knob" aria-hidden="true"></span>套用修正</button>
+  </div>
+
+  <dl class="arc-read" aria-live="polite">
+    <div><dt>按钮对比度</dt><dd data-read="btn">—</dd></div>
+    <div><dt>徽章对比度</dt><dd data-read="badge">—</dd></div>
+    <div><dt>「⋯」按钮</dt><dd data-read="more">—</dd></div>
+    <div><dt>没包进 (hover: hover) 的悬停规则</dt><dd data-read="hover">—</dd></div>
+  </dl>
+</ai-run-compare>
+
+<script>
+  /**
+   * 每次生成的修正补丁，只覆盖实测里量出问题的地方（第 3 次的点击区域本来就是 44px，不加）。
+   * 颜色取值：在原色基础上压暗到对白字 ≥ 4.5:1（WCAG 1.4.3 正文要求）；第 2 次深色改的是按钮文字色，和第 1 次自己的深色写法一致。
+   */
+  const TARGET_FIX = '.more{width:44px;height:44px;top:10px;right:10px}.menu button{min-height:44px}'
+  // 只为了嵌进插图：透明底、去掉 100vh 的最小高度、收紧页面留白，不改卡片本身
+  const FRAME_STYLE = '<style>html,body{background:transparent!important}body{min-height:0!important;padding:12px 16px 28px!important}</style>'
+  const PATCH: Record<string, { light: string; dark: string; common: string }> = {
+    '1': { light: ':root{--accent:#b65a3c}', dark: '', common: TARGET_FIX },
+    '2': { light: ':root{--accent:#b65b35}.badge{color:#9a4526}', dark: '.btn-primary{color:#1a1a19}', common: TARGET_FIX },
+    '3': { light: '', dark: ':root{--accent:#4f6bdd}', common: '' },
+  }
+
+  // iframe 里的规则对象属于另一个 window，instanceof CSSStyleRule 跨 window 恒为 false，只能按 type 判断
+  const isHoverRule = (r: CSSRule): r is CSSStyleRule => r.type === CSSRule.STYLE_RULE && (r as CSSStyleRule).selectorText.includes(':hover')
+
+  /** 顶层规则里还剩几条带 :hover 的（不在 @media (hover: hover) 里的） */
+  const looseHoverRules = (doc: Document) => [...doc.styleSheets].flatMap((sheet) => [...sheet.cssRules]).filter(isHoverRule).length
+
+  /**
+   * 正文里的改法：把带 :hover 的选择器挪进 @media (hover: hover)；同一条规则里不带 :hover 的选择器（如 [aria-expanded="true"]）留在外面
+   * 在 iframe 的 CSSOM 上就地改写，倒序遍历，插入新规则不会打乱还没处理的下标
+   */
+  const moveHoverRules = (doc: Document) => {
+    for (const sheet of doc.styleSheets) {
+      for (let i = sheet.cssRules.length - 1; i >= 0; i--) {
+        const rule = sheet.cssRules[i]
+        if (!isHoverRule(rule)) continue
+        const selectors = rule.selectorText.split(',').map((x) => x.trim())
+        const hover = selectors.filter((x) => x.includes(':hover'))
+        const rest = selectors.filter((x) => !x.includes(':hover'))
+        const body = rule.style.cssText
+        sheet.deleteRule(i)
+        sheet.insertRule(`@media (hover: hover) { ${hover.join(', ')} { ${body} } }`, i)
+        if (rest.length) sheet.insertRule(`${rest.join(', ')} { ${body} }`, i)
+      }
+    }
+  }
+
+  const lum = (rgb: string) => {
+    const [r, g, b] = (rgb.match(/[\d.]+/g) ?? []).slice(0, 3).map((v) => {
+      const c = Number(v) / 255
+      return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4
+    })
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b
+  }
+  const ratio = (a: string, b: string) => {
+    const [x, y] = [lum(a), lum(b)]
+    return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05)
+  }
+
+  class AiRunCompare extends HTMLElement {
+    private state = { run: '1', scheme: 'light', fix: false }
+    private cache = new Map<string, string>()
+
+    connectedCallback() {
+      this.querySelectorAll<HTMLButtonElement>('button').forEach((b) =>
+        b.addEventListener('click', () => {
+          if (b.dataset.run) this.state.run = b.dataset.run
+          if (b.dataset.scheme) this.state.scheme = b.dataset.scheme
+          if (b.hasAttribute('data-fix')) this.state.fix = !this.state.fix
+          this.render()
+        }),
+      )
+      this.render()
+    }
+
+    private async source(run: string) {
+      if (!this.cache.has(run)) {
+        const res = await fetch(`${this.dataset.base}run${run}.html`)
+        this.cache.set(run, await res.text())
+      }
+      return this.cache.get(run)!
+    }
+
+    private async render() {
+      const { run, scheme, fix } = this.state
+      this.querySelectorAll<HTMLButtonElement>('[data-run]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.run === run)))
+      this.querySelectorAll<HTMLButtonElement>('[data-scheme]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.scheme === scheme)))
+      this.querySelector('[data-fix]')!.setAttribute('aria-checked', String(fix))
+
+      // 原文件用 @media (prefers-color-scheme: dark) 切主题；把这个条件换成恒真 / 恒假，就能不依赖系统设置地切换
+      let html = (await this.source(run))
+        .replace(/@media\s*\(prefers-color-scheme:\s*dark\)/g, scheme === 'dark' ? '@media all' : '@media not all')
+        .replace('</head>', `${FRAME_STYLE}</head>`)
+      if (fix) {
+        const p = PATCH[run]
+        html = html.replace('</head>', `<style data-fix>${p[scheme as 'light' | 'dark']}${p.common}</style></head>`)
+      }
+      const frame = this.querySelector<HTMLIFrameElement>('iframe')!
+      frame.onload = () => {
+        const doc = frame.contentDocument
+        if (fix && doc) moveHoverRules(doc)
+        if (doc) frame.style.height = `${doc.documentElement.scrollHeight}px`
+        this.measure(frame)
+      }
+      frame.srcdoc = html
+    }
+
+    private measure(frame: HTMLIFrameElement) {
+      const doc = frame.contentDocument
+      if (!doc) return
+      const win = frame.contentWindow!
+      const bgOf = (el: Element | null): string => {
+        for (let e = el; e; e = e.parentElement) {
+          const c = win.getComputedStyle(e).backgroundColor
+          const a = c.match(/[\d.]+/g)
+          if (a && (a[3] === undefined || Number(a[3]) > 0.5)) return c
+        }
+        return 'rgb(255, 255, 255)'
+      }
+      const read = (key: string, value: string, ok: boolean, note: string) => {
+        const dd = this.querySelector<HTMLElement>(`[data-read="${key}"]`)!
+        dd.innerHTML = `${value}<small>${note}</small>`
+        dd.dataset.ok = String(ok)
+      }
+      const contrast = (sel: string, key: string) => {
+        const el = doc.querySelector(sel)
+        if (!el) return
+        const r = ratio(win.getComputedStyle(el).color, bgOf(el))
+        read(key, `${r.toFixed(2)} : 1`, r >= 4.5, r >= 4.5 ? '达标' : '低于 4.5')
+      }
+      contrast('.btn-primary', 'btn')
+      contrast('.badge, .tag', 'badge')
+      const more = doc.querySelector('.more')?.getBoundingClientRect()
+      if (more) {
+        const ok = more.width >= 44 && more.height >= 44
+        read('more', `${Math.round(more.width)} × ${Math.round(more.height)}`, ok, ok ? '达到 44' : '小于 44')
+      }
+      const loose = looseHoverRules(doc)
+      read('hover', `${loose} 条`, loose === 0, loose ? '触屏上会卡住' : '')
+    }
+  }
+  if (!customElements.get('ai-run-compare')) customElements.define('ai-run-compare', AiRunCompare)
+</script>
+
+<style is:global>
+  .arc { display: flex; flex-direction: column; align-items: center; gap: 16px; width: 100%; }
+  .arc-frame { display: block; width: 375px; max-width: 100%; height: 340px; border: 0; background: transparent; color-scheme: normal; }
+
+  .arc-controls { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; }
+  .arc-seg { display: inline-flex; padding: 3px; border-radius: 999px; background: rgba(var(--ink-rgb), 0.06); }
+  .arc-seg button,
+  .arc-switch { min-height: 32px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); font: 500 13px/1 var(--sans); cursor: var(--cursor-pointer); -webkit-tap-highlight-color: transparent; transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease; }
+  .arc-seg button { padding: 0 14px; }
+  .arc-seg button[aria-pressed="true"] { background: var(--solid); color: var(--strong); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12); }
+  @media (hover: hover) { .arc-seg button:hover:not([aria-pressed="true"]) { color: var(--strong); } }
+  .arc-seg button:active, .arc-switch:active { opacity: 0.8; }
+  .arc-seg button:focus-visible, .arc-switch:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+  .arc-switch { display: inline-flex; align-items: center; gap: 8px; padding: 0 14px 0 6px; background: rgba(var(--ink-rgb), 0.06); color: var(--text); }
+  .arc-knob { position: relative; width: 30px; height: 18px; border-radius: 999px; background: rgba(var(--ink-rgb), 0.18); transition: background-color 0.18s ease; }
+  .arc-knob::after { content: ""; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25); transition: transform 0.18s var(--ease); }
+  .arc-switch[aria-checked="true"] .arc-knob { background: var(--brand); }
+  .arc-switch[aria-checked="true"] .arc-knob::after { transform: translateX(12px); }
+
+  .arc-read { display: grid; grid-template-columns: repeat(4, auto); justify-content: center; gap: 4px 28px; margin: 0; }
+  .arc-read div { display: flex; flex-direction: column; gap: 2px; }
+  .arc-read dt { color: var(--muted); font-size: 12px; line-height: 1.4; }
+  .arc-read dd { display: flex; align-items: baseline; gap: 6px; margin: 0; color: var(--strong); font: 500 15px/1.4 var(--sans); font-variant-numeric: tabular-nums; }
+  .arc-read dd small { color: var(--muted); font-size: 12px; }
+  .arc-read dd[data-ok="false"], .arc-read dd[data-ok="false"] small { color: var(--danger); }
+
+  @media (max-width: 640px) {
+    .arc-read { grid-template-columns: repeat(2, auto); gap: 10px 24px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .arc-knob, .arc-knob::after { transition: none; }
+  }
+</style>

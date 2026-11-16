@@ -1,0 +1,38 @@
+{
+  "_说明": "每次生成的修正。css 追加在原文件 </head> 前；js 是对原文件源码的字符串替换（from 必须原样出现）。演示组件和 apply-fix.mjs 都读这一份",
+  "1": {
+    "css": ".thread,.composer{box-sizing:border-box;width:min(712px,100% - 48px);max-width:none;margin-inline:auto}.thread{padding-inline:0}.scroller,.composer-wrap{scrollbar-gutter:stable both-edges}.composer-wrap{overflow:hidden;padding-inline:0;padding-top:16px;padding-bottom:calc(20px + env(safe-area-inset-bottom))}@media (max-width:768px){.thread,.composer{width:min(712px,100% - 32px)}}",
+    "js": [
+      {
+        "from": "app.classList.toggle('nav-open', open);",
+        "to": "app.classList.toggle('nav-open', open);\n    document.querySelector('.main').inert = open;"
+      }
+    ]
+  },
+  "2": {
+    "css": ".thread-inner,.composer{box-sizing:border-box;width:min(712px,100% - 48px);max-width:none;margin-inline:auto}.thread-inner{padding-inline:0}.thread,.composer-wrap{scrollbar-gutter:stable both-edges}.composer-wrap{overflow:hidden;padding-inline:0;padding-top:16px;padding-bottom:max(16px, env(safe-area-inset-bottom))}@media (max-width:768px){.thread-inner,.composer{width:min(712px,100% - 32px)}.sidebar{visibility:hidden;transition:transform .25s ease,visibility 0s .25s}.app.nav-open .sidebar{visibility:visible;transition:transform .25s ease}}",
+    "js": [
+      {
+        "from": "p.textContent = text.slice(0, i);\n      scrollToBottom();",
+        "to": "var near = thread.scrollHeight - thread.scrollTop - thread.clientHeight < 120;\n      p.textContent = text.slice(0, i);\n      if (near) scrollToBottom();"
+      },
+      {
+        "from": "app.classList.toggle('nav-open', open);\n    openNav.setAttribute('aria-expanded', String(open));\n  }",
+        "to": "var was = app.classList.contains('nav-open');\n    app.classList.toggle('nav-open', open);\n    document.querySelector('.main').inert = open;\n    openNav.setAttribute('aria-expanded', String(open));\n    if (open) document.getElementById('closeNav').focus();\n    else if (was) openNav.focus();\n  }"
+      }
+    ]
+  },
+  "3": {
+    "css": ".thread,.composer{box-sizing:border-box;width:min(728px,100% - 32px);max-width:none;margin-inline:auto}.thread{padding-inline:0}.scroller,.composer-wrap{scrollbar-gutter:stable both-edges}.composer-wrap{overflow:hidden;padding-inline:0;padding-top:16px}",
+    "js": [
+      {
+        "from": "thread.append(msg);\n    scrollToEnd();\n    return body;",
+        "to": "const near = scroller.scrollHeight - scroller.scrollTop - scroller.clientHeight < 120;\n    thread.append(msg);\n    if (role === 'user' || near) scrollToEnd();\n    return body;"
+      },
+      {
+        "from": "app.classList.toggle('nav-open', open);",
+        "to": "app.classList.toggle('nav-open', open);\n    document.querySelector('.main').inert = open;"
+      }
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+== run1.html
+light  axe 4.10.3 ["color-contrast(1): .btn-primary"] passed: color-contrast(9) target-size(3)
+dark   axe 4.10.3 [] passed: color-contrast(10) target-size(3)
+== run2.html
+light  axe 4.10.3 ["color-contrast(2): .badge, .btn-primary"] passed: color-contrast(8) target-size(3)
+dark   axe 4.10.3 ["color-contrast(1): .btn-primary"] passed: color-contrast(9) target-size(3)
+== run3.html
+light  axe 4.10.3 ["definition-list(1): dl"] passed: color-contrast(11) target-size(3)
+dark   axe 4.10.3 ["color-contrast(1): .btn-primary","definition-list(1): dl"] passed: color-contrast(10) target-size(3)

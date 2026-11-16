@@ -1,0 +1,176 @@
+{
+  "_说明": "2026-10-24 用无头 Chrome 打开 chatgpt.com 未登录首页（没有发送消息）量到的数据，脚本见 chatgpt-ref.mjs。cssMatches 是页面加载的样式表里匹配到的规则片段原文。",
+  "measure": {
+    "390": {
+      "viewportMeta": "width=device-width, initial-scale=1, viewport-fit=cover, minimum-scale=1",
+      "html": {
+        "overflow": "auto",
+        "h": 844
+      },
+      "body": {
+        "overflow": "visible",
+        "h": "844px"
+      },
+      "editor": {
+        "tag": "TEXTAREA",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "box": {
+          "x": 63.2,
+          "y": 401.5,
+          "w": 224,
+          "h": 24
+        }
+      },
+      "form": {
+        "x": 10.2,
+        "y": 390,
+        "w": 366,
+        "h": 48
+      },
+      "formRadius": "24px",
+      "nav": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "scrollers": [
+        "HTML.x138l3gd.x1izaiw0.x108lcm5.xzx5cyk",
+        "NAV.x15r89dc.x1odjw0f.x2lwn1j.x1e4zzel"
+      ]
+    },
+    "768": {
+      "viewportMeta": "width=device-width, initial-scale=1, viewport-fit=cover, minimum-scale=1, interactive-widget=resizes-content",
+      "html": {
+        "overflow": "auto",
+        "h": 1024
+      },
+      "body": {
+        "overflow": "visible",
+        "h": "1024px"
+      },
+      "editor": {
+        "tag": "TEXTAREA",
+        "fontSize": "17px",
+        "lineHeight": "24px",
+        "box": {
+          "x": 81,
+          "y": 495.5,
+          "w": 570,
+          "h": 24
+        }
+      },
+      "form": {
+        "x": 24,
+        "y": 482,
+        "w": 720,
+        "h": 52
+      },
+      "formRadius": "24px",
+      "nav": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "scrollers": [
+        "HTML.x138l3gd.x1izaiw0.x108lcm5.xzx5cyk",
+        "NAV.x15r89dc.x1odjw0f.x2lwn1j.x1e4zzel"
+      ]
+    },
+    "1024": {
+      "viewportMeta": "width=device-width, initial-scale=1, viewport-fit=cover, minimum-scale=1, interactive-widget=resizes-content",
+      "html": {
+        "overflow": "auto",
+        "h": 768
+      },
+      "body": {
+        "overflow": "visible",
+        "h": "768px"
+      },
+      "editor": {
+        "tag": "TEXTAREA",
+        "fontSize": "17px",
+        "lineHeight": "24px",
+        "box": {
+          "x": 329,
+          "y": 367.5,
+          "w": 590,
+          "h": 24
+        }
+      },
+      "form": {
+        "x": 272,
+        "y": 354,
+        "w": 740,
+        "h": 52
+      },
+      "formRadius": "24px",
+      "nav": {
+        "x": 0,
+        "y": 0,
+        "w": 259,
+        "h": 768
+      },
+      "scrollers": [
+        "HTML.x138l3gd.x1izaiw0.x108lcm5.xzx5cyk",
+        "DIV.xh8yej3.x9f619.xigl1tc.x2lwn1j"
+      ]
+    },
+    "1440": {
+      "viewportMeta": "width=device-width, initial-scale=1, viewport-fit=cover, minimum-scale=1, interactive-widget=resizes-content",
+      "html": {
+        "overflow": "auto",
+        "h": 900
+      },
+      "body": {
+        "overflow": "visible",
+        "h": "900px"
+      },
+      "editor": {
+        "tag": "TEXTAREA",
+        "fontSize": "17px",
+        "lineHeight": "24px",
+        "box": {
+          "x": 523,
+          "y": 433.5,
+          "w": 618,
+          "h": 24
+        }
+      },
+      "form": {
+        "x": 466,
+        "y": 420,
+        "w": 768,
+        "h": 52
+      },
+      "formRadius": "24px",
+      "nav": {
+        "x": 0,
+        "y": 0,
+        "w": 259,
+        "h": 900
+      },
+      "scrollers": [
+        "HTML.x138l3gd.x1izaiw0.x108lcm5.xzx5cyk",
+        "DIV.xh8yej3.x9f619.xigl1tc.x2lwn1j"
+      ]
+    }
+  },
+  "cssMatches": {
+    "scrollbar-gutter": [
+      ".x185mbhu{scrollbar-gutter:stable}",
+      ".xliy32w{scrollbar-gutter:stable both-edges}"
+    ],
+    "overflow-anchor": [
+      ".x1xzczws{overflow-anchor:none}",
+      ".xs2q62x.xs2q62x:last-child:where(.x158lel9:where(*) *){overflow-anchor:none}",
+      ":where(:has(~.x1qfus2:where(*))):where(.x158lel9:where(*) *){overflow-anchor:none}"
+    ],
+    "field-sizing": [
+      ".x4y0igp{field-sizing:content}",
+      ".x5f5z56{field-sizing:content}"
+    ]
+  }
+}
