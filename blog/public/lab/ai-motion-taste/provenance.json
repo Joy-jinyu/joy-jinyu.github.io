@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-26",
+  "generator": "Codex independent subagents, inherited parent model",
+  "exactModelVersion": null,
+  "modelVersionNote": "The spawning tool does not report the exact model version. No model override was supplied.",
+  "runs": [
+    { "file": "run1.html", "agentId": "01a17778-6e47-7820-a02b-b8aecebd0f8e" },
+    { "file": "run2.html", "agentId": "01a17778-6ea0-7690-a69c-f43680ad4724" }
+  ],
+  "context": "No conversation fork. Agents received the same functional prompt and an instruction to save one complete HTML file without reading repository articles, other samples, browsing, executing, or revising. Platform instructions and inherited environment may still affect generation.",
+  "harnessInstruction": "Only generate from the functional prompt once; save to the assigned temporary HTML path with apply_patch; do not read repository articles, demos or other samples, browse, execute or revise. Native standalone HTML experiment, not a project component-library implementation.",
+  "postGenerationEdits": "None; final newline normalized when archiving.",
+  "limitations": ["Two samples only", "Exact model version unavailable", "No physical mobile device test"]
+}

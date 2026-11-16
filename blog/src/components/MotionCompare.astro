@@ -1,0 +1,165 @@
+---
+/**
+ * 同一个下拉菜单的两种写法并排对比：A 是常见的 AI 默认写法，B 是按规则调过的写法。
+ * 可以慢放、可以「连点」看动画被打断时两边的差别。
+ */
+const items = ['重命名', '复制链接', '移到文件夹', '删除']
+const sides = [
+  { id: 'a', tag: 'A', title: '常见写法', note: 'scale(0) 从中心弹出 · 400ms ease-in-out · 关闭没有动画' },
+  { id: 'b', tag: 'B', title: '调过的写法', note: '从按钮处展开 · 打开 180ms ease-out · 关闭 120ms · 可打断' },
+]
+---
+
+<motion-compare class="mc not-prose">
+  <div class="mc-bar" role="group" aria-label="演示控制">
+    <label class="mc-slow"><input type="checkbox" data-slow /> 慢放 ×5</label>
+    <button type="button" class="mc-chip" data-burst>连点三下</button>
+    <span class="mc-rm" hidden>你的系统开了「减少动态效果」：A 不再播放动画，B 只保留淡入淡出。</span>
+  </div>
+
+  <div class="mc-grid">
+    {sides.map((s) => (
+      <section class={`mc-side mc-${s.id}`} aria-label={`${s.tag}：${s.title}`}>
+        <header class="mc-head"><b>{s.tag}</b> {s.title}</header>
+        <div class="mc-stage">
+          <button type="button" class="mc-trigger" aria-expanded="false" aria-controls={`mc-menu-${s.id}`}>
+            更多操作 <span aria-hidden="true">▾</span>
+          </button>
+          <ul class="mc-menu" id={`mc-menu-${s.id}`} hidden>
+            {items.map((t) => <li><button type="button" tabindex="-1">{t}</button></li>)}
+          </ul>
+        </div>
+        <p class="mc-note">{s.note}</p>
+      </section>
+    ))}
+  </div>
+</motion-compare>
+
+<script>
+  /** 菜单的开关状态只放在 aria-expanded 上，样式和 hidden 都从它派生 */
+  class MotionCompare extends HTMLElement {
+    private timers: number[] = []
+
+    connectedCallback() {
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)')
+      const syncReduce = () => {
+        this.toggleAttribute('data-reduce', reduce.matches)
+        this.querySelector<HTMLElement>('.mc-rm')!.hidden = !reduce.matches
+      }
+      syncReduce()
+      reduce.addEventListener('change', syncReduce)
+
+      this.querySelector<HTMLInputElement>('[data-slow]')!.addEventListener('change', (e) => {
+        this.style.setProperty('--slow', (e.target as HTMLInputElement).checked ? '5' : '1')
+      })
+      this.querySelector('[data-burst]')!.addEventListener('click', () => this.burst())
+      this.querySelectorAll<HTMLElement>('.mc-side').forEach((side) => {
+        side.querySelector('.mc-trigger')!.addEventListener('click', () => this.toggle(side))
+        side.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') this.toggle(side, false)
+        })
+      })
+    }
+
+    disconnectedCallback() {
+      this.timers.forEach(clearTimeout)
+    }
+
+    private toggle(side: HTMLElement, open?: boolean) {
+      const trigger = side.querySelector<HTMLButtonElement>('.mc-trigger')!
+      const menu = side.querySelector<HTMLElement>('.mc-menu')!
+      const next = open ?? trigger.getAttribute('aria-expanded') !== 'true'
+      trigger.setAttribute('aria-expanded', String(next))
+      if (side.classList.contains('mc-a')) {
+        // A：典型写法，关闭直接 display:none，打开时重播一段 keyframes
+        menu.hidden = !next
+        if (next) {
+          menu.classList.remove('pop')
+          void menu.offsetWidth
+          menu.classList.add('pop')
+        }
+        return
+      }
+      // B：一直留在 DOM 里，靠 transition 在两个状态间切换，中途反向会从当前位置折返
+      menu.hidden = false
+      menu.classList.toggle('open', next)
+    }
+
+    /** 每 120ms（慢放时乘 5）点一次两边的按钮，模拟用户在动画没播完时又点了一下 */
+    private burst() {
+      this.timers.forEach(clearTimeout)
+      const slow = Number(getComputedStyle(this).getPropertyValue('--slow')) || 1
+      const sides = [...this.querySelectorAll<HTMLElement>('.mc-side')]
+      sides.forEach((s) => this.toggle(s, false))
+      this.timers = [0, 1, 2].map((i) =>
+        window.setTimeout(() => sides.forEach((s) => this.toggle(s)), 60 + i * 120 * slow),
+      )
+    }
+  }
+  if (!customElements.get('motion-compare')) customElements.define('motion-compare', MotionCompare)
+</script>
+
+<style is:global>
+  .mc { --slow: 1; display: block; margin-top: 1.8em; padding: 18px; border: 1px solid var(--line-hi); border-radius: 16px; background: linear-gradient(180deg, var(--panel-hi), var(--panel)); }
+  .mc-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; font-size: 13.5px; color: var(--muted); }
+  .mc-slow { display: inline-flex; align-items: center; gap: 6px; min-height: 34px; cursor: var(--cursor-pointer); }
+  .mc-slow input { accent-color: var(--brand); width: 16px; height: 16px; margin: 0; }
+  .mc-chip { min-height: 34px; padding: 4px 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); color: var(--text); font: 500 12.5px/1.3 var(--mono); cursor: var(--cursor-pointer); -webkit-tap-highlight-color: transparent; transition: border-color 0.15s ease, background-color 0.15s ease; }
+  @media (hover: hover) { .mc-chip:hover { border-color: rgba(0, 184, 184, 0.5); } }
+  .mc-chip:active { border-color: var(--brand); background: rgba(0, 184, 184, 0.08); }
+  .mc-rm { color: var(--warn); }
+  .mc-rm[hidden] { display: none; }
+
+  .mc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+  .mc-side { display: flex; flex-direction: column; padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
+  .mc-head { color: var(--muted); font: 500 12px/1.4 var(--mono); letter-spacing: 0.06em; }
+  .mc-head b { color: var(--brand-ink); }
+  .mc-a .mc-head b { color: var(--danger); }
+  .mc-stage { position: relative; height: 200px; margin-top: 12px; }
+  .mc-note { margin: 10px 0 0; color: var(--muted); font-size: 12.5px; line-height: 1.6; }
+
+  .mc-trigger { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 6px 14px; border: 1px solid var(--line-hi); border-radius: 10px; background: var(--solid); color: var(--strong); font: 500 13.5px/1 var(--sans); cursor: var(--cursor-pointer); -webkit-tap-highlight-color: transparent; }
+  .mc-menu { position: absolute; top: 44px; left: 0; z-index: 1; width: 168px; margin: 0; padding: 6px; list-style: none; border: 1px solid var(--line-hi); border-radius: 12px; background: var(--solid); box-shadow: 0 16px 40px -20px rgba(0, 0, 0, 0.6); }
+  .mc-menu[hidden] { display: none; }
+  .mc-menu li { margin: 0; }
+  .mc-menu button { display: block; width: 100%; min-height: 34px; padding: 6px 10px; border: 0; border-radius: 8px; background: none; color: var(--text); font: 400 13.5px/1.4 var(--sans); text-align: left; cursor: var(--cursor-pointer); }
+  @media (hover: hover) { .mc-menu button:hover { background: rgba(var(--ink-rgb), 0.06); } }
+  .mc-menu li:last-child button { color: var(--danger); }
+
+  /* A：反面例子，故意照搬常见写法 */
+  .mc-a .mc-trigger { transition: all 0.3s ease-in-out; }
+  @media (hover: hover) { .mc-a .mc-trigger:hover { transform: translateY(-2px); box-shadow: 0 8px 20px -10px var(--brand-glow); } }
+  .mc-a .mc-menu.pop { animation: mc-pop calc(400ms * var(--slow)) ease-in-out; }
+  @keyframes mc-pop { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: scale(1); } }
+
+  /* B：从按钮所在的左上角展开，进场 ease-out，退场更快；按下有 0.97 的回弹 */
+  .mc-b .mc-trigger { transition: transform calc(150ms * var(--slow)) ease-out, border-color 0.15s ease; }
+  .mc-b .mc-trigger:active { transform: scale(0.97); }
+  @media (hover: hover) { .mc-b .mc-trigger:hover { border-color: rgba(0, 184, 184, 0.5); } }
+  .mc-b .mc-menu {
+    transform-origin: 24px -8px;
+    opacity: 0;
+    transform: scale(0.96) translateY(-4px);
+    pointer-events: none;
+    visibility: hidden;
+    transition: opacity calc(120ms * var(--slow)) ease-in, transform calc(120ms * var(--slow)) ease-in, visibility 0s calc(120ms * var(--slow));
+  }
+  .mc-b .mc-menu.open {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    visibility: visible;
+    transition: opacity calc(180ms * var(--slow)) var(--ease), transform calc(180ms * var(--slow)) var(--ease), visibility 0s;
+  }
+
+  /* 减少动态效果：A 不播放，B 去掉位移和缩放、只留淡入淡出（替换而不是删掉） */
+  .mc[data-reduce] .mc-a .mc-menu { animation: none; }
+  .mc[data-reduce] .mc-a .mc-trigger { transition: none; transform: none; }
+  .mc[data-reduce] .mc-b .mc-menu { transform: none; }
+  .mc[data-reduce] .mc-b .mc-trigger:active { transform: none; }
+
+  @media (max-width: 640px) {
+    .mc { padding: 14px; }
+    .mc-grid { grid-template-columns: 1fr; }
+  }
+</style>

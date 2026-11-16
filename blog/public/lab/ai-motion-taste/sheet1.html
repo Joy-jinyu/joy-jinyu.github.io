@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>分享面板</title>
+<style>
+  :root {
+    --bg: #f4f4f6;
+    --surface: #ffffff;
+    --text: #1c1c1e;
+    --text-2: #6b6b72;
+    --hairline: rgba(0, 0, 0, 0.08);
+    --pressed: rgba(0, 0, 0, 0.05);
+    --scrim: rgba(0, 0, 0, 0.45);
+    --grabber: rgba(0, 0, 0, 0.18);
+    --accent: #1f6feb;
+    --toast-bg: rgba(28, 28, 30, 0.92);
+    --toast-text: #ffffff;
+
+    --c-wechat: #07c160;
+    --c-moments: #2aae67;
+    --c-qq: #12b7f5;
+    --c-weibo: #e6162d;
+    --c-link: #8e8e93;
+
+    /* 打开：快起慢停；关闭：短、加速离场 */
+    --ease-open: cubic-bezier(0.32, 0.72, 0, 1);
+    --ease-close: cubic-bezier(0.4, 0, 1, 1);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #000000;
+      --surface: #1c1c1e;
+      --text: #f2f2f7;
+      --text-2: #9a9aa1;
+      --hairline: rgba(255, 255, 255, 0.1);
+      --pressed: rgba(255, 255, 255, 0.08);
+      --scrim: rgba(0, 0, 0, 0.6);
+      --grabber: rgba(255, 255, 255, 0.25);
+      --accent: #4c8dff;
+      --toast-bg: rgba(242, 242, 247, 0.94);
+      --toast-text: #1c1c1e;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  html.is-locked { overflow: hidden; }
+  body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.5 -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  main {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: calc(24px + env(safe-area-inset-top)) 16px 48px;
+  }
+  main h1 { font-size: 22px; margin: 0 0 8px; }
+  main p { color: var(--text-2); margin: 0 0 24px; }
+
+  .share-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 120px;
+    height: 44px;
+    padding: 0 20px;
+    border: 0;
+    border-radius: 22px;
+    background: var(--accent);
+    color: #fff;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 120ms ease-out, opacity 120ms ease-out;
+  }
+  .share-trigger:active { transform: scale(0.97); opacity: 0.9; }
+  .share-trigger:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  /* ---------- Sheet ---------- */
+  .sheet-root[hidden] { display: none; }
+  .sheet-root {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+  }
+  .backdrop {
+    position: absolute;
+    inset: 0;
+    background: var(--scrim);
+    opacity: 0;
+  }
+  .sheet {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-width: 480px;
+    margin: 0 auto;
+    background: var(--surface);
+    border-radius: 16px 16px 0 0;
+    padding: 8px 16px calc(12px + env(safe-area-inset-bottom));
+    transform: translate3d(0, 100%, 0);
+    will-change: transform;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    outline: none;
+  }
+  /* 往上拖的橡皮筋会让面板离开底边，这块延伸把露出的缝补上 */
+  .sheet::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    height: 80px;
+    background: var(--surface);
+  }
+
+  .grabber {
+    width: 36px;
+    height: 5px;
+    margin: 0 auto 12px;
+    border-radius: 3px;
+    background: var(--grabber);
+  }
+  .sheet h2 {
+    margin: 0 0 16px;
+    font-size: 15px;
+    font-weight: 500;
+    text-align: center;
+    color: var(--text-2);
+  }
+
+  .channels {
+    list-style: none;
+    margin: 0 -8px;
+    padding: 0 0 16px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .channel {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    border: 0;
+    border-radius: 12px;
+    background: none;
+    color: var(--text);
+    font: inherit;
+    font-size: 12px;
+    line-height: 1.3;
+    cursor: pointer;
+  }
+  .channel:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .channel-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    transition: transform 140ms ease-out, filter 140ms ease-out;
+  }
+  .channel:active .channel-icon { transform: scale(0.92); filter: brightness(0.92); }
+  .channel[data-channel="wechat"] .channel-icon { background: var(--c-wechat); }
+  .channel[data-channel="moments"] .channel-icon { background: var(--c-moments); }
+  .channel[data-channel="qq"] .channel-icon { background: var(--c-qq); }
+  .channel[data-channel="weibo"] .channel-icon { background: var(--c-weibo); }
+  .channel[data-channel="link"] .channel-icon { background: var(--c-link); }
+
+  .cancel {
+    display: block;
+    width: 100%;
+    height: 50px;
+    border: 0;
+    border-top: 1px solid var(--hairline);
+    margin: 0;
+    background: none;
+    color: var(--text);
+    font: inherit;
+    font-size: 17px;
+    cursor: pointer;
+  }
+  .cancel:active { background: var(--pressed); }
+  .cancel:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 8px; }
+
+  /* ---------- Toast ---------- */
+  .toast {
+    position: fixed;
+    left: 50%;
+    top: 40%;
+    z-index: 200;
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: var(--toast-bg);
+    color: var(--toast-text);
+    font-size: 14px;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, 6px);
+    transition: opacity 180ms ease-out, transform 180ms ease-out;
+  }
+  .toast.is-shown { opacity: 1; transform: translate(-50%, 0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .toast { transition: opacity 120ms linear; transform: translate(-50%, 0); }
+  }
+</style>
+</head>
+<body>
+  <main>
+    <h1>一篇值得分享的文章</h1>
+    <p>点下面的按钮打开分享面板。面板可以点遮罩、点「取消」、按 Esc，或者用手指往下拖来关闭。</p>
+    <button class="share-trigger" type="button" id="shareTrigger" aria-haspopup="dialog" aria-controls="shareSheet">分享</button>
+  </main>
+
+  <div class="sheet-root" id="sheetRoot" hidden>
+    <div class="backdrop" id="backdrop"></div>
+    <section class="sheet" id="shareSheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" tabindex="-1">
+      <div class="grabber" aria-hidden="true"></div>
+      <h2 id="sheetTitle">分享到</h2>
+      <ul class="channels">
+        <li><button class="channel" type="button" data-channel="wechat"><span class="channel-icon" aria-hidden="true">微</span>微信</button></li>
+        <li><button class="channel" type="button" data-channel="moments"><span class="channel-icon" aria-hidden="true">圈</span>朋友圈</button></li>
+        <li><button class="channel" type="button" data-channel="qq"><span class="channel-icon" aria-hidden="true">Q</span>QQ</button></li>
+        <li><button class="channel" type="button" data-channel="weibo"><span class="channel-icon" aria-hidden="true">博</span>微博</button></li>
+        <li><button class="channel" type="button" data-channel="link"><span class="channel-icon" aria-hidden="true">链</span>复制链接</button></li>
+      </ul>
+      <button class="cancel" type="button" id="cancelBtn">取消</button>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+  const root = document.getElementById('sheetRoot');
+  const sheet = document.getElementById('shareSheet');
+  const backdrop = document.getElementById('backdrop');
+  const trigger = document.getElementById('shareTrigger');
+  const cancelBtn = document.getElementById('cancelBtn');
+  const toastEl = document.getElementById('toast');
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  const OPEN_MS = 360;
+  const CLOSE_MS = 220;
+  const SNAP_BACK_MS = 320;
+  const EASE_OPEN = 'cubic-bezier(0.32, 0.72, 0, 1)';
+  const EASE_CLOSE = 'cubic-bezier(0.4, 0, 1, 1)';
+  const EASE_FLING = 'cubic-bezier(0.2, 0.6, 0.35, 1)';
+
+  /** 拖动判定：超过 6px 才算拖，避免误伤点击 */
+  const DRAG_SLOP = 6;
+  /** 拖过面板高度 30% 松手即关 */
+  const CLOSE_RATIO = 0.3;
+  /** 向下甩的速度超过 0.5px/ms 即关，不管拖了多远 */
+  const FLING_VELOCITY = 0.5;
+  /** 往上拖的阻尼系数 */
+  const RUBBER_BAND = 0.2;
+
+  let isOpen = false;
+  let animToken = 0;
+
+  function motionMs(ms) {
+    return reduceMotion.matches ? 0 : ms;
+  }
+
+  /** 把面板移到 y（px 数字或 CSS 长度），遮罩透明度跟随；返回动画结束的 Promise */
+  function moveTo(y, opacity, ms, easing) {
+    const token = ++animToken;
+    const duration = motionMs(ms);
+    const transition = duration > 0 ? `${duration}ms ${easing}` : 'none';
+    sheet.style.transition = `transform ${transition}`;
+    backdrop.style.transition = `opacity ${duration > 0 ? transition : '120ms linear'}`;
+    sheet.style.transform = `translate3d(0, ${typeof y === 'number' ? y + 'px' : y}, 0)`;
+    backdrop.style.opacity = String(opacity);
+
+    return new Promise((resolve) => {
+      const done = () => {
+        sheet.removeEventListener('transitionend', onEnd);
+        clearTimeout(timer);
+        resolve(token === animToken);
+      };
+      const onEnd = (e) => { if (e.target === sheet && e.propertyName === 'transform') done(); };
+      sheet.addEventListener('transitionend', onEnd);
+      const timer = setTimeout(done, Math.max(duration, 120) + 60);
+    });
+  }
+
+  function setImmediate(y, opacity) {
+    sheet.style.transition = 'none';
+    backdrop.style.transition = 'none';
+    sheet.style.transform = `translate3d(0, ${typeof y === 'number' ? y + 'px' : y}, 0)`;
+    backdrop.style.opacity = String(opacity);
+  }
+
+  function open() {
+    if (isOpen) return;
+    isOpen = true;
+    root.hidden = false;
+    document.documentElement.classList.add('is-locked');
+    trigger.setAttribute('aria-expanded', 'true');
+    setImmediate('100%', 0);
+    sheet.getBoundingClientRect();
+    moveTo(0, 1, OPEN_MS, EASE_OPEN);
+    sheet.focus({ preventScroll: true });
+  }
+
+  async function close(fromY, velocity) {
+    if (!isOpen) return;
+    isOpen = false;
+    trigger.setAttribute('aria-expanded', 'false');
+
+    let ms = CLOSE_MS;
+    let easing = EASE_CLOSE;
+    if (typeof fromY === 'number' && velocity > 0) {
+      // 已经在往下走了：顺着手指的速度把剩下的距离走完，不再从静止加速
+      const remaining = sheet.offsetHeight - fromY;
+      ms = Math.min(CLOSE_MS, Math.max(120, remaining / Math.max(velocity, 1)));
+      easing = EASE_FLING;
+    }
+
+    const finished = await moveTo('100%', 0, ms, easing);
+    if (!finished || isOpen) return;
+    root.hidden = true;
+    document.documentElement.classList.remove('is-locked');
+    trigger.focus({ preventScroll: true });
+  }
+
+  trigger.addEventListener('click', open);
+  backdrop.addEventListener('click', () => close());
+  cancelBtn.addEventListener('click', () => close());
+  document.addEventListener('keydown', (e) => {
+    if (!isOpen) return;
+    if (e.key === 'Escape') { e.preventDefault(); close(); }
+    if (e.key === 'Tab') trapFocus(e);
+  });
+
+  function trapFocus(e) {
+    const items = Array.from(sheet.querySelectorAll('button'));
+    const first = items[0];
+    const last = items[items.length - 1];
+    if (e.shiftKey && (document.activeElement === first || document.activeElement === sheet)) {
+      e.preventDefault(); last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault(); first.focus();
+    }
+  }
+
+  /* ---------- 拖动关闭 ---------- */
+  let pointerId = null;
+  let startX = 0;
+  let startY = 0;
+  let dragging = false;
+  let didDrag = false;
+  let offset = 0;
+  let sheetHeight = 0;
+  let samples = [];
+
+  sheet.addEventListener('pointerdown', (e) => {
+    if (!isOpen || pointerId !== null) return;
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    pointerId = e.pointerId;
+    startX = e.clientX;
+    startY = e.clientY;
+    dragging = false;
+    didDrag = false;
+    offset = 0;
+    samples = [{ t: e.timeStamp, y: e.clientY }];
+  });
+
+  sheet.addEventListener('pointermove', (e) => {
+    if (e.pointerId !== pointerId) return;
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+
+    if (!dragging) {
+      if (Math.abs(dy) < DRAG_SLOP || Math.abs(dy) < Math.abs(dx)) return;
+      dragging = true;
+      didDrag = true;
+      sheetHeight = sheet.offsetHeight;
+      // 抓住正在进行的开合动画：从面板当前的实际位置接手
+      const current = new DOMMatrixReadOnly(getComputedStyle(sheet).transform).m42;
+      startY = e.clientY - current;
+      sheet.setPointerCapture(pointerId);
+    }
+
+    const raw = e.clientY - startY;
+    offset = raw >= 0 ? raw : raw * RUBBER_BAND;
+    setImmediate(offset, Math.max(0, 1 - Math.max(offset, 0) / sheetHeight));
+
+    samples.push({ t: e.timeStamp, y: e.clientY });
+    const cutoff = e.timeStamp - 100;
+    while (samples.length > 2 && samples[0].t < cutoff) samples.shift();
+  });
+
+  function endDrag(e, cancelled) {
+    if (e.pointerId !== pointerId) return;
+    pointerId = null;
+    if (!dragging) return;
+    dragging = false;
+
+    const first = samples[0];
+    const last = samples[samples.length - 1];
+    const dt = last.t - first.t;
+    const velocity = !cancelled && dt > 0 ? (last.y - first.y) / dt : 0;
+
+    const shouldClose = !cancelled && (
+      velocity > FLING_VELOCITY ||
+      (offset > sheetHeight * CLOSE_RATIO && velocity > -0.1)
+    );
+
+    if (shouldClose) {
+      close(offset, velocity);
+    } else {
+      moveTo(0, 1, SNAP_BACK_MS, EASE_OPEN);
+    }
+  }
+
+  sheet.addEventListener('pointerup', (e) => endDrag(e, false));
+  sheet.addEventListener('pointercancel', (e) => endDrag(e, true));
+
+  // 拖过之后松手不触发按钮点击
+  sheet.addEventListener('click', (e) => {
+    if (didDrag) {
+      e.stopPropagation();
+      e.preventDefault();
+      didDrag = false;
+    }
+  }, true);
+
+  /* ---------- 渠道 ---------- */
+  let toastTimer = 0;
+  function toast(text) {
+    toastEl.textContent = text;
+    toastEl.classList.add('is-shown');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('is-shown'), 1600);
+  }
+
+  async function copyLink() {
+    const url = location.href;
+    try {
+      await navigator.clipboard.writeText(url);
+      return true;
+    } catch (err) {
+      const input = document.createElement('textarea');
+      input.value = url;
+      input.setAttribute('readonly', '');
+      input.style.position = 'fixed';
+      input.style.opacity = '0';
+      document.body.appendChild(input);
+      input.select();
+      let ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { console.warn('复制失败', e); }
+      input.remove();
+      return ok;
+    }
+  }
+
+  sheet.querySelectorAll('.channel').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const name = btn.textContent.trim();
+      if (btn.dataset.channel === 'link') {
+        const ok = await copyLink();
+        toast(ok ? '链接已复制' : '复制失败，请手动复制');
+      } else {
+        toast(`正在打开${name}…`);
+      }
+      close();
+    });
+  });
+})();
+</script>
+</body>
+</html>

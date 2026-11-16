@@ -1,0 +1,241 @@
+{
+  "desk-1440": {
+    "pageOverflowX": 0,
+    "scroller": "scroller",
+    "scrollbarW": 0,
+    "scrollbarGutter": "stable both-edges",
+    "main": {
+      "l": 272,
+      "r": 1440,
+      "center": 856
+    },
+    "column": {
+      "l": 500,
+      "r": 1212,
+      "w": 712,
+      "center": 856
+    },
+    "composer": {
+      "l": 500,
+      "r": 1212,
+      "w": 712,
+      "t": 830,
+      "b": 884,
+      "center": 856
+    },
+    "edgeDiff": {
+      "left": 0,
+      "right": 0
+    },
+    "link": {
+      "r": 1111.5,
+      "overColumn": -100.5,
+      "wrap": "normal/anywhere"
+    },
+    "pre": {
+      "r": 1212,
+      "overColumn": 0,
+      "clientW": 712,
+      "scrollW": 881,
+      "overflowX": "auto"
+    },
+    "input": {
+      "fontSize": "16px",
+      "lineHeight": "24px",
+      "h": 36
+    },
+    "send": {
+      "w": 36,
+      "h": 36,
+      "centerY": 857
+    },
+    "inputCenterY": 857,
+    "sidebar": {
+      "l": 0,
+      "r": 272,
+      "t": 0,
+      "b": 900,
+      "w": 272,
+      "h": 900,
+      "visibility": "visible",
+      "display": "flex"
+    },
+    "openNav": null,
+    "lastMsgToComposer": 39.5,
+    "grow": {
+      "h": 200,
+      "innerScroll": true,
+      "sendBottomGap": 0,
+      "sendTopGap": 164
+    },
+    "shrinkH": 36,
+    "yank": {
+      "scrollTop": 0,
+      "max": 496
+    },
+    "errors": []
+  },
+  "desk-1024": {
+    "pageOverflowX": 0,
+    "scroller": "scroller",
+    "scrollbarW": 0,
+    "scrollbarGutter": "stable both-edges",
+    "main": {
+      "l": 272,
+      "r": 1024,
+      "center": 648
+    },
+    "column": {
+      "l": 296,
+      "r": 1000,
+      "w": 704,
+      "center": 648
+    },
+    "composer": {
+      "l": 296,
+      "r": 1000,
+      "w": 704,
+      "t": 698,
+      "b": 752,
+      "center": 648
+    },
+    "edgeDiff": {
+      "left": 0,
+      "right": 0
+    },
+    "link": {
+      "r": 907.5,
+      "overColumn": -92.5,
+      "wrap": "normal/anywhere"
+    },
+    "pre": {
+      "r": 1000,
+      "overColumn": 0,
+      "clientW": 704,
+      "scrollW": 881,
+      "overflowX": "auto"
+    },
+    "input": {
+      "fontSize": "16px",
+      "lineHeight": "24px",
+      "h": 36
+    },
+    "send": {
+      "w": 36,
+      "h": 36,
+      "centerY": 725
+    },
+    "inputCenterY": 725,
+    "sidebar": {
+      "l": 0,
+      "r": 272,
+      "t": 0,
+      "b": 768,
+      "w": 272,
+      "h": 768,
+      "visibility": "visible",
+      "display": "flex"
+    },
+    "openNav": null,
+    "lastMsgToComposer": 39.5,
+    "grow": {
+      "h": 200,
+      "innerScroll": true,
+      "sendBottomGap": 0,
+      "sendTopGap": 164
+    },
+    "shrinkH": 36,
+    "yank": {
+      "scrollTop": 0,
+      "max": 628
+    },
+    "errors": []
+  },
+  "phone-390": {
+    "pageOverflowX": 0,
+    "scroller": "scroller",
+    "scrollbarW": 0,
+    "scrollbarGutter": "stable both-edges",
+    "main": {
+      "l": 0,
+      "r": 390,
+      "center": 195
+    },
+    "column": {
+      "l": 16,
+      "r": 374,
+      "w": 358,
+      "center": 195
+    },
+    "composer": {
+      "l": 16,
+      "r": 374,
+      "w": 358,
+      "t": 774,
+      "b": 828,
+      "center": 195
+    },
+    "edgeDiff": {
+      "left": 0,
+      "right": 0
+    },
+    "link": {
+      "r": 340.3,
+      "overColumn": -33.7,
+      "wrap": "normal/anywhere"
+    },
+    "pre": {
+      "r": 374,
+      "overColumn": 0,
+      "clientW": 358,
+      "scrollW": 881,
+      "overflowX": "auto"
+    },
+    "input": {
+      "fontSize": "16px",
+      "lineHeight": "24px",
+      "h": 36
+    },
+    "send": {
+      "w": 36,
+      "h": 36,
+      "centerY": 801
+    },
+    "inputCenterY": 801,
+    "sidebar": {
+      "l": -300,
+      "r": 0,
+      "t": 0,
+      "b": 844,
+      "w": 300,
+      "h": 844,
+      "visibility": "hidden",
+      "display": "flex"
+    },
+    "openNav": {
+      "w": 36,
+      "h": 36
+    },
+    "lastMsgToComposer": 39.6,
+    "grow": {
+      "h": 200,
+      "innerScroll": true,
+      "sendBottomGap": 0,
+      "sendTopGap": 164
+    },
+    "shrinkH": 36,
+    "yank": {
+      "scrollTop": 0,
+      "max": 808
+    },
+    "drawer": {
+      "l": 0,
+      "w": 300,
+      "focusInside": true,
+      "focus": "closeNav",
+      "bodyOverflow": "visible"
+    },
+    "drawerAfterEsc": -300,
+    "errors": []
+  }
+}

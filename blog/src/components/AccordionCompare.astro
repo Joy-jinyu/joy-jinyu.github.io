@@ -1,0 +1,140 @@
+---
+/**
+ * 折叠面板对照：左边是 AI 原样文件，右边是只改了时长和曲线的修正版（blog/public/lab/ai-motion-taste/）。
+ * 「展开 / 收起第 4 题」同时点两边；「慢放」把 iframe 里正在跑的 transition 降到 0.25 倍速；
+ * 读数是每次展开时在 iframe 里逐帧量出的「相邻两帧最多走了多少像素」。
+ */
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/')
+const sides = [
+  { key: 'raw', file: 'accordion1.html', title: '原样', note: '所有题目都是 280 ms' },
+  { key: 'fix', file: 'accordion1-fixed.html', title: '修正后', note: '时长按高度算，200–450 ms' },
+]
+---
+
+<accordion-compare class="ac not-prose" data-base={`${base}lab/ai-motion-taste/`}>
+  <div class="ac-bar">
+    <button type="button" class="ac-btn" data-act="toggle" aria-pressed="false">展开第 4 题</button>
+    <button type="button" class="ac-switch" role="switch" aria-checked="false" data-act="slow"><span class="ac-knob" aria-hidden="true"></span>慢放 ×4</button>
+  </div>
+  <p class="ac-rm" hidden>你的系统开了「减少动态效果」，两边都会直接展开，看不到过程。</p>
+  <div class="ac-grid">
+    {sides.map((s) => (
+      <section class="ac-side" data-side={s.key} aria-label={`${s.title}：${s.note}`}>
+        <header class="ac-head"><b>{s.title}</b><span>{s.note}</span></header>
+        <iframe class="ac-frame" title={`折叠面板 · ${s.title}`} data-file={s.file} loading="lazy"></iframe>
+        <p class="ac-read" aria-live="polite">每帧最多走 <b data-read>—</b></p>
+      </section>
+    ))}
+  </div>
+</accordion-compare>
+
+<script>
+  const SLOW = 0.25
+  const ITEM = 3
+
+  class AccordionCompare extends HTMLElement {
+    private slow = false
+    private open = false
+    private frames: HTMLIFrameElement[] = []
+
+    connectedCallback() {
+      const base = this.dataset.base!
+      this.frames = [...this.querySelectorAll<HTMLIFrameElement>('.ac-frame')]
+      this.frames.forEach((f) => {
+        f.addEventListener('load', () => this.prepare(f))
+        f.src = base + f.dataset.file
+      })
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) this.querySelector<HTMLElement>('.ac-rm')!.hidden = false
+      this.querySelector('[data-act="toggle"]')!.addEventListener('click', () => this.toggle())
+      this.querySelector('[data-act="slow"]')!.addEventListener('click', (e) => {
+        this.slow = !this.slow
+        ;(e.currentTarget as HTMLElement).setAttribute('aria-checked', String(this.slow))
+      })
+    }
+
+    /** iframe 加载后：滚到第 4 题，挂上慢放的钩子 */
+    private prepare(f: HTMLIFrameElement) {
+      const doc = f.contentDocument
+      if (!doc) return
+      const trigger = doc.querySelectorAll<HTMLElement>('.faq-trigger')[ITEM]
+      trigger?.closest('.faq-item')?.scrollIntoView({ block: 'start' })
+      doc.addEventListener('transitionrun', (e) => {
+        const rate = this.slow ? SLOW : 1
+        ;(e.target as Element).getAnimations().forEach((a) => (a.playbackRate = rate))
+      })
+    }
+
+    private toggle() {
+      this.open = !this.open
+      const btn = this.querySelector<HTMLElement>('[data-act="toggle"]')!
+      btn.textContent = this.open ? '收起第 4 题' : '展开第 4 题'
+      btn.setAttribute('aria-pressed', String(this.open))
+      this.frames.forEach((f, i) => {
+        const doc = f.contentDocument
+        const trigger = doc?.querySelectorAll<HTMLElement>('.faq-trigger')[ITEM]
+        if (!doc || !trigger) return
+        const panel = doc.getElementById(trigger.getAttribute('aria-controls')!)!
+        const read = this.querySelectorAll<HTMLElement>('[data-read]')[i]
+        const wasOpen = trigger.getAttribute('aria-expanded') === 'true'
+        if (wasOpen === this.open) return
+        trigger.click()
+        if (!this.open) return
+        this.measure(f, panel, read)
+      })
+    }
+
+    /** 逐帧量展开过程，取相邻两帧高度差的最大值 */
+    private measure(f: HTMLIFrameElement, panel: HTMLElement, read: HTMLElement) {
+      const win = f.contentWindow!
+      const slow = this.slow
+      let last = panel.getBoundingClientRect().height
+      let max = 0
+      const t0 = win.performance.now()
+      const tick = () => {
+        const hNow = panel.getBoundingClientRect().height
+        max = Math.max(max, Math.abs(hNow - last))
+        last = hNow
+        if (win.performance.now() - t0 < 2000) win.requestAnimationFrame(tick)
+        else read.textContent = `${Math.round(max)} px${slow ? '（慢放中）' : ''}`
+      }
+      win.requestAnimationFrame(tick)
+      read.textContent = '量着…'
+    }
+  }
+  if (!customElements.get('accordion-compare')) customElements.define('accordion-compare', AccordionCompare)
+</script>
+
+<style is:global>
+  .ac { display: block; width: 100%; }
+  .ac-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .ac-btn, .ac-switch {
+    display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 6px 14px;
+    border: 1px solid var(--line-hi); border-radius: 999px; background: var(--solid); color: var(--strong);
+    font: 500 14px/1.2 var(--sans); cursor: var(--cursor-pointer); -webkit-tap-highlight-color: transparent;
+    transition: border-color 0.18s var(--ease), background 0.18s var(--ease);
+  }
+  .ac-btn { min-width: 8.5em; justify-content: center; }
+  @media (hover: hover) { .ac-btn:hover, .ac-switch:hover { border-color: color-mix(in srgb, var(--brand) 55%, transparent); } }
+  .ac-btn:active, .ac-switch:active { background: color-mix(in srgb, var(--brand) 14%, var(--solid)); }
+  .ac-knob { position: relative; width: 28px; height: 16px; border-radius: 999px; background: var(--line-hi); transition: background 0.18s var(--ease); }
+  .ac-knob::after { content: ""; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: 50%; background: var(--strong); transition: transform 0.18s var(--ease); }
+  .ac-switch[aria-checked="true"] .ac-knob { background: var(--brand); }
+  .ac-switch[aria-checked="true"] .ac-knob::after { transform: translateX(12px); }
+  .ac-rm { margin: 0 0 12px; color: var(--warn); font-size: 13px; }
+  .ac-rm[hidden] { display: none; }
+  .ac-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .ac-side { min-width: 0; }
+  .ac-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin-bottom: 8px; }
+  .ac-head b { color: var(--strong); font-size: 14px; }
+  .ac-head span { color: var(--muted); font-size: 13px; }
+  .ac-frame { display: block; width: 100%; height: 520px; border: 1px solid var(--line-hi); border-radius: 12px; background: #fff; }
+  .ac-read { margin: 8px 0 0; color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+  .ac-read b { color: var(--strong); font-weight: 600; }
+  @media (max-width: 640px) {
+    .ac-grid { grid-template-columns: 1fr; }
+    .ac-frame { height: 400px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ac-btn, .ac-switch, .ac-knob, .ac-knob::after { transition: none; }
+  }
+</style>
