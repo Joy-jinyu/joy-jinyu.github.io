@@ -13,6 +13,11 @@ export const COLUMNS = [
     title: '工具与环境',
     blurb: '每天在用的终端工具和配置，踩过的坑和做过的取舍。',
   },
+  {
+    id: 'teardown',
+    title: '拆解',
+    blurb: '把别人做出来的东西拆开，看它是怎么搭起来的，记下能借走的做法。',
+  },
 ] as const
 
 export type ColumnId = (typeof COLUMNS)[number]['id']
