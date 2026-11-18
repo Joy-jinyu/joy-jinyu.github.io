@@ -1,6 +1,6 @@
 /** 当前稿件：内存里一份，停手 600ms 后存到 Storage，启动时读回来。也放校验规则（和宿主提交前的校验一致）。 */
 import { signal, Storage } from "nsh";
-import { bodyBytes, type Draft, LIMITS } from "../../host-contract";
+import { bodyBytes, type Draft, LIMITS } from "../../../src/lib/editor-host/contract";
 
 const KEY = "pairwise.draft";
 /** 停止输入后多久存一次（毫秒）。 */
@@ -34,6 +34,20 @@ export function replaceDraft(next: Draft) {
   edited = true;
   draft.set({ title: next.title, description: next.description, tags: next.tags.slice(0, LIMITS.tags), body: next.body });
   scheduleSave();
+}
+
+/**
+ * 在正文的 `at` 处放进一块（图片、图表），前后各空一行让它自成一段。
+ * 返回新正文和这块之后的位置（接着放下一块用）。
+ */
+export function insertBlock(body: string, at: number, block: string): { body: string; end: number } {
+  const pos = Math.min(Math.max(0, at), body.length);
+  const before = body.slice(0, pos);
+  const after = body.slice(pos);
+  const lead = !before || before.endsWith("\n\n") ? "" : before.endsWith("\n") ? "\n" : "\n\n";
+  const trail = !after ? "\n" : after.startsWith("\n\n") ? "" : after.startsWith("\n") ? "\n" : "\n\n";
+  const next = `${before}${lead}${block}${trail}`;
+  return { body: next + after, end: next.length };
 }
 
 /** 清空并删掉存档。 */

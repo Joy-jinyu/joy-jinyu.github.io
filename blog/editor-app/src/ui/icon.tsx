@@ -8,6 +8,7 @@ const GLYPHS = {
   sparkle: "✦",
   dot: "•",
   cross: "✕",
+  chevron: "›",
 } as const;
 
 export type IconName = keyof typeof GLYPHS;

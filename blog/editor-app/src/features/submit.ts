@@ -1,6 +1,6 @@
 /** 提交审核：确认 → 进度（跟着 contrib.progress）→ 成功拿到 PR / 失败可重试。 */
 import { signal } from "nsh";
-import type { SubmitStep, Submitted } from "../../host-contract";
+import type { SubmitStep, Submitted } from "../../../src/lib/editor-host/contract";
 import { confirm, type StepState } from "../ui";
 import { clearDraft, currentDraft } from "./draft";
 import { call, messageOf, on } from "./host";

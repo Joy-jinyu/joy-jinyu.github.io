@@ -1,7 +1,8 @@
 /** 稿件预览：和文章页一样的层级，标题、摘要、标签、正文。 */
 import { Text, View } from "nsh";
-import { Badge, Markdown, Separator } from "../ui";
+import { Badge, Separator } from "../ui";
 import { currentDraft } from "./draft";
+import { BodyMarkdown } from "./media";
 
 export function Preview() {
   const draft = currentDraft;
@@ -26,7 +27,7 @@ export function Preview() {
       </If>
       <Separator />
       <If when={draft().body.trim()} else={<Text class="text-sm text-faint">正文预览会显示在这里。</Text>}>
-        <Markdown testID="preview-body" text={draft().body} />
+        <BodyMarkdown testID="preview-body" text={draft().body} />
       </If>
     </View>
   );

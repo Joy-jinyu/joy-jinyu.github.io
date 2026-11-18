@@ -1,6 +1,6 @@
 /** 我的投稿：侧栏里列出 contrib.mine 的 PR，按下在新标签页打开。每次打开都重新读。 */
 import { computed, List, resource, signal, Text, untracked, View } from "nsh";
-import type { MyPr } from "../../host-contract";
+import type { MyPr } from "../../../src/lib/editor-host/contract";
 import { Appear, Badge, type BadgeTone, Button, Empty, Notice, RowButton, Sheet, Skeleton, wave } from "../ui";
 import { call, messageOf } from "./host";
 

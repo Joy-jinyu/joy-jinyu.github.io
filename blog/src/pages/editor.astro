@@ -2,6 +2,7 @@
 /**
  * 读者投稿编辑器：界面是 NSH 应用（blog/editor-app，打包到 /blog/editor-app/，同源 iframe），
  * 登录、GitHub、AI 请求都在本页（lib/editor-host），token 和 AI key 不进应用。
+ * 应用要下载 wasm，首屏前由本页的品牌占位盖住 iframe（背景跟博客主题走），应用发 site.ready 后再退场。
  */
 import Base from '../layouts/Base.astro'
 
@@ -9,22 +10,125 @@ const base = import.meta.env.BASE_URL
 ---
 
 <Base title="投稿 · Pairwise" description="在 Pairwise 博客投稿：GitHub 登录后写稿，提交后变成一个 PR，审过后发布。" bgIntensity={0.25} footer={false}>
-  <section class="editor" aria-label="投稿编辑器">
+  <section class="editor" aria-label="投稿编辑器" aria-busy="true">
     {/* src 由下面的脚本在宿主挂好之后再设：iframe 里的 host.js 一启动就要找父页面的 pairwiseEditorHost */}
-    <iframe data-src={`${base}editor-app/`} title="投稿编辑器" allow="clipboard-write"></iframe>
+    <iframe data-src={`${base}editor-app/`} title="投稿编辑器" allow="clipboard-write" tabindex="-1"></iframe>
+    <div class="loader" role="status">
+      <img class="mark" src="/favicon.png" alt="" width="56" height="56" />
+      <p class="name">Pairwise 投稿</p>
+      <span class="bar" aria-hidden="true"><i></i></span>
+      <p class="note">正在加载编辑器…</p>
+      <button class="retry" type="button" hidden>重新加载</button>
+    </div>
     <noscript><p class="fallback">投稿编辑器需要开启 JavaScript。</p></noscript>
   </section>
 </Base>
 
 <script>
-  import '../lib/editor-host'
+  import { READY_EVENT } from '../lib/editor-host'
 
-  const frame = document.querySelector<HTMLIFrameElement>('.editor iframe')!
+  /** 占位至少露这么久：缓存命中时几百毫秒就好了，一闪而过反而像出错 */
+  const MIN_SHOW_MS = 400
+  /** 超过这么久还没好，给出提示和重试 */
+  const SLOW_MS = 20_000
+
+  const section = document.querySelector<HTMLElement>('.editor')!
+  const frame = section.querySelector<HTMLIFrameElement>('iframe')!
+  const loader = section.querySelector<HTMLElement>('.loader')!
+  const note = loader.querySelector<HTMLElement>('.note')!
+  const retry = loader.querySelector<HTMLButtonElement>('.retry')!
+  const shownAt = performance.now()
+
+  const slow = setTimeout(() => {
+    loader.classList.add('slow')
+    note.textContent = '加载得有点慢，可能是网络不好'
+    retry.hidden = false
+  }, SLOW_MS)
+
+  /** iframe 加载完这么久还没收到 site.ready（比如缓存里还是旧版应用），也把编辑器露出来，别让占位一直挡着 */
+  const READY_GRACE_MS = 6000
+  frame.addEventListener('load', () => setTimeout(reveal, READY_GRACE_MS), { once: true })
+
+  let revealed = false
+  function reveal() {
+    if (revealed) return
+    revealed = true
+    clearTimeout(slow)
+    setTimeout(() => {
+      section.classList.add('ready')
+      section.removeAttribute('aria-busy')
+      frame.removeAttribute('tabindex')
+      // 退场动画放完再拿掉，免得挡住点击
+      loader.addEventListener('transitionend', () => loader.remove(), { once: true })
+      setTimeout(() => loader.remove(), 800)
+    }, Math.max(0, MIN_SHOW_MS - (performance.now() - shownAt)))
+  }
+  addEventListener(READY_EVENT, reveal, { once: true })
+
+  retry.addEventListener('click', () => location.reload())
   frame.src = frame.dataset.src!
 </script>
 
 <style>
-  .editor { height: calc(100dvh - var(--header-h)); }
-  iframe { display: block; width: 100%; height: 100%; border: 0; background: transparent; color-scheme: normal; }
+  .editor { position: relative; height: calc(100dvh - var(--header-h)); }
+  iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: transparent;
+    color-scheme: normal;
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  .loader {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 14px;
+    background: var(--bg);
+  }
+  .mark { width: 56px; height: 56px; border-radius: 14px; box-shadow: 0 10px 40px -10px var(--brand-glow), 0 0 0 1px var(--line-hi); }
+  .name { margin: 0; color: var(--strong); font: 600 15px/1.2 var(--sans); letter-spacing: -0.01em; }
+  .bar { position: relative; width: 132px; height: 2px; overflow: hidden; border-radius: 2px; background: var(--line-hi); }
+  .bar i { position: absolute; inset: 0 auto 0 0; width: 40%; border-radius: inherit; background: linear-gradient(90deg, transparent, var(--brand), var(--brand-2), transparent); }
+  .note { margin: 0; color: var(--muted); font: 400 12px/1.4 var(--mono); }
+  .retry {
+    min-height: 34px;
+    padding: 0 16px;
+    border: 1px solid var(--line-hi);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--strong);
+    font: 500 13px/1 var(--sans);
+    cursor: var(--cursor-pointer);
+  }
+  .retry:hover { background: rgba(var(--ink-rgb), 0.05); }
+  .retry:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+  .slow .bar { opacity: 0.4; }
   .fallback { padding: 24px; color: var(--muted); text-align: center; }
+
+  /* 就绪：占位淡出微缩，编辑器从下方淡入 */
+  .ready iframe { opacity: 1; transform: none; }
+  .ready .loader { opacity: 0; pointer-events: none; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    iframe { transition: opacity 0.36s var(--ease) 0.08s, transform 0.36s var(--ease) 0.08s; }
+    .loader { transition: opacity 0.28s ease-in, transform 0.28s ease-in; }
+    .ready .loader { transform: scale(0.98); }
+    .mark { animation: rise 0.36s var(--ease) both, breathe 2.4s ease-in-out 0.4s infinite; }
+    .name { animation: rise 0.36s var(--ease) 0.06s both; }
+    .bar { animation: fade 0.24s var(--ease) 0.2s both; }
+    .bar i { animation: sweep 1.2s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
+    .note { animation: fade 0.24s var(--ease) 0.3s both; }
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } }
+  @keyframes fade { from { opacity: 0; } }
+  @keyframes breathe { 50% { transform: scale(1.04); } }
+  @keyframes sweep { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+  @media (prefers-reduced-motion: reduce) {
+    .bar i { left: 30%; }
+  }
 </style>

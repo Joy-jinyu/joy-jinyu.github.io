@@ -1,9 +1,12 @@
-/** AI 的三个对话框：起稿（先填主题）、润色正文、起标题和摘要（打开就开始跑）。关掉对话框就放弃这次结果。 */
+/** AI 的对话框：起稿（先填主题）、润色正文、起标题和摘要（打开就开始跑）、插入图表。生成过程流式显示，可以停；关掉对话框就放弃这次结果。 */
 import { effect, signal, Text, untracked, View } from "nsh";
-import type { AiResult, Draft } from "../../host-contract";
-import { Appear, Badge, Button, confirm, Dialog, Field, Markdown, Notice, Separator, Spinner, TextArea, TextInput } from "../ui";
-import { aiOpen, aiRunning, closeAi, runAi } from "./ai";
+import type { AiResult, Draft } from "../../../src/lib/editor-host/contract";
+import { Appear, Badge, Button, confirm, Dialog, Field, Notice, Separator, TextArea, TextInput } from "../ui";
+import { aiOpen, closeAi, runAi, stopAi } from "./ai";
+import { AiStream } from "./AiStream";
+import { ChartDialog } from "./ChartDialog";
 import { currentDraft, isBlank, replaceDraft, setField } from "./draft";
+import { BodyMarkdown } from "./media";
 
 export function AiDialogs() {
   return (
@@ -11,13 +14,19 @@ export function AiDialogs() {
       <DraftDialog />
       <PolishDialog />
       <MetaDialog />
+      <ChartDialog />
     </>
   );
 }
 
-type Phase = "input" | "running" | "done" | "error";
+type Phase = "input" | "running" | "done" | "error" | "stopped";
 
-/** AI 起稿：主题或提纲 + 额外要求 → 整篇稿子的预览 → 填入稿件。 */
+/** 生成中的底部操作：只有「停止」。 */
+function StopButton(props: { onStop: () => void }) {
+  return <Button testID="ai-stop" label="停止" variant="secondary" onPress={props.onStop} />;
+}
+
+/** AI 起稿：主题或提纲 + 额外要求 → 边写边看 → 整篇稿子的预览 → 填入稿件。 */
 function DraftDialog() {
   const open = () => aiOpen() === "draft";
   const topic = signal("");
@@ -45,6 +54,10 @@ function DraftDialog() {
       },
     );
   };
+  const stop = () => {
+    stopAi();
+    phase.set("input");
+  };
   const fill = async () => {
     const draft = result();
     if (!draft) return;
@@ -68,8 +81,9 @@ function DraftDialog() {
       onClose={closeAi}
       title="AI 起稿"
       description="写下主题或提纲，AI 会写出整篇稿子，填入前可以先看一遍。"
-      width={phase() === "done" ? "lg" : "md"}
-      onShortcut={phase() === "done" ? () => void fill() : generate}
+      width={phase() === "running" || phase() === "done" ? "lg" : "md"}
+      follow={phase() === "running"}
+      onShortcut={phase() === "done" ? () => void fill() : phase() === "running" ? undefined : generate}
       footer={
         phase() === "done" ? (
           <>
@@ -77,18 +91,12 @@ function DraftDialog() {
             <Button label="重新生成" variant="secondary" onPress={generate} />
             <Button testID="ai-fill" label="填入稿件" variant="primary" onPress={() => void fill()} />
           </>
+        ) : phase() === "running" ? (
+          <StopButton onStop={stop} />
         ) : (
           <>
             <Button label="取消" variant="secondary" onPress={closeAi} />
-            <Button
-              testID="ai-generate"
-              label="生成"
-              loadingLabel="生成中…"
-              variant="primary"
-              loading={phase() === "running"}
-              disabled={!topic().trim()}
-              onPress={generate}
-            />
+            <Button testID="ai-generate" label="生成" variant="primary" disabled={!topic().trim()} onPress={generate} />
           </>
         )
       }
@@ -96,6 +104,10 @@ function DraftDialog() {
       {phase() === "done" && result() ? (
         <Appear kind="panel">
           <DraftPreview draft={result()!} />
+        </Appear>
+      ) : phase() === "running" ? (
+        <Appear kind="panel">
+          <AiStream hint="通常要半分钟左右。按「停止」或关掉对话框都会放弃这次生成。" />
         </Appear>
       ) : (
         <View class="gap-4">
@@ -106,7 +118,6 @@ function DraftDialog() {
               rows="medium"
               value={topic()}
               onChange={(v) => topic.set(v)}
-              readonly={phase() === "running"}
               autoFocus
               placeholder="比如：为什么我们把前端构建从 webpack 换成了 Rspack，踩了哪些坑"
             />
@@ -117,14 +128,10 @@ function DraftDialog() {
               label="额外要求"
               value={extra()}
               onChange={(v) => extra.set(v)}
-              readonly={phase() === "running"}
               onSubmit={generate}
               placeholder="篇幅、语气，比如：2000 字左右，口语一点"
             />
           </Field>
-          <If when={phase() === "running"}>
-            <Text class="text-xs text-muted-foreground">通常要半分钟左右。关掉对话框就会放弃这次生成。</Text>
-          </If>
           <If when={phase() === "error"}>
             <Notice tone="danger" message={error()} />
           </If>
@@ -150,22 +157,23 @@ function DraftPreview(props: { draft: Draft }) {
         </View>
       </If>
       <Separator />
-      <Markdown text={props.draft.body} />
+      <BodyMarkdown text={props.draft.body} />
     </View>
   );
 }
 
-/** 生成中：spinner 和一句说明。 */
-function Working(props: { label: string }) {
+/** 「已停止」：停掉之后的说明，可以重新生成。 */
+function Stopped(props: { message: string }) {
   return (
-    <View class="flex-row items-center gap-3 py-6">
-      <Spinner label={props.label} />
-      <Text class="text-sm text-muted-foreground">{props.label}</Text>
-    </View>
+    <Appear kind="label">
+      <Text testID="ai-stopped" class="py-6 text-sm text-muted-foreground">
+        {props.message}
+      </Text>
+    </Appear>
   );
 }
 
-/** 润色正文：打开就跑，结果整篇预览，「替换正文」才写回。 */
+/** 润色正文：打开就跑，边写边看，结果整篇预览，「替换正文」才写回。 */
 function PolishDialog() {
   const open = () => aiOpen() === "polish";
   const phase = signal<Phase>("running");
@@ -188,6 +196,10 @@ function PolishDialog() {
   effect(() => {
     if (open()) untracked(start);
   });
+  const stop = () => {
+    stopAi();
+    phase.set("stopped");
+  };
   const apply = () => {
     setField("body", body());
     closeAi();
@@ -199,26 +211,35 @@ function PolishDialog() {
       onClose={closeAi}
       title="润色正文"
       description="只改表达，不改意思。看过再决定要不要替换。"
-      width={phase() === "done" ? "lg" : "md"}
+      width={phase() === "running" || phase() === "done" ? "lg" : "md"}
+      follow={phase() === "running"}
       onShortcut={phase() === "done" ? apply : undefined}
       footer={
-        <>
-          <Button label="取消" variant="secondary" onPress={closeAi} />
-          {phase() === "error" ? (
-            <Button label="重试" variant="primary" onPress={start} />
-          ) : (
-            <Button testID="ai-apply-polish" label="替换正文" loadingLabel="润色中…" variant="primary" loading={aiRunning() === "polish"} onPress={apply} />
-          )}
-        </>
+        phase() === "running" ? (
+          <StopButton onStop={stop} />
+        ) : (
+          <>
+            <Button label="取消" variant="secondary" onPress={closeAi} />
+            {phase() === "error" ? (
+              <Button label="重试" variant="primary" onPress={start} />
+            ) : phase() === "stopped" ? (
+              <Button label="重新生成" variant="primary" onPress={start} />
+            ) : (
+              <Button testID="ai-apply-polish" label="替换正文" variant="primary" onPress={apply} />
+            )}
+          </>
+        )
       }
     >
       {phase() === "running" ? (
-        <Working label="正在润色正文…" />
+        <AiStream hint="正文越长越久，通常一分钟以内。按「停止」或关掉对话框都会放弃这次润色。" />
       ) : phase() === "error" ? (
         <Notice tone="danger" message={error()} />
+      ) : phase() === "stopped" ? (
+        <Stopped message="已停止，正文没有改动。" />
       ) : (
         <Appear kind="panel">
-          <Markdown testID="ai-polish-result" text={body()} />
+          <BodyMarkdown testID="ai-polish-result" text={body()} />
         </Appear>
       )}
     </Dialog>
@@ -248,6 +269,10 @@ function MetaDialog() {
   effect(() => {
     if (open()) untracked(start);
   });
+  const stop = () => {
+    stopAi();
+    phase.set("stopped");
+  };
   const sameTags = (tags: string[]) => tags.join("\n") === currentDraft().tags.join("\n");
   return (
     <Dialog
@@ -256,20 +281,30 @@ function MetaDialog() {
       onClose={closeAi}
       title="起标题和摘要"
       description="根据正文给出几个备选，挑合适的采用。"
-      onShortcut={closeAi}
+      follow={phase() === "running"}
+      onShortcut={phase() === "running" ? undefined : closeAi}
       footer={
-        <>
-          <Button label={phase() === "done" ? "完成" : "取消"} variant={phase() === "done" ? "primary" : "secondary"} onPress={closeAi} />
-          <If when={phase() === "error"}>
-            <Button label="重试" variant="primary" onPress={start} />
-          </If>
-        </>
+        phase() === "running" ? (
+          <StopButton onStop={stop} />
+        ) : (
+          <>
+            <Button label={phase() === "done" ? "完成" : "取消"} variant={phase() === "done" ? "primary" : "secondary"} onPress={closeAi} />
+            <If when={phase() === "error"}>
+              <Button label="重试" variant="primary" onPress={start} />
+            </If>
+            <If when={phase() === "stopped"}>
+              <Button label="重新生成" variant="primary" onPress={start} />
+            </If>
+          </>
+        )
       }
     >
       {phase() === "running" ? (
-        <Working label="正在起标题和摘要…" />
+        <AiStream hint="通常十几秒。按「停止」或关掉对话框都会放弃这次生成。" />
       ) : phase() === "error" ? (
         <Notice tone="danger" message={error()} />
+      ) : phase() === "stopped" ? (
+        <Stopped message="已停止，标题和摘要没有改动。" />
       ) : (
         <Appear kind="panel" class="gap-5">
           <Field label="标题">

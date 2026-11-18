@@ -2,13 +2,14 @@
 import { mount, View } from "nsh";
 import { BootError, BootLoading } from "./src/features/Boot";
 import { restoreDraft } from "./src/features/draft";
-import { phase, startSession } from "./src/features/session";
+import { announceReady, phase, startSession } from "./src/features/session";
 import { SignedOut } from "./src/features/SignedOut";
 import { Writing } from "./src/features/Writing";
 
 function App() {
   startSession();
   void restoreDraft();
+  announceReady();
   return <View class="flex-1 bg-background">{screen(phase())}</View>;
 }
 

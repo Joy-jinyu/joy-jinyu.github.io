@@ -1,9 +1,12 @@
 /**
  * 投稿编辑器的 GitHub 部分：经 Cloudflare Worker（sveltia-cms-auth，pairwise-cms-auth）弹窗登录拿 token，
- * 再用 GitHub REST API 走 fork → 建分支 → 写文件 → 提 PR。token 只放在这个页面的内存里。
- * 稿件的路径和 frontmatter 要过 .github/scripts/check-contrib.mjs 的守门规则，改字段要两边一起改。
+ * 再用 GitHub REST API 走 fork → 建分支 → 写文件（稿件 + 图片）→ 提 PR。
+ * 登录存在本机 7 天；GitHub 的 token 8 小时过期，用刷新令牌经 Worker 续期。
+ * 稿件和图片的路径、frontmatter 要过 .github/scripts/check-contrib.mjs 的守门规则，改字段要两边一起改。
  */
-import { bodyBytes, LIMITS, type Draft, type Login, type MyPr, type SubmitStep, type Submitted } from '../../../editor-app/host-contract'
+import { bodyBytes, LIMITS, MEDIA_PREFIX, type Draft, type Login, type MyPr, type SubmitStep, type Submitted } from './contract'
+import { MEDIA_DIR } from '../contrib-media.mjs'
+import { bytesOf, toBase64 } from './media'
 
 const AUTH_WORKER = 'https://pairwise-cms-auth.1825326327.workers.dev'
 const UPSTREAM = 'Joy-jinyu/joy-jinyu.github.io'
@@ -13,21 +16,49 @@ const API = 'https://api.github.com'
 /** Worker 弹窗与本页的消息协议（Worker 源码 outputHTML） */
 const HANDSHAKE = 'authorizing:github'
 const RESULT = /^authorization:github:(success|error):(.*)$/s
+const KEY = 'pairwise-github'
+const KEEP_MS = 7 * 24 * 3600 * 1000
 
-type Session = { token: string; user: NonNullable<Login> }
-let session: Session | null = null
+type Session = { token: string; refreshToken?: string; user: NonNullable<Login>; signedInAt: number }
+let session: Session | null = restore()
+
+function restore(): Session | null {
+  try {
+    const s = JSON.parse(localStorage.getItem(KEY) ?? 'null') as Session | null
+    if (s?.token && s.user?.login && Date.now() - s.signedInAt < KEEP_MS) return s
+    localStorage.removeItem(KEY)
+  } catch {
+    // 存储不可用或内容坏了：当作没登录
+  }
+  return null
+}
+
+function persist(next: Session | null) {
+  session = next
+  try {
+    if (next) localStorage.setItem(KEY, JSON.stringify(next))
+    else localStorage.removeItem(KEY)
+  } catch {
+    // 存不进去只影响下次要不要重新登录
+  }
+}
+
+// 别的标签页登录、退出或续期了：跟着更新，免得这里用旧 token 把它们的结果写回去
+addEventListener('storage', (e) => {
+  if (e.key === KEY) session = restore()
+})
 
 export const currentLogin = (): Login => session?.user ?? null
 
-/** 登录失效（GitHub 返回 401）的错误：宿主据此通知应用回到未登录 */
+/** 登录失效（GitHub 返回 401 且续期也失败）的错误：宿主据此通知应用回到未登录 */
 export const isAuthError = (err: unknown) => (err as { status?: number })?.status === 401
 
 export function logout() {
-  session = null
+  persist(null)
 }
 
 /** 打开 Worker 的登录弹窗，等它把 token 送回来 */
-function requestToken(): Promise<string> {
+function requestToken(): Promise<{ token: string; refreshToken?: string }> {
   const url = `${AUTH_WORKER}/auth?${new URLSearchParams({ provider: 'github', site_id: location.hostname, scope: 'public_repo' })}`
   const popup = open(url, 'pairwise-github-login', 'width=600,height=720')
   if (!popup) return Promise.reject(new Error('登录窗口被浏览器拦住了，请允许本站弹出窗口后再试'))
@@ -40,17 +71,17 @@ function requestToken(): Promise<string> {
     }
     const onMessage = (e: MessageEvent) => {
       if (e.origin !== workerOrigin || e.source !== popup || typeof e.data !== 'string') return
-      if (e.data === HANDSHAKE) return (e.source as Window | null)?.postMessage(HANDSHAKE, e.origin)
+      if (e.data === HANDSHAKE) return popup.postMessage(HANDSHAKE, e.origin)
       const m = RESULT.exec(e.data)
       if (!m) return
-      let payload: { token?: string; error?: string } = {}
+      let payload: { token?: string; refreshToken?: string; error?: string } = {}
       try {
         payload = JSON.parse(m[2])
       } catch {
         // 格式不对时按失败处理
       }
       popup.close()
-      if (m[1] === 'success' && payload.token) done(() => resolve(payload.token!))
+      if (m[1] === 'success' && payload.token) done(() => resolve({ token: payload.token!, refreshToken: payload.refreshToken }))
       else done(() => reject(new Error(`GitHub 登录失败${payload.error ? `：${payload.error}` : ''}`)))
     }
     const watch = setInterval(() => {
@@ -60,28 +91,81 @@ function requestToken(): Promise<string> {
   })
 }
 
-async function gh<T>(token: string, path: string, init: RequestInit = {}): Promise<T> {
+/**
+ * 用刷新令牌换新 token（Worker 的 /auth POST，代我们带上 client secret）。
+ * GitHub 的刷新令牌只能用一次：并发的几个请求同时遇到 401 时只续一次，其余等同一个结果。
+ */
+let refreshing: Promise<boolean> | null = null
+function refresh(failed: string): Promise<boolean> {
+  refreshing ??= withRefreshLock(failed).finally(() => (refreshing = null))
+  return refreshing
+}
+
+/** 多个标签页也只让一个去续：拿到锁后先看看别的标签页是不是已经续好了 */
+async function withRefreshLock(failed: string): Promise<boolean> {
+  const run = async () => {
+    session = restore()
+    if (session && session.token !== failed) return true
+    return doRefresh()
+  }
+  return navigator.locks ? navigator.locks.request('pairwise-github-refresh', run) : run()
+}
+
+async function doRefresh(): Promise<boolean> {
+  const before = session
+  if (!before?.refreshToken) return false
+  try {
+    const res = await fetch(`${AUTH_WORKER}/auth`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ grant_type: 'refresh_token', refresh_token: before.refreshToken }),
+    })
+    const data = await res.json().catch(() => null)
+    // 等结果的时候别的标签页退出或续好了：以那边为准，这次的结果不要了
+    if (session !== before) return !!session && session.token !== before.token
+    if (!res.ok || !data?.access_token) return false
+    persist({ ...before, token: data.access_token, refreshToken: data.refresh_token ?? before.refreshToken })
+    return true
+  } catch {
+    return false
+  }
+}
+
+async function request<T>(token: string, path: string, init: RequestInit): Promise<{ res: Response; data: T }> {
   const res = await fetch(`${API}${path}`, {
     ...init,
     headers: { Accept: 'application/vnd.github+json', Authorization: `Bearer ${token}`, 'X-GitHub-Api-Version': '2022-11-28', ...init.headers },
   })
-  const data = res.status === 204 ? null : await res.json().catch(() => null)
+  const data = (res.status === 204 ? null : await res.json().catch(() => null)) as T
+  return { res, data }
+}
+
+/** 带登录的 GitHub 请求；401 时先续期再试一次，还不行就退出登录 */
+async function gh<T>(path: string, init: RequestInit = {}): Promise<T> {
+  const s = need()
+  let { res, data } = await request<T>(s.token, path, init)
+  // 别的请求可能已经续好了：token 变了就直接用新的重试，不再续一次
+  if (res.status === 401 && (session?.token !== s.token || (await refresh(s.token))) && session) {
+    ;({ res, data } = await request<T>(session.token, path, init))
+  }
   if (!res.ok) {
     if (res.status === 401) logout()
-    throw Object.assign(new Error(`GitHub 返回 ${res.status}${data?.message ? `：${data.message}` : ''}`), { status: res.status })
+    const msg = (data as { message?: string } | null)?.message
+    throw Object.assign(new Error(`GitHub 返回 ${res.status}${msg ? `：${msg}` : ''}`), { status: res.status })
   }
-  return data as T
+  return data
 }
 
 export async function login(): Promise<Login> {
-  const token = await requestToken()
-  const u = await gh<{ login: string; avatar_url: string }>(token, '/user')
-  session = { token, user: { login: u.login, avatarUrl: u.avatar_url } }
-  return session.user
+  const { token, refreshToken } = await requestToken()
+  const { res, data } = await request<{ login: string; avatar_url: string }>(token, '/user', {})
+  if (!res.ok) throw new Error(`GitHub 返回 ${res.status}`)
+  persist({ token, refreshToken, user: { login: data.login, avatarUrl: data.avatar_url }, signedInAt: Date.now() })
+  return session!.user
 }
 
 function need(): Session {
-  if (!session) throw new Error('登录已失效，请重新登录')
+  if (!session) throw Object.assign(new Error('登录已失效，请重新登录'), { status: 401 })
   return session
 }
 
@@ -105,6 +189,9 @@ function toMarkdown(draft: Draft, author: string): string {
   return `---\n${fm.join('\n')}\n---\n\n${draft.body.trim()}\n`
 }
 
+/** 正文里引用的投稿图片地址（去重） */
+const mediaIn = (body: string) => [...new Set([...body.matchAll(/!\[[^\]]*\]\((\/blog\/contrib-images\/[0-9a-f]{16}\.(?:png|jpg|webp|gif|svg))[\s)]/g)].map((m) => m[1]))]
+
 function check(draft: Draft) {
   const title = draft.title.trim()
   const description = draft.description.trim()
@@ -115,69 +202,79 @@ function check(draft: Draft) {
   if (draft.tags.length > LIMITS.tags || draft.tags.some((t) => !t.trim() || t.length > LIMITS.tag)) {
     throw new Error(`标签最多 ${LIMITS.tags} 个，每个最多 ${LIMITS.tag} 字`)
   }
+  if (mediaIn(draft.body).length > LIMITS.images) throw new Error(`图片最多 ${LIMITS.images} 张`)
   return { ...draft, title, description, tags: draft.tags.map((t) => t.trim()) }
 }
 
-const toBase64 = (text: string) => {
-  const bytes = new TextEncoder().encode(text)
-  let bin = ''
-  for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000))
-  return btoa(bin)
-}
-
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
+const status = (err: unknown) => (err as { status?: number }).status
 
 /** 有写权限就在原仓库建分支；否则用（或新建）访客的 fork。fork 是异步建的，等它的默认分支出现 */
-async function prepareRepo(token: string): Promise<{ repo: string; sha: string; viaFork: boolean }> {
-  const upstream = await gh<{ permissions?: { push?: boolean } }>(token, `/repos/${UPSTREAM}`)
+async function prepareRepo(): Promise<{ repo: string; sha: string; viaFork: boolean }> {
+  const upstream = await gh<{ permissions?: { push?: boolean } }>(`/repos/${UPSTREAM}`)
   if (upstream.permissions?.push) {
-    const ref = await gh<{ object: { sha: string } }>(token, `/repos/${UPSTREAM}/git/ref/heads/${BASE}`)
+    const ref = await gh<{ object: { sha: string } }>(`/repos/${UPSTREAM}/git/ref/heads/${BASE}`)
     return { repo: UPSTREAM, sha: ref.object.sha, viaFork: false }
   }
-  const fork = await gh<{ full_name: string; default_branch: string }>(token, `/repos/${UPSTREAM}/forks`, {
+  const fork = await gh<{ full_name: string; default_branch: string }>(`/repos/${UPSTREAM}/forks`, {
     method: 'POST',
     body: JSON.stringify({ default_branch_only: true }),
   })
   for (let i = 0; i < 30; i++) {
     try {
-      const ref = await gh<{ object: { sha: string } }>(token, `/repos/${fork.full_name}/git/ref/heads/${fork.default_branch}`)
+      const ref = await gh<{ object: { sha: string } }>(`/repos/${fork.full_name}/git/ref/heads/${fork.default_branch}`)
       // fork 的默认分支上有访客自己的提交时，从它切出的分支会把这些提交一起带进 PR，过不了守门检查
       const owner = fork.full_name.split('/')[0]
-      const diff = await gh<{ ahead_by: number }>(token, `/repos/${UPSTREAM}/compare/${BASE}...${owner}:${fork.default_branch}`)
+      const diff = await gh<{ ahead_by: number }>(`/repos/${UPSTREAM}/compare/${BASE}...${owner}:${fork.default_branch}`)
       if (diff.ahead_by > 0) {
         throw new Error(`你的 fork（${fork.full_name}）的 ${fork.default_branch} 分支上有 ${diff.ahead_by} 个本站没有的提交，先在 GitHub 上把它和本站同步（或撤掉这些提交）再投稿`)
       }
       return { repo: fork.full_name, sha: ref.object.sha, viaFork: true }
     } catch (err) {
-      if ((err as { status?: number }).status !== 404 && (err as { status?: number }).status !== 409) throw err
+      if (status(err) !== 404 && status(err) !== 409) throw err
       await sleep(2000)
     }
   }
   throw new Error('fork 还没准备好，过一会儿再提交')
 }
 
-/**
- * 不同步 fork：新分支直接从 fork 的默认分支切出来，PR 只多出投稿这一个文件。
- * 这样即使上游改过 .github/workflows（同步要 workflow 权限）也不受影响。
- */
 /** 上一次没提交成功的稿件：同一篇重试时沿用同一个分支，不重复开分支、不重复提 PR */
 let attempt: { key: string; slug: string } | null = null
 
-const status = (err: unknown) => (err as { status?: number }).status
-
-/** 已存在就当成功：重试时上一次可能已经做完了这一步 */
+/** 已存在就当成功：重试时上一次可能已经做完了这一步。只认「已存在」这类 422，别的 422（参数错）照常报错 */
 async function unlessExists<T>(fn: () => Promise<T>, onExists: () => Promise<T>): Promise<T> {
   try {
     return await fn()
   } catch (err) {
-    if (status(err) === 422) return onExists()
+    if (status(err) === 422 && /already exists|sha.* (wasn't|was not) supplied|does not match/i.test((err as Error).message)) return onExists()
     throw err
   }
 }
 
+/** 往分支上写一个文件；已经有了（重试）就带上它的 sha 覆盖 */
+async function putFile(repo: string, branch: string, path: string, content: string, message: string) {
+  const put = (sha?: string) => gh(`/repos/${repo}/contents/${path}`, { method: 'PUT', body: JSON.stringify({ message, content, branch, sha }) })
+  await unlessExists(put, async () => {
+    const existing = await gh<{ sha: string }>(`/repos/${repo}/contents/${path}?ref=${encodeURIComponent(branch)}`)
+    return put(existing.sha)
+  })
+}
+
+/**
+ * 不同步 fork：新分支直接从 fork 的默认分支切出来，PR 只多出投稿这几个文件。
+ * 这样即使上游改过 .github/workflows（同步要 workflow 权限）也不受影响。
+ */
 export async function submit(raw: Draft, progress: (step: SubmitStep, state: 'active' | 'done') => void): Promise<Submitted> {
-  const { token, user } = need()
+  const { user } = need()
   const draft = check(raw)
+  // 先把图片都找齐，缺图就别开分支
+  const media = await Promise.all(
+    mediaIn(draft.body).map(async (path) => {
+      const stored = await bytesOf(path)
+      if (!stored) throw new Error(`正文里的图片 ${path.slice(MEDIA_PREFIX.length)} 在这台设备上找不到了，删掉它或重新插入`)
+      return stored
+    }),
+  )
   const key = JSON.stringify([user.login, draft])
   if (attempt?.key !== key) attempt = { key, slug: newSlug() }
   const { slug } = attempt
@@ -185,26 +282,21 @@ export async function submit(raw: Draft, progress: (step: SubmitStep, state: 'ac
   const path = `${DIR}/${slug}.md`
 
   progress('fork', 'active')
-  const { repo, sha, viaFork } = await prepareRepo(token)
+  const { repo, sha, viaFork } = await prepareRepo()
   progress('fork', 'done')
 
   progress('branch', 'active')
   await unlessExists(
-    () => gh(token, `/repos/${repo}/git/refs`, { method: 'POST', body: JSON.stringify({ ref: `refs/heads/${branch}`, sha }) }),
+    () => gh(`/repos/${repo}/git/refs`, { method: 'POST', body: JSON.stringify({ ref: `refs/heads/${branch}`, sha }) }),
     async () => null,
   )
   progress('branch', 'done')
 
   progress('commit', 'active')
-  const put = (fileSha?: string) =>
-    gh(token, `/repos/${repo}/contents/${path}`, {
-      method: 'PUT',
-      body: JSON.stringify({ message: `docs(blog): 投稿《${draft.title}》`, content: toBase64(toMarkdown(draft, user.login)), branch, sha: fileSha }),
-    })
-  await unlessExists(put, async () => {
-    const existing = await gh<{ sha: string }>(token, `/repos/${repo}/contents/${path}?ref=${encodeURIComponent(branch)}`)
-    return put(existing.sha)
-  })
+  for (const m of media) {
+    await putFile(repo, branch, `${MEDIA_DIR}/${m.path.slice(MEDIA_PREFIX.length)}`, toBase64(m.bytes), `docs(blog): 投稿《${draft.title}》的图片`)
+  }
+  await putFile(repo, branch, path, toBase64(new TextEncoder().encode(toMarkdown(draft, user.login))), `docs(blog): 投稿《${draft.title}》`)
   progress('commit', 'done')
 
   progress('pr', 'active')
@@ -212,19 +304,19 @@ export async function submit(raw: Draft, progress: (step: SubmitStep, state: 'ac
   type Pr = { number: number; html_url: string }
   const pr = await unlessExists(
     () =>
-      gh<Pr>(token, `/repos/${UPSTREAM}/pulls`, {
+      gh<Pr>(`/repos/${UPSTREAM}/pulls`, {
         method: 'POST',
         body: JSON.stringify({
           title: `投稿：${draft.title}`,
           head,
           base: BASE,
-          body: `读者投稿，来自站内编辑器。\n\n> ${draft.description}\n\n作者：@${user.login}`,
+          body: `读者投稿，来自站内编辑器。\n\n> ${draft.description}\n\n作者：@${user.login}${media.length ? `\n\n附图 ${media.length} 张` : ''}`,
           maintainer_can_modify: true,
         }),
       }),
     async () => {
       const owner = viaFork ? repo.split('/')[0] : UPSTREAM.split('/')[0]
-      const [found] = await gh<Pr[]>(token, `/repos/${UPSTREAM}/pulls?state=open&head=${encodeURIComponent(`${owner}:${branch}`)}`)
+      const [found] = await gh<Pr[]>(`/repos/${UPSTREAM}/pulls?state=open&head=${encodeURIComponent(`${owner}:${branch}`)}`)
       if (!found) throw new Error('GitHub 拒绝创建 PR，可以稍后在「我的投稿」里看看是否已经提交')
       return found
     },
@@ -244,11 +336,11 @@ type SearchItem = { number: number; title: string; html_url: string; state: 'ope
  * 再用搜索补上更早的；两边按编号去重。
  */
 export async function mine(): Promise<MyPr[]> {
-  const { token, user } = need()
+  const { user } = need()
   const q = encodeURIComponent(`repo:${UPSTREAM} is:pr author:${user.login} "${TITLE_PREFIX}" in:title`)
   const [pulls, search] = await Promise.all([
-    gh<PullItem[]>(token, `/repos/${UPSTREAM}/pulls?state=all&per_page=100&sort=updated&direction=desc`),
-    gh<{ items: SearchItem[] }>(token, `/search/issues?q=${q}&sort=updated&order=desc&per_page=100`),
+    gh<PullItem[]>(`/repos/${UPSTREAM}/pulls?state=all&per_page=100&sort=updated&direction=desc`),
+    gh<{ items: SearchItem[] }>(`/search/issues?q=${q}&sort=updated&order=desc&per_page=100`),
   ])
   const byNumber = new Map<number, MyPr>()
   for (const p of pulls) {

@@ -8,8 +8,12 @@ import {
   Button,
   Card,
   Dialog,
+  Disclosure,
   Empty,
   Field,
+  Figure,
+  FigureLoading,
+  FigureNote,
   IconButton,
   Markdown,
   Notice,
@@ -41,6 +45,7 @@ function Gallery() {
   const view = signal<"edit" | "preview">("edit");
   const dialog = signal(false);
   const sheet = signal(false);
+  const thinking = signal(true);
   return (
     <Scroll class="flex-1 bg-background">
       <View class="gap-8 p-8">
@@ -175,9 +180,32 @@ function Gallery() {
             </Card>
           </View>
         </Section>
+        <Section title="Disclosure · Markdown streaming · Figure · FigureLoading · FigureNote">
+          <View class="flex-row flex-wrap gap-4">
+            <Card padding="md" class="w-96">
+              <Disclosure label="思考过程" meta="128 字" open={thinking()} onToggle={() => thinking.set(!thinking())}>
+                <Text class="text-xs leading-5 text-muted-foreground">先确定读者是谁，再决定从哪个问题讲起。</Text>
+              </Disclosure>
+              <Markdown streaming text={"## 正在写的小节\n\n流式输出的最后一段，末尾有**光标"} />
+            </Card>
+            <Card padding="md" class="w-96">
+              <Figure src={SAMPLE_SVG} alt="示例插图" />
+              <FigureLoading label="正在载入图片" />
+            </Card>
+            <Card padding="md" class="w-96">
+              <FigureNote message="图片在这台设备上找不到了。重新插入一次就好。" />
+              <FigureNote tone="danger" message="Mermaid 图画不出来：第 2 行：箭头后面缺了节点" code={"flowchart LR\n  A -->"} />
+            </Card>
+          </View>
+        </Section>
       </View>
     </Scroll>
   );
 }
+
+/** 一张内联的 SVG（data: 地址，和宿主给的 SVG 插图、Mermaid 图同一种），看 Figure 载入后的样子。颜色是图片内容，不是界面 token。 */
+const SAMPLE_SVG =
+  "data:image/svg+xml;base64," +
+  Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 120" width="320" height="120"><rect x="8" y="8" width="304" height="104" rx="12" fill="none" stroke="#00b8b8" stroke-width="2"/><text x="160" y="68" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#7d8596">SVG 插图</text></svg>').toString("base64");
 
 mount(Gallery);

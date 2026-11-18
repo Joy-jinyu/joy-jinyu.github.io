@@ -1,0 +1,41 @@
+---
+/**
+ * Mermaid 沙箱渲染页：由 lib/mermaid-render.ts 以 <iframe sandbox="allow-scripts"> 嵌入（不透明源），
+ * 收到父页面发来的代码就画成 SVG 文本发回去。不在沙箱里（origin 不是 null）时什么都不做：
+ * 否则别的网站把它不加沙箱地嵌进去、发来恶意代码，就能在本站源上执行。
+ */
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>mermaid</title>
+  </head>
+  <body>
+    <script>
+      import { checkMermaid, renderMermaid } from '../lib/mermaid-sandbox'
+
+      type Job = { id: number; code: string; dark: boolean; parseOnly?: boolean }
+
+      if (self.origin === 'null' && parent !== self) {
+        addEventListener('message', async (e: MessageEvent<Job>) => {
+          if (e.source !== parent || typeof e.data?.code !== 'string') return
+          const { id, code, dark, parseOnly } = e.data
+          try {
+            if (parseOnly) {
+              await checkMermaid(code)
+              parent.postMessage({ id, ok: true }, '*')
+            } else {
+              parent.postMessage({ id, ok: true, svg: await renderMermaid(code, dark) }, '*')
+            }
+          } catch (err) {
+            parent.postMessage({ id, ok: false, error: String((err as Error)?.message ?? err) }, '*')
+          }
+        })
+        parent.postMessage({ ready: true }, '*')
+      }
+    </script>
+  </body>
+</html>

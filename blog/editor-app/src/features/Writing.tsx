@@ -1,7 +1,8 @@
 /** 写稿页：顶栏、表单和预览（宽屏左右两栏，窄屏分段切换）、底部操作栏，以及它打开的对话框和侧栏。 */
 import { computed, Scroll, signal, Text, View, windowSize } from "nsh";
-import type { Draft } from "../../host-contract";
+import type { Draft } from "../../../src/lib/editor-host/contract";
 import { Appear, Button, Card, confirm, Notice, Segmented, WIDE } from "../ui";
+import { followAiDeltas } from "./ai";
 import { AiDialogs } from "./AiDialogs";
 import { DraftForm } from "./DraftForm";
 import { clearDraft, currentDraft, draftSaveState, isBlank, validate } from "./draft";
@@ -16,6 +17,7 @@ type Mode = "edit" | "preview";
 
 export function Writing() {
   followProgress();
+  followAiDeltas();
   const wide = () => windowSize().width >= WIDE;
   const view = signal<Mode>("edit");
   const mineOpen = signal(false);

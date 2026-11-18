@@ -1,7 +1,7 @@
 // 提交：确认后进度跟着宿主的 contrib.progress 走，成功给 PR，失败标出卡住的一步并可重试。
 import { expect, open, test } from "nsh/test";
 import type { App } from "nsh/test";
-import type { Draft, Submitted } from "../host-contract";
+import type { Draft, Submitted } from "../../src/lib/editor-host/contract";
 import { READY_DRAFT, signedIn, withDraft } from "./fixtures";
 
 const WIDE = { platform: "web", width: 1280, height: 860 } as const;
