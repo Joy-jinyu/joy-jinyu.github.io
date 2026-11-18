@@ -9,12 +9,15 @@ ROOT="$(cd "$(dirname "$0")" && pwd)"
 OUT="$ROOT/public"
 # 本机走 SSH；CI（.github/workflows/deploy.yml）传入带 token 的 https 地址
 REMOTE="${DEPLOY_REMOTE:-git@github.com:Joy-jinyu/joy-jinyu.github.io.git}"
+# 带 token 的地址只留给最后的 push，不让后面的构建步骤（第三方依赖、nsh）在环境变量里看到
+unset DEPLOY_REMOTE
 
 cd "$ROOT"
 # 一并清掉 Astro 内容缓存：缓存里的页面 HTML 会引用旧的代码块样式文件名（改了 expressiveCode 配置也不失效），发出去就丢样式
 rm -rf "$OUT" notes/dist notes/.astro notes/node_modules/.astro blog/dist blog/.astro blog/node_modules/.astro
 
 npx astro build --root notes
+bash scripts/package-editor.sh
 npx astro build --root blog
 
 mkdir -p "$OUT"

@@ -26,6 +26,14 @@ jobs:
           node-version: 22
           cache: yarn
       - run: yarn install --frozen-lockfile
+      # 投稿编辑器用 NSH 打包；版本和本机一致，升级时两边一起改（scripts/package-editor.sh）
+      - name: 安装 nsh
+        env:
+          NSH_VERSION: v0.6.0
+        run: |
+          curl -fsSL "https://raw.githubusercontent.com/longbridge/nsh/$NSH_VERSION/website/public/install.sh" | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          "$HOME/.local/bin/nsh" component add web
       - name: 构建并推送 gh-page
         env:
           DEPLOY_REMOTE: https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
