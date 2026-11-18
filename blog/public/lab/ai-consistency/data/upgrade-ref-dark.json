@@ -1,0 +1,289 @@
+{
+ "file": "upgrade-ref.html",
+ "scheme": "dark",
+ "bag": {
+  "bg": {
+   "#141413": {
+    "n": 1,
+    "who": [
+     "header.nav「升级套餐」"
+    ]
+   },
+   "#2f2e2b": {
+    "n": 3,
+    "who": [
+     "div.seg「月付 年付 省 20%」",
+     "span.tag「当前套餐」",
+     "button.btn「正在使用」"
+    ]
+   },
+   "#45433e": {
+    "n": 1,
+    "who": [
+     "span.seg-face「月付」"
+    ]
+   },
+   "#3a2a23": {
+    "n": 2,
+    "who": [
+     "span.tag「省 20%」",
+     "span.tag「推荐」"
+    ]
+   },
+   "#1f1e1c": {
+    "n": 4,
+    "who": [
+     "article.card「免费版 ¥0 / 月 永久免」",
+     "article.card「Pro 当前套餐 ¥30 /」",
+     "article.card「团队版 推荐 ¥88 / 月」",
+     "div.card「升级后什么时候生效？ 付款成」"
+    ]
+   },
+   "#d97757": {
+    "n": 1,
+    "who": [
+     "button.btn「升级到团队版」"
+    ]
+   }
+  },
+  "border": {
+   "1px null": {
+    "n": 9,
+    "who": [
+     "header.nav「升级套餐」",
+     "button.btn「正在使用」",
+     "button.btn「正在使用」",
+     "button.btn「正在使用」"
+    ]
+   },
+   "1px #2f2e2b": {
+    "n": 9,
+    "who": [
+     "ul.features「5GB 空间 最多 3 人 」",
+     "button.btn「降级到免费版」",
+     "button.btn「降级到免费版」",
+     "button.btn「降级到免费版」"
+    ]
+   }
+  },
+  "radius": {
+   "8": {
+    "n": 2,
+    "who": [
+     "span.seg-face「月付」",
+     "span.seg-face「年付 省 20%」"
+    ]
+   },
+   "10": {
+    "n": 4,
+    "who": [
+     "button.icon-btn「关闭」",
+     "button.btn「降级到免费版」",
+     "button.btn「正在使用」",
+     "button.btn「升级到团队版」"
+    ]
+   },
+   "12": {
+    "n": 1,
+    "who": [
+     "div.seg「月付 年付 省 20%」"
+    ]
+   },
+   "16": {
+    "n": 4,
+    "who": [
+     "article.card「免费版 ¥0 / 月 永久免」",
+     "article.card「Pro 当前套餐 ¥30 /」",
+     "article.card「团队版 推荐 ¥88 / 月」",
+     "div.card「升级后什么时候生效？ 付款成」"
+    ]
+   },
+   "pill": {
+    "n": 3,
+    "who": [
+     "span.tag「省 20%」",
+     "span.tag「当前套餐」",
+     "span.tag「推荐」"
+    ]
+   },
+   "16/0": {
+    "n": 1,
+    "who": [
+     "button.faq-q「升级后什么时候生效？」"
+    ]
+   },
+   "0/16": {
+    "n": 1,
+    "who": [
+     "button.faq-q「空间超出免费版额度怎么办？」"
+    ]
+   }
+  },
+  "controlHeight": {
+   "40": {
+    "n": 1,
+    "who": [
+     "button.icon-btn「关闭」"
+    ]
+   },
+   "44": {
+    "n": 3,
+    "who": [
+     "button.btn「降级到免费版」",
+     "button.btn「正在使用」",
+     "button.btn「升级到团队版」"
+    ]
+   },
+   "47": {
+    "n": 3,
+    "who": [
+     "button.faq-q「升级后什么时候生效？」",
+     "button.faq-q「取消后数据还在吗？」",
+     "button.faq-q「空间超出免费版额度怎么办？」"
+    ]
+   }
+  },
+  "text": {
+   "#f0efea": {
+    "n": 22,
+    "who": [
+     "h1「升级套餐」",
+     "span.seg-face「月付」",
+     "h2「免费版」",
+     "span.amount「¥0」"
+    ]
+   },
+   "#a3a199": {
+    "n": 10,
+    "who": [
+     "span.seg-face「年付 省 20%」",
+     "small「/ 月」",
+     "p.note「永久免费」",
+     "span.tag「当前套餐」"
+    ]
+   },
+   "#eba78d": {
+    "n": 2,
+    "who": [
+     "span.tag「省 20%」",
+     "span.tag「推荐」"
+    ]
+   },
+   "#1a1a19": {
+    "n": 1,
+    "who": [
+     "button.btn「升级到团队版」"
+    ]
+   }
+  },
+  "fontSize": {
+   "12": {
+    "n": 3,
+    "who": [
+     "span.tag「省 20%」",
+     "span.tag「当前套餐」",
+     "span.tag「推荐」"
+    ]
+   },
+   "13": {
+    "n": 4,
+    "who": [
+     "small「/ 月」",
+     "small「/ 月」",
+     "small「/ 月」",
+     "p.fine「价格含税，可随时取消」"
+    ]
+   },
+   "14": {
+    "n": 3,
+    "who": [
+     "p.note「永久免费」",
+     "p.note「改为年付，每年省 ¥72」",
+     "p.note「改为年付，每年省 ¥211.」"
+    ]
+   },
+   "15": {
+    "n": 18,
+    "who": [
+     "span.seg-face「月付」",
+     "span.seg-face「年付 省 20%」",
+     "li「5GB 空间」",
+     "li「最多 3 人」"
+    ]
+   },
+   "18": {
+    "n": 4,
+    "who": [
+     "h1「升级套餐」",
+     "h2「免费版」",
+     "h2「Pro」",
+     "h2「团队版」"
+    ]
+   },
+   "28": {
+    "n": 3,
+    "who": [
+     "span.amount「¥0」",
+     "span.amount「¥30」",
+     "span.amount「¥88」"
+    ]
+   }
+  },
+  "fontWeight": {
+   "400": {
+    "n": 19,
+    "who": [
+     "small「/ 月」",
+     "p.note「永久免费」",
+     "li「5GB 空间」",
+     "li「最多 3 人」"
+    ]
+   },
+   "600": {
+    "n": 16,
+    "who": [
+     "h1「升级套餐」",
+     "span.seg-face「月付」",
+     "span.seg-face「年付 省 20%」",
+     "span.tag「省 20%」"
+    ]
+   }
+  },
+  "shadow": {
+   "#000000/0.3 0px 1px 2px 0px": {
+    "n": 4,
+    "who": [
+     "span.seg-face「月付」",
+     "article.card「免费版 ¥0 / 月 永久免」",
+     "article.card「Pro 当前套餐 ¥30 /」",
+     "div.card「升级后什么时候生效？ 付款成」"
+    ]
+   },
+   "#d97757 0px 0px 0px 1px inset, #000000/0.3 0px 1px 2px 0px": {
+    "n": 1,
+    "who": [
+     "article.card「团队版 推荐 ¥88 / 月」"
+    ]
+   }
+  }
+ },
+ "vars": {
+  "--bg": "#141413",
+  "--card": "#1f1e1c",
+  "--text": "#f0efea",
+  "--text-2": "#a3a199",
+  "--line": "#2f2e2b",
+  "--track": "#2f2e2b",
+  "--accent": "#d97757",
+  "--accent-ink": "#1a1a19",
+  "--tag-bg": "#3a2a23",
+  "--tag-ink": "#eba78d",
+  "--danger": "#ef6b6b",
+  "--hover": "#2a2926",
+  "--thumb": "#45433e",
+  "--shadow": "0 1px 2px rgba(0,0,0,.3)"
+ },
+ "darkRule": true,
+ "literalColorsOutsideRoot": 0,
+ "errors": []
+}

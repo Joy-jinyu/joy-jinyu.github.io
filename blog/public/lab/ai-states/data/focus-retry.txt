@@ -1,0 +1,4 @@
+重试后焦点去了哪（2026-11-18，macOS 上的 Chrome 157，Playwright；脚本 tools/focus-retry.mjs）：列表接口第一次回 500，聚焦「重试」按回车，第二次 800ms 后成功；加载完读 activeElement，再按一次 Tab 读一次。
+files1: 重试并加载完成后 activeElement=section「文件列表 2 个文件 正在加载文」；再按一次 Tab → button「删除」
+files2: 重试并加载完成后 activeElement=body；再按一次 Tab → button「上传文件」
+files3: 重试并加载完成后 activeElement=section「文件列表 PDF2026Q3 报」；再按一次 Tab → button「删除」

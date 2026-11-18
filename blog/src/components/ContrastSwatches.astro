@@ -1,0 +1,71 @@
+---
+/**
+ * 对比度色块：实测里没过的 5 处，上排是 AI 原样的颜色，下排是修正后的颜色。比值在构建时按 WCAG 公式算出。
+ * 颜色取自 blog/public/lab/ai-ui-taste/run*.html 的原样 CSS 变量
+ */
+interface Swatch {
+  label: string
+  kind: 'button' | 'badge'
+  /** 色块所在的底色：深色主题的按钮放在深色底上看 */
+  dark: boolean
+  before: { bg: string; fg: string }
+  after: { bg: string; fg: string }
+}
+const swatches: Swatch[] = [
+  { label: '第 1 次 · 浅色', kind: 'button', dark: false, before: { bg: '#c96442', fg: '#ffffff' }, after: { bg: '#b65a3c', fg: '#ffffff' } },
+  { label: '第 2 次 · 浅色', kind: 'button', dark: false, before: { bg: '#c4623a', fg: '#ffffff' }, after: { bg: '#b65b35', fg: '#ffffff' } },
+  { label: '第 2 次 · 浅色', kind: 'badge', dark: false, before: { bg: '#f8e9e2', fg: '#c4623a' }, after: { bg: '#f8e9e2', fg: '#9a4526' } },
+  { label: '第 2 次 · 深色', kind: 'button', dark: true, before: { bg: '#e07a52', fg: '#ffffff' }, after: { bg: '#e07a52', fg: '#1a1a19' } },
+  { label: '第 3 次 · 深色', kind: 'button', dark: true, before: { bg: '#5b7cff', fg: '#ffffff' }, after: { bg: '#4f6bdd', fg: '#ffffff' } },
+]
+
+const lum = (hex: string) => {
+  const [r, g, b] = [1, 3, 5].map((i) => {
+    const c = parseInt(hex.slice(i, i + 2), 16) / 255
+    return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4
+  })
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b
+}
+const ratio = ({ bg, fg }: { bg: string; fg: string }) => {
+  const [a, b] = [lum(bg), lum(fg)]
+  return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05)
+}
+---
+
+<div class="cs">
+  {swatches.map((s) => (
+    <div class={`cs-col ${s.dark ? 'is-dark' : ''}`}>
+      <span class="cs-label">{s.label}</span>
+      {[s.before, s.after].map((c, i) => {
+        const r = ratio(c)
+        return (
+          <div class={`cs-cell ${i ? 'is-after' : ''}`}>
+            <span class={`cs-chip cs-${s.kind}`} style={`background:${c.bg};color:${c.fg}`}>{s.kind === 'button' ? '升级套餐' : 'Pro'}</span>
+            <span class={`cs-ratio ${r < 4.5 ? 'is-fail' : ''}`}>{r.toFixed(2)}&thinsp;:&thinsp;1</span>
+          </div>
+        )
+      })}
+    </div>
+  ))}
+</div>
+
+<style is:global>
+  .cs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; width: 100%; }
+  .cs-col { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 14px 8px 12px; border-radius: 12px; background: #ffffff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 8px 24px -12px rgba(0, 0, 0, 0.18); }
+  .cs-label { color: #8a8a86; font: 500 12px/1.4 var(--sans); white-space: nowrap; }
+  .cs-cell { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .cs-cell.is-after { padding-top: 10px; border-top: 1px dashed rgba(138, 138, 134, 0.35); }
+  .cs-chip { display: inline-flex; align-items: center; justify-content: center; font: 600 13px/1 "PingFang SC", -apple-system, sans-serif; }
+  .cs-button { width: 84px; height: 34px; border-radius: 9px; }
+  .cs-badge { height: 22px; padding: 0 9px; border-radius: 999px; font-size: 12px; margin: 6px 0; }
+  .cs-ratio { color: #3f8f6b; font: 500 12px/1 var(--mono); font-variant-numeric: tabular-nums; }
+  .cs-ratio.is-fail { color: #c2334a; }
+  .cs-col.is-dark { background: #1d1d1f; }
+  .cs-col.is-dark .cs-ratio { color: #6fcf9f; }
+  .cs-col.is-dark .cs-ratio.is-fail { color: #ff8a94; }
+
+  @media (max-width: 640px) {
+    .cs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cs-col:last-child { grid-column: 1 / -1; }
+  }
+</style>

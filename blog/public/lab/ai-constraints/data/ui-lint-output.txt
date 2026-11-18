@@ -1,0 +1,165 @@
+# 文件（49 份，在 blog/public/lab/ 下运行；AI 原样产出，不含 -fixed / -zero / -trimall 修改版和 skeleton 骨架）：ai-chat-layout/run1.html ai-chat-layout/run2.html ai-chat-layout/run3.html ai-consistency/members-plain-2.html ai-consistency/members-plain.html ai-consistency/members-ref-2.html ai-consistency/members-ref.html ai-consistency/members-token-2.html ai-consistency/members-token.html ai-consistency/upgrade-plain-2.html ai-consistency/upgrade-plain.html ai-consistency/upgrade-ref-2.html ai-consistency/upgrade-ref.html ai-consistency/upgrade-token-2.html ai-consistency/upgrade-token.html ai-constraints/notices-plain-1.html ai-constraints/notices-plain-2.html ai-constraints/notices-plain-3.html ai-constraints/notices-rules-1.html ai-constraints/notices-rules-2.html ai-constraints/notices-rules-3.html ai-constraints/notices-rulesonly-1.html ai-constraints/notices-rulesonly-2.html ai-constraints/notices-rulesonly-3.html ai-h5/detail1.html ai-h5/detail2.html ai-h5/detail3.html ai-motion-taste/accordion1.html ai-motion-taste/accordion2.html ai-motion-taste/run1.html ai-motion-taste/run2.html ai-motion-taste/sheet1.html ai-motion-taste/sheet2.html ai-motion-taste/toast1.html ai-motion-taste/toast2.html ai-spacing/settings1.html ai-spacing/settings2.html ai-spacing/settings3.html ai-states/files1.html ai-states/files2.html ai-states/files3.html ai-typography/release1.html ai-typography/release2.html ai-typography/release3.html ai-ui-taste/run1.html ai-ui-taste/run2.html ai-ui-taste/run3.html ai-ui-taste/token1.html ai-ui-taste/token2.html 
+✗ ai-chat-layout/run1.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 悬停样式要写在 @media (hover: hover) 里
+    ✗ 中文页面要打开 text-autospace
+    ✗ 颜色只在 :root 里定义
+✗ ai-chat-layout/run2.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 悬停样式要写在 @media (hover: hover) 里
+    ✗ 中文页面要打开 text-autospace
+    ✗ 颜色只在 :root 里定义
+✗ ai-chat-layout/run3.html
+    ✗ 悬停样式要写在 @media (hover: hover) 里
+    ✗ 中文页面要打开 text-autospace
+    ✗ 颜色只在 :root 里定义
+✗ ai-consistency/members-plain-2.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 中文页面要打开 text-autospace
+✗ ai-consistency/members-plain.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 中文页面要打开 text-autospace
+✗ ai-consistency/members-ref-2.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 悬停样式要写在 @media (hover: hover) 里
+    ✗ 中文页面要打开 text-autospace
+✗ ai-consistency/members-ref.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 悬停样式要写在 @media (hover: hover) 里
+    ✗ 中文页面要打开 text-autospace
+    ✗ 颜色只在 :root 里定义
+✗ ai-consistency/members-token-2.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 悬停样式要写在 @media (hover: hover) 里
+    ✗ 中文页面要打开 text-autospace
+✗ ai-consistency/members-token.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 中文页面要打开 text-autospace
+✗ ai-consistency/upgrade-plain-2.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 悬停样式要写在 @media (hover: hover) 里
+    ✗ 中文页面要打开 text-autospace
+    ✗ 颜色只在 :root 里定义
+✗ ai-consistency/upgrade-plain.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 中文页面要打开 text-autospace
+✗ ai-consistency/upgrade-ref-2.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 中文页面要打开 text-autospace
+✗ ai-consistency/upgrade-ref.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 中文页面要打开 text-autospace
+✗ ai-consistency/upgrade-token-2.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 悬停样式要写在 @media (hover: hover) 里
+    ✗ 中文页面要打开 text-autospace
+✗ ai-consistency/upgrade-token.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 中文页面要打开 text-autospace
+✗ ai-constraints/notices-plain-1.html
+    ✗ 用了 fetch 就要设超时
+✓ ai-constraints/notices-plain-2.html：全部通过
+✗ ai-constraints/notices-plain-3.html
+    ✗ 用了 fetch 就要设超时
+    ✗ 中文页面要打开 text-autospace
+✓ ai-constraints/notices-rules-1.html：全部通过
+✓ ai-constraints/notices-rules-2.html：全部通过
+✓ ai-constraints/notices-rules-3.html：全部通过
+✓ ai-constraints/notices-rulesonly-1.html：全部通过
+✓ ai-constraints/notices-rulesonly-2.html：全部通过
+✓ ai-constraints/notices-rulesonly-3.html：全部通过
+✗ ai-h5/detail1.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 中文页面要打开 text-autospace
+✗ ai-h5/detail2.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 中文页面要打开 text-autospace
+✗ ai-h5/detail3.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 中文页面要打开 text-autospace
+    ✗ 颜色只在 :root 里定义
+✗ ai-motion-taste/accordion1.html
+    ✗ 中文页面要打开 text-autospace
+✗ ai-motion-taste/accordion2.html
+    ✗ 中文页面要打开 text-autospace
+    ✗ 去掉了点击高亮，就要有 :active
+✗ ai-motion-taste/run1.html
+    ✗ 悬停样式要写在 @media (hover: hover) 里
+    ✗ 中文页面要打开 text-autospace
+    ✗ 颜色只在 :root 里定义
+✗ ai-motion-taste/run2.html
+    ✗ 悬停样式要写在 @media (hover: hover) 里
+    ✗ 中文页面要打开 text-autospace
+    ✗ 颜色只在 :root 里定义
+✗ ai-motion-taste/sheet1.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 中文页面要打开 text-autospace
+    ✗ 颜色只在 :root 里定义
+✗ ai-motion-taste/sheet2.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 中文页面要打开 text-autospace
+    ✗ 颜色只在 :root 里定义
+✗ ai-motion-taste/toast1.html
+    ✗ 悬停样式要写在 @media (hover: hover) 里
+    ✗ 中文页面要打开 text-autospace
+    ✗ 颜色只在 :root 里定义
+✗ ai-motion-taste/toast2.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 悬停样式要写在 @media (hover: hover) 里
+    ✗ 中文页面要打开 text-autospace
+    ✗ 颜色只在 :root 里定义
+✗ ai-spacing/settings1.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 中文页面要打开 text-autospace
+    ✗ 颜色只在 :root 里定义
+✗ ai-spacing/settings2.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 中文页面要打开 text-autospace
+    ✗ 颜色只在 :root 里定义
+✗ ai-spacing/settings3.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 中文页面要打开 text-autospace
+    ✗ 颜色只在 :root 里定义
+✗ ai-states/files1.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 中文页面要打开 text-autospace
+✗ ai-states/files2.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 用了 fetch 就要设超时
+    ✗ 中文页面要打开 text-autospace
+✗ ai-states/files3.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 中文页面要打开 text-autospace
+    ✗ 颜色只在 :root 里定义
+✗ ai-typography/release1.html
+    ✗ 中文页面要打开 text-autospace
+    ✗ 颜色只在 :root 里定义
+✗ ai-typography/release2.html
+    ✗ 中文页面要打开 text-autospace
+✗ ai-typography/release3.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 悬停样式要写在 @media (hover: hover) 里
+    ✗ 中文页面要打开 text-autospace
+    ✗ 颜色只在 :root 里定义
+✗ ai-ui-taste/run1.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 悬停样式要写在 @media (hover: hover) 里
+    ✗ 中文页面要打开 text-autospace
+✗ ai-ui-taste/run2.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 悬停样式要写在 @media (hover: hover) 里
+    ✗ 中文页面要打开 text-autospace
+    ✗ 颜色只在 :root 里定义
+✗ ai-ui-taste/run3.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 悬停样式要写在 @media (hover: hover) 里
+    ✗ 中文页面要打开 text-autospace
+    ✗ 颜色只在 :root 里定义
+✗ ai-ui-taste/token1.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 中文页面要打开 text-autospace
+✗ ai-ui-taste/token2.html
+    ✗ viewport-fit=cover 要同时处理左右安全区边距
+    ✗ 悬停样式要写在 @media (hover: hover) 里
+    ✗ 中文页面要打开 text-autospace
+# 退出码 1

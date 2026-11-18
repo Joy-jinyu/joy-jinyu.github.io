@@ -1,0 +1,283 @@
+{
+ "file": "members-ref.html",
+ "scheme": "light",
+ "bag": {
+  "bg": {
+   "#f4f4f1": {
+    "n": 1,
+    "who": [
+     "header.nav「团队成员 邀请」"
+    ]
+   },
+   "#c96442": {
+    "n": 1,
+    "who": [
+     "button.btn「邀请」"
+    ]
+   },
+   "#ffffff": {
+    "n": 3,
+    "who": [
+     "input",
+     "div.card「林 林晓所有者 10 分钟前」",
+     "div.card「H hu.yang@exam」"
+    ]
+   },
+   "#ecebe6": {
+    "n": 10,
+    "who": [
+     "span.avatar「林」",
+     "span.avatar「周」",
+     "span.avatar「陈」",
+     "span.tag「成员」"
+    ]
+   },
+   "#f6e9e3": {
+    "n": 2,
+    "who": [
+     "span.tag「所有者」",
+     "span.tag「管理员」"
+    ]
+   },
+   "#6b6a65": {
+    "n": 18,
+    "who": [
+     "i",
+     "i",
+     "i",
+     "i"
+    ]
+   }
+  },
+  "border": {
+   "1px null": {
+    "n": 5,
+    "who": [
+     "header.nav「团队成员 邀请」",
+     "button.btn「邀请」",
+     "button.btn「邀请」",
+     "button.btn「邀请」"
+    ]
+   },
+   "2px #1c1c1a": {
+    "n": 2,
+    "who": [
+     "span.chevron",
+     "span.chevron"
+    ]
+   },
+   "2px #6b6a65": {
+    "n": 4,
+    "who": [
+     "span.search-icon",
+     "span.search-icon",
+     "span.search-icon",
+     "span.search-icon"
+    ]
+   },
+   "1px #e7e6e1": {
+    "n": 18,
+    "who": [
+     "input",
+     "input",
+     "input",
+     "input"
+    ]
+   },
+   "1px #6b6a65": {
+    "n": 8,
+    "who": [
+     "span.avatar「H」",
+     "span.avatar「H」",
+     "span.avatar「H」",
+     "span.avatar「H」"
+    ]
+   }
+  },
+  "radius": {
+   "8": {
+    "n": 3,
+    "who": [
+     "button.btn「邀请」",
+     "button.btn「撤回」",
+     "button.btn「撤回」"
+    ]
+   },
+   "10": {
+    "n": 8,
+    "who": [
+     "button.icon-btn「返回」",
+     "input",
+     "button.icon-btn「更多操作：林晓」",
+     "button.icon-btn「更多操作：周宁」"
+    ]
+   },
+   "16": {
+    "n": 2,
+    "who": [
+     "div.card「林 林晓所有者 10 分钟前」",
+     "div.card「H hu.yang@exam」"
+    ]
+   },
+   "pill": {
+    "n": 33,
+    "who": [
+     "span.search-icon",
+     "span.avatar「林」",
+     "span.tag「所有者」",
+     "i"
+    ]
+   }
+  },
+  "controlHeight": {
+   "32": {
+    "n": 3,
+    "who": [
+     "button.btn「邀请」",
+     "button.btn「撤回」",
+     "button.btn「撤回」"
+    ]
+   },
+   "40": {
+    "n": 7,
+    "who": [
+     "button.icon-btn「返回」",
+     "button.icon-btn「更多操作：林晓」",
+     "button.icon-btn「更多操作：周宁」",
+     "button.icon-btn「更多操作：陈思远」"
+    ]
+   },
+   "44": {
+    "n": 1,
+    "who": [
+     "input"
+    ]
+   }
+  },
+  "text": {
+   "#1c1c1a": {
+    "n": 11,
+    "who": [
+     "h1「团队成员」",
+     "span.name「林晓」",
+     "span.name「周宁」",
+     "span.name「陈思远」"
+    ]
+   },
+   "#ffffff": {
+    "n": 1,
+    "who": [
+     "button.btn「邀请」"
+    ]
+   },
+   "#6b6a65": {
+    "n": 26,
+    "who": [
+     "h2.group-title「成员 · 6」",
+     "span.count「6」",
+     "span.avatar「林」",
+     "p.meta「10 分钟前活跃」"
+    ]
+   },
+   "#a24f32": {
+    "n": 2,
+    "who": [
+     "span.tag「所有者」",
+     "span.tag「管理员」"
+    ]
+   }
+  },
+  "fontSize": {
+   "12": {
+    "n": 6,
+    "who": [
+     "span.tag「所有者」",
+     "span.tag「管理员」",
+     "span.tag「成员」",
+     "span.tag「成员」"
+    ]
+   },
+   "13": {
+    "n": 10,
+    "who": [
+     "p.meta「10 分钟前活跃」",
+     "p.meta「2 小时前活跃」",
+     "p.meta「5 小时前活跃」",
+     "p.meta「昨天活跃」"
+    ]
+   },
+   "14": {
+    "n": 7,
+    "who": [
+     "button.btn「邀请」",
+     "h2.group-title「成员 · 6」",
+     "span.count「6」",
+     "h2.group-title「待接受的邀请 · 2」"
+    ]
+   },
+   "15": {
+    "n": 16,
+    "who": [
+     "span.avatar「林」",
+     "span.name「林晓」",
+     "span.avatar「周」",
+     "span.name「周宁」"
+    ]
+   },
+   "18": {
+    "n": 1,
+    "who": [
+     "h1「团队成员」"
+    ]
+   }
+  },
+  "fontWeight": {
+   "400": {
+    "n": 10,
+    "who": [
+     "p.meta「10 分钟前活跃」",
+     "p.meta「2 小时前活跃」",
+     "p.meta「5 小时前活跃」",
+     "p.meta「昨天活跃」"
+    ]
+   },
+   "600": {
+    "n": 30,
+    "who": [
+     "h1「团队成员」",
+     "button.btn「邀请」",
+     "h2.group-title「成员 · 6」",
+     "span.count「6」"
+    ]
+   }
+  },
+  "shadow": {
+   "#000000/0.04 0px 1px 2px 0px, #000000/0.06 0px 8px 24px 0px": {
+    "n": 2,
+    "who": [
+     "div.card「林 林晓所有者 10 分钟前」",
+     "div.card「H hu.yang@exam」"
+    ]
+   }
+  }
+ },
+ "vars": {
+  "--bg": "#f4f4f1",
+  "--card": "#ffffff",
+  "--text": "#1c1c1a",
+  "--text-2": "#6b6a65",
+  "--line": "#e7e6e1",
+  "--track": "#ecebe6",
+  "--accent": "#c96442",
+  "--accent-ink": "#ffffff",
+  "--tag-bg": "#f6e9e3",
+  "--tag-ink": "#a24f32",
+  "--danger": "#c43d3d",
+  "--hover": "#f3f2ee",
+  "--shadow": "0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06)",
+  "--menu-shadow": "0 2px 6px rgba(0,0,0,.06), 0 12px 32px rgba(0,0,0,.12)"
+ },
+ "darkRule": true,
+ "literalColorsOutsideRoot": 2,
+ "errors": []
+}

@@ -1,0 +1,395 @@
+{
+ "file": "members-plain.html",
+ "scheme": "dark",
+ "bag": {
+  "bg": {
+   "#0e1014": {
+    "n": 1,
+    "who": [
+     "header.navbar「团队成员 邀请」"
+    ]
+   },
+   "#191c21": {
+    "n": 5,
+    "who": [
+     "label.search-field「搜索成员」",
+     "ul.list「林 林知远所有者 刚刚活跃 」",
+     "ul.list「@ lucas.chen@e」",
+     "button.compact-btn「撤回」"
+    ]
+   },
+   "#4a2a1a": {
+    "n": 2,
+    "who": [
+     "span.avatar「林」",
+     "span.avatar「王」"
+    ]
+   },
+   "#3a2a12": {
+    "n": 1,
+    "who": [
+     "span.tag「所有者」"
+    ]
+   },
+   "#a1a8b3": {
+    "n": 6,
+    "who": [
+     "span.icon-more",
+     "span.icon-more",
+     "span.icon-more",
+     "span.icon-more"
+    ]
+   },
+   "#35285a": {
+    "n": 2,
+    "who": [
+     "span.avatar「周」",
+     "span.avatar「赵」"
+    ]
+   },
+   "#1c2b4a": {
+    "n": 1,
+    "who": [
+     "span.tag「管理员」"
+    ]
+   },
+   "#22345c": {
+    "n": 1,
+    "who": [
+     "span.avatar「陈」"
+    ]
+   },
+   "#2a2e35": {
+    "n": 4,
+    "who": [
+     "span.tag「成员」",
+     "span.tag「成员」",
+     "span.tag「成员」",
+     "span.tag「成员」"
+    ]
+   },
+   "#1d3b2a": {
+    "n": 1,
+    "who": [
+     "span.avatar「A」"
+    ]
+   }
+  },
+  "border": {
+   "1px #2c3038": {
+    "n": 5,
+    "who": [
+     "header.navbar「团队成员 邀请」",
+     "ul.list「林 林知远所有者 刚刚活跃 」",
+     "ul.list「林 林知远所有者 刚刚活跃 」",
+     "ul.list「@ lucas.chen@e」"
+    ]
+   },
+   "2px #eceef1": {
+    "n": 2,
+    "who": [
+     "span.icon-back",
+     "span.icon-back"
+    ]
+   },
+   "1px #3a3f48": {
+    "n": 4,
+    "who": [
+     "label.search-field「搜索成员」",
+     "label.search-field「搜索成员」",
+     "label.search-field「搜索成员」",
+     "label.search-field「搜索成员」"
+    ]
+   },
+   "2px #a1a8b3": {
+    "n": 4,
+    "who": [
+     "span.icon-search",
+     "span.icon-search",
+     "span.icon-search",
+     "span.icon-search"
+    ]
+   },
+   "1px #4a505a": {
+    "n": 8,
+    "who": [
+     "span.avatar「@」",
+     "span.avatar「@」",
+     "span.avatar「@」",
+     "span.avatar「@」"
+    ]
+   }
+  },
+  "radius": {
+   "4": {
+    "n": 6,
+    "who": [
+     "span.tag「所有者」",
+     "span.tag「管理员」",
+     "span.tag「成员」",
+     "span.tag「成员」"
+    ]
+   },
+   "10": {
+    "n": 11,
+    "who": [
+     "button.icon-btn「返回」",
+     "button.text-btn「邀请」",
+     "label.search-field「搜索成员」",
+     "button.icon-btn「更多：林知远」"
+    ]
+   },
+   "pill": {
+    "n": 15,
+    "who": [
+     "span.icon-search",
+     "span.avatar「林」",
+     "span.icon-more",
+     "span.avatar「周」"
+    ]
+   }
+  },
+  "controlHeight": {
+   "32": {
+    "n": 2,
+    "who": [
+     "button.compact-btn「撤回」",
+     "button.compact-btn「撤回」"
+    ]
+   },
+   "40": {
+    "n": 1,
+    "who": [
+     "input.search-input"
+    ]
+   },
+   "44": {
+    "n": 8,
+    "who": [
+     "button.icon-btn「返回」",
+     "button.text-btn「邀请」",
+     "button.icon-btn「更多：林知远」",
+     "button.icon-btn「更多：周可欣」"
+    ]
+   }
+  },
+  "text": {
+   "#eceef1": {
+    "n": 11,
+    "who": [
+     "h1.navbar-title「团队成员」",
+     "span.name「林知远」",
+     "span.name「周可欣」",
+     "span.name「陈默」"
+    ]
+   },
+   "#7aa5ff": {
+    "n": 1,
+    "who": [
+     "button.text-btn「邀请」"
+    ]
+   },
+   "#a1a8b3": {
+    "n": 17,
+    "who": [
+     "h2.section-title「成员 · 6」",
+     "span「6」",
+     "p.row-meta「刚刚活跃」",
+     "p.row-meta「2 小时前活跃」"
+    ]
+   },
+   "#f3b48e": {
+    "n": 2,
+    "who": [
+     "span.avatar「林」",
+     "span.avatar「王」"
+    ]
+   },
+   "#f5b66b": {
+    "n": 1,
+    "who": [
+     "span.tag「所有者」"
+    ]
+   },
+   "#c9b5f5": {
+    "n": 2,
+    "who": [
+     "span.avatar「周」",
+     "span.avatar「赵」"
+    ]
+   },
+   "#8db3ff": {
+    "n": 1,
+    "who": [
+     "span.tag「管理员」"
+    ]
+   },
+   "#a9c2ff": {
+    "n": 1,
+    "who": [
+     "span.avatar「陈」"
+    ]
+   },
+   "#c2c8d0": {
+    "n": 4,
+    "who": [
+     "span.tag「成员」",
+     "span.tag「成员」",
+     "span.tag「成员」",
+     "span.tag「成员」"
+    ]
+   },
+   "#8fd6aa": {
+    "n": 1,
+    "who": [
+     "span.avatar「A」"
+    ]
+   }
+  },
+  "fontSize": {
+   "12": {
+    "n": 9,
+    "who": [
+     "span.tag「所有者」",
+     "span.tag「管理员」",
+     "span.tag「成员」",
+     "span.tag「成员」"
+    ]
+   },
+   "13": {
+    "n": 14,
+    "who": [
+     "h2.section-title「成员 · 6」",
+     "span「6」",
+     "p.row-meta「刚刚活跃」",
+     "p.row-meta「2 小时前活跃」"
+    ]
+   },
+   "16": {
+    "n": 17,
+    "who": [
+     "button.text-btn「邀请」",
+     "span.avatar「林」",
+     "span.name「林知远」",
+     "span.avatar「周」"
+    ]
+   },
+   "17": {
+    "n": 1,
+    "who": [
+     "h1.navbar-title「团队成员」"
+    ]
+   }
+  },
+  "fontWeight": {
+   "400": {
+    "n": 11,
+    "who": [
+     "p.row-meta「刚刚活跃」",
+     "p.row-meta「2 小时前活跃」",
+     "p.row-meta「昨天活跃」",
+     "p.row-meta「3 天前活跃」"
+    ]
+   },
+   "500": {
+    "n": 23,
+    "who": [
+     "button.text-btn「邀请」",
+     "h2.section-title「成员 · 6」",
+     "span「6」",
+     "span.name「林知远」"
+    ]
+   },
+   "600": {
+    "n": 7,
+    "who": [
+     "h1.navbar-title「团队成员」",
+     "span.avatar「林」",
+     "span.avatar「周」",
+     "span.avatar「陈」"
+    ]
+   }
+  },
+  "shadow": {
+   "#a1a8b3 -6px 0px 0px 0px, #a1a8b3 6px 0px 0px 0px": {
+    "n": 6,
+    "who": [
+     "span.icon-more",
+     "span.icon-more",
+     "span.icon-more",
+     "span.icon-more"
+    ]
+   },
+   "#4a505a 0px 0px 0px 1px inset": {
+    "n": 2,
+    "who": [
+     "button.compact-btn「撤回」",
+     "button.compact-btn「撤回」"
+    ]
+   }
+  }
+ },
+ "vars": {
+  "--space-0-5": "2px",
+  "--space-1": "4px",
+  "--space-2": "8px",
+  "--space-3": "12px",
+  "--space-4": "16px",
+  "--space-6": "24px",
+  "--space-8": "32px",
+  "--size-touch": "44px",
+  "--size-control-compact": "32px",
+  "--size-field": "40px",
+  "--size-nav": "48px",
+  "--size-avatar": "2.5rem",
+  "--size-icon": "16px",
+  "--radius-s": "4px",
+  "--radius-m": "10px",
+  "--radius-l": "14px",
+  "--font-title": "1.0625rem",
+  "--font-body": "1rem",
+  "--font-sub": "0.8125rem",
+  "--font-caption": "0.75rem",
+  "--duration-fast": "120ms",
+  "--row-pad-x": "16px",
+  "--row-gap": "12px",
+  "--row-text-inset": "calc(16px + 2.5rem + 12px)",
+  "--icon-btn-bleed": "calc((44px - 16px) / 2)",
+  "--color-page": "#0e1014",
+  "--color-surface": "#191c21",
+  "--color-surface-raised": "#23272e",
+  "--color-text": "#eceef1",
+  "--color-text-secondary": "#a1a8b3",
+  "--color-text-disabled": "#6b717b",
+  "--color-separator": "#2c3038",
+  "--color-field-border": "#3a3f48",
+  "--color-border-strong": "#4a505a",
+  "--color-fill": "#2a2e35",
+  "--color-hover": "rgb(255 255 255 / 0.06)",
+  "--color-pressed": "rgb(255 255 255 / 0.12)",
+  "--color-accent": "#7aa5ff",
+  "--color-on-accent": "#0e1014",
+  "--color-danger": "#ff7a6e",
+  "--color-on-danger": "#1a0d0b",
+  "--color-focus": "#7aa5ff",
+  "--color-backdrop": "rgb(0 0 0 / 0.6)",
+  "--shadow-popover": "0 8px 24px rgb(0 0 0 / 0.5)",
+  "--tag-owner-bg": "#3a2a12",
+  "--tag-owner-fg": "#f5b66b",
+  "--tag-admin-bg": "#1c2b4a",
+  "--tag-admin-fg": "#8db3ff",
+  "--tag-member-bg": "#2a2e35",
+  "--tag-member-fg": "#c2c8d0",
+  "--avatar-1-bg": "#22345c",
+  "--avatar-1-fg": "#a9c2ff",
+  "--avatar-2-bg": "#1d3b2a",
+  "--avatar-2-fg": "#8fd6aa",
+  "--avatar-3-bg": "#4a2a1a",
+  "--avatar-3-fg": "#f3b48e",
+  "--avatar-4-bg": "#35285a",
+  "--avatar-4-fg": "#c9b5f5"
+ },
+ "darkRule": true,
+ "literalColorsOutsideRoot": 0,
+ "errors": []
+}

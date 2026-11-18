@@ -1,0 +1,234 @@
+---
+/**
+ * 层级拆通道：左边是真页面（iframe 里的 lab 页），右边是这份页面各层级的样式样张。
+ * 按「拿掉字号 / 字重 / 颜色」时，往 iframe 里注入一条覆盖样式，样张同步变，再逐对检查相邻两级还剩几个通道不同。
+ * 样式数据来自 blog/public/lab/ai-typography/data/roles.json（type-probe.mjs + roles.mjs 量出）。
+ */
+import '../styles/spacing-lab.css'
+import roles from '../../public/lab/ai-typography/data/roles.json'
+
+type Style = { label: string; fs: number; fw: number; color: string; ls: string }
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/')
+const PAGES = [
+  ['release1.html', '第 1 份'],
+  ['release2.html', '第 2 份'],
+  ['release3.html', '第 3 份'],
+  ['release2-fixed.html', '改过的'],
+].map(([file, label]) => {
+  const r = (roles as unknown as { file: string; roles: Record<string, Style> }[]).find((p) => p.file === file)!.roles
+  const pick = (k: string) => ({ fs: r[k].fs, fw: r[k].fw, color: r[k].color, ls: r[k].ls })
+  return { src: `${base}lab/ai-typography/${file}`, label, roles: { lead: pick('lead'), group: pick('group'), title: pick('title'), desc: pick('desc'), item: pick('item') } }
+})
+const ROWS = [
+  ['lead', '导语', '这次更新重做了文件上传。'],
+  ['group', '分组标题', '新功能'],
+  ['title', '条目标题', '断点续传'],
+  ['desc', '条目说明', '上传中断后，重新连上 Wi-Fi…'],
+  ['item', '列表条目', '深色模式下，图片缩略图不再发灰。'],
+]
+const MODES = [
+  ['none', '原样'],
+  ['size', '拿掉字号'],
+  ['weight', '拿掉字重'],
+  ['color', '拿掉颜色'],
+]
+---
+
+<type-levels class="tl sx-panel sx-bleed not-prose" data-pages={JSON.stringify(PAGES)}>
+  <div class="tl-ctrl">
+    <div class="sx-seg" role="group" aria-label="页面">
+      {PAGES.map((p, i) => <button type="button" data-page={i} aria-pressed={i === 1 ? 'true' : 'false'}>{p.label}</button>)}
+    </div>
+    <div class="sx-seg" role="group" aria-label="拿掉一个通道">
+      {MODES.map(([k, l], i) => <button type="button" data-mode={k} aria-pressed={i === 0 ? 'true' : 'false'}>{l}</button>)}
+    </div>
+  </div>
+  <div class="tl-body">
+    <div class="tl-phone">
+      <iframe src={PAGES[1].src} title="AI 写的版本更新页" width="375" height="760" loading="lazy" tabindex="-1"></iframe>
+    </div>
+    <div class="tl-side">
+      <ol class="tl-ladder" aria-label="这份页面各层级的样式">
+        {ROWS.map(([k, l, t]) => (
+          <li data-role={k}>
+            <span class="tl-role">{l}</span>
+            <span class="tl-spec">{t}</span>
+            <span class="tl-num"></span>
+          </li>
+        ))}
+      </ol>
+      <ul class="tl-pairs" aria-label="相邻两级靠什么分开"></ul>
+    </div>
+  </div>
+  <p class="tl-verdict" aria-live="polite"></p>
+  <p class="sx-cap">左边是真页面，右边是从它身上量出来的样式。「拿掉」一个通道，就是把页面里所有文字的这一项改成同一个值，看剩下的还能不能把层级分开。</p>
+</type-levels>
+
+<script>
+  type St = { fs: number; fw: number; color: string; ls: string }
+  type Page = { src: string; label: string; roles: Record<string, St> }
+  const PAIRS: [string, string, string][] = [
+    ['group', 'title', '分组标题 → 条目标题'],
+    ['title', 'desc', '条目标题 → 条目说明'],
+    ['group', 'item', '分组标题 → 列表条目'],
+  ]
+  const CH: [keyof St, string][] = [['fs', '字号'], ['fw', '字重'], ['color', '颜色'], ['ls', '字距']]
+  const MODE_KEY: Record<string, keyof St | null> = { none: null, size: 'fs', weight: 'fw', color: 'color' }
+  /** 注入 iframe 的覆盖样式：只动正文区 main 里的文字 */
+  const FLATTEN: Record<string, string> = {
+    none: '',
+    size: 'main :is(h1,h2,h3,h4,p,li,span,time,strong,b,a){font-size:16px!important;line-height:1.55!important}',
+    weight: 'main *{font-weight:400!important}',
+    color: 'main *{color:CanvasText!important}',
+  }
+
+  class TypeLevels extends HTMLElement {
+    private pages: Page[] = []
+    private page = 1
+    private mode = 'none'
+    private touched = false
+    private frame!: HTMLIFrameElement
+
+    connectedCallback() {
+      this.pages = JSON.parse(this.dataset.pages!)
+      this.frame = this.querySelector('iframe')!
+      this.frame.addEventListener('load', () => this.inject())
+      this.group('[data-page]', (b) => { this.page = Number(b.dataset.page); this.frame.src = this.pages[this.page].src })
+      this.group('[data-mode]', (b) => { this.mode = b.dataset.mode!; this.inject() })
+      new ResizeObserver(() => this.fit()).observe(this.querySelector('.tl-phone')!)
+      this.render()
+      this.autoplay()
+    }
+
+    private group(sel: string, apply: (b: HTMLButtonElement) => void) {
+      const all = [...this.querySelectorAll<HTMLButtonElement>(sel)]
+      all.forEach((b) => b.addEventListener('click', () => {
+        this.touched = true
+        this.press(all, b)
+        apply(b)
+        this.render()
+      }))
+    }
+
+    private press(all: HTMLButtonElement[], on: HTMLButtonElement) {
+      all.forEach((x) => x.setAttribute('aria-pressed', String(x === on)))
+    }
+
+    /** 第一次滚到眼前，停 1.5 秒自动按一下「拿掉字号」；读者先动过就不自动了 */
+    private autoplay() {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return
+      const io = new IntersectionObserver(([e]) => {
+        if (!e.isIntersecting) return
+        io.disconnect()
+        setTimeout(() => {
+          if (this.touched) return
+          this.mode = 'size'
+          this.press([...this.querySelectorAll<HTMLButtonElement>('[data-mode]')], this.querySelector('[data-mode="size"]')!)
+          this.inject()
+          this.render()
+        }, 1500)
+      }, { threshold: 0.6 })
+      // 盯手机外框而不是整个组件：手机上组件比一屏还高，整个组件到不了 60%
+      io.observe(this.querySelector('.tl-phone')!)
+    }
+
+    private fit() {
+      const box = this.querySelector<HTMLElement>('.tl-phone')!
+      const s = box.clientWidth / 375
+      this.frame.style.transform = `scale(${s})`
+      box.style.height = `${760 * s}px`
+    }
+
+    private inject() {
+      const doc = this.frame.contentDocument
+      if (!doc?.head) return
+      let st = doc.getElementById('tl-x') as HTMLStyleElement | null
+      if (!st) {
+        st = doc.createElement('style')
+        st.id = 'tl-x'
+        doc.head.append(st)
+      }
+      const anim = matchMedia('(prefers-reduced-motion: reduce)').matches ? '' : 'main *{transition:font-size .35s ease,color .35s ease,line-height .35s ease}'
+      st.textContent = anim + FLATTEN[this.mode]
+    }
+
+    /** 拿掉某个通道后的样式：这一项统一成同一个值 */
+    private flat(s: St, ref: St): St {
+      const k = MODE_KEY[this.mode]
+      if (!k) return s
+      const v = { fs: 16, fw: 400, color: ref.color, ls: s.ls }[k]
+      return { ...s, [k]: v }
+    }
+
+    private render() {
+      const p = this.pages[this.page]
+      const ref = p.roles.title
+      const st = (k: string) => this.flat(p.roles[k], ref)
+      this.querySelectorAll<HTMLElement>('.tl-ladder li').forEach((li) => {
+        const s = st(li.dataset.role!)
+        const spec = li.querySelector<HTMLElement>('.tl-spec')!
+        spec.style.fontSize = `${s.fs}px`
+        spec.style.fontWeight = String(s.fw)
+        spec.style.color = s.color
+        spec.style.letterSpacing = s.ls === 'normal' ? '0' : s.ls
+        const o = p.roles[li.dataset.role!]
+        li.querySelector('.tl-num')!.textContent = `${o.fs} · ${o.fw} · ${o.color}`
+      })
+      const merged: string[] = []
+      this.querySelector('.tl-pairs')!.innerHTML = PAIRS.map(([a, b, name]) => {
+        const A = p.roles[a], B = p.roles[b]
+        const k = MODE_KEY[this.mode]
+        const chips = CH.filter(([c]) => A[c] !== B[c]).map(([c, l]) => {
+          const gone = c === k
+          const d = c === 'fs' ? ` ${A.fs}→${B.fs}` : c === 'fw' ? ` ${A.fw}→${B.fw}` : ''
+          return `<span class="tl-chip${gone ? ' is-gone' : ''}">${l}${d}</span>`
+        })
+        const left = CH.filter(([c]) => A[c] !== B[c] && c !== k).length
+        if (!left) merged.push(name)
+        const tag = left === 0 ? '<b class="tl-tag is-bad">并成一级</b>' : left === 1 ? '<b class="tl-tag is-warn">只剩一个通道</b>' : `<b class="tl-tag">${left} 个通道</b>`
+        return `<li><span class="tl-pname">${name}</span><span class="tl-chips">${chips.join('') || '<span class="tl-chip is-gone">完全一样</span>'}</span>${tag}</li>`
+      }).join('')
+      const m = this.querySelector<HTMLButtonElement>(`[data-mode="${this.mode}"]`)!.textContent
+      this.querySelector('.tl-verdict')!.textContent = this.mode === 'none'
+        ? `${p.label}：分组标题 ${p.roles.group.fs}px，条目标题 ${p.roles.title.fs}px。点上面的「拿掉」，看哪两级先分不开。`
+        : merged.length
+          ? `${p.label}，${m}以后：${merged.join('、')}这两级变得一模一样，并成了一级。`
+          : `${p.label}，${m}以后：三对相邻层级都还分得开。`
+    }
+  }
+  customElements.define('type-levels', TypeLevels)
+</script>
+
+<style is:global>
+  .tl-ctrl { display: flex; flex-wrap: wrap; gap: 10px 14px; margin-bottom: 20px; }
+  .tl-body { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 24px; align-items: start; }
+  /* 手机外框：iframe 按 375 宽排版，再整体缩放到外框宽度（fit() 里算） */
+  .tl-phone { position: relative; overflow: hidden; border-radius: 22px; box-shadow: 0 0 0 1px var(--line-hi), 0 18px 40px -20px rgba(0, 0, 0, 0.5); background: #fff; }
+  .tl-phone iframe { position: absolute; top: 0; left: 0; border: 0; transform-origin: 0 0; color-scheme: light; pointer-events: none; }
+  /* 样张固定用页面自己的浅色底，颜色才和页面里一致 */
+  .tl-ladder { margin: 0; padding: 14px 16px; list-style: none; border-radius: 14px; background: #fff; color: #17191e; }
+  .tl-ladder li { display: grid; grid-template-columns: 64px minmax(0, 1fr); align-items: baseline; gap: 2px 12px; padding: 8px 0; border-bottom: 1px solid #eceef2; }
+  .tl-ladder li:last-child { border-bottom: 0; }
+  .tl-role { color: #6a7180; font: 500 12px/1.4 var(--sans); }
+  .tl-spec { overflow: hidden; line-height: 1.4; white-space: nowrap; text-overflow: ellipsis; font-family: "CJK Punct", -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; transition: font-size 0.35s var(--ease), color 0.35s var(--ease); }
+  .tl-num { grid-column: 2; color: #8a909c; font: 500 11px/1.3 var(--mono); }
+  .tl-pairs { display: grid; gap: 8px; margin: 14px 0 0; padding: 0; list-style: none; }
+  .tl-pairs li { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 13px; }
+  .tl-pname { min-width: 9.5em; color: var(--strong); }
+  .tl-chips { display: inline-flex; flex-wrap: wrap; gap: 4px; }
+  .tl-chip { padding: 2px 7px; border: 1px solid var(--line-hi); border-radius: 6px; color: var(--text); font: 500 11.5px/1.4 var(--mono); }
+  .tl-chip.is-gone { color: var(--faint); text-decoration: line-through; }
+  .tl-tag { margin-left: auto; color: var(--muted); font: 600 12px/1.4 var(--sans); }
+  .tl-tag.is-warn { color: var(--warn); }
+  .tl-tag.is-bad { color: var(--danger); }
+  .tl-verdict { min-height: 1.7em; margin: 16px 0 0; color: var(--strong); font-size: 15px; line-height: 1.7; }
+
+  @media (max-width: 760px) {
+    .tl-body { grid-template-columns: minmax(0, 1fr); }
+    .tl-phone { width: min(100%, 340px); margin-inline: auto; }
+    .tl-ctrl .sx-seg { flex-wrap: wrap; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tl-spec { transition: none; }
+  }
+</style>

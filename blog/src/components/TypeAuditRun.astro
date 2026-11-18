@@ -1,0 +1,79 @@
+---
+/**
+ * 在当前文章上运行字号表 X 光，或者把脚本复制走。脚本在 blog/public/lab/ai-typography/type-snippet.js，
+ * 每运行一次切换一次开关（它自己判断面板在不在）。做法和样式都照间距篇的 XRayRun。
+ */
+import '../styles/spacing-lab.css'
+const src = `${import.meta.env.BASE_URL.replace(/\/?$/, '/')}lab/ai-typography/type-snippet.js`
+---
+
+<type-audit-run class="tar sx-panel not-prose" data-src={src}>
+  <div class="tar-row">
+    <button type="button" class="tar-go" aria-pressed="false">在这篇文章上跑一遍</button>
+    <button type="button" class="tar-copy">复制脚本</button>
+    <a class="tar-src" href={src} target="_blank" rel="noopener">看源码</a>
+  </div>
+  <p class="tar-msg" aria-live="polite">右下角会出现一个面板：上面是「容易看成同一级」的样式对，中间是三项中文排版检查，下面是全部样式，点一行就在页面上框出用它的文字。</p>
+</type-audit-run>
+
+<script>
+  const PANEL = '__type_audit__'
+
+  class TypeAuditRun extends HTMLElement {
+    connectedCallback() {
+      const src = this.dataset.src!
+      const go = this.querySelector<HTMLButtonElement>('.tar-go')!
+      const copy = this.querySelector<HTMLButtonElement>('.tar-copy')!
+      const msg = this.querySelector('.tar-msg')!
+      const sync = () => {
+        const on = !!document.getElementById(PANEL)
+        go.setAttribute('aria-pressed', String(on))
+        go.textContent = on ? '关掉面板' : '在这篇文章上跑一遍'
+      }
+      go.addEventListener('click', () => {
+        const s = document.createElement('script')
+        // 每次都要重新执行，加时间戳绕开缓存里「已执行过」的同一个脚本
+        s.src = `${src}?t=${Date.now()}`
+        s.onload = () => { s.remove(); sync() }
+        s.onerror = () => { s.remove(); msg.textContent = '脚本没加载成功，可以点「看源码」复制到控制台运行。' }
+        document.body.append(s)
+      })
+      // 面板自己的「关闭」按钮会把面板删掉，按钮状态跟着变回来
+      new MutationObserver(sync).observe(document.body, { childList: true })
+      copy.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(await (await fetch(src)).text())
+          copy.textContent = '已复制'
+          msg.textContent = '已复制。打开任意页面的 DevTools，粘到 Console 里回车；再运行一次就关掉。'
+        } catch {
+          msg.textContent = '复制没成功（浏览器可能不允许读写剪贴板），点「看源码」手动复制。'
+        }
+      })
+    }
+  }
+  customElements.define('type-audit-run', TypeAuditRun)
+</script>
+
+<style is:global>
+  .tar-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+  .tar-go, .tar-copy {
+    min-height: 40px;
+    padding: 0 18px;
+    border-radius: 10px;
+    font: 600 14px/1 var(--sans);
+    cursor: var(--cursor-pointer);
+    transition: background-color 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease);
+  }
+  .tar-go { border: 1px solid var(--brand); background: var(--brand); color: #04201f; }
+  .tar-go:hover { background: color-mix(in srgb, var(--brand) 85%, #fff 15%); }
+  .tar-go[aria-pressed="true"] { background: transparent; color: var(--brand-ink); }
+  .tar-copy { border: 1px solid var(--line-hi); background: var(--panel); color: var(--strong); }
+  .tar-copy:hover { border-color: var(--brand); }
+  .tar-go:focus-visible, .tar-copy:focus-visible, .tar-src:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+  .tar-src { color: var(--brand-ink); font-size: 14px; text-decoration: underline; text-underline-offset: 3px; }
+  .tar-msg { margin: 14px 0 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
+  @media (max-width: 640px) {
+    .tar-go { flex: 1 1 100%; }
+    .tar-copy { flex: 1; }
+  }
+</style>

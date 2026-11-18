@@ -1,0 +1,35 @@
+type-snippet.js 在四份页面上的输出（2026-10-31，macOS 上的 Chrome 156，375px 手机视口；只截了面板上半部分，全部样式列表省略）
+=== release1.html
+
+文字样式 11 种 · 字号 7 种
+没有挨着又只差一点点的样式对
+中文排版
+✓ <html lang>：zh-CN
+✗ text-autospace：no-autospace
+✓ 正文的引号“：0.54 em
+=== release2.html
+
+文字样式 11 种 · 字号 8 种
+容易看成同一级的 1 对（挨着，只差一个通道，而且差得不多）
+「新功能」和「断点续传」：只差字号 18/16px
+中文排版
+✓ <html lang>：zh-CN
+✗ text-autospace：no-autospace
+✓ 正文的引号“：0.54 em
+=== release3.html
+
+文字样式 10 种 · 字号 7 种
+容易看成同一级的 1 对（挨着，只差一个通道，而且差得不多）
+「新功能」和「断点续传」：只差字号 18/16px
+中文排版
+✓ <html lang>：zh-CN
+✗ text-autospace：no-autospace
+✓ 正文的引号“：1.00 em
+=== release2-fixed.html
+
+文字样式 10 种 · 字号 5 种
+没有挨着又只差一点点的样式对
+中文排版
+✓ <html lang>：zh-CN
+✗ text-autospace：no-autospace
+✓ 正文的引号“：0.54 em

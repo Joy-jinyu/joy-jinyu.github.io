@@ -1,0 +1,158 @@
+---
+/**
+ * 风格来源对照：同一个 App 的两个页面（团队成员、升级套餐），在三种条件下各让 AI 写一次：
+ * 不给来源、给一张参考页、给一组设计变量。上面两个 iframe 加载原样产出，下面的色块是页面实际画出来的颜色，
+ * 虚线框的是「来源之外」的颜色（不给来源时，指另一页没用过的颜色）。可切浅色 / 深色。
+ * 色块和读数在构建时从 blog/public/lab/ai-consistency/data/*.json 算出（style-probe.mjs 的输出），规则和 style-diff.py 一致。
+ */
+import '../styles/spacing-lab.css'
+import run1Src from '../../public/lab/ai-ui-taste/run1.html?raw'
+
+type Bag = Record<string, Record<string, { n: number }>>
+const data = import.meta.glob<{ bag: Bag; darkRule: boolean }>('../../public/lab/ai-consistency/data/*.json', { eager: true, import: 'default' })
+const get = (name: string) => data[`../../public/lab/ai-consistency/data/${name}.json`]
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/')
+
+const TOKEN = new Set(['#b65a3c', '#ffffff', '#1c1c1a', '#5f5e59', '#e7e6e1', '#f4f4f1'])
+const REF = new Set((run1Src.match(/#[0-9a-fA-F]{6}\b/g) ?? []).map((h) => h.toLowerCase()))
+const PAGES = [{ key: 'members', label: '团队成员' }, { key: 'upgrade', label: '升级套餐' }]
+const CONDS = [{ key: 'plain', label: '不给来源' }, { key: 'ref', label: '给参考页' }, { key: 'token', label: '给设计变量' }]
+
+const colorsOf = (bag: Bag) => {
+  const m = new Map<string, number>()
+  for (const k of ['text', 'bg', 'icon']) for (const [c, v] of Object.entries(bag[k] ?? {})) if (c && c !== 'null') m.set(c.split('/')[0], (m.get(c.split('/')[0]) ?? 0) + v.n)
+  for (const [b, v] of Object.entries(bag.border ?? {})) { const c = b.split(' ')[1]; if (c && c !== 'null') m.set(c.split('/')[0], (m.get(c.split('/')[0]) ?? 0) + v.n) }
+  return [...m.entries()].sort((a, b) => b[1] - a[1]).map(([hex]) => hex)
+}
+const keys = (bag: Bag, k: string) => Object.keys(bag[k] ?? {}).sort((a, b) => parseFloat(a) - parseFloat(b) || a.localeCompare(b))
+
+const model: Record<string, unknown> = {}
+for (const c of CONDS) for (const scheme of ['light', 'dark']) for (const p of PAGES) {
+  const d = get(`${p.key}-${c.key}${scheme === 'dark' ? '-dark' : ''}`)
+  const sibling = get(`${p.key === 'members' ? 'upgrade' : 'members'}-${c.key}${scheme === 'dark' ? '-dark' : ''}`)
+  const sib = new Set(colorsOf(sibling.bag))
+  const isOut = (hex: string) => (c.key === 'ref' ? !REF.has(hex) : c.key === 'token' ? !TOKEN.has(hex) : !sib.has(hex))
+  model[`${c.key}-${scheme}-${p.key}`] = {
+    colors: colorsOf(d.bag).map((hex) => ({ hex, out: isOut(hex) })),
+    // 「16/0」这类是四个角不一样（只圆一边），合成一项
+    radius: [...new Set(keys(d.bag, 'radius').map((r) => (r === 'pill' ? '胶囊' : r.includes('/') ? `${Math.max(...r.split('/').map(Number))}（只圆一边）` : r)))].join(' · '),
+    weight: keys(d.bag, 'fontWeight').join(' · '),
+    dark: d.darkRule,
+  }
+}
+const NOTES: Record<string, string> = {
+  plain: '虚线框是另一页没用过的颜色。两页画出来的颜色，浅色下只有白色是共同的；圆角、字重、控件高度也各是一套。',
+  ref: '虚线框是参考页里没有的颜色。颜色几乎全部照抄参考页，连「邀请」「升级到团队版」按钮上 3.9:1 的白字也照抄了；参考页没有的开关、价格，它自己定了 8、12px 的圆角和 28px 的字号。',
+  token: '虚线框是变量之外的颜色。颜色正好是变量里的 6 个值；可变量表里没有字重，两页一页用 2 种、一页用 4 种；也没有深色值，两页都只做了浅色。',
+}
+---
+
+<style-sources class="ss sx-panel sx-bleed not-prose" data-base={`${base}lab/ai-consistency/`} data-model={JSON.stringify(model)} data-notes={JSON.stringify(NOTES)}>
+  <div class="ss-ctrl">
+    <div class="sx-seg" role="group" aria-label="给 AI 的风格来源">
+      {CONDS.map((c, i) => <button type="button" data-cond={c.key} aria-pressed={i === 0 ? 'true' : 'false'}>{c.label}</button>)}
+    </div>
+    <div class="sx-seg" role="group" aria-label="主题">
+      <button type="button" data-scheme="light" aria-pressed="true">浅色</button>
+      <button type="button" data-scheme="dark" aria-pressed="false">深色</button>
+    </div>
+  </div>
+  <div class="ss-cols">
+    {PAGES.map((p) => (
+      <section class="ss-col" data-page={p.key} aria-label={p.label}>
+        <div class="ss-phone"><iframe title={`AI 写的「${p.label}」页`} loading="lazy" tabindex="-1"></iframe></div>
+        <div class="ss-swatches" role="img"></div>
+        <dl class="ss-read">
+          <div><dt>圆角</dt><dd data-k="radius"></dd></div>
+          <div><dt>字重</dt><dd data-k="weight"></dd></div>
+          <div><dt>深色模式</dt><dd data-k="dark"></dd></div>
+        </dl>
+      </section>
+    ))}
+  </div>
+  <p class="sx-cap ss-note" aria-live="polite"></p>
+  <p class="sx-cap">这里是第一轮的六个页面。第二轮六个页面的比对见 <a href={`${base}lab/ai-consistency/data/diff-summary.txt`}>diff-summary.txt</a>。第二轮不给来源的两页都选了蓝色，但不是同一种蓝；「升级套餐」第一轮的墨绿，到第二轮也换成了蓝。</p>
+</style-sources>
+
+<script>
+  type Col = { colors: { hex: string; out: boolean }[]; radius: string; weight: string; dark: boolean }
+
+  class StyleSources extends HTMLElement {
+    private state = { cond: 'plain', scheme: 'light' }
+    private cache = new Map<string, string>()
+    private model: Record<string, Col> = {}
+    private notes: Record<string, string> = {}
+
+    connectedCallback() {
+      this.model = JSON.parse(this.dataset.model!)
+      this.notes = JSON.parse(this.dataset.notes!)
+      this.addEventListener('click', (e) => {
+        const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button')
+        if (!b) return
+        if (b.dataset.cond) this.state.cond = b.dataset.cond
+        if (b.dataset.scheme) this.state.scheme = b.dataset.scheme
+        this.render()
+      })
+      this.render()
+    }
+
+    private async html(file: string) {
+      if (!this.cache.has(file)) this.cache.set(file, await fetch(this.dataset.base + file).then((r) => r.text()))
+      return this.cache.get(file)!
+    }
+
+    private async render() {
+      const { cond, scheme } = this.state
+      this.querySelectorAll<HTMLButtonElement>('[data-cond]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.cond === cond)))
+      this.querySelectorAll<HTMLButtonElement>('[data-scheme]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.scheme === scheme)))
+      this.querySelector('.ss-note')!.textContent = this.notes[cond]
+      for (const col of this.querySelectorAll<HTMLElement>('.ss-col')) {
+        const page = col.dataset.page!
+        const m = this.model[`${cond}-${scheme}-${page}`]
+        const sw = col.querySelector('.ss-swatches')!
+        sw.replaceChildren(...m.colors.map((c) => {
+          const i = document.createElement('i')
+          i.style.background = c.hex
+          i.title = c.hex + (c.out ? '（来源之外）' : '')
+          if (c.out) i.className = 'is-out'
+          return i
+        }))
+        sw.setAttribute('aria-label', `画出 ${m.colors.length} 种颜色，${m.colors.filter((c) => c.out).length} 种在来源之外`)
+        col.querySelector('[data-k="radius"]')!.textContent = m.radius
+        col.querySelector('[data-k="weight"]')!.textContent = m.weight
+        col.querySelector('[data-k="dark"]')!.textContent = m.dark ? '有' : '没有'
+        // 原文件用 @media (prefers-color-scheme: dark) 切主题，换成恒真 / 恒假就能不依赖系统设置
+        const src = (await this.html(`${page}-${cond}.html`)).replace(/@media\s*\(prefers-color-scheme:\s*dark\)/g, scheme === 'dark' ? '@media all' : '@media not all')
+        const frame = col.querySelector('iframe')!
+        frame.srcdoc = src.replace('</head>', '<style>html{scrollbar-width:none}</style></head>')
+      }
+    }
+  }
+  if (!customElements.get('style-sources')) customElements.define('style-sources', StyleSources)
+</script>
+
+<style is:global>
+  .ss-ctrl { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+  .ss-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .ss-col { min-width: 0; }
+  /* iframe 按 375 宽渲染，再整体缩小；--k 是缩放比例 */
+  .ss-phone { --k: 0.72; position: relative; width: calc(375px * var(--k)); max-width: 100%; height: calc(640px * var(--k)); margin: 0; overflow: hidden; border: 1px solid var(--line-hi); border-radius: 18px; background: #fff; }
+  .ss-phone iframe { position: absolute; top: 0; left: 0; width: 375px; height: 640px; border: 0; transform: scale(var(--k)); transform-origin: 0 0; pointer-events: none; }
+  .ss-swatches { display: flex; flex-wrap: wrap; gap: 4px; min-height: 40px; margin: 12px 0 8px; }
+  .ss-swatches i { width: 18px; height: 18px; border-radius: 5px; box-shadow: inset 0 0 0 1px rgba(127, 127, 127, 0.35); }
+  .ss-swatches i.is-out { outline: 1.5px dashed var(--strong); outline-offset: 2px; }
+  .ss-read { display: grid; gap: 4px; margin: 0; font-size: 12.5px; }
+  .ss-read div { display: flex; gap: 8px; }
+  .ss-read dt { flex: none; width: 56px; color: var(--muted); }
+  .ss-read dd { margin: 0; color: var(--strong); font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  @media (max-width: 640px) {
+    .ss-cols { gap: 12px; }
+    .ss-phone { --k: 0.44; border-radius: 12px; }
+    .ss-swatches { gap: 3px; min-height: 30px; }
+    .ss-swatches i { width: 13px; height: 13px; border-radius: 4px; }
+    .ss-swatches i.is-out { outline-width: 1px; outline-offset: 1px; }
+    .ss-read { font-size: 11.5px; }
+    .ss-read div { flex-wrap: wrap; gap: 0 6px; }
+    .ss-read dt { width: auto; }
+  }
+</style>

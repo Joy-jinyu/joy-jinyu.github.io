@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>升级套餐</title>
+<style>
+  :root {
+    --bg: #f4f4f1;
+    --card: #ffffff;
+    --text: #1c1c1a;
+    --text-2: #6b6a65;
+    --line: #e7e6e1;
+    --track: #ecebe6;
+    --accent: #c96442;
+    --accent-ink: #ffffff;
+    --tag-bg: #f6e9e3;
+    --tag-ink: #a24f32;
+    --danger: #c43d3d;
+    --hover: #f3f2ee;
+    --thumb: #ffffff;
+    --shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141413;
+      --card: #1f1e1c;
+      --text: #f0efea;
+      --text-2: #a3a199;
+      --line: #2f2e2b;
+      --track: #2f2e2b;
+      --accent: #d97757;
+      --accent-ink: #1a1a19;
+      --tag-bg: #3a2a23;
+      --tag-ink: #eba78d;
+      --danger: #ef6b6b;
+      --hover: #2a2926;
+      /* 暗色下 card 比 track 还暗，分段选中块不能直接用 card，否则像凹下去的坑 */
+      --thumb: #45433e;
+      --shadow: 0 1px 2px rgba(0,0,0,.3);
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font: 15px/1.5 -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    padding-top: env(safe-area-inset-top);
+    background: var(--bg);
+    border-bottom: 1px solid transparent;
+    transition: border-color .15s ease;
+  }
+  .nav.scrolled { border-bottom-color: var(--line); }
+  .nav-inner {
+    display: grid;
+    grid-template-columns: 40px 1fr 40px;
+    align-items: center;
+    max-width: 452px;
+    height: 56px;
+    margin: 0 auto;
+    padding: 0 4px;
+  }
+  h1 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.3;
+    text-align: center;
+  }
+  .icon-btn {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+  }
+  .icon-btn:active { background: var(--hover); }
+  .x { position: relative; width: 18px; height: 18px; }
+  .x::before, .x::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 18px;
+    height: 2px;
+    border-radius: 1px;
+    background: currentColor;
+  }
+  .x::before { transform: rotate(45deg); }
+  .x::after { transform: rotate(-45deg); }
+
+  .page {
+    max-width: 452px;
+    margin: 0 auto;
+    padding: 8px 16px calc(24px + env(safe-area-inset-bottom));
+  }
+
+  .cycle { margin: 0; padding: 0; border: 0; min-inline-size: 0; }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .seg {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 4px;
+    border-radius: 12px;
+    background: var(--track);
+  }
+  .seg-item { position: relative; display: block; }
+  .seg-item input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .seg-face {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 36px;
+    padding: 0 12px;
+    border-radius: 8px;
+    color: var(--text-2);
+    font-weight: 600;
+    transition: background-color .15s ease, color .15s ease, box-shadow .15s ease;
+  }
+  .seg-item input:checked + .seg-face {
+    background: var(--thumb);
+    color: var(--text);
+    box-shadow: var(--shadow);
+  }
+
+  .tag {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 20px;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: var(--tag-bg);
+    color: var(--tag-ink);
+    white-space: nowrap;
+  }
+  .tag-muted { background: var(--track); color: var(--text-2); }
+
+  .plans { display: grid; gap: 16px; margin-top: 24px; }
+  .card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+  }
+  .card.featured { box-shadow: inset 0 0 0 1px var(--accent), var(--shadow); }
+  .head {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .price {
+    margin: 12px 0 0;
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+  }
+  .price small { color: var(--text-2); font-weight: 400; font-size: 13px; }
+  .note {
+    margin: 4px 0 0;
+    color: var(--text-2);
+    font-size: 14px;
+    font-variant-numeric: tabular-nums;
+  }
+  .features {
+    display: grid;
+    gap: 8px;
+    margin: 16px 0 0;
+    padding: 16px 0 0;
+    list-style: none;
+    border-top: 1px solid var(--line);
+  }
+  .features li { display: flex; gap: 8px; }
+  .check {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 16px;
+    height: 1.5em;
+  }
+  .check::before {
+    content: "";
+    width: 5px;
+    height: 9px;
+    border: solid var(--accent);
+    border-width: 0 2px 2px 0;
+    transform: translateY(-1px) rotate(45deg);
+  }
+
+  .btn {
+    display: block;
+    width: 100%;
+    min-height: 44px;
+    margin-top: 20px;
+    border-radius: 10px;
+    font: inherit;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: transform .1s ease, background-color .15s ease;
+  }
+  .btn:not(:disabled):active { transform: scale(.98); }
+  .btn-primary { background: var(--accent); color: var(--accent-ink); }
+  .btn-secondary { background: transparent; color: var(--text); border-color: var(--line); }
+  .btn-secondary:active { background: var(--hover); }
+  .btn:disabled { background: var(--track); color: var(--text-2); border-color: transparent; cursor: default; }
+
+  .faq { margin-top: 24px; }
+  .section-title { margin: 0 0 12px; font-size: 15px; }
+  /* 问题行要整行铺满按压底色，所以卡片要裁切；焦点环相应改成内描边，否则会被裁掉 */
+  .faq-list { padding: 0 20px; overflow: hidden; }
+  .faq-item + .faq-item { border-top: 1px solid var(--line); }
+  .faq-item h3 { margin: 0; font: inherit; }
+  .faq-q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: calc(100% + 40px);
+    min-height: 44px;
+    margin: 0 -20px;
+    padding: 12px 20px;
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  .faq-q:active { background: var(--hover); }
+  .faq-item:first-child .faq-q { border-radius: 16px 16px 0 0; }
+  .faq-item:last-child .faq-q[aria-expanded="false"] { border-radius: 0 0 16px 16px; }
+  .chev {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 16px;
+    height: 16px;
+    color: var(--text-2);
+    transition: transform .2s ease;
+  }
+  .chev::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border: solid currentColor;
+    border-width: 0 1.5px 1.5px 0;
+    transform: translateY(-2px) rotate(45deg);
+  }
+  .faq-q[aria-expanded="true"] .chev { transform: rotate(180deg); }
+  .faq-a {
+    display: grid;
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition: grid-template-rows .2s ease, visibility 0s linear .2s;
+  }
+  .faq-a.open {
+    grid-template-rows: 1fr;
+    visibility: visible;
+    transition: grid-template-rows .2s ease, visibility 0s;
+  }
+  .faq-a > div { overflow: hidden; min-height: 0; }
+  .faq-a p { margin: 0; padding: 0 0 12px; color: var(--text-2); font-size: 14px; }
+
+  .fine {
+    margin: 24px 0 0;
+    color: var(--text-2);
+    font-size: 13px;
+    text-align: center;
+  }
+
+  @media (hover: hover) {
+    .icon-btn:hover, .btn-secondary:hover, .faq-q:hover { background: var(--hover); }
+  }
+  .btn:focus-visible, .icon-btn:focus-visible, .seg-item input:focus-visible + .seg-face {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .faq-q:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: calc(32px + env(safe-area-inset-bottom));
+    transform: translate(-50%, 8px);
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: var(--text);
+    color: var(--bg);
+    font-size: 14px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease, transform .2s ease;
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: 0s !important; }
+  }
+</style>
+</head>
+<body>
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <button class="icon-btn" type="button" aria-label="关闭" data-action="close">
+      <span class="x" aria-hidden="true"></span>
+    </button>
+    <h1>升级套餐</h1>
+  </div>
+</header>
+
+<main class="page">
+  <fieldset class="cycle" id="cycle">
+    <legend class="sr-only">付费周期</legend>
+    <div class="seg">
+      <label class="seg-item">
+        <input type="radio" name="cycle" value="month" checked>
+        <span class="seg-face">月付</span>
+      </label>
+      <label class="seg-item">
+        <input type="radio" name="cycle" value="year">
+        <span class="seg-face">年付 <span class="tag">省 20%</span></span>
+      </label>
+    </div>
+  </fieldset>
+
+  <div class="plans">
+    <article class="card" aria-labelledby="plan-free" data-monthly="0">
+      <div class="head">
+        <h2 id="plan-free">免费版</h2>
+      </div>
+      <p class="price"><span class="amount">¥0</span> <small>/ 月</small></p>
+      <p class="note">永久免费</p>
+      <ul class="features">
+        <li><span class="check" aria-hidden="true"></span>5GB 空间</li>
+        <li><span class="check" aria-hidden="true"></span>最多 3 人</li>
+        <li><span class="check" aria-hidden="true"></span>7 天版本历史</li>
+      </ul>
+      <button class="btn btn-secondary" type="button" data-action="downgrade">降级到免费版</button>
+    </article>
+
+    <article class="card" aria-labelledby="plan-pro" data-monthly="30">
+      <div class="head">
+        <h2 id="plan-pro">Pro</h2>
+        <span class="tag tag-muted">当前套餐</span>
+      </div>
+      <p class="price"><span class="amount">¥30</span> <small>/ 月</small></p>
+      <p class="note">改为年付，每年省 ¥72</p>
+      <ul class="features">
+        <li><span class="check" aria-hidden="true"></span>100GB 空间</li>
+        <li><span class="check" aria-hidden="true"></span>最多 10 人</li>
+        <li><span class="check" aria-hidden="true"></span>30 天版本历史</li>
+      </ul>
+      <button class="btn btn-secondary" type="button" disabled>正在使用</button>
+    </article>
+
+    <article class="card featured" aria-labelledby="plan-team" data-monthly="88">
+      <div class="head">
+        <h2 id="plan-team">团队版</h2>
+        <span class="tag">推荐</span>
+      </div>
+      <p class="price"><span class="amount">¥88</span> <small>/ 月</small></p>
+      <p class="note">改为年付，每年省 ¥211.2</p>
+      <ul class="features">
+        <li><span class="check" aria-hidden="true"></span>1TB 空间</li>
+        <li><span class="check" aria-hidden="true"></span>不限人数</li>
+        <li><span class="check" aria-hidden="true"></span>1 年版本历史</li>
+      </ul>
+      <button class="btn btn-primary" type="button" data-action="upgrade">升级到团队版</button>
+    </article>
+  </div>
+
+  <section class="faq" aria-labelledby="faq-title">
+    <h2 class="section-title" id="faq-title">常见问题</h2>
+    <div class="card faq-list">
+      <div class="faq-item">
+        <h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a1">升级后什么时候生效？<span class="chev" aria-hidden="true"></span></button></h3>
+        <div class="faq-a" id="faq-a1"><div><p>付款成功后立即生效，本期剩余天数按新旧套餐差价折算。</p></div></div>
+      </div>
+      <div class="faq-item">
+        <h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a2">取消后数据还在吗？<span class="chev" aria-hidden="true"></span></button></h3>
+        <div class="faq-a" id="faq-a2"><div><p>在。当前周期结束前仍可使用全部权益，到期后转为免费版，文件不会被删除。</p></div></div>
+      </div>
+      <div class="faq-item">
+        <h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a3">空间超出免费版额度怎么办？<span class="chev" aria-hidden="true"></span></button></h3>
+        <div class="faq-a" id="faq-a3"><div><p>已有文件可以继续查看和下载，用量降到 5GB 以内之前不能上传新文件。</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <p class="fine">价格含税，可随时取消</p>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+  (function () {
+    // 年付「省 20%」：年付价 = 月付价 × 12 × 0.8
+    var YEARLY_RATE = 0.8;
+    var fmt = new Intl.NumberFormat('zh-CN', { maximumFractionDigits: 1 });
+    function yuan(n) { return '¥' + fmt.format(n); }
+
+    var cycleEl = document.getElementById('cycle');
+    var cards = Array.prototype.slice.call(document.querySelectorAll('[data-monthly]'));
+    function currentCycle() { return cycleEl.querySelector('input:checked').value; }
+
+    function render() {
+      var cycle = currentCycle();
+      cards.forEach(function (card) {
+        var monthly = Number(card.getAttribute('data-monthly'));
+        if (monthly === 0) return;
+        var yearly = monthly * 12 * YEARLY_RATE;
+        var saved = monthly * 12 - yearly;
+        var amount = card.querySelector('.amount');
+        var note = card.querySelector('.note');
+        if (cycle === 'year') {
+          amount.textContent = yuan(monthly * YEARLY_RATE);
+          note.textContent = '按年付 ' + yuan(yearly) + '，每年省 ' + yuan(saved);
+        } else {
+          amount.textContent = yuan(monthly);
+          note.textContent = '改为年付，每年省 ' + yuan(saved);
+        }
+      });
+    }
+    cycleEl.addEventListener('change', render);
+    render();
+
+    var nav = document.getElementById('nav');
+    function onScroll() { nav.classList.toggle('scrolled', window.scrollY > 0); }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    Array.prototype.slice.call(document.querySelectorAll('.faq-q')).forEach(function (q) {
+      var panel = document.getElementById(q.getAttribute('aria-controls'));
+      q.addEventListener('click', function () {
+        var open = q.getAttribute('aria-expanded') !== 'true';
+        q.setAttribute('aria-expanded', String(open));
+        panel.classList.toggle('open', open);
+      });
+    });
+
+    var toast = document.getElementById('toast');
+    var toastTimer;
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 1600);
+    }
+
+    document.addEventListener('click', function (e) {
+      var target = e.target.closest('[data-action]');
+      if (!target) return;
+      var action = target.getAttribute('data-action');
+      if (action === 'close') { showToast('关闭页面'); return; }
+      if (action === 'downgrade') { showToast('前往降级到免费版'); return; }
+      if (action === 'upgrade') {
+        var monthly = Number(target.closest('[data-monthly]').getAttribute('data-monthly'));
+        var price = currentCycle() === 'year' ? '年付 ' + yuan(monthly * 12 * YEARLY_RATE) : '月付 ' + yuan(monthly);
+        showToast('前往支付：团队版 ' + price);
+      }
+    });
+  })();
+</script>
+</body>
+</html>

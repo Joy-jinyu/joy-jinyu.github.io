@@ -1,0 +1,74 @@
+---
+/**
+ * 字号刻度：三份 AI 页面、改过的版本、Apple iOS 默认字号表，各自用到哪些字号，画在同一根轴上。
+ * 分组标题和条目标题两个点单独标色，看它们隔了多远。
+ * 页面数据来自 blog/public/lab/ai-typography/data/roles.json；iOS 字号表取自 Apple Human Interface Guidelines 的 Typography 页（Large 档）。
+ */
+import '../styles/spacing-lab.css'
+import roles from '../../public/lab/ai-typography/data/roles.json'
+
+type P = { file: string; sizes: number[]; roles: Record<string, { fs: number }> }
+const pages = roles as unknown as P[]
+const MIN = 11, MAX = 40
+const at = (v: number) => `${((v - MIN) / (MAX - MIN)) * 100}%`
+// 12px 只用在提示框的「!」图标上，不算文字字号
+const textSizes = (p: P) => p.sizes.filter((s) => s !== 12 || Object.values(p.roles).some((r) => r.fs === 12))
+const ROWS = [
+  ...[['release1.html', '第 1 份'], ['release2.html', '第 2 份'], ['release3.html', '第 3 份'], ['release2-fixed.html', '改过的']].map(([f, label]) => {
+    const p = pages.find((x) => x.file === f)!
+    return { label, sizes: textSizes(p), group: p.roles.group.fs, title: p.roles.title.fs }
+  }),
+  { label: 'iOS 默认', sizes: [11, 12, 13, 15, 16, 17, 20, 22, 28, 34], group: null, title: null },
+]
+---
+
+<figure class="ts sx-panel not-prose">
+  <div class="ts-legend" aria-hidden="true">
+    <span><i class="ts-dot"></i>页面里用到的字号</span>
+    <span><i class="ts-dot is-g"></i>分组标题</span>
+    <span><i class="ts-dot is-t"></i>条目标题</span>
+  </div>
+  <div class="ts-axis" aria-hidden="true">
+    {[11, 13, 15, 17, 20, 24, 28, 34, 40].map((v) => <span class:list={{ 'ts-minor': v === 13 || v === 17 }} style={`left:${at(v)}`}>{v}</span>)}
+  </div>
+  {ROWS.map((r) => (
+    <div class="ts-row">
+      <span class="ts-name">{r.label}</span>
+      <div class="ts-track" role="img" aria-label={`${r.label}：${r.sizes.join('、')} px${r.group ? `；分组标题 ${r.group}，条目标题 ${r.title}` : ''}`}>
+        {r.sizes.map((s) => <i class:list={['ts-dot', { 'is-g': s === r.group, 'is-t': s === r.title }]} style={`left:${at(s)}`} title={`${s}px`} />)}
+        {r.group && r.title && (
+          <span class="ts-gap" style={`left:${at(Math.min(r.group, r.title))};width:calc(${at(Math.max(r.group, r.title))} - ${at(Math.min(r.group, r.title))})`}>
+            <b>{Math.abs(r.group - r.title)}px</b>
+          </span>
+        )}
+      </div>
+    </div>
+  ))}
+  <figcaption class="sx-cap">
+    单位 px，iOS 那一行是 pt（在 iPhone 上和 CSS 的 px 一样大）。三份 AI 页面的文字用了 6–7 种字号；iOS 自己的默认字号表有 10 档，11–17 之间相邻两档只差 1–2 个点。
+    档多不是问题，问题在橙点和蓝点之间只有字号这一个不同：三份 AI 页面的这两级字重和颜色都一样；改过的那一行同样差 4px，但还换了颜色、加了字距，就分得开了。
+  </figcaption>
+</figure>
+
+<style is:global>
+  .ts-legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-bottom: 16px; color: var(--muted); font-size: 13px; }
+  .ts-legend span { display: inline-flex; align-items: center; gap: 8px; }
+  .ts-legend .ts-dot { position: static; margin: 0; }
+  .ts-axis, .ts-track { position: relative; margin-left: 72px; margin-right: 28px; }
+  .ts-axis { height: 18px; color: var(--muted); font: 500 11px/1 var(--mono); }
+  .ts-axis span { position: absolute; transform: translateX(-50%); }
+  .ts-row { display: flex; align-items: center; height: 36px; }
+  .ts-row + .ts-row { border-top: 1px dashed var(--line); }
+  .ts-name { flex: none; width: 72px; color: var(--strong); font-size: 13px; }
+  .ts-row .ts-track { flex: 1; height: 100%; margin-left: 0; background: linear-gradient(var(--line), var(--line)) 0 50% / 100% 1px no-repeat; }
+  .ts-dot { position: absolute; top: 50%; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; border-radius: 50%; background: var(--muted); }
+  .ts-dot.is-g { width: 12px; height: 12px; margin: -6px 0 0 -6px; background: #f59e0b; z-index: 1; }
+  .ts-dot.is-t { width: 12px; height: 12px; margin: -6px 0 0 -6px; background: #3b82f6; z-index: 1; }
+  .ts-gap { position: absolute; top: 3px; height: 9px; border: 1.5px solid var(--strong); border-bottom: 0; border-radius: 3px 3px 0 0; }
+  .ts-gap b { position: absolute; bottom: 100%; left: 50%; transform: translate(-50%, -1px); color: var(--strong); font: 600 11px/1 var(--mono); white-space: nowrap; }
+  @media (max-width: 640px) {
+    .ts-axis, .ts-track { margin-left: 56px; }
+    .ts-name { width: 56px; font-size: 12px; }
+    .ts-minor { display: none; }   /* 窄屏下 11–17 四个刻度挤成一串，只留 11、15 */
+  }
+</style>

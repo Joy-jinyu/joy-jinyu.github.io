@@ -1,0 +1,792 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>文件</title>
+<style>
+  :root {
+    --font: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --gutter: var(--space-4);
+    --icon-size: 2.5rem;
+    --nav-h: 44px;
+    --radius-xs: 4px;
+    --radius-s: 8px;
+    --radius-m: 10px;
+    --radius-l: 14px;
+
+    --bg-page: #f2f2f7;
+    --bg-surface: #ffffff;
+    --bg-field: #ffffff;
+    --bg-pressed: #e5e5ea;
+    --bg-highlight: #e6efff;
+    --skeleton: #e5e5ea;
+    --text-primary: #1c1c1e;
+    --text-secondary: #5f5f66;
+    --hairline: #d1d1d6;
+    --border-control: #c7c7cc;
+    --border-field: #86868b;
+    --accent: #2563eb;
+    --accent-pressed: #1d4ed8;
+    --on-accent: #ffffff;
+    --danger-text: #c4271c;
+    --danger-fill: #c4271c;
+    --danger-pressed: #a51f16;
+    --on-danger: #ffffff;
+    --focus: #2563eb;
+
+    --tile-pdf-bg: #fde8e7;     --tile-pdf-fg: #b42318;
+    --tile-slides-bg: #fef0e1;  --tile-slides-fg: #a43f06;
+    --tile-image-bg: #f1eafd;   --tile-image-fg: #6d3fc0;
+    --tile-sheet-bg: #e5f5ec;   --tile-sheet-fg: #067647;
+    --tile-doc-bg: #e6effd;     --tile-doc-fg: #1d4ed8;
+    --tile-other-bg: #eeeef1;   --tile-other-fg: #4b4b55;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-page: #000000;
+      --bg-surface: #1c1c1e;
+      --bg-field: #1c1c1e;
+      --bg-pressed: #2c2c2e;
+      --bg-highlight: #172554;
+      --skeleton: #2c2c2e;
+      --text-primary: #f2f2f7;
+      --text-secondary: #a1a1aa;
+      --hairline: #38383a;
+      --border-control: #545458;
+      --border-field: #77777c;
+      --accent: #2563eb;
+      --accent-pressed: #1e4fc2;
+      --danger-text: #ff7a70;
+      --danger-fill: #d02c20;
+      --danger-pressed: #b0241a;
+      --focus: #6ea0ff;
+
+      --tile-pdf-bg: #3a1b19;     --tile-pdf-fg: #ff8a80;
+      --tile-slides-bg: #3a2814;  --tile-slides-fg: #fdb022;
+      --tile-image-bg: #2c2140;   --tile-image-fg: #c4a8ff;
+      --tile-sheet-bg: #12301f;   --tile-sheet-fg: #6ce9a6;
+      --tile-doc-bg: #172443;     --tile-doc-fg: #8ab4ff;
+      --tile-other-bg: #2c2c2e;   --tile-other-fg: #c7c7cc;
+    }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  /* .file 等写了 display，会盖掉 hidden 属性的默认隐藏，统一兜住 */
+  [hidden] { display: none !important; }
+
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-page);
+    color: var(--text-primary);
+    font: 400 1rem/1.5 var(--font);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button { font: inherit; color: inherit; cursor: pointer; }
+
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  [tabindex="-1"]:focus { outline: none; }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* 导航栏 */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    padding-top: env(safe-area-inset-top);
+    background: var(--bg-surface);
+    /* 发丝线用阴影画，不占布局高度：两条常驻栏合计要压在 375×667 视口高的 15%（100px）以内 */
+    box-shadow: 0 1px 0 var(--hairline);
+  }
+  .nav-inner {
+    min-height: var(--nav-h);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 var(--gutter);
+  }
+  .nav h1 {
+    margin: 0;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  main { flex: 1; }
+
+  /* 搜索 */
+  .search { padding: var(--space-2) var(--gutter); }
+  .search input {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    min-height: 36px;
+    padding: 0 var(--space-3);
+    border: 1px solid var(--border-field);
+    border-radius: var(--radius-m);
+    background: var(--bg-field);
+    color: var(--text-primary);
+    /* 小于 16px 时 iOS Safari 聚焦会自动放大页面，别往下调 */
+    font: inherit;
+    font-size: 1rem;
+  }
+  .search input::placeholder { color: var(--text-secondary); opacity: 1; }
+  .search input:disabled { opacity: 0.5; }
+
+  /* 列表 */
+  .list-count {
+    margin: 0;
+    padding: var(--space-2) var(--gutter);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: var(--text-secondary);
+  }
+
+  .file-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background: var(--bg-surface);
+  }
+
+  .file {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-height: 64px;
+    padding: var(--space-3) var(--gutter);
+    scroll-margin-top: calc(var(--nav-h) + env(safe-area-inset-top) + var(--space-2));
+    scroll-margin-bottom: var(--space-8);
+  }
+  /* 分隔线从文字起点画起，和图标列对齐；只画在「前面还有可见行」的行上，过滤后第一行不会多出一条线 */
+  .file:not([hidden]) ~ .file:not([hidden])::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: calc(var(--gutter) + var(--icon-size) + var(--space-3));
+    border-top: 1px solid var(--hairline);
+  }
+  .file.is-new { background: var(--bg-highlight); }
+
+  .file-icon {
+    flex: none;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-m);
+    background: var(--tile-bg);
+    color: var(--tile-fg);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .file-icon[data-kind="pdf"]    { --tile-bg: var(--tile-pdf-bg);    --tile-fg: var(--tile-pdf-fg); }
+  .file-icon[data-kind="slides"] { --tile-bg: var(--tile-slides-bg); --tile-fg: var(--tile-slides-fg); }
+  .file-icon[data-kind="image"]  { --tile-bg: var(--tile-image-bg);  --tile-fg: var(--tile-image-fg); }
+  .file-icon[data-kind="sheet"]  { --tile-bg: var(--tile-sheet-bg);  --tile-fg: var(--tile-sheet-fg); }
+  .file-icon[data-kind="doc"]    { --tile-bg: var(--tile-doc-bg);    --tile-fg: var(--tile-doc-fg); }
+  .file-icon[data-kind="other"]  { --tile-bg: var(--tile-other-bg);  --tile-fg: var(--tile-other-fg); }
+
+  .file-body { flex: 1; min-width: 0; }
+  .file-name {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+  .file-meta,
+  .file-error {
+    margin: var(--space-1) 0 0;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+  }
+  .file-meta { color: var(--text-secondary); }
+  .file-error { color: var(--danger-text); }
+
+  .btn-row {
+    flex: none;
+    position: relative;
+    min-height: 32px;
+    padding: 0 var(--space-3);
+    border: 1px solid var(--border-control);
+    border-radius: var(--radius-s);
+    background: transparent;
+    font-size: 0.875rem;
+  }
+  /* 按钮视觉高 32px，上下各外扩 6px，让触摸热区达到移动端建议的 44px */
+  .btn-row::after { content: ""; position: absolute; inset: -6px 0; }
+  .btn-row:active:not([aria-disabled="true"]) { background: var(--bg-pressed); }
+  .btn-row[aria-disabled="true"] { color: var(--text-secondary); cursor: default; }
+
+  /* 加载占位：和真实行同一套列几何 */
+  .skeleton-bar {
+    display: block;
+    width: 62%;
+    height: 0.75rem;
+    border-radius: var(--radius-xs);
+    background: var(--skeleton);
+  }
+  .skeleton-bar + .skeleton-bar { width: 34%; margin-top: var(--space-2); }
+  .skeleton .file:nth-child(even) .skeleton-bar:first-child { width: 48%; }
+  .skeleton .file-icon { background: var(--skeleton); }
+  .skeleton-btn { flex: none; width: 3.25rem; height: 32px; border-radius: var(--radius-s); background: var(--skeleton); }
+
+  /* 空 / 无结果 / 出错 */
+  .state { padding: var(--space-8) var(--gutter); text-align: center; }
+  .state h2 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+  .state p {
+    margin: var(--space-2) 0 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
+  }
+  .state .btn-secondary { margin-top: var(--space-4); }
+
+  .btn-secondary {
+    min-height: 36px;
+    padding: 0 var(--space-4);
+    border: 1px solid var(--border-control);
+    border-radius: var(--radius-m);
+    background: var(--bg-surface);
+    font-size: 0.9375rem;
+  }
+  .btn-secondary:active { background: var(--bg-pressed); }
+
+  /* 底部上传 */
+  .bar {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    padding: var(--space-2) var(--gutter) calc(var(--space-2) + env(safe-area-inset-bottom));
+    background: var(--bg-surface);
+    box-shadow: 0 -1px 0 var(--hairline);
+  }
+  .bar-error {
+    margin: 0 0 var(--space-2);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: var(--danger-text);
+  }
+  .btn-primary {
+    width: 100%;
+    min-height: 40px;
+    border: 0;
+    border-radius: var(--radius-m);
+    background: var(--accent);
+    color: var(--on-accent);
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .btn-primary:active:not(:disabled):not([aria-disabled="true"]) { background: var(--accent-pressed); }
+  .btn-primary:disabled,
+  .btn-primary[aria-disabled="true"] { opacity: 0.5; cursor: default; }
+
+  /* 删除确认 */
+  .dialog {
+    width: min(100% - 2 * var(--gutter), 20rem);
+    padding: var(--space-6) var(--space-4) var(--space-4);
+    border: 0;
+    border-radius: var(--radius-l);
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    text-align: center;
+  }
+  /* ::backdrop 在较老的浏览器里拿不到 :root 上的变量，这里只能写字面量 */
+  .dialog::backdrop { background: rgb(0 0 0 / 0.4); }
+  .dialog h2 {
+    margin: 0;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+  .dialog p {
+    margin: var(--space-2) 0 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
+  }
+  .dialog-actions { display: flex; gap: var(--space-2); margin-top: var(--space-6); }
+  .dialog-actions button {
+    flex: 1;
+    min-height: 44px;
+    border-radius: var(--radius-m);
+    font-size: 1rem;
+  }
+  .btn-cancel { border: 1px solid var(--border-control); background: var(--bg-surface); }
+  .btn-cancel:active { background: var(--bg-pressed); }
+  .btn-danger { border: 0; background: var(--danger-fill); color: var(--on-danger); font-weight: 600; }
+  .btn-danger:active { background: var(--danger-pressed); }
+
+  @media (hover: hover) {
+    .btn-row:hover:not([aria-disabled="true"]),
+    .btn-secondary:hover,
+    .btn-cancel:hover { background: var(--bg-pressed); }
+    .btn-primary:hover:not(:disabled):not([aria-disabled="true"]) { background: var(--accent-pressed); }
+    .btn-danger:hover { background: var(--danger-pressed); }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .file { transition: background-color 0.6s ease-out; }
+    .skeleton .file-icon,
+    .skeleton-bar,
+    .skeleton-btn { animation: pulse 1.2s ease-in-out infinite alternate; }
+    @keyframes pulse { to { opacity: 0.5; } }
+  }
+</style>
+</head>
+<body>
+  <header class="nav">
+    <div class="nav-inner">
+      <h1>文件</h1>
+    </div>
+  </header>
+
+  <main>
+    <div class="search" role="search">
+      <label class="sr-only" for="search">搜索文件</label>
+      <input id="search" type="search" placeholder="搜索文件" autocomplete="off" enterkeyhint="search" disabled>
+    </div>
+
+    <section id="files" aria-labelledby="files-heading" aria-busy="true" tabindex="-1">
+      <h2 id="files-heading" class="sr-only">文件列表</h2>
+      <p id="count" class="list-count" hidden></p>
+
+      <ul id="skeleton" class="file-list skeleton" aria-hidden="true">
+        <li class="file"><span class="file-icon"></span><span class="file-body"><span class="skeleton-bar"></span><span class="skeleton-bar"></span></span><span class="skeleton-btn"></span></li>
+        <li class="file"><span class="file-icon"></span><span class="file-body"><span class="skeleton-bar"></span><span class="skeleton-bar"></span></span><span class="skeleton-btn"></span></li>
+        <li class="file"><span class="file-icon"></span><span class="file-body"><span class="skeleton-bar"></span><span class="skeleton-bar"></span></span><span class="skeleton-btn"></span></li>
+        <li class="file"><span class="file-icon"></span><span class="file-body"><span class="skeleton-bar"></span><span class="skeleton-bar"></span></span><span class="skeleton-btn"></span></li>
+      </ul>
+      <p id="loading-text" class="sr-only">正在加载文件…</p>
+
+      <ul id="list" class="file-list" hidden></ul>
+
+      <div id="state-empty" class="state" hidden>
+        <h2>还没有文件</h2>
+        <p>上传的文件会显示在这里。</p>
+      </div>
+
+      <div id="state-noresult" class="state" hidden>
+        <h2>没有找到「<span id="noresult-query"></span>」</h2>
+        <button id="clear-search" type="button" class="btn-secondary">清除搜索</button>
+      </div>
+
+      <div id="state-error" class="state" hidden>
+        <h2>没能加载文件</h2>
+        <p id="error-reason"></p>
+        <button id="retry" type="button" class="btn-secondary">重试</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bar">
+    <p id="upload-error" class="bar-error" hidden></p>
+    <button id="upload" type="button" class="btn-primary" disabled>上传文件</button>
+  </footer>
+
+  <dialog id="confirm" class="dialog" role="alertdialog" aria-labelledby="confirm-title" aria-describedby="confirm-desc">
+    <form method="dialog">
+      <h2 id="confirm-title"></h2>
+      <p id="confirm-desc">删除后无法恢复。</p>
+      <div class="dialog-actions">
+        <button type="submit" value="cancel" class="btn-cancel" autofocus>取消</button>
+        <button type="submit" value="delete" class="btn-danger">删除</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="live-polite" class="sr-only" aria-live="polite"></div>
+  <div id="live-alert" class="sr-only" aria-live="assertive"></div>
+
+  <template id="row-template">
+    <li class="file">
+      <span class="file-icon" aria-hidden="true"></span>
+      <div class="file-body">
+        <p class="file-name"></p>
+        <p class="file-meta"></p>
+        <p class="file-error" hidden></p>
+      </div>
+      <button type="button" class="btn-row">删除</button>
+    </li>
+  </template>
+
+<script>
+'use strict';
+
+const API = {
+  list: './api/files.json',
+  remove: (id) => `./api/files/${encodeURIComponent(id)}`,
+  upload: './api/upload',
+};
+/* 请求超时：移动网络下 15 秒没回就当失败，给用户重试的机会 */
+const REQUEST_TIMEOUT_MS = 15000;
+const HIGHLIGHT_MS = 2000;
+const SEARCH_ANNOUNCE_DELAY_MS = 500;
+
+const FILE_KINDS = {
+  pdf: ['pdf'],
+  slides: ['key', 'ppt', 'pptx'],
+  image: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'heic', 'svg'],
+  sheet: ['xls', 'xlsx', 'csv', 'numbers'],
+  doc: ['doc', 'docx', 'pages', 'txt', 'md'],
+};
+const PERMISSION_TEXT = {
+  load: '你没有查看这些文件的权限。',
+  delete: '你没有删除这个文件的权限。',
+  upload: '你没有上传文件的权限。',
+};
+
+const $ = (id) => document.getElementById(id);
+const els = {
+  search: $('search'),
+  region: $('files'),
+  count: $('count'),
+  skeleton: $('skeleton'),
+  loadingText: $('loading-text'),
+  list: $('list'),
+  empty: $('state-empty'),
+  noResult: $('state-noresult'),
+  noResultQuery: $('noresult-query'),
+  clearSearch: $('clear-search'),
+  error: $('state-error'),
+  errorReason: $('error-reason'),
+  retry: $('retry'),
+  upload: $('upload'),
+  uploadError: $('upload-error'),
+  dialog: $('confirm'),
+  dialogTitle: $('confirm-title'),
+  livePolite: $('live-polite'),
+  liveAlert: $('live-alert'),
+  rowTemplate: $('row-template'),
+};
+
+/** status: loading | ready | error；files 的顺序就是列表的顺序 */
+const state = { status: 'loading', files: [], query: '', uploading: false };
+const rows = new Map();
+let rowSeq = 0;
+let dialogTarget = null;
+let announceTimer = 0;
+
+class HttpError extends Error {
+  constructor(status) {
+    super(`HTTP ${status}`);
+    this.status = status;
+  }
+}
+class DataError extends Error {}
+
+async function request(url, init = {}) {
+  const signal = typeof AbortSignal.timeout === 'function' ? AbortSignal.timeout(REQUEST_TIMEOUT_MS) : undefined;
+  const res = await fetch(url, { ...init, signal, headers: { Accept: 'application/json' } });
+  if (!res.ok) throw new HttpError(res.status);
+  return res;
+}
+
+async function readJson(res) {
+  try {
+    return await res.json();
+  } catch {
+    throw new DataError('响应不是合法 JSON');
+  }
+}
+
+/** 把一条接口数据收敛成页面要用的形状；id 或 name 不合法时返回 null */
+function parseFile(raw) {
+  if (!raw || typeof raw !== 'object') return null;
+  const { id, name, size, updatedAt } = raw;
+  const idOk = (typeof id === 'number' && Number.isFinite(id)) || (typeof id === 'string' && id !== '');
+  if (!idOk || typeof name !== 'string' || name.trim() === '') return null;
+  return {
+    id,
+    name,
+    size: typeof size === 'string' ? size : '',
+    updatedAt: typeof updatedAt === 'string' ? updatedAt : '',
+  };
+}
+
+function failureReason(err, action) {
+  if (!navigator.onLine) return '网络已断开，联网后重试。';
+  if (err instanceof HttpError && (err.status === 401 || err.status === 403)) return PERMISSION_TEXT[action];
+  if (err && err.name === 'TimeoutError') return '等了很久没有响应，请稍后重试。';
+  if (err instanceof HttpError || err instanceof DataError) return '服务暂时出了问题，请稍后重试。';
+  return '请检查网络后重试。';
+}
+
+function announce(message, urgent = false) {
+  const region = urgent ? els.liveAlert : els.livePolite;
+  region.textContent = '';
+  requestAnimationFrame(() => { region.textContent = message; });
+}
+
+function fileKind(name) {
+  const dot = name.lastIndexOf('.');
+  const ext = dot > 0 ? name.slice(dot + 1).toLowerCase() : '';
+  const kind = Object.keys(FILE_KINDS).find((k) => FILE_KINDS[k].includes(ext)) || 'other';
+  const label = ext && ext.length <= 4 ? ext.toUpperCase() : 'FILE';
+  return { kind, label };
+}
+
+function matchesQuery(file, query) {
+  const q = query.trim().toLowerCase();
+  return !q || file.name.toLowerCase().includes(q);
+}
+
+function setBusy(button, busy, busyText, idleText) {
+  button.textContent = busy ? busyText : idleText;
+  if (busy) button.setAttribute('aria-disabled', 'true');
+  else button.removeAttribute('aria-disabled');
+}
+
+function createRow(file) {
+  const li = els.rowTemplate.content.firstElementChild.cloneNode(true);
+  const icon = li.querySelector('.file-icon');
+  const name = li.querySelector('.file-name');
+  const meta = li.querySelector('.file-meta');
+  const button = li.querySelector('.btn-row');
+  const { kind, label } = fileKind(file.name);
+  const nameId = `file-name-${++rowSeq}`;
+
+  icon.dataset.kind = kind;
+  icon.textContent = label;
+  name.id = nameId;
+  name.textContent = file.name;
+  const metaText = [file.size, file.updatedAt].filter(Boolean).join(' · ');
+  meta.textContent = metaText;
+  meta.hidden = !metaText;
+  button.setAttribute('aria-describedby', nameId);
+  button.addEventListener('click', () => {
+    if (button.getAttribute('aria-disabled') === 'true') return;
+    openDeleteDialog(file, button);
+  });
+  return li;
+}
+
+function setRowError(li, message) {
+  const error = li.querySelector('.file-error');
+  error.textContent = message;
+  error.hidden = !message;
+}
+
+/** 按 state 同步各区块显隐，返回当前可见的行数 */
+function render() {
+  const { status, files, query } = state;
+  const ready = status === 'ready';
+  let visible = 0;
+  for (const file of files) {
+    const match = matchesQuery(file, query);
+    rows.get(file.id).hidden = !match;
+    if (match) visible += 1;
+  }
+
+  els.region.setAttribute('aria-busy', String(status === 'loading'));
+  els.skeleton.hidden = status !== 'loading';
+  els.loadingText.hidden = status !== 'loading';
+  els.error.hidden = status !== 'error';
+  els.empty.hidden = !(ready && files.length === 0);
+  els.noResult.hidden = !(ready && files.length > 0 && visible === 0);
+  els.list.hidden = !(ready && visible > 0);
+  els.count.hidden = els.list.hidden;
+  els.count.textContent = query.trim() ? `找到 ${visible} 个文件` : `${files.length} 个文件`;
+  els.noResultQuery.textContent = query.trim();
+
+  els.search.disabled = !ready;
+  els.upload.disabled = !ready;
+  setBusy(els.upload, state.uploading, '上传中…', '上传文件');
+  return visible;
+}
+
+async function loadFiles() {
+  state.status = 'loading';
+  render();
+  try {
+    const data = await readJson(await request(API.list));
+    if (!Array.isArray(data)) throw new DataError('文件列表不是数组');
+    const seen = new Set();
+    const files = data.map(parseFile).filter((f) => f && !seen.has(f.id) && seen.add(f.id));
+    if (files.length < data.length) {
+      console.warn(`[files] 跳过了 ${data.length - files.length} 条缺 id / name 或 id 重复的记录`);
+    }
+    rows.clear();
+    els.list.replaceChildren(...files.map((file) => {
+      const li = createRow(file);
+      rows.set(file.id, li);
+      return li;
+    }));
+    state.files = files;
+    state.status = 'ready';
+  } catch (err) {
+    console.error('[files] 加载列表失败', err);
+    const reason = failureReason(err, 'load');
+    els.errorReason.textContent = reason;
+    state.status = 'error';
+    announce(`没能加载文件。${reason}`, true);
+  }
+  render();
+}
+
+function openDeleteDialog(file, trigger) {
+  dialogTarget = { file, trigger };
+  els.dialogTitle.textContent = `删除「${file.name}」？`;
+  els.dialog.returnValue = '';
+  els.dialog.showModal();
+}
+
+async function deleteFile(file) {
+  const li = rows.get(file.id);
+  if (!li) return;
+  const button = li.querySelector('.btn-row');
+  setRowError(li, '');
+  setBusy(button, true, '删除中…', '删除');
+  li.setAttribute('aria-busy', 'true');
+  try {
+    await request(API.remove(file.id), { method: 'DELETE' });
+  } catch (err) {
+    console.error(`[files] 删除 ${file.id} 失败`, err);
+    const reason = failureReason(err, 'delete');
+    setBusy(button, false, '删除中…', '删除');
+    li.removeAttribute('aria-busy');
+    setRowError(li, `没能删除。${reason}`);
+    announce(`没能删除「${file.name}」。${reason}`, true);
+    return;
+  }
+  removeRow(file);
+  announce(`已删除「${file.name}」`);
+}
+
+/** 删掉一行；焦点原本在这行里时，移到相邻的可见行，没有就交给上传按钮 */
+function removeRow(file) {
+  const li = rows.get(file.id);
+  const hadFocus = li.contains(document.activeElement);
+  const siblings = [...els.list.children].filter((el) => !el.hidden);
+  const index = siblings.indexOf(li);
+  const neighbor = siblings[index + 1] || siblings[index - 1];
+
+  li.remove();
+  rows.delete(file.id);
+  state.files = state.files.filter((f) => f.id !== file.id);
+  render();
+  if (hadFocus) (neighbor ? neighbor.querySelector('.btn-row') : els.upload).focus();
+}
+
+function addFile(file) {
+  const existing = rows.get(file.id);
+  if (existing) existing.remove();
+  const li = createRow(file);
+  rows.set(file.id, li);
+  state.files = [file, ...state.files.filter((f) => f.id !== file.id)];
+  els.list.prepend(li);
+
+  if (!matchesQuery(file, state.query)) {
+    els.search.value = '';
+    state.query = '';
+  }
+  render();
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  li.classList.add('is-new');
+  li.scrollIntoView({ block: 'nearest', behavior: reduceMotion ? 'auto' : 'smooth' });
+  setTimeout(() => li.classList.remove('is-new'), HIGHLIGHT_MS);
+}
+
+async function upload() {
+  if (state.uploading || state.status !== 'ready') return;
+  state.uploading = true;
+  els.uploadError.hidden = true;
+  render();
+  try {
+    const file = parseFile(await readJson(await request(API.upload, { method: 'POST' })));
+    if (!file) throw new DataError('上传接口没有返回合法的文件信息');
+    addFile(file);
+    announce(`已上传「${file.name}」`);
+  } catch (err) {
+    console.error('[files] 上传失败', err);
+    const reason = failureReason(err, 'upload');
+    els.uploadError.textContent = `没能上传。${reason}`;
+    els.uploadError.hidden = false;
+    announce(`没能上传。${reason}`, true);
+  } finally {
+    state.uploading = false;
+    render();
+  }
+}
+
+els.search.addEventListener('input', () => {
+  state.query = els.search.value;
+  const visible = render();
+  clearTimeout(announceTimer);
+  if (!state.query.trim()) return;
+  announceTimer = setTimeout(() => {
+    announce(visible ? `找到 ${visible} 个文件` : '没有找到匹配的文件');
+  }, SEARCH_ANNOUNCE_DELAY_MS);
+});
+
+els.clearSearch.addEventListener('click', () => {
+  els.search.value = '';
+  state.query = '';
+  render();
+  els.search.focus();
+});
+
+els.retry.addEventListener('click', () => {
+  els.region.focus();
+  loadFiles();
+});
+
+els.upload.addEventListener('click', () => {
+  if (els.upload.getAttribute('aria-disabled') === 'true') return;
+  upload();
+});
+
+els.dialog.addEventListener('close', () => {
+  const target = dialogTarget;
+  dialogTarget = null;
+  if (!target) return;
+  target.trigger.focus();
+  if (els.dialog.returnValue === 'delete') deleteFile(target.file);
+});
+
+window.addEventListener('online', () => {
+  if (state.status === 'error') loadFiles();
+});
+
+loadFiles();
+</script>
+</body>
+</html>

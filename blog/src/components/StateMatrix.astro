@@ -1,0 +1,86 @@
+---
+/**
+ * 状态覆盖表：三份「文件」页在 17 项判定下的表现（来自 22 个场景里的 19 个），绿色是走通了，红色是卡住或焦点丢了。
+ * 判定在构建时从 blog/public/lab/ai-states/data/states-files*.json（state-probe.mjs 的输出）算出，规则写在 RULES 里。
+ */
+import '../styles/spacing-lab.css'
+
+type Snap = { text: string; focus: string; rows: number; busy: number; skeleton: number; live: string[]; dialog: string[] }
+type Rec = { name: string; counts?: { list: number; del: number; up: number }; [k: string]: unknown }
+const data = import.meta.glob<Rec[]>('../../public/lab/ai-states/data/states-files*.json', { eager: true, import: 'default' })
+const pages = [1, 2, 3].map((i) => Object.fromEntries(data[`../../public/lab/ai-states/data/states-files${i}.json`].map((r) => [r.name, r])))
+const s = (r: Rec, k: string) => r[k] as Snap
+const has = (r: Rec, k: string, re: RegExp) => re.test(s(r, k).text + s(r, k).live.join(' '))
+const focused = (r: Rec, k: string) => s(r, k).focus !== 'body'
+
+const RULES: [string, string, (r: Rec) => boolean][] = [
+  ['加载', '慢 3 秒：显示加载中', (r) => s(r, 'at400ms').skeleton > 0 || has(r, 'at400ms', /加载/)],
+  ['加载', '返回空列表', (r) => has(r, 'snap', /还没有/)],
+  ['加载', '500 / 403 / 断网 / 格式不对：报错并给重试', (r) => true],
+  ['加载', '一直不回来：最后报错', (r) => has(r, 'at20s', /重试/)],
+  ['加载', '重试以后焦点有去处', (r) => focused(r, 'after')],
+  ['搜索', '没有结果：说明并给清除', (r) => has(r, 'snap', /没有找到/)],
+  ['删除', '确认框点名文件', (r) => s(r, 'dialog').dialog.some((d) => d.includes('团队周会纪要'))],
+  ['删除', '删除中再点：拦住', (r) => String(r.secondClick ?? '').startsWith('blocked')],
+  ['删除', '500：行保留并说明', (r) => s(r, 'after').rows === 4 && has(r, 'after', /没能删除/)],
+  ['删除', '一直不回来：最后报错', (r) => !/删除中/.test(s(r, 'at30s').text) && has(r, 'at30s', /没能删除/)],
+  ['删除', '删掉一行后焦点留在列表里', (r) => s(r, 'after').focus.includes('删除')],
+  ['删除', '全删光后焦点有去处', (r) => focused(r, 'after')],
+  ['删除', '取消确认框后焦点回到按钮', (r) => s(r, 'after').focus.includes('删除')],
+  ['上传', '连点三下：只发一次', (r) => r.counts?.up === 1],
+  ['上传', '500：说明', (r) => has(r, 'after', /没能上传/)],
+  ['上传', '一直不回来：最后报错', (r) => !/上传中/.test(s(r, 'at30s').text) && has(r, 'at30s', /没能上传/)],
+  ['上传', '搜索中上传：不丢新文件', (r) => has(r, 'after', /新上传的文件|不在当前搜索结果/)],
+]
+const NAMES: Record<string, string> = {
+  '慢 3 秒：显示加载中': 'load-slow', '返回空列表': 'empty', '一直不回来：最后报错|加载': 'hang-20s', '重试以后焦点有去处': 'retry',
+  '没有结果：说明并给清除': 'search-none', '确认框点名文件': 'delete-ok', '删除中再点：拦住': 'delete-slow', '500：行保留并说明': 'delete-500',
+  '一直不回来：最后报错|删除': 'delete-hang', '删掉一行后焦点留在列表里': 'delete-ok', '全删光后焦点有去处': 'delete-all', '取消确认框后焦点回到按钮': 'dialog-cancel',
+  '连点三下：只发一次': 'upload-double', '500：说明': 'upload-500', '一直不回来：最后报错|上传': 'upload-hang', '搜索中上传：不丢新文件': 'upload-while-search',
+}
+const ERRS = ['error-500', 'error-403', 'error-network', 'error-badshape']
+const rows = RULES.map(([group, label, rule]) => {
+  const key = NAMES[`${label}|${group}`] ?? NAMES[label]
+  const cells = pages.map((p) => (label.startsWith('500 / 403') ? ERRS.every((e) => has(p[e], 'snap', /重试/)) : rule(p[key])))
+  return { group, label, cells }
+})
+const fails = rows.reduce((n, r) => n + r.cells.filter((c) => !c).length, 0)
+---
+
+<figure class="smx sx-panel not-prose">
+  <table>
+    <thead><tr><th scope="col">场景</th>{[1, 2, 3].map((n) => <th scope="col">第 {n} 份</th>)}</tr></thead>
+    <tbody>
+      {rows.map((r, i) => (
+        <tr class:list={{ 'is-first': i === 0 || rows[i - 1].group !== r.group }}>
+          <th scope="row"><span class="smx-row"><span class="smx-g">{r.group}</span><span>{r.label}</span></span></th>
+          {r.cells.map((ok) => <td class:list={['smx-c', ok ? 'is-ok' : 'is-bad']}><span aria-label={ok ? '走通' : '没走通'}>{ok ? '✓' : '✗'}</span></td>)}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  <figcaption class="sx-cap">三份「文件」页的 {rows.length} 项判定，共 {rows.length * 3} 格，{fails} 格没走通。接口由测量脚本拦截后按场景回复，2026-11-18 在 Chrome 157 里跑；「一直不回来」等 20–30 秒再看。</figcaption>
+</figure>
+
+<style is:global>
+  .smx table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .smx th, .smx td { padding: 7px 8px; border-top: 1px solid var(--line); text-align: left; font-weight: 400; }
+  .smx thead th { border-top: 0; color: var(--muted); font-size: 12.5px; white-space: nowrap; }
+  .smx-row { display: flex; gap: 6px; }
+  .smx tbody th { color: var(--strong); }
+  .smx tr.is-first th, .smx tr.is-first td { border-top-color: var(--line-hi); }
+  .smx-g { flex: none; width: 2.6em; color: var(--muted); }
+  .smx tr:not(.is-first) .smx-g { visibility: hidden; }
+  .smx-c { width: 4.5em; text-align: center !important; font-weight: 600; }
+  .smx-c.is-ok { color: #3f8f6b; }
+  .smx-c.is-bad { color: #c2334a; background: color-mix(in srgb, #c2334a 10%, transparent); }
+  :root:not([data-theme="light"]) .smx-c.is-ok { color: #6fcf9f; }
+  :root:not([data-theme="light"]) .smx-c.is-bad { color: #ff8a94; }
+  @media (max-width: 640px) {
+    .smx { padding: 16px 12px; }
+    .smx table { font-size: 12.5px; }
+    .smx th, .smx td { padding: 6px 4px; }
+    .smx thead th { font-size: 11px; }
+    .smx-c { width: 3.2em; }
+  }
+</style>

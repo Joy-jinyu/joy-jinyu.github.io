@@ -1,0 +1,130 @@
+---
+title: H5：手机一横，返回键就伸出了安全区
+description: viewport-fit=cover 接下了哪几条边、AI 的自查为什么看不到、横屏栏高怎么算；附一段在桌面上画出手机安全区的脚本。
+date: 2026-11-18T10:30:00+08:00
+tags: [UI, H5, 移动端, 安全区, AI, 审美]
+column: ui-taste
+meta: 系列第七篇 · H5 与原生
+draft: false
+---
+
+import SafeAreaLab from '../../components/SafeAreaLab.astro'
+import SnippetRun from '../../components/SnippetRun.astro'
+
+下面是 AI 写的「文件详情」页，原样加载，按 iPhone 15 的尺寸放进手机框。现在是横屏：斜线是安全区以外的边距，屏幕圆角、灵动岛和底部横条都在这里；红框是伸进去的按钮和输入框。
+
+<SafeAreaLab />
+
+第 1 份横过来，左上角的返回键、右上角的分享和更多、底部的输入框和发送键，全都伸进了左右各 59px 的安全区边距；第 2 份一样。第 3 份没事，但不是因为它处理了这两条边，而是它的内容最宽只有 640px、居中显示，碰巧躲开了。切到竖屏，三份都没问题。
+
+悬停样式、输入框字号、回车键这几样，这一组在 Chrome 里查下来都没问题；按下态在 iOS 上有没有反馈没有验证，细节在附录。这篇讲它们没做到的两件事：`viewport-fit=cover` 接下了哪几条边；为什么 AI 交付前的自查看不到这类问题，栏高的预算又该怎么算。最后给一段在桌面浏览器里就能画出手机安全区的脚本。
+
+范围：三个全新的 Claude Code subagent 各写一次，2026-11-18；在 Chrome 157 里按 iPhone 15 的尺寸和安全区边距模拟，没有上真机，软键盘没有测。数值来源、prompt 和原始数据在附录。
+
+## 写了 cover，四条边都归你管
+
+`viewport-fit=cover` 一写，浏览器就不再替页面避开屏幕圆角和灵动岛，四条边都要页面自己让。不写它，iOS Safari 会把页面缩在安全区里，横屏时两边自动留白；写了它，页面铺满整块屏幕，哪里该让开，要用 `env(safe-area-inset-*)` 一条边一条边地写。WebKit 当年介绍这个特性时说得很直接：设成 cover 以后，「some of the page's content is obscured by the device's sensor housing」，接下来要做的就是给重要的内容补上安全区的内边距（[Designing Websites for iPhone X](https://webkit.org/blog/7929/designing-websites-for-iphone-x/)）。
+
+三份页面都写了 `viewport-fit=cover`，目的很明确：让底部的评论栏一直铺到屏幕最下面，再用 `env(safe-area-inset-bottom)` 把输入框垫到横条上面。顶部也一样处理了。可它们的 CSS 里，`safe-area-inset-left` 和 `safe-area-inset-right` 一次都没出现。竖屏时左右的边距是 0，看不出问题；一横过来，左右各 59px，第 1、2 份整页各有 10 个可点元素伸了进去（7 个在首屏，其中第 2 份的「下载」「移动」被底栏盖住大半；另外 3 个是往下滚才出现的点赞按钮），最多的伸进 55px。
+
+**怎么看出来。** 先做一个十秒的静态检查：在代码里搜 `viewport-fit=cover`，搜到了，再搜 `safe-area-inset-left` 和 `safe-area-inset-right`，搜不到就是只处理了上下。再用文末的脚本看实际效果：在 DevTools 的手机模式里把尺寸设成 852×393，运行它，左右两边会画出斜线，伸进去的按钮被框出来。有 iPhone 就直接横过来看。
+
+**怎么写对。** 写了 cover，就把左右两条边也补上。容器原本有左右内边距的，用 WebKit 推荐的 `max()`，竖屏时取原来的值，横屏时取安全区边距，两者不叠加：
+
+```css title="给顶栏、底栏和正文补上左右的安全区边距"
+.nav, .composer, main {
+  /* 三份页面这几个容器原本没有左右内边距；有的话把 0px 换成原来的值，竖屏时才不会被清掉 */
+  padding-left: max(0px, env(safe-area-inset-left));
+  padding-right: max(0px, env(safe-area-inset-right));
+}
+```
+
+开头演示里的「套用修正」加的就是这一段（第 3 份不需要，没有加）。
+
+**还有哪里会这样。** 铺满屏幕的图片和轮播、右下角的悬浮按钮（横屏时它同时碰到右边和下边）、从底部弹出的提示条、全屏视频的控制条、从侧边滑出的抽屉。凡是贴着屏幕边缘的东西，横屏时都要再看一遍。
+
+## 自查只能查出测试环境里有的问题
+
+AI 交付前的自查，查的是它所在的那个环境；环境里没有的东西，规则写得再细也查不出来。三个 subagent 都用 Playwright 驱动 Chrome 查过顶栏和底栏的高度，汇报的是顶栏 44–45px、底栏 52–57px，加起来约占屏幕的 14–15%。它们加载的团队 UI 规范（ui-conventions）要求「以 375px 为基准」检查「常驻吸顶区高度是否受控」，预算是视口高度的 15%，第 3 份还专门对照了这个数。它们是照着规范做的，用的都是 375×667 的视口。
+
+可 Playwright 驱动的 Chrome 默认把 `env(safe-area-inset-*)` 都算成 0（[实测](/blog/lab/ai-h5/data/env-default.txt)），在里面跑的页面，就像跑在一台没有圆角、没有横条的手机上：左右边距的问题出不来，横屏也没人查。它们读过的那几份规范里，只在「哪些地方可以写死像素」的例外里提到过 WebView 安全区，没有要求处理它，也没有提横屏；三份都在汇报里承认安全区没验证，但左右边距在写代码时就漏了，自查也没兜住。
+
+**怎么看出来。** 用 Playwright 自查时，Chrome 的调试协议可以直接模拟安全区边距（[Emulation.setSafeAreaInsetsOverride](https://chromedevtools.github.io/devtools-protocol/tot/Emulation/)，这个接口还标着实验性）。这篇的测量就是这么做的：
+
+```js title="Playwright 里模拟 iPhone 15 横屏的安全区边距"
+const page = await browser.newPage({ viewport: { width: 852, height: 393 }, isMobile: true, hasTouch: true })
+const cdp = await page.context().newCDPSession(page)
+// 不加这一行，env(safe-area-inset-*) 全是 0，圆角和横条相关的问题都看不到
+await cdp.send('Emulation.setSafeAreaInsetsOverride', { insets: { top: 0, right: 59, bottom: 21, left: 59 } })
+await page.goto(url)
+```
+
+竖屏换成 `{ width: 393, height: 852 }` 和 `{ top: 59, right: 0, bottom: 34, left: 0 }`。
+
+**还有哪里会这样。** 无头浏览器和真手机不一样的地方不止安全区：它没有软键盘，系统字号不会放大，也不会被 App 的导航栏和工具栏挤掉一截高度。要求 AI 自查时，把「在什么环境里查」和「查什么」一起写清楚。
+
+## 栏高的预算按安全区以内算
+
+预算应该按安全区以内的高度算，横屏要单独算。换到 iPhone 15 竖屏，顶栏加底栏占整块屏幕的 22–23%，看起来超了；可其中上 59px、下 34px 本来就是留给系统的，换成原生 App 也一样要让，规范里也说过垂直方向「系统栏与外壳侵蚀严重」。按安全区以内算：竖屏时，栏高去掉安全区边距，占安全区高度的 12.6–13.4%，在 15% 以内；横屏时是 25.8–27.4%，超了快一倍，留给内容的只剩 270px 左右。所以真正要处理的是横屏。
+
+**怎么写对。** 横屏时让顶栏跟着内容滚走，底栏留着输入框：
+
+```css title="横屏时顶栏不再吸顶"
+@media (orientation: landscape) and (max-height: 500px) {
+  .nav { position: static; }   /* 原来是 position: sticky; top: 0 */
+}
+```
+
+`max-height` 把条件收到矮的横屏上，竖屏和高度够的横屏不受影响。在三份页面上量过（iPhone 15 横屏、模拟安全区、往下滚到底，实际滚动 312–337px）：两栏占安全区高度从 25.8–27.4% 降到 14.0–15.3%，留给内容的高度从 270px 左右变成 315–320px，页面也没有横向溢出（[测量脚本](/blog/lab/ai-h5/tools/landscape-bars.mjs)、[输出](/blog/lab/ai-h5/data/landscape-bars.txt)）。
+
+**还有哪里会这样。** 吸顶的标签栏、底部的 Tab 栏、常驻的购物车条，预算都按安全区以内的高度算，横屏单独算一遍。
+
+## 验收：在桌面上把手机的边画出来
+
+把上面的检查合成一个流程：
+
+1. **搜代码。** 有 `viewport-fit=cover`，就要有 `safe-area-inset-left` 和 `safe-area-inset-right`。
+2. **竖屏、横屏各看一次。** 在 DevTools 的手机模式里把尺寸设成 393×852 和 852×393，各运行一次下面的脚本，看有没有元素伸进斜线区。
+3. **按安全区以内算栏高。** 横屏时顶栏和底栏去掉安全区边距后，占安全区高度的多少，超过预算就要收。
+
+脚本贴进 DevTools 的 Console 回车，页面上会出现三样东西：按 iPhone 15 的安全区边距画在视口四边的斜线；每个可点元素的宽 × 高，小于 24px 标红（[WCAG 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) 的下限），小于 44px 标黄（[Apple 建议的 44pt](https://developer.apple.com/design/human-interface-guidelines/buttons)），伸进边距的用紫色虚线框；右下角一个面板，列出这些元素。
+
+<SnippetRun src="ai-h5/h5-snippet.js" panel="__h5_xray__" note="它按当前视口是横是竖，自动选 iPhone 15 竖屏或横屏的安全区边距，画的是「如果这是一台 iPhone 15」，不读真实设备的数值，用来代替真机做第一遍检查。滚动或缩放后再运行两次（先关再开）即可刷新。" />
+
+在三份页面上，横屏时它框出的元素和开头演示里的红框一致。它还会把输入框和「发送」标黄：它们只有 36–40px 高，可它们所在的底栏有 52–57px 高，可以把点击区域撑满底栏的高度，外观不用变。
+
+## 给 AI 的规则
+
+规则只补它漏掉的：
+
+```md title="写进 AGENTS.md 或 skill 的 H5 规则"
+- 写了 `viewport-fit=cover`，四条边都要处理：贴边的栏和正文同时补上左右的安全区边距，
+  写成 `padding-left: max(原来的值, env(safe-area-inset-left))`，右边同理；不能只处理上下。
+- 交付前的浏览器自查要模拟安全区边距（CDP 的 Emulation.setSafeAreaInsetsOverride），
+  竖屏 393×852（上 59、下 34）和横屏 852×393（左右 59、下 21）各查一遍：可点元素不能伸进边距；
+  栏高的预算按安全区以内的高度算，横屏也要算；横屏超了，先让顶栏不吸顶（`position: static`）。
+```
+
+## 附录：实测材料
+
+三份页面由三个全新的 Claude Code subagent 在 2026-11-18 各写一次，模型是当时会话的默认模型 Claude Opus 5.5（subagent 继承它，汇报里没有自己写模型名）。prompt 里只有需求，派发时另加了一句「写完后简短汇报：加载了哪些 skill、读了哪些文件、交付前怎么检查的」。它们继承这台机器上的全局配置 `~/.claude/CLAUDE.md` 和 skill 列表。据它们自己的汇报（[摘录](/blog/lab/ai-h5/data/provenance.txt)）：三份都加载了团队的 UI 规范 skill（ui-conventions），都读了同目录下的 prompt.txt；都说没有在真机上看过安全区和软键盘；第 3 份为了排查自己测试脚本的问题，在三份文件里搜过一个词，只看到了命中数；它还提到另外两个 subagent 和它共用一个临时目录，第一次检查时有同名截图被覆盖，通过与否的判断是在它自己的页面里跑的，不受影响。
+
+```text title="prompt（三次只有最后一行的文件名不同）"
+用 HTML + CSS + 少量原生 JS 写一个单文件页面：移动端 H5 的「文件详情」页，会在 App 的 WebView 和手机浏览器里打开。
+
+内容从上到下：
+- 顶部导航栏：左边返回按钮，中间标题「文件详情」，右边两个图标按钮：分享、更多
+- 文件信息：一张缩略图占位，下面是文件名「2026Q3 报告.pdf」，一行小字「2.4 MB · 10月28日修改」
+- 一排操作，四个图标加文字：下载、收藏、重命名、移动；收藏点一下切换成已收藏
+- 「评论 · 3」分组：三条评论，每条有头像、名字、时间、内容，右侧一个点赞按钮和点赞数，点一下点赞数加一并高亮
+- 底部固定一个评论输入栏：输入框（占位文字「写评论…」）和「发送」按钮；输入为空时「发送」不可点，发送后新评论加到列表最后
+
+把完整代码写到这个文件：……/detail1.html
+```
+
+- 原样产出：[detail1.html](/blog/lab/ai-h5/detail1.html)、[detail2.html](/blog/lab/ai-h5/detail2.html)、[detail3.html](/blog/lab/ai-h5/detail3.html)。
+- 测量：[h5-probe.mjs](/blog/lab/ai-h5/h5-probe.mjs) 按 iPhone 15 竖屏、横屏的尺寸和安全区边距打开页面，量每个可点元素的大小和有没有伸进边距、固定栏的高度、强制 `:active` 前后的样子、轻点以后会不会停在悬停态、输入框的字号。原始输出：[detail1.json](/blog/lab/ai-h5/data/detail1.json)、[detail2.json](/blog/lab/ai-h5/data/detail2.json)、[detail3.json](/blog/lab/ai-h5/data/detail3.json)。测量脚本把「在固定底栏后面、贴着屏幕下沿」的元素也标成了伸进边距，那是误报，正文没有算。
+- 数值来源：iPhone 15 的尺寸和安全区边距（竖屏 393×852，上 59、下 34；横屏 852×393，左右 59、下 21）来自 [useyourloaf](https://useyourloaf.com/blog/iphone-15-screen-sizes/)。
+- 触屏细节：两份没写悬停样式，一份写在 `@media (hover: hover)` 里，轻点收藏和点赞以后，背景色和点之前一样。三份各 11 个按钮，在 Chrome 里用调试协议强制 `:active` 逐个比过，除了禁用状态的「发送」，都会变底色（6% 的黑或一层浅灰，变化很轻）；三份都去掉了系统的点击高亮，也都没有监听 touchstart，iOS Safari 上 `:active` 会不会生效没有验证。回车键都标成了「发送」（`enterkeyhint="send"`）。输入框都是 16px，据常见的说法 iOS Safari 会把小于 16px 的输入框在聚焦时放大，这一点只找到二手来源（[456 Berea Street 2012 年的文章](https://www.456bereastreet.com/archive/201212/ios_webkit_browsers_and_auto-zooming_form_controls/)）。
+- 软键盘：没有测。桌面 Chrome 没有软键盘；这台机器上装了 iOS 模拟器，但没有装 idb、cliclick 这类能用脚本在模拟器里点击的工具，我们没有找到别的办法点出键盘。三份里只有第 2 份监听了 `visualViewport`，在键盘弹出时把底栏往上顶；第 1、3 份没有处理。这一项没有验证，所以没有写进正文的结论。
+- 浏览器版脚本：[h5-snippet.js](/blog/lab/ai-h5/h5-snippet.js)。

@@ -1,0 +1,111 @@
+---
+/**
+ * 中英之间的空白从哪来：同一句话三种写法——接口原文（不带空格）、手敲空格（三份 AI 页面的做法）、原文加 text-autospace。
+ * 在读者自己的浏览器里排，逐字量宽度：手敲空格量空格本身，autospace 和原文逐字比，多出来的就是自动加的空白（Chrome 把它算在前一个字的宽度里）。
+ */
+import '../styles/spacing-lab.css'
+
+const RAW = '用Claude Code上传的大文件（超过2GB）会自动分片'
+const TYPED = '用 Claude Code 上传的大文件（超过 2 GB）会自动分片'
+const STACKS = [
+  ['latin', '英文系统字体在前', '-apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif'],
+  ['pf', '苹方在前', '"PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, sans-serif'],
+]
+const ROWS = [
+  ['raw', '接口原文', RAW, ''],
+  ['typed', '手敲空格', TYPED, ''],
+  ['auto', '原文 + text-autospace', RAW, 'normal'],
+]
+---
+
+<autospace-lab class="as sx-panel sx-bleed not-prose" data-stacks={JSON.stringify(STACKS)}>
+  <div class="sx-seg" role="group" aria-label="字体栈">
+    {STACKS.map(([k, l], i) => <button type="button" data-stack={k} aria-pressed={i === 0 ? 'true' : 'false'}>{l}</button>)}
+  </div>
+  <div class="as-rows">
+    {ROWS.map(([k, l, t, auto]) => (
+      <div class="as-row" data-row={k}>
+        <div class="as-head"><b>{l}</b><span class="as-read"></span></div>
+        <div class="as-line"><p class="as-text" style={auto ? `text-autospace:${auto}` : ''}>{t}</p><div class="as-marks" aria-hidden="true"></div></div>
+      </div>
+    ))}
+  </div>
+  <p class="as-note" hidden>你的浏览器还不支持 text-autospace，第三行和第一行会一模一样。Chrome 140、Safari 18.4、Firefox 145 起支持。</p>
+  <p class="sx-cap">在你的浏览器里实时排的。<span class="as-key"></span>标出的是汉字和西文、数字之间多出来的空白，读数是每一处多出多少，单位是字号（em）。</p>
+</autospace-lab>
+
+<script>
+  const HAN = /[㐀-鿿]/
+  const LAT = /[A-Za-z0-9]/
+
+  class AutospaceLab extends HTMLElement {
+    private stacks: string[][] = []
+    connectedCallback() {
+      this.stacks = JSON.parse(this.dataset.stacks!)
+      if (!CSS.supports('text-autospace', 'normal')) this.querySelector<HTMLElement>('.as-note')!.hidden = false
+      const btns = [...this.querySelectorAll<HTMLButtonElement>('[data-stack]')]
+      btns.forEach((b) => b.addEventListener('click', () => {
+        btns.forEach((x) => x.setAttribute('aria-pressed', String(x === b)))
+        this.apply(b.dataset.stack!)
+      }))
+      new ResizeObserver(() => this.measure()).observe(this)
+      document.fonts?.ready.then(() => this.apply('latin'))
+    }
+
+    private apply(key: string) {
+      const ff = this.stacks.find((s) => s[0] === key)![2]
+      this.querySelectorAll<HTMLElement>('.as-text').forEach((t) => (t.style.fontFamily = ff))
+      this.measure()
+    }
+
+    /** 每个字符的盒子，相对它所在的行 */
+    private boxes(p: HTMLElement) {
+      const n = p.firstChild as Text
+      const rg = document.createRange()
+      const base = p.getBoundingClientRect()
+      return [...n.data].map((ch, i) => {
+        rg.setStart(n, i); rg.setEnd(n, i + 1)
+        const r = rg.getBoundingClientRect()
+        return { ch, x: r.left - base.left, w: r.width }
+      })
+    }
+
+    private measure() {
+      const get = (k: string) => this.querySelector<HTMLElement>(`[data-row="${k}"]`)!
+      const fs = parseFloat(getComputedStyle(get('raw').querySelector('.as-text')!).fontSize)
+      const raw = this.boxes(get('raw').querySelector('.as-text')!)
+      const em = (v: number) => (v / fs).toFixed(3)
+      const mark = (row: HTMLElement, spans: { x: number; w: number }[], read: string) => {
+        row.querySelector('.as-marks')!.innerHTML = spans.map((s) => `<i style="left:${s.x}px;width:${Math.max(s.w, 1)}px"></i>`).join('')
+        row.querySelector('.as-read')!.textContent = read
+      }
+      mark(get('raw'), [], '没有空白')
+      // 手敲空格：空格字符本身的宽度
+      const typed = this.boxes(get('typed').querySelector('.as-text')!).filter((b, i, all) => b.ch === ' ' && (HAN.test(all[i - 1]?.ch ?? '') || HAN.test(all[i + 1]?.ch ?? '')))
+      mark(get('typed'), typed, typed.length ? `每处 +${em(typed[0].w)} em，共 ${typed.length} 处` : '')
+      // autospace：和原文逐字比宽度，多出来的贴在这个字的右边
+      const auto = this.boxes(get('auto').querySelector('.as-text')!)
+      const extra = auto.map((b, i) => ({ x: b.x + raw[i].w, w: b.w - raw[i].w, at: i })).filter((e) => e.w > 0.3)
+      const bounds = raw.filter((b, i) => i < raw.length - 1 && ((HAN.test(b.ch) && LAT.test(raw[i + 1].ch)) || (LAT.test(b.ch) && HAN.test(raw[i + 1].ch)))).length
+      mark(get('auto'), extra, extra.length ? `每处 +${em(extra[0].w)} em，共 ${extra.length} 处` : `没有空白（这里有 ${bounds} 处交界）`)
+    }
+  }
+  customElements.define('autospace-lab', AutospaceLab)
+</script>
+
+<style is:global>
+  /* 网格项默认按内容撑宽，不换行的长句会把整页撑出横向滚动 */
+  .as-rows { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; margin-top: 18px; }
+  .as-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; margin-bottom: 6px; font-size: 13px; }
+  .as-head b { color: var(--strong); font-weight: 600; }
+  .as-read { color: var(--muted); font: 500 12px/1.4 var(--mono); }
+  .as-line { position: relative; overflow-x: auto; padding: 10px 12px; border-radius: 10px; background: var(--panel); }
+  .as-text { position: relative; z-index: 1; margin: 0; color: var(--strong); font-size: 24px; line-height: 1.5; white-space: nowrap; }
+  .as-marks { position: absolute; inset: 10px 12px; pointer-events: none; }
+  .as-marks i { position: absolute; top: 6px; bottom: 6px; border-radius: 2px; background: color-mix(in srgb, var(--brand) 38%, transparent); }
+  .as-key { display: inline-block; width: 12px; height: 12px; margin: 0 4px; border-radius: 2px; vertical-align: -1px; background: color-mix(in srgb, var(--brand) 38%, transparent); }
+  .as-note { margin: 12px 0 0; color: var(--warn); font-size: 13px; }
+  @media (max-width: 640px) {
+    .as-text { font-size: 19px; }
+  }
+</style>

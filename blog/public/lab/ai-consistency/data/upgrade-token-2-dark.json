@@ -1,0 +1,211 @@
+{
+ "file": "upgrade-token-2.html",
+ "scheme": "dark",
+ "bag": {
+  "bg": {
+   "#f4f4f1": {
+    "n": 2,
+    "who": [
+     "header.nav「✕ 升级套餐」",
+     "button.btn「当前套餐」"
+    ]
+   },
+   "#e7e6e1": {
+    "n": 1,
+    "who": [
+     "fieldset.billing-toggle「付费周期 月付 年付省 20」"
+    ]
+   },
+   "#ffffff": {
+    "n": 6,
+    "who": [
+     "label「月付」",
+     "article.plan「免费版 ¥0 永久免费 5G」",
+     "button.btn「切换到免费版」",
+     "article.plan「Pro 当前套餐 ¥30/月」"
+    ]
+   },
+   "#b65a3c": {
+    "n": 3,
+    "who": [
+     "span.save-tag「省 20%」",
+     "span.badge「推荐」",
+     "button.btn「升级到团队版」"
+    ]
+   }
+  },
+  "border": {
+   "1px #e7e6e1": {
+    "n": 27,
+    "who": [
+     "header.nav「✕ 升级套餐」",
+     "article.plan「免费版 ¥0 永久免费 5G」",
+     "article.plan「免费版 ¥0 永久免费 5G」",
+     "article.plan「免费版 ¥0 永久免费 5G」"
+    ]
+   },
+   "1px #b65a3c": {
+    "n": 8,
+    "who": [
+     "article.plan「团队版 推荐 ¥88/月 按」",
+     "article.plan「团队版 推荐 ¥88/月 按」",
+     "article.plan「团队版 推荐 ¥88/月 按」",
+     "article.plan「团队版 推荐 ¥88/月 按」"
+    ]
+   }
+  },
+  "radius": {
+   "10": {
+    "n": 8,
+    "who": [
+     "button.icon-btn「关闭」",
+     "fieldset.billing-toggle「付费周期 月付 年付省 20」",
+     "label「月付」",
+     "label「年付省 20%」"
+    ]
+   },
+   "16": {
+    "n": 4,
+    "who": [
+     "article.plan「免费版 ¥0 永久免费 5G」",
+     "article.plan「Pro 当前套餐 ¥30/月」",
+     "article.plan「团队版 推荐 ¥88/月 按」",
+     "div.faq-list「升级后什么时候生效？ 付款成」"
+    ]
+   },
+   "pill": {
+    "n": 2,
+    "who": [
+     "span.save-tag「省 20%」",
+     "span.badge「推荐」"
+    ]
+   }
+  },
+  "controlHeight": {
+   "44": {
+    "n": 4,
+    "who": [
+     "button.icon-btn「关闭」",
+     "button.btn「切换到免费版」",
+     "button.btn「当前套餐」",
+     "button.btn「升级到团队版」"
+    ]
+   },
+   "47": {
+    "n": 3,
+    "who": [
+     "summary「升级后什么时候生效？」",
+     "summary「可以随时取消吗？」",
+     "summary「降级后超出空间的文件会怎样？」"
+    ]
+   }
+  },
+  "text": {
+   "#1c1c1a": {
+    "n": 23,
+    "who": [
+     "span「✕」",
+     "h1.nav-title「升级套餐」",
+     "label「月付」",
+     "h2.plan-name「免费版」"
+    ]
+   },
+   "#5f5e59": {
+    "n": 12,
+    "who": [
+     "label「年付省 20%」",
+     "p.billing-note「永久免费」",
+     "span.badge「当前套餐」",
+     "span.price-unit「/月」"
+    ]
+   },
+   "#ffffff": {
+    "n": 3,
+    "who": [
+     "span.save-tag「省 20%」",
+     "span.badge「推荐」",
+     "button.btn「升级到团队版」"
+    ]
+   }
+  },
+  "fontSize": {
+   "13": {
+    "n": 21,
+    "who": [
+     "span.save-tag「省 20%」",
+     "p.billing-note「永久免费」",
+     "li「5GB 存储空间」",
+     "li「最多 3 人协作」"
+    ]
+   },
+   "15": {
+    "n": 12,
+    "who": [
+     "label「月付」",
+     "label「年付省 20%」",
+     "h2.plan-name「免费版」",
+     "button.btn「切换到免费版」"
+    ]
+   },
+   "18": {
+    "n": 5,
+    "who": [
+     "span「✕」",
+     "h1.nav-title「升级套餐」",
+     "span.price-amount「¥0」",
+     "span.price-amount「¥30」"
+    ]
+   }
+  },
+  "fontWeight": {
+   "400": {
+    "n": 24,
+    "who": [
+     "span「✕」",
+     "label「年付省 20%」",
+     "p.billing-note「永久免费」",
+     "li「5GB 存储空间」"
+    ]
+   },
+   "600": {
+    "n": 11,
+    "who": [
+     "h1.nav-title「升级套餐」",
+     "label「月付」",
+     "span.save-tag「省 20%」",
+     "h2.plan-name「免费版」"
+    ]
+   },
+   "700": {
+    "n": 3,
+    "who": [
+     "span.price-amount「¥0」",
+     "span.price-amount「¥30」",
+     "span.price-amount「¥88」"
+    ]
+   }
+  }
+ },
+ "vars": {
+  "--color-accent": "#b65a3c",
+  "--color-on-accent": "#ffffff",
+  "--color-text": "#1c1c1a",
+  "--color-text-2": "#5f5e59",
+  "--color-line": "#e7e6e1",
+  "--color-bg": "#f4f4f1",
+  "--color-card": "#ffffff",
+  "--radius-card": "16px",
+  "--radius-control": "10px",
+  "--font-sm": "13px",
+  "--font-md": "15px",
+  "--font-lg": "18px",
+  "--space-1": "4px",
+  "--space-2": "8px",
+  "--space-3": "12px",
+  "--space-4": "16px",
+  "--space-5": "24px"
+ },
+ "darkRule": false,
+ "literalColorsOutsideRoot": 0,
+ "errors": []
+}

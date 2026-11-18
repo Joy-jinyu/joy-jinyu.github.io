@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#fafaf8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121316" media="(prefers-color-scheme: dark)">
+<title>版本更新</title>
+<style>
+  /*
+   * 弯引号和破折号属于「宽度不定」的字符：系统西文字体排在前面时，它们会被画成窄的西文字形，
+   * 中文句子里的 “1 天” 和 —— 就会挤成一团。这里只把这几个码位交给中文字体，其余字符不受影响。
+   * Chrome 的 local() 只认 PostScript 名和全名，所以每个字体两种名字都写。
+   */
+  @font-face {
+    font-family: "CJK Punct";
+    src: local("PingFangSC-Regular"), local("PingFang SC Regular"),
+         local("HiraginoSansGB-W3"), local("Hiragino Sans GB W3"),
+         local("NotoSansCJKsc-Regular"), local("Noto Sans CJK SC Regular"),
+         local("SourceHanSansSC-Regular"), local("Source Han Sans SC Regular"),
+         local("MicrosoftYaHei"), local("Microsoft YaHei");
+    unicode-range: U+2014, U+2018-2019, U+201C-201D;
+  }
+
+  :root {
+    --font-sans: "CJK Punct", system-ui, -apple-system, "PingFang SC", "Hiragino Sans GB",
+                 "Noto Sans CJK SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
+
+    --bg: #fafaf8;
+    --text-1: #1a1b1e;
+    --text-2: #4a4f57;
+    --text-3: #6b7079;
+    --hairline: rgb(26 27 30 / 0.12);
+    --accent: #2449e0;
+    --accent-hover: #2040d0;
+    --accent-pressed: #1a37b8;
+    --on-accent: #ffffff;
+    --surface-muted: #ececea;
+    --notice-bg: #fff3dc;
+    --notice-text: #6a4300;
+    --notice-mark-bg: #b97a00;
+    --notice-mark-fg: #ffffff;
+    --bar-bg: rgb(250 250 248 / 0.9);
+    --icon-from: #4a6cff;
+    --icon-to: #1a37b8;
+
+    /* 间距按关系取档，不按数值取 */
+    --gap-part: 4px;
+    --gap-tight: 8px;
+    --gap-inner: 12px;
+    --gap-group: 16px;
+    --gap-block: 24px;
+    --gap-region: 32px;
+    --gutter: 24px;
+
+    --lh-body: 1.7;
+    --lh-heading: 1.4;
+
+    --radius-control: 12px;
+    --icon-size: 56px;
+    --hit: 44px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121316;
+      --text-1: #eceef1;
+      --text-2: #b4b8bf;
+      --text-3: #8d929a;
+      --hairline: rgb(255 255 255 / 0.12);
+      --accent: #3a5ff0;
+      --accent-hover: #3357e4;
+      --accent-pressed: #2c4fd6;
+      --surface-muted: #26282c;
+      --notice-bg: #2a2214;
+      --notice-text: #f1d39c;
+      --notice-mark-bg: #e0a43a;
+      --notice-mark-fg: #2a2214;
+      --bar-bg: rgb(18 19 22 / 0.9);
+      --icon-from: #5a78ff;
+      --icon-to: #2443c4;
+    }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html {
+    background: var(--bg);
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0 auto;
+    max-width: 640px;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+    color: var(--text-1);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: var(--lh-body);
+    overflow-wrap: break-word;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  h1, h2, h3, p, ul { margin: 0; }
+  ul { padding: 0; list-style: none; }
+
+  .nowrap { white-space: nowrap; }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  button {
+    font: inherit;
+    color: inherit;
+    border: 0;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* 导航栏 */
+  .nav {
+    display: grid;
+    grid-template-columns: var(--hit) 1fr var(--hit);
+    align-items: center;
+    padding-top: env(safe-area-inset-top);
+    padding-inline: calc(max(var(--gutter), env(safe-area-inset-left)) - var(--gap-inner));
+    min-height: calc(var(--hit) + env(safe-area-inset-top));
+  }
+
+  .nav__back {
+    width: var(--hit);
+    height: var(--hit);
+    border-radius: 50%;
+    color: var(--text-1);
+    display: grid;
+    place-items: center start;
+  }
+
+  .nav__back:active { background: var(--surface-muted); }
+
+  /* 转 45° 后左尖角对齐正文左边：方块中心在 12 + 6√2 ≈ 20.5px 处 */
+  .nav__chevron {
+    width: 12px;
+    height: 12px;
+    margin-left: 14.5px;
+    border-left: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+  }
+
+  .nav__title {
+    grid-column: 2;
+    text-align: center;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: var(--lh-heading);
+  }
+
+  /* 正文 */
+  .page {
+    flex: 1;
+    padding: var(--gap-group) max(var(--gutter), env(safe-area-inset-right)) var(--gap-region) max(var(--gutter), env(safe-area-inset-left));
+  }
+
+  .hero { padding-bottom: var(--gap-block); }
+
+  .app-icon {
+    width: var(--icon-size);
+    height: var(--icon-size);
+    border-radius: 22.5%;
+    background: linear-gradient(150deg, var(--icon-from), var(--icon-to));
+    box-shadow: inset 0 0 0 0.5px rgb(255 255 255 / 0.18);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--gap-part);
+    padding-inline: 14px;
+  }
+
+  .app-icon i {
+    display: block;
+    height: 6px;
+    border-radius: 3px;
+    background: #fff;
+  }
+
+  .app-icon i:last-child {
+    background: linear-gradient(90deg, #fff 55%, rgb(255 255 255 / 0.35) 55%);
+  }
+
+  .hero__version {
+    margin-top: var(--gap-group);
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .hero__meta {
+    margin-top: var(--gap-part);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--text-3);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hero__meta .sep { margin-inline: var(--gap-part); }
+
+  .lead {
+    margin-top: var(--gap-group);
+    font-size: 1rem;
+    line-height: 1.75;
+    text-wrap: pretty;
+  }
+
+  .group {
+    border-top: 0.5px solid var(--hairline);
+    padding-block: var(--gap-block);
+  }
+
+  .group h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: var(--lh-heading);
+    margin-bottom: var(--gap-inner);
+  }
+
+  .features { display: grid; gap: var(--gap-group); }
+
+  .features h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .features p {
+    margin-top: var(--gap-part);
+    font-size: 0.9375rem;
+    color: var(--text-2);
+    text-wrap: pretty;
+  }
+
+  .bullets { display: grid; gap: var(--gap-inner); }
+
+  .bullets li {
+    position: relative;
+    padding-left: var(--gap-group);
+    font-size: 0.9375rem;
+    text-wrap: pretty;
+  }
+
+  /* 圆点落在首行行盒的垂直中线上：行高是无单位的 --lh-body，首行高度就是 --lh-body × 1em */
+  .bullets li::before {
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: calc(var(--lh-body) * 0.5em - 2.5px);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--text-3);
+  }
+
+  .notice {
+    --notice-lh: 1.6;
+    display: flex;
+    gap: var(--gap-tight);
+    align-items: flex-start;
+    padding: var(--gap-inner) var(--gap-group);
+    border-radius: var(--radius-control);
+    background: var(--notice-bg);
+    color: var(--notice-text);
+    font-size: 0.875rem;
+    line-height: var(--notice-lh);
+    text-wrap: pretty;
+  }
+
+  /* 槽位高度等于文字首行行盒（继承 .notice 的字号），圆标在槽里居中，文字折几行它都只对齐第一行 */
+  .notice__mark {
+    flex: none;
+    height: calc(var(--notice-lh) * 1em);
+    display: grid;
+    place-items: center;
+  }
+
+  .notice__mark::before {
+    content: "!";
+    width: 1.125rem;
+    height: 1.125rem;
+    border-radius: 50%;
+    background: var(--notice-mark-bg);
+    color: var(--notice-mark-fg);
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1.125rem;
+    text-align: center;
+  }
+
+  /* 底部操作栏：sticky 而非 fixed，滚到底时它回到文档流里，不会盖住最后一段内容 */
+  .action-bar {
+    position: sticky;
+    bottom: 0;
+    padding: var(--gap-tight) max(var(--gutter), env(safe-area-inset-right)) max(var(--gap-inner), env(safe-area-inset-bottom)) max(var(--gutter), env(safe-area-inset-left));
+    background: var(--bar-bg);
+    -webkit-backdrop-filter: saturate(180%) blur(16px);
+    backdrop-filter: saturate(180%) blur(16px);
+    border-top: 0.5px solid var(--hairline);
+  }
+
+  .action-bar__hint {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--text-2);
+    text-align: center;
+  }
+
+  .btn-primary {
+    position: relative;
+    overflow: hidden;
+    margin-top: var(--gap-tight);
+    width: 100%;
+    min-height: 48px;
+    padding: var(--gap-tight) var(--gap-group);
+    border-radius: var(--radius-control);
+    background: var(--accent);
+    color: var(--on-accent);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.4;
+    font-variant-numeric: tabular-nums;
+    transition: background-color 120ms ease;
+  }
+
+  .btn-primary:focus-visible { outline-offset: 3px; }
+
+  @media (hover: hover) {
+    .btn-primary:not([aria-disabled="true"]):hover { background: var(--accent-hover); }
+  }
+
+  .btn-primary:not([aria-disabled="true"]):active { background: var(--accent-pressed); }
+
+  .btn-primary::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgb(255 255 255 / 0.18);
+    transform-origin: left center;
+    transform: scaleX(var(--progress, 0));
+    opacity: 0;
+  }
+
+  .btn-primary[data-state="loading"] { cursor: progress; }
+  .btn-primary[data-state="loading"]::before { opacity: 1; }
+
+  .btn-primary[data-state="done"] {
+    cursor: default;
+    background: var(--surface-muted);
+    color: var(--text-2);
+  }
+
+  .btn-primary__label { position: relative; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn-primary { transition: none; }
+  }
+</style>
+</head>
+<body>
+  <header class="nav">
+    <button class="nav__back" type="button" id="back" aria-label="返回" title="返回">
+      <span class="nav__chevron" aria-hidden="true"></span>
+    </button>
+    <h1 class="nav__title">版本更新</h1>
+  </header>
+
+  <main class="page">
+    <section class="hero" aria-label="版本信息">
+      <div class="app-icon" aria-hidden="true"><i></i><i></i><i></i></div>
+      <p class="hero__version"><span class="visually-hidden">版本 </span>3.9.0</p>
+      <p class="hero__meta">
+        <time datetime="2026-10-28">2026年10月28日</time><span class="sep" aria-hidden="true">·</span>86.4&nbsp;MB
+      </p>
+      <p class="lead">这次更新重做了文件上传。用 Claude&nbsp;Code 上传的大文件（超过 2&nbsp;GB）会自动分片，断网后能从断点继续，平均速度提升 35%。</p>
+    </section>
+
+    <section class="group" aria-labelledby="g-new">
+      <h2 id="g-new">新功能</h2>
+      <ul class="features">
+        <li>
+          <h3>断点续传</h3>
+          <p>上传中断后，重新连上 <span class="nowrap">Wi-Fi</span> 会从中断的位置继续，不用从头再传。</p>
+        </li>
+        <li>
+          <h3>链接有效期</h3>
+          <p>分享链接可以选“1&nbsp;天”“7&nbsp;天”或“永久”，过期后自动失效。</p>
+        </li>
+        <li>
+          <h3>支持 AirDrop</h3>
+          <p>在 iPhone 和 Mac 之间，可以直接把文件投送到团队空间。</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="group" aria-labelledby="g-better">
+      <h2 id="g-better">体验优化</h2>
+      <ul class="bullets">
+        <li>文件列表的加载速度提升约 2&nbsp;倍，1&nbsp;万个文件的文件夹也能在 1&nbsp;秒内打开。</li>
+        <li>搜索支持拼音首字母——输入“bg”就能找到<span class="nowrap">《报告-2026Q3》</span>。</li>
+        <li>深色模式下，图片缩略图不再发灰。</li>
+      </ul>
+    </section>
+
+    <section class="group" aria-labelledby="g-fix">
+      <h2 id="g-fix">问题修复</h2>
+      <ul class="bullets">
+        <li>修复了在 iOS&nbsp;18 上偶尔无法预览 PDF 的问题。</li>
+        <li>修复了文件名含有 emoji 时，下载后文件名乱码的问题。</li>
+      </ul>
+    </section>
+
+    <p class="notice" role="note">
+      <span class="notice__mark" aria-hidden="true"></span>
+      <span>3.9.0 起不再支持 iOS&nbsp;15 及以下版本。</span>
+    </p>
+  </main>
+
+  <div class="action-bar">
+    <p class="action-bar__hint" id="update-hint">更新约需 1&nbsp;分钟，期间请勿关闭 App。</p>
+    <button class="btn-primary" type="button" id="update" aria-describedby="update-hint">
+      <span class="btn-primary__label">立即更新</span>
+    </button>
+    <p class="visually-hidden" id="update-status" aria-live="polite"></p>
+  </div>
+
+<script>
+  document.getElementById('back').addEventListener('click', () => history.back());
+
+  const updateBtn = document.getElementById('update');
+  const updateLabel = updateBtn.querySelector('.btn-primary__label');
+  const updateStatus = document.getElementById('update-status');
+  /* 演示用的进度时长；接入时换成原生容器回传的真实进度 */
+  const DEMO_DURATION_MS = 3200;
+
+  updateBtn.addEventListener('click', () => {
+    if (updateBtn.getAttribute('aria-disabled') === 'true') return;
+    updateBtn.setAttribute('aria-disabled', 'true');
+    updateBtn.dataset.state = 'loading';
+    updateStatus.textContent = '正在更新';
+
+    const start = performance.now();
+    let shown = -1;
+    const tick = (now) => {
+      const t = Math.min((now - start) / DEMO_DURATION_MS, 1);
+      const percent = Math.round((1 - (1 - t) ** 2) * 100);
+      if (percent !== shown) {
+        shown = percent;
+        updateBtn.style.setProperty('--progress', String(percent / 100));
+        updateLabel.textContent = `正在更新 ${percent}%`;
+      }
+      if (t < 1) {
+        requestAnimationFrame(tick);
+        return;
+      }
+      updateBtn.dataset.state = 'done';
+      updateLabel.textContent = '已是最新版本';
+      updateStatus.textContent = '已更新到 3.9.0';
+    };
+    requestAnimationFrame(tick);
+  });
+</script>
+</body>
+</html>

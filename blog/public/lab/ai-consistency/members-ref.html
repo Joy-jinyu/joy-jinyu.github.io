@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>团队成员</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f4f4f1;
+    --card: #ffffff;
+    --text: #1c1c1a;
+    --text-2: #6b6a65;
+    --line: #e7e6e1;
+    --track: #ecebe6;
+    --accent: #c96442;
+    --accent-ink: #ffffff;
+    --tag-bg: #f6e9e3;
+    --tag-ink: #a24f32;
+    --danger: #c43d3d;
+    --hover: #f3f2ee;
+    --shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --menu-shadow: 0 2px 6px rgba(0,0,0,.06), 0 12px 32px rgba(0,0,0,.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141413;
+      --card: #1f1e1c;
+      --text: #f0efea;
+      --text-2: #a3a199;
+      --line: #2f2e2b;
+      --track: #2f2e2b;
+      --accent: #d97757;
+      --accent-ink: #1a1a19;
+      --tag-bg: #3a2a23;
+      --tag-ink: #eba78d;
+      --danger: #ef6b6b;
+      --hover: #2a2926;
+      --shadow: 0 1px 2px rgba(0,0,0,.3);
+      --menu-shadow: 0 12px 32px rgba(0,0,0,.5);
+    }
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font: 15px/1.5 -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  h1:focus { outline: none; }
+
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--bg);
+    padding-top: env(safe-area-inset-top);
+    border-bottom: 1px solid transparent;
+    transition: border-color .15s ease;
+  }
+  .nav.scrolled { border-bottom-color: var(--line); }
+  .nav-inner {
+    max-width: 452px;
+    min-height: 52px;
+    margin: 0 auto;
+    padding: 0 4px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+  }
+  .nav-inner > :first-child { justify-self: start; }
+  .nav-inner > :last-child { justify-self: end; margin-right: 12px; }
+  h1 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .chevron {
+    width: 10px;
+    height: 10px;
+    border-left: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: translateX(2px) rotate(45deg);
+  }
+
+  .page {
+    max-width: 452px;
+    margin: 0 auto;
+    padding: 8px 16px calc(24px + env(safe-area-inset-bottom));
+  }
+
+  .search { position: relative; }
+  .search input {
+    width: 100%;
+    min-height: 44px;
+    margin: 0;
+    padding: 0 44px 0 40px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--card);
+    color: var(--text);
+    font: inherit;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .search input::placeholder { color: var(--text-2); opacity: 1; }
+  .search input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+  .search .clear {
+    position: absolute;
+    right: 2px;
+    top: 50%;
+    margin-top: -20px;
+    color: var(--text-2);
+  }
+  .clear::before, .clear::after {
+    content: "";
+    position: absolute;
+    left: 13px;
+    top: 19px;
+    width: 14px;
+    height: 2px;
+    border-radius: 1px;
+    background: currentColor;
+    transform: rotate(45deg);
+  }
+  .clear::after { transform: rotate(-45deg); }
+  .search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    width: 13px;
+    height: 13px;
+    margin-top: -8px;
+    border: 2px solid var(--text-2);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .search-icon::after {
+    content: "";
+    position: absolute;
+    right: -5px;
+    bottom: -4px;
+    width: 2px;
+    height: 6px;
+    border-radius: 1px;
+    background: var(--text-2);
+    transform: rotate(-45deg);
+  }
+
+  .empty {
+    margin: 0;
+    text-align: center;
+    color: var(--text-2);
+    font-size: 14px;
+    overflow-wrap: anywhere;
+  }
+  .empty:not(:empty) { padding: 32px 20px; }
+
+  .group { margin-top: 24px; }
+  .group-title {
+    margin: 0 0 8px;
+    padding: 0 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-2);
+  }
+  .count { font-variant-numeric: tabular-nums; }
+
+  .card {
+    position: relative;
+    background: var(--card);
+    border-radius: 16px;
+    padding: 8px 20px;
+    box-shadow: var(--shadow);
+  }
+  .list { margin: 0; padding: 0; list-style: none; }
+  .list > li:not([hidden]) ~ li { border-top: 1px solid var(--line); }
+  .row {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 12px;
+    padding: 12px 0;
+  }
+  .avatar {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--track);
+    color: var(--text-2);
+    font-weight: 600;
+  }
+  .avatar.pending {
+    background: transparent;
+    border: 1px dashed currentColor;
+  }
+  .who {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 8px;
+  }
+  .name {
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+  .meta {
+    margin: 0;
+    color: var(--text-2);
+    font-size: 13px;
+  }
+  .tag {
+    flex: none;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 20px;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: var(--tag-bg);
+    color: var(--tag-ink);
+  }
+  .tag.muted { background: var(--track); color: var(--text-2); }
+
+  .foot {
+    margin: 16px 0 0;
+    padding: 0 20px;
+    font-size: 13px;
+    color: var(--text-2);
+  }
+
+  .btn {
+    flex: 1;
+    min-height: 44px;
+    border-radius: 10px;
+    font: inherit;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: transform .1s ease, background-color .15s ease;
+  }
+  .btn:active { transform: scale(.98); }
+  .btn-primary { background: var(--accent); color: var(--accent-ink); }
+  .btn-secondary { background: transparent; color: var(--text); border-color: var(--line); }
+  .btn-secondary:active { background: var(--hover); }
+  .btn-danger { background: var(--danger); color: var(--accent-ink); }
+  .btn-sm {
+    flex: none;
+    position: relative;
+    min-height: 32px;
+    padding: 0 12px;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+  .btn-sm::before { content: ""; position: absolute; inset: -6px -4px; }
+
+  .icon-btn {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+  }
+  .icon-btn:active, .icon-btn[aria-expanded="true"] { background: var(--hover); }
+  .more { color: var(--text-2); margin-right: -8px; }
+  .dots { display: flex; gap: 3px; }
+  .dots i { width: 4px; height: 4px; border-radius: 50%; background: currentColor; }
+
+  button:focus-visible, input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .menu {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 152px;
+    max-width: 240px;
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: var(--menu-shadow);
+    transform-origin: top right;
+    opacity: 0;
+    transform: scale(.96) translateY(-4px);
+    visibility: hidden;
+    transition: opacity .15s ease, transform .15s ease, visibility 0s linear .15s;
+    z-index: 10;
+  }
+  .menu.up { transform: scale(.96) translateY(4px); }
+  .menu.open {
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+    transition: opacity .15s ease, transform .15s ease, visibility 0s;
+  }
+  .menu button {
+    width: 100%;
+    min-height: 40px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    font-size: 15px;
+    text-align: left;
+    cursor: pointer;
+  }
+  .menu button:hover, .menu button:focus-visible { background: var(--hover); }
+  .menu .sep { height: 1px; margin: 6px 4px; background: var(--line); }
+  .menu .danger { color: var(--danger); }
+  .menu button[aria-disabled="true"] { opacity: .5; cursor: not-allowed; }
+  .menu button[aria-disabled="true"]:hover:not(:focus-visible) { background: transparent; }
+  .menu-note {
+    padding: 6px 12px 4px;
+    color: var(--text-2);
+    font-size: 13px;
+  }
+
+  dialog {
+    width: calc(100% - 32px);
+    max-width: 340px;
+    padding: 0;
+    border: 0;
+    border-radius: 16px;
+    background: var(--card);
+    color: var(--text);
+    box-shadow: var(--menu-shadow);
+  }
+  dialog[open] { animation: pop .15s ease; }
+  dialog::backdrop { background: rgba(0,0,0,.32); }
+  dialog[open]::backdrop { animation: fade .15s ease; }
+  @media (prefers-color-scheme: dark) {
+    dialog::backdrop { background: rgba(0,0,0,.6); }
+  }
+  dialog form { padding: 20px; }
+  .dialog-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+  }
+  .dialog-desc {
+    margin: 8px 0 0;
+    color: var(--text-2);
+    font-size: 14px;
+  }
+  .actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  @keyframes pop { from { opacity: 0; transform: scale(.96) translateY(-4px); } }
+  @keyframes fade { from { opacity: 0; } }
+
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: calc(32px + env(safe-area-inset-bottom));
+    max-width: calc(100% - 32px);
+    transform: translate(-50%, 8px);
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: var(--text);
+    color: var(--bg);
+    font-size: 14px;
+    overflow-wrap: anywhere;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease, transform .2s ease;
+    z-index: 30;
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after, ::backdrop {
+      transition-duration: 0s !important;
+      animation-duration: 0s !important;
+    }
+  }
+</style>
+</head>
+<body>
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <button class="icon-btn" type="button" data-action="back" aria-label="返回" title="返回">
+      <span class="chevron" aria-hidden="true"></span>
+    </button>
+    <h1 id="title" tabindex="-1">团队成员</h1>
+    <button class="btn btn-primary btn-sm" type="button" data-action="invite">邀请</button>
+  </div>
+</header>
+
+<main class="page">
+  <div class="search" role="search">
+    <label class="sr-only" for="q">搜索成员</label>
+    <span class="search-icon" aria-hidden="true"></span>
+    <input id="q" type="search" placeholder="搜索成员" autocomplete="off" enterkeyhint="search">
+    <button class="icon-btn clear" id="clearBtn" type="button" aria-label="清除搜索" title="清除搜索" hidden></button>
+  </div>
+  <p class="empty" id="empty" role="status"></p>
+
+  <section class="group" id="memberGroup" aria-labelledby="memberTitle">
+    <h2 class="group-title" id="memberTitle">成员 · <span class="count" id="memberCount">6</span></h2>
+    <div class="card" id="memberCard">
+      <ul class="list" id="memberList">
+        <li class="row member" data-name="林晓" data-role="owner">
+          <span class="avatar" aria-hidden="true">林</span>
+          <div>
+            <div class="who"><span class="name">林晓</span><span class="tag">所有者</span></div>
+            <p class="meta">10 分钟前活跃</p>
+          </div>
+          <button class="icon-btn more" id="more-1" type="button" aria-label="更多操作：林晓" title="更多操作" aria-haspopup="menu" aria-expanded="false" aria-controls="memberMenu">
+            <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          </button>
+        </li>
+        <li class="row member" data-name="周宁" data-role="admin">
+          <span class="avatar" aria-hidden="true">周</span>
+          <div>
+            <div class="who"><span class="name">周宁</span><span class="tag">管理员</span></div>
+            <p class="meta">2 小时前活跃</p>
+          </div>
+          <button class="icon-btn more" id="more-2" type="button" aria-label="更多操作：周宁" title="更多操作" aria-haspopup="menu" aria-expanded="false" aria-controls="memberMenu">
+            <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          </button>
+        </li>
+        <li class="row member" data-name="陈思远" data-role="member">
+          <span class="avatar" aria-hidden="true">陈</span>
+          <div>
+            <div class="who"><span class="name">陈思远</span><span class="tag muted">成员</span></div>
+            <p class="meta">5 小时前活跃</p>
+          </div>
+          <button class="icon-btn more" id="more-3" type="button" aria-label="更多操作：陈思远" title="更多操作" aria-haspopup="menu" aria-expanded="false" aria-controls="memberMenu">
+            <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          </button>
+        </li>
+        <li class="row member" data-name="王一帆" data-role="member">
+          <span class="avatar" aria-hidden="true">王</span>
+          <div>
+            <div class="who"><span class="name">王一帆</span><span class="tag muted">成员</span></div>
+            <p class="meta">昨天活跃</p>
+          </div>
+          <button class="icon-btn more" id="more-4" type="button" aria-label="更多操作：王一帆" title="更多操作" aria-haspopup="menu" aria-expanded="false" aria-controls="memberMenu">
+            <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          </button>
+        </li>
+        <li class="row member" data-name="李沐" data-role="member">
+          <span class="avatar" aria-hidden="true">李</span>
+          <div>
+            <div class="who"><span class="name">李沐</span><span class="tag muted">成员</span></div>
+            <p class="meta">3 天前活跃</p>
+          </div>
+          <button class="icon-btn more" id="more-5" type="button" aria-label="更多操作：李沐" title="更多操作" aria-haspopup="menu" aria-expanded="false" aria-controls="memberMenu">
+            <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          </button>
+        </li>
+        <li class="row member" data-name="赵可欣" data-role="member">
+          <span class="avatar" aria-hidden="true">赵</span>
+          <div>
+            <div class="who"><span class="name">赵可欣</span><span class="tag muted">成员</span></div>
+            <p class="meta">2 周前活跃</p>
+          </div>
+          <button class="icon-btn more" id="more-6" type="button" aria-label="更多操作：赵可欣" title="更多操作" aria-haspopup="menu" aria-expanded="false" aria-controls="memberMenu">
+            <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          </button>
+        </li>
+      </ul>
+
+      <ul class="menu" id="memberMenu" role="menu">
+        <li class="menu-note" id="menuNote" role="none" hidden>所有者不能更改角色或移出团队</li>
+        <li role="none"><button type="button" role="menuitem" id="roleItem" tabindex="-1">设为管理员</button></li>
+        <li role="separator" class="sep"></li>
+        <li role="none"><button type="button" role="menuitem" id="removeItem" class="danger" tabindex="-1">移出团队</button></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="group" id="inviteGroup" aria-labelledby="inviteTitle">
+    <h2 class="group-title" id="inviteTitle">待接受的邀请 · <span class="count" id="inviteCount">2</span></h2>
+    <div class="card">
+      <ul class="list" id="inviteList">
+        <li class="row invite" data-name="hu.yang@example.com">
+          <span class="avatar pending" aria-hidden="true">H</span>
+          <div>
+            <div class="who"><span class="name" id="invite-1">hu.yang@example.com</span></div>
+            <p class="meta">3 天前发出</p>
+          </div>
+          <button class="btn btn-secondary btn-sm" type="button" data-action="revoke" aria-describedby="invite-1">撤回</button>
+        </li>
+        <li class="row invite" data-name="mia.chen@example.com">
+          <span class="avatar pending" aria-hidden="true">M</span>
+          <div>
+            <div class="who"><span class="name" id="invite-2">mia.chen@example.com</span></div>
+            <p class="meta">3 天前发出</p>
+          </div>
+          <button class="btn btn-secondary btn-sm" type="button" data-action="revoke" aria-describedby="invite-2">撤回</button>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <p class="foot">Pro 套餐最多 10 人，已用 <span class="count" id="seatCount">6</span> 个名额</p>
+</main>
+
+<dialog id="removeDialog" role="alertdialog" aria-labelledby="removeTitle" aria-describedby="removeDesc">
+  <form method="dialog">
+    <h2 class="dialog-title" id="removeTitle">将成员移出团队？</h2>
+    <p class="dialog-desc" id="removeDesc">移出后 TA 不能再访问团队空间，想加回来需要重新邀请。</p>
+    <div class="actions">
+      <button class="btn btn-secondary" value="cancel">取消</button>
+      <button class="btn btn-danger" value="confirm">移出</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+  (function () {
+    var ROLE_LABEL = { owner: '所有者', admin: '管理员', member: '成员' };
+
+    var nav = document.getElementById('nav');
+    var title = document.getElementById('title');
+    var search = document.getElementById('q');
+    var empty = document.getElementById('empty');
+    var memberGroup = document.getElementById('memberGroup');
+    var inviteGroup = document.getElementById('inviteGroup');
+    var memberList = document.getElementById('memberList');
+    var inviteList = document.getElementById('inviteList');
+    var memberCard = document.getElementById('memberCard');
+    var menu = document.getElementById('memberMenu');
+    var menuNote = document.getElementById('menuNote');
+    var roleItem = document.getElementById('roleItem');
+    var removeItem = document.getElementById('removeItem');
+    var dialog = document.getElementById('removeDialog');
+    var dialogTitle = document.getElementById('removeTitle');
+    var toast = document.getElementById('toast');
+
+    function children(list) { return Array.prototype.slice.call(list.children); }
+
+    var toastTimer;
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 1600);
+    }
+
+    function syncNav() { nav.classList.toggle('scrolled', window.scrollY > 0); }
+    window.addEventListener('scroll', syncNav, { passive: true });
+    syncNav();
+
+    function filterRows(list, q) {
+      var shown = 0;
+      children(list).forEach(function (row) {
+        var hit = !q || row.getAttribute('data-name').toLowerCase().indexOf(q) !== -1;
+        row.hidden = !hit;
+        if (hit) shown += 1;
+      });
+      return shown;
+    }
+    function applyFilter() {
+      var raw = search.value.trim();
+      var q = raw.toLowerCase();
+      var members = filterRows(memberList, q);
+      var invites = filterRows(inviteList, q);
+      memberGroup.hidden = members === 0;
+      inviteGroup.hidden = invites === 0;
+      empty.textContent = q && !members && !invites ? '没有找到「' + raw + '」' : '';
+    }
+    function syncCounts() {
+      var members = memberList.children.length;
+      document.getElementById('memberCount').textContent = members;
+      document.getElementById('seatCount').textContent = members;
+      document.getElementById('inviteCount').textContent = inviteList.children.length;
+      applyFilter();
+    }
+    var clearBtn = document.getElementById('clearBtn');
+    search.addEventListener('input', function () {
+      close(false);
+      clearBtn.hidden = !search.value;
+      applyFilter();
+    });
+    clearBtn.addEventListener('click', function () {
+      search.value = '';
+      clearBtn.hidden = true;
+      applyFilter();
+      search.focus();
+    });
+
+    /** 删掉一行后焦点去向：同组下一行 → 上一行 → 页面标题，避免焦点掉回文档开头 */
+    function focusAfter(row, selector) {
+      var sib = row.nextElementSibling;
+      while (sib && sib.hidden) sib = sib.nextElementSibling;
+      if (!sib) {
+        sib = row.previousElementSibling;
+        while (sib && sib.hidden) sib = sib.previousElementSibling;
+      }
+      return sib ? sib.querySelector(selector) : title;
+    }
+
+    var trigger = null;
+    function items() { return Array.prototype.slice.call(menu.querySelectorAll('[role="menuitem"]')); }
+    function fillMenu(row) {
+      var role = row.getAttribute('data-role');
+      var locked = role === 'owner';
+      roleItem.textContent = role === 'admin' ? '设为成员' : '设为管理员';
+      menuNote.hidden = !locked;
+      [roleItem, removeItem].forEach(function (el) {
+        if (locked) {
+          el.setAttribute('aria-disabled', 'true');
+          el.setAttribute('aria-describedby', 'menuNote');
+        } else {
+          el.removeAttribute('aria-disabled');
+          el.removeAttribute('aria-describedby');
+        }
+      });
+    }
+    function placeMenu(btn) {
+      var card = memberCard.getBoundingClientRect();
+      var b = btn.getBoundingClientRect();
+      var need = menu.offsetHeight + 8;
+      var up = window.innerHeight - b.bottom < need && b.top - nav.getBoundingClientRect().bottom > need;
+      menu.classList.toggle('up', up);
+      menu.style.right = (card.right - b.right) + 'px';
+      menu.style.top = up ? 'auto' : (b.bottom - card.top + 4) + 'px';
+      menu.style.bottom = up ? (card.bottom - b.top + 4) + 'px' : 'auto';
+      menu.style.transformOrigin = up ? 'bottom right' : 'top right';
+    }
+    function open(btn, index) {
+      close(false);
+      trigger = btn;
+      fillMenu(btn.closest('.member'));
+      menu.setAttribute('aria-labelledby', btn.id);
+      placeMenu(btn);
+      menu.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+      var list = items();
+      list[index < 0 ? list.length - 1 : index].focus();
+    }
+    function close(returnFocus) {
+      if (!trigger) return;
+      var btn = trigger;
+      trigger = null;
+      menu.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+      if (returnFocus) btn.focus();
+    }
+
+    memberList.addEventListener('click', function (e) {
+      var btn = e.target.closest('.more');
+      if (!btn) return;
+      if (trigger === btn) close(false); else open(btn, 0);
+    });
+    memberList.addEventListener('keydown', function (e) {
+      var btn = e.target.closest('.more');
+      if (!btn) return;
+      if (e.key === 'ArrowDown') { e.preventDefault(); open(btn, 0); }
+      if (e.key === 'ArrowUp') { e.preventDefault(); open(btn, -1); }
+    });
+    menu.addEventListener('keydown', function (e) {
+      var list = items();
+      var i = list.indexOf(document.activeElement);
+      if (e.key === 'ArrowDown') { e.preventDefault(); list[(i + 1) % list.length].focus(); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); list[(i - 1 + list.length) % list.length].focus(); }
+      else if (e.key === 'Home') { e.preventDefault(); list[0].focus(); }
+      else if (e.key === 'End') { e.preventDefault(); list[list.length - 1].focus(); }
+      else if (e.key === 'Escape') { e.preventDefault(); close(true); }
+      else if (e.key === 'Tab') { close(false); }
+    });
+    document.addEventListener('pointerdown', function (e) {
+      if (trigger && !menu.contains(e.target) && !trigger.contains(e.target)) close(false);
+    });
+    window.addEventListener('resize', function () { close(false); });
+
+    menu.addEventListener('click', function (e) {
+      var item = e.target.closest('[role="menuitem"]');
+      if (!item || !trigger || item.getAttribute('aria-disabled') === 'true') return;
+      var btn = trigger;
+      var row = btn.closest('.member');
+      close(true);
+      if (item === roleItem) toggleAdmin(row);
+      else askRemove(row, btn);
+    });
+
+    function toggleAdmin(row) {
+      var name = row.getAttribute('data-name');
+      var next = row.getAttribute('data-role') === 'admin' ? 'member' : 'admin';
+      var tag = row.querySelector('.tag');
+      row.setAttribute('data-role', next);
+      tag.textContent = ROLE_LABEL[next];
+      tag.classList.toggle('muted', next === 'member');
+      showToast('已将' + name + '设为' + ROLE_LABEL[next]);
+    }
+
+    var pending = null;
+    function askRemove(row, btn) {
+      var question = '将「' + row.getAttribute('data-name') + '」移出团队？';
+      if (typeof dialog.showModal !== 'function') {
+        if (window.confirm(question)) removeMember(row);
+        return;
+      }
+      pending = { row: row, btn: btn };
+      dialogTitle.textContent = question;
+      dialog.returnValue = '';
+      dialog.showModal();
+    }
+    dialog.addEventListener('close', function () {
+      var p = pending;
+      pending = null;
+      if (!p) return;
+      if (dialog.returnValue === 'confirm') removeMember(p.row);
+      else p.btn.focus();
+    });
+    dialog.addEventListener('click', function (e) {
+      if (e.target === dialog) dialog.close('cancel');
+    });
+
+    function removeMember(row) {
+      var name = row.getAttribute('data-name');
+      var next = focusAfter(row, '.more');
+      row.remove();
+      syncCounts();
+      next.focus();
+      showToast('已将' + name + '移出团队');
+    }
+    function revokeInvite(row) {
+      var email = row.getAttribute('data-name');
+      var next = focusAfter(row, '[data-action="revoke"]');
+      row.remove();
+      syncCounts();
+      next.focus();
+      showToast('已撤回 ' + email + ' 的邀请');
+    }
+
+    document.addEventListener('click', function (e) {
+      var target = e.target.closest('[data-action]');
+      if (!target) return;
+      var action = target.getAttribute('data-action');
+      if (action === 'back') showToast('返回上一页');
+      else if (action === 'invite') showToast('前往邀请成员');
+      else if (action === 'revoke') revokeInvite(target.closest('.invite'));
+    });
+  })();
+</script>
+</body>
+</html>
