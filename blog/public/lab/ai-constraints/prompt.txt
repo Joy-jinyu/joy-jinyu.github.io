@@ -1,0 +1,16 @@
+用 HTML + CSS + 少量原生 JS 写一个单文件页面：移动端 H5 的「通知」页，会在 App 的 WebView 和手机浏览器里打开。
+
+内容和行为：
+- 顶部导航栏：左边返回按钮，中间标题「通知」，右边「全部已读」按钮
+- 打开页面时用 fetch 从 ./api/notices.json 拉取通知，返回的格式是 [{ "id": 1, "group": "今天", "title": "…", "body": "…", "time": "10:24", "read": false }, …]；按 group 分组显示，每组上面一个分组标题（「今天」「更早」），组内每条通知显示标题、正文和时间，未读的标题前面有一个小圆点
+- 点一条未读通知，用 fetch 发 POST ./api/notices/{id}/read，成功后把它标为已读
+- 点「全部已读」，用 fetch 发 POST ./api/notices/read-all，成功后全部标为已读
+- 页面底部固定一个「通知设置」按钮
+
+视觉使用团队的设计变量文件：……/ai-constraints/tokens.css（把内容复制进页面的 <style> 里）。
+
+【带规则的两组加这一句】写的时候遵守这份 UI 规则：……/AGENTS.md（「规则加检查」一组是 57 行的 AGENTS.md；「只给规则」一组是去掉末尾「交付前的检查」一节的 47 行版本，即 AGENTS-rulesonly.md）
+
+把完整代码写到这个文件：……/notices-plain-1.html（另外两组是 notices-rulesonly-1.html、notices-rules-1.html）
+
+【派发时三组都另加这一句，不属于需求本身】写完后简短汇报：加载了哪些 skill、读了哪些文件、交付前怎么检查的。

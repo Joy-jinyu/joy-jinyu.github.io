@@ -1,0 +1,212 @@
+{
+ "file": "run2.html",
+ "scheme": "light",
+ "bag": {
+  "bg": {
+   "#ffffff": {
+    "n": 1,
+    "who": [
+     "section.card「团队空间 Pro 本周通过 」"
+    ]
+   },
+   "#f8e9e2": {
+    "n": 1,
+    "who": [
+     "span.badge「Pro」"
+    ]
+   },
+   "#6b6b70": {
+    "n": 3,
+    "who": [
+     "i",
+     "i",
+     "i"
+    ]
+   },
+   "#ececea": {
+    "n": 1,
+    "who": [
+     "div.bar「已用空间」"
+    ]
+   },
+   "#c4623a": {
+    "n": 2,
+    "who": [
+     "span",
+     "button.btn「升级套餐」"
+    ]
+   }
+  },
+  "radius": {
+   "10": {
+    "n": 1,
+    "who": [
+     "button.more「更多」"
+    ]
+   },
+   "12": {
+    "n": 2,
+    "who": [
+     "button.btn「升级套餐」",
+     "button.btn「管理成员」"
+    ]
+   },
+   "16": {
+    "n": 1,
+    "who": [
+     "section.card「团队空间 Pro 本周通过 」"
+    ]
+   },
+   "pill": {
+    "n": 6,
+    "who": [
+     "span.badge「Pro」",
+     "i",
+     "i",
+     "i"
+    ]
+   }
+  },
+  "shadow": {
+   "#000000/0.04 0px 1px 2px 0px, #000000/0.06 0px 8px 24px 0px": {
+    "n": 1,
+    "who": [
+     "section.card「团队空间 Pro 本周通过 」"
+    ]
+   }
+  },
+  "text": {
+   "#1c1c1e": {
+    "n": 4,
+    "who": [
+     "h1.title「团队空间」",
+     "dd「128」",
+     "dd「37.5 / 100 GB」",
+     "button.btn「管理成员」"
+    ]
+   },
+   "#c4623a": {
+    "n": 1,
+    "who": [
+     "span.badge「Pro」"
+    ]
+   },
+   "#6b6b70": {
+    "n": 4,
+    "who": [
+     "p.desc「本周通过 Claude Co」",
+     "dt「今日上传文件数」",
+     "dt「已用空间」",
+     "small「/ 100 GB」"
+    ]
+   },
+   "#ffffff": {
+    "n": 1,
+    "who": [
+     "button.btn「升级套餐」"
+    ]
+   }
+  },
+  "fontSize": {
+   "12": {
+    "n": 1,
+    "who": [
+     "span.badge「Pro」"
+    ]
+   },
+   "13": {
+    "n": 1,
+    "who": [
+     "small「/ 100 GB」"
+    ]
+   },
+   "14": {
+    "n": 3,
+    "who": [
+     "p.desc「本周通过 Claude Co」",
+     "dt「今日上传文件数」",
+     "dt「已用空间」"
+    ]
+   },
+   "15": {
+    "n": 4,
+    "who": [
+     "dd「128」",
+     "dd「37.5 / 100 GB」",
+     "button.btn「升级套餐」",
+     "button.btn「管理成员」"
+    ]
+   },
+   "18": {
+    "n": 1,
+    "who": [
+     "h1.title「团队空间」"
+    ]
+   }
+  },
+  "fontWeight": {
+   "400": {
+    "n": 4,
+    "who": [
+     "p.desc「本周通过 Claude Co」",
+     "dt「今日上传文件数」",
+     "dt「已用空间」",
+     "small「/ 100 GB」"
+    ]
+   },
+   "600": {
+    "n": 6,
+    "who": [
+     "h1.title「团队空间」",
+     "span.badge「Pro」",
+     "dd「128」",
+     "dd「37.5 / 100 GB」"
+    ]
+   }
+  },
+  "controlHeight": {
+   "40": {
+    "n": 1,
+    "who": [
+     "button.more「更多」"
+    ]
+   },
+   "44": {
+    "n": 2,
+    "who": [
+     "button.btn「升级套餐」",
+     "button.btn「管理成员」"
+    ]
+   }
+  },
+  "border": {
+   "1px #e6e6e3": {
+    "n": 6,
+    "who": [
+     "div.row「今日上传文件数 128」",
+     "div.row「已用空间 37.5 / 10」",
+     "button.btn「管理成员」",
+     "button.btn「管理成员」"
+    ]
+   }
+  }
+ },
+ "vars": {
+  "--bg": "#f4f4f2",
+  "--card": "#ffffff",
+  "--text": "#1c1c1e",
+  "--text-2": "#6b6b70",
+  "--line": "#e6e6e3",
+  "--track": "#ececea",
+  "--accent": "#c4623a",
+  "--accent-press": "#a9512e",
+  "--accent-soft": "#f8e9e2",
+  "--danger": "#d23b2f",
+  "--menu-hover": "#f2f2ef",
+  "--shadow": "0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06)",
+  "--menu-shadow": "0 4px 8px rgba(0,0,0,.06), 0 16px 32px rgba(0,0,0,.12)"
+ },
+ "darkRule": true,
+ "literalColorsOutsideRoot": 1,
+ "errors": []
+}

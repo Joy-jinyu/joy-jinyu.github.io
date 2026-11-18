@@ -1,0 +1,95 @@
+---
+/**
+ * 引号和破折号的三种画法，在读者自己的浏览器里排：不做处理（英文系统字体在前，引号和破折号落到英文字体上）、
+ * 用 unicode-range 把这几个字符交给苹方（release1/2 的做法）、再打开 fwid 取全角字形（release3 的做法）。
+ * 实时量出引号和破折号的宽度；读者的系统里没有苹方时，后两种会落回别的字体，读数会说明。
+ */
+import '../styles/spacing-lab.css'
+
+const SENT = '可以选“1 天”“7 天”或“永久”——过期后自动失效。'
+const MODES = [
+  ['none', '不做处理', '英文系统字体在前，引号和破折号用的是英文字体'],
+  ['pf', '交给苹方', '第 1、2 份的做法：unicode-range 只把这几个字符交给苹方'],
+  ['fw', '苹方全角', '第 3 份的做法：再打开 fwid，取全角字形'],
+]
+---
+
+<punct-lab class="pl sx-panel sx-bleed not-prose">
+  <div class="sx-seg" role="group" aria-label="引号和破折号的画法">
+    {MODES.map(([k, l, d], i) => <button type="button" data-mode={k} data-desc={d} aria-pressed={i === 0 ? 'true' : 'false'}>{l}</button>)}
+  </div>
+  <p class="pl-desc" aria-live="polite">{MODES[0][2]}</p>
+  <div class="pl-stage">
+    <p class="pl-text" data-mode="none">{SENT}</p>
+  </div>
+  <dl class="pl-read">
+    <div><dt>引号“</dt><dd data-k="q">–</dd></div>
+    <div><dt>两个“——”</dt><dd data-k="d">–</dd></div>
+    <div><dt>”和“挨着</dt><dd data-k="pair">–</dd></div>
+  </dl>
+  <p class="sx-cap">在你的浏览器里实时排的，宽度单位是字号（em）。你的系统里没有苹方时，后两种会落到别的字体上，以读数为准。</p>
+</punct-lab>
+
+<script>
+  class PunctLab extends HTMLElement {
+    connectedCallback() {
+      const text = this.querySelector<HTMLElement>('.pl-text')!
+      const btns = [...this.querySelectorAll<HTMLButtonElement>('button[data-mode]')]
+      btns.forEach((b) => b.addEventListener('click', () => {
+        btns.forEach((x) => x.setAttribute('aria-pressed', String(x === b)))
+        text.dataset.mode = b.dataset.mode!
+        this.querySelector('.pl-desc')!.textContent = b.dataset.desc!
+        document.fonts.ready.then(() => this.measure())
+      }))
+      new ResizeObserver(() => this.measure()).observe(text)
+      document.fonts?.ready.then(() => this.measure())
+    }
+
+    private measure() {
+      const p = this.querySelector<HTMLElement>('.pl-text')!
+      const n = p.firstChild as Text
+      const fs = parseFloat(getComputedStyle(p).fontSize)
+      const rg = document.createRange()
+      const w = (i: number) => { rg.setStart(n, i); rg.setEnd(n, i + 1); return rg.getBoundingClientRect() }
+      const t = n.data
+      const q = w(t.indexOf('“')).width / fs
+      const d1 = w(t.indexOf('—')), d2 = w(t.indexOf('—') + 1)
+      const pair = t.indexOf('”“')
+      const pw = (w(pair).width + w(pair + 1).width) / fs
+      const kind = q < 0.45 ? '英文字体的窄引号' : q < 0.8 ? '苹方的默认引号' : '全角引号'
+      this.set('q', `${q.toFixed(2)} em · ${kind}`)
+      this.set('d', `${((d1.width + d2.width) / fs).toFixed(2)} em · ${d2.left - d1.right > 0.5 || d1.width / fs < 0.95 ? '中间断开' : '连成一条'}`)
+      this.set('pair', `${pw.toFixed(2)} em${pw > 1.6 ? ' · 中间空出将近一个字' : ''}`)
+    }
+
+    private set(k: string, v: string) { this.querySelector(`[data-k="${k}"]`)!.textContent = v }
+  }
+  customElements.define('punct-lab', PunctLab)
+</script>
+
+<style is:global>
+  @font-face {
+    font-family: "PL PingFang";
+    src: local("PingFangSC-Regular"), local("PingFang SC Regular");
+    unicode-range: U+2014, U+2018-2019, U+201C-201D;
+  }
+  @font-face {
+    font-family: "PL PingFang FW";
+    src: local("PingFangSC-Regular"), local("PingFang SC Regular");
+    unicode-range: U+2014, U+2018-2019, U+201C-201D;
+    font-feature-settings: "fwid";
+  }
+  .pl-desc { min-height: 1.6em; margin: 12px 0 0; color: var(--muted); font-size: 13px; }
+  .pl-stage { overflow-x: auto; margin-top: 12px; padding: 18px 16px; border-radius: 12px; background: #fff; }
+  .pl-text { margin: 0; color: #17191e; font-size: 34px; line-height: 1.4; white-space: nowrap; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; }
+  .pl-text[data-mode="pf"] { font-family: "PL PingFang", -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; }
+  .pl-text[data-mode="fw"] { font-family: "PL PingFang FW", -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; }
+  .pl-read { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 14px 0 0; }
+  .pl-read div { padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; }
+  .pl-read dt { color: var(--muted); font-size: 12px; }
+  .pl-read dd { margin: 4px 0 0; color: var(--strong); font: 600 13px/1.4 var(--mono); }
+  @media (max-width: 640px) {
+    .pl-text { font-size: 22px; white-space: normal; }
+    .pl-read { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>

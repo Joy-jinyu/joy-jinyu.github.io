@@ -1,0 +1,104 @@
+---
+/**
+ * 控制台脚本的运行器：在当前文章上运行 blog/public/lab/ 下的一段脚本，或者把它复制走。
+ * 脚本自己判断面板在不在（再运行一次就关掉），这里只按 panel 的 id 同步按钮状态。
+ * 用法：<SnippetRun src="ai-consistency/style-snippet.js" panel="__style_audit__" note="…" />
+ */
+import '../styles/spacing-lab.css'
+interface Props {
+  /** blog/public/lab/ 下的相对路径 */
+  src: string
+  /** 脚本创建的面板元素 id */
+  panel: string
+  /** 按钮下面的一句说明 */
+  note: string
+  /** 「在这篇文章上跑一遍」按钮的文字 */
+  label?: string
+}
+const { src, panel, note, label = '在这篇文章上跑一遍' } = Astro.props
+const url = `${import.meta.env.BASE_URL.replace(/\/?$/, '/')}lab/${src}`
+---
+
+<snippet-run class="snr sx-panel not-prose" data-src={url} data-panel={panel} data-label={label}>
+  <div class="snr-row">
+    <button type="button" class="snr-go" aria-pressed="false">{label}</button>
+    <button type="button" class="snr-copy">复制脚本</button>
+    <a class="snr-src" href={url} target="_blank" rel="noopener">看源码</a>
+  </div>
+  <p class="snr-msg" aria-live="polite">{note}</p>
+</snippet-run>
+
+<script>
+  class SnippetRun extends HTMLElement {
+    private observer?: MutationObserver
+
+    connectedCallback() {
+      const { src, panel, label } = this.dataset as { src: string; panel: string; label: string }
+      const go = this.querySelector<HTMLButtonElement>('.snr-go')!
+      const copy = this.querySelector<HTMLButtonElement>('.snr-copy')!
+      const msg = this.querySelector('.snr-msg')!
+      const sync = () => {
+        const on = !!document.getElementById(panel)
+        go.setAttribute('aria-pressed', String(on))
+        go.textContent = on ? '关掉面板' : label
+      }
+      go.addEventListener('click', () => {
+        const s = document.createElement('script')
+        // 每次都要重新执行，加时间戳绕开缓存里「已执行过」的同一个脚本
+        s.src = `${src}?t=${Date.now()}`
+        s.onload = () => { s.remove(); sync() }
+        s.onerror = () => { s.remove(); msg.textContent = '脚本没加载成功，可以点「看源码」复制到控制台运行。' }
+        document.body.append(s)
+      })
+      // 面板自己的「关闭」按钮会把面板删掉，按钮状态跟着变回来
+      this.observer = new MutationObserver(sync)
+      this.observer.observe(document.body, { childList: true })
+      copy.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(await (await fetch(src)).text())
+          copy.textContent = '已复制'
+          msg.textContent = '已复制。打开任意页面的 DevTools，粘到 Console 里回车；再运行一次就关掉。'
+        } catch {
+          msg.textContent = '复制没成功（浏览器可能不允许读写剪贴板），点「看源码」手动复制。'
+        }
+      })
+    }
+
+    disconnectedCallback() {
+      this.observer?.disconnect()
+    }
+  }
+  if (!customElements.get('snippet-run')) customElements.define('snippet-run', SnippetRun)
+</script>
+
+<style is:global>
+  .snr-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+  .snr-go, .snr-copy {
+    min-height: 40px;
+    padding: 0 18px;
+    border-radius: 10px;
+    font: 600 14px/1 var(--sans);
+    cursor: var(--cursor-pointer);
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease), transform 0.1s var(--ease);
+  }
+  .snr-go { border: 1px solid var(--brand); background: var(--brand); color: #04201f; }
+  .snr-go[aria-pressed="true"] { background: transparent; color: var(--brand-ink); }
+  .snr-copy { border: 1px solid var(--line-hi); background: var(--panel); color: var(--strong); }
+  @media (hover: hover) {
+    .snr-go:hover { background: color-mix(in srgb, var(--brand) 85%, #fff 15%); }
+    .snr-go[aria-pressed="true"]:hover { background: color-mix(in srgb, var(--brand) 12%, transparent); }
+    .snr-copy:hover { border-color: var(--brand); }
+  }
+  .snr-go:active, .snr-copy:active { transform: scale(0.97); }
+  .snr-go:focus-visible, .snr-copy:focus-visible, .snr-src:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+  .snr-src { color: var(--brand-ink); font-size: 14px; text-decoration: underline; text-underline-offset: 3px; }
+  .snr-msg { margin: 14px 0 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
+  @media (max-width: 640px) {
+    .snr-go { flex: 1 1 100%; }
+    .snr-copy { flex: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .snr-go:active, .snr-copy:active { transform: none; opacity: 0.8; }
+  }
+</style>

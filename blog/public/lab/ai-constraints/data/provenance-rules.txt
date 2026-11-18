@@ -1,0 +1,40 @@
+带规则的三份（2026-11-18，Claude Code，全新 subagent，prompt 里多一句「写的时候遵守这份 UI 规则：…/AGENTS.md」）交付汇报摘录，原文照录，只截取和加载的 skill、读过的文件、跑过的检查、因检查而改的地方有关的句子。
+实验进行中，作者为了修改 H5 篇和风格统一篇，改过 h5-snippet.js（10:07）和 style-snippet.js（10:02）：前者改了框的颜色和文案，后者加了「控件高度」一栏和胶囊形的判定。第 1 份在汇报里注意到了这件事。
+
+== notices-rules-1.html ==
+**Skills loaded: none.** `ui-conventions` (the team UI rules skill) would normally trigger for "写页面", but you named AGENTS.md as the rule to follow, so I left it out to avoid mixing two rule sets.
+**Files read**
+- The rules: `.../scratchpad/ui-rules/AGENTS.md`
+- The tokens: `.../ai-constraints/tokens.css`, copied unchanged into `<style>`
+- The mock data: `.../ai-constraints/api/notices.json`
+- The five check snippets the rules list: xray (spacing), type (type levels), style (colors), net (network errors), h5 (safe area and tap targets)
+| h5 snippet, landscape 852×393 (left/right 59, bottom 21) | 0 under 44px, 0 in the safe area |
+| net snippet, injected before the page script | Load returning 500: error card with a retry, retry works. Load hanging: error after 15.4s. ... "全部已读" hanging: shows "标记中…", then times out at 15s, the label and enabled state come back, and the retry works |
+**Values the tokens don't have** (per the rules, I didn't invent values; this is where each gap shows up):
+- **Line width:** I used 1px ... **Focus ring:** 2px wide with a 2px offset. ... **Content max width:** there isn't one
+- Group headings use `--color-text-2` on the page background, a pair the tokens don't mark. I calculated 5.9:1 in light mode and 7.12:1 in dark.
+The h5 and style snippets were edited while I was working (10:07 and 10:02). The results above come from the newer versions.
+
+== notices-rules-2.html ==
+**Skills loaded:** only `ui-conventions`, because it matches "writing a page", and I read its `references/a11y-web.md`. Your AGENTS.md is the main rule set; I found no conflicts between the two.
+**Files read:**
+- `scratchpad/ui-rules/AGENTS.md`
+- `ai-constraints/tokens.css` (copied unchanged into `<style>`)
+- `ai-constraints/api/notices.json`
+- The five check scripts: `xray-snippet.js`, `type-snippet.js`, `style-snippet.js`, `net-snippet.js`, `h5-snippet.js`
+- `ai-h5/h5-probe.mjs` and the header of `ai-states/tools/focus-retry.mjs`, for how to drive Chrome from a script
+| Font levels (`type-snippet`, light and dark) | First run flagged the body text and the time as differing only in size. I changed the body text to the `text` colour; the rerun flagged nothing. |
+| Requests (`net-snippet`, injected before the page script) | ... A request that never answers shows the error after 15.6s. Item and "全部已读" requests that hang go back to normal after 15s |
+| Focus | ... After retry, focus moves to the status area, then to the list once it loads; the next Tab lands on the first unread notice |
+
+== notices-rules-3.html ==
+**Skills loaded:** none. The rules file you gave was the only rule source, so I didn't load `ui-conventions` or `frontend-design`, to avoid mixing in another rule set.
+**Files read:**
+- `scratchpad/ui-rules/AGENTS.md` (the UI rules). I didn't open `prompt.txt` in the same folder.
+- `tokens.css`, copied verbatim into `<style>`.
+- `api/notices.json`, to see the real data.
+- The five check scripts: `xray-snippet.js`, `type-snippet.js`, `style-snippet.js`, `net-snippet.js`, `h5-snippet.js`.
+- The quotes section of `ai-typography.mdx` (searched, not read in full), for how to fix narrow quotes.
+**Fixes the checks led to:**
+- The type check first flagged the body text (15px) and the time (13px) as differing only in size. I moved the body to the caption token.
+- Quotes rendered narrow because the token font stack puts `-apple-system` first. Following the typography post, I added an `@font-face` with `unicode-range` that sends only quotes, dashes and ellipses to local PingFang or Microsoft YaHei.

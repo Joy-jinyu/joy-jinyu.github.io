@@ -1,0 +1,83 @@
+{
+ "light": {
+  "group": {
+   "fs": 13,
+   "fw": "400",
+   "color": "#5f5e59",
+   "ls": "normal",
+   "tt": "none"
+  },
+  "title": {
+   "fs": 15,
+   "fw": "600",
+   "color": "#1c1c1a",
+   "ls": "normal",
+   "tt": "none"
+  },
+  "channels": [
+   "fw",
+   "color"
+  ],
+  "autospace": "normal",
+  "trimmed": 20,
+  "outside": [],
+  "lowContrast": [],
+  "bodyBg": "#f4f4f1",
+  "hoverOutside": 0,
+  "timeoutInCode": true,
+  "errors": []
+ },
+ "dark": {
+  "group": {
+   "fs": 13,
+   "fw": "400",
+   "color": "#a3a199",
+   "ls": "normal",
+   "tt": "none"
+  },
+  "title": {
+   "fs": 15,
+   "fw": "600",
+   "color": "#f0efea",
+   "ls": "normal",
+   "tt": "none"
+  },
+  "channels": [
+   "fw",
+   "color"
+  ],
+  "autospace": "normal",
+  "trimmed": 20,
+  "outside": [],
+  "lowContrast": [],
+  "bodyBg": "#141413",
+  "hoverOutside": 0,
+  "timeoutInCode": true,
+  "errors": []
+ },
+ "listHang": {
+  "firstError": {
+   "at": 15,
+   "text": "通知 全部已读 通知没有加载出来：网络太慢，请求超时了"
+  },
+  "stuck": false,
+  "end": "通知 全部已读 通知没有加载出来：网络太慢，请求超时了。 重新加载 通知设置 通知没有加载出来：网络太慢，请求超时了。",
+  "escaped": true
+ },
+ "readHang": {
+  "firstError": {
+   "at": 15,
+   "text": " 这条通知没有标为已读：网络太慢，请求超时了"
+  },
+  "stuck": false,
+  "end": "通知 全部已读 今天 未读， 林晓在《2026Q3报告.pdf》里评论了你 10:24 第6页的营收同比口径和上季度不一致，建议在脚注里说明一下。 未读， 上传完成 09:12 你用Claude Code上传的3个文件（共2.4GB）已处理完成。 周子航邀请你加入「设计评审」 08:30 邀请7天内有效，接受后可以查看",
+  "escaped": true
+ },
+ "retryFocus": {
+  "after": "main「正在加载通知… 通知没有加载出来」",
+  "nextTab": "button「未读，林晓在《2026Q3报告.」",
+  "ok": true
+ },
+ "landscape": [],
+ "portrait": []
+}

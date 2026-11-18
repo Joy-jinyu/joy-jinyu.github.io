@@ -1,0 +1,47 @@
+三个 subagent 交付时的汇报摘录（2026-11-18，Claude Code，原文照录，只截取和加载的 skill、读过的文件、H5 相关决定、自查方式有关的句子）
+
+== detail2.html ==
+**加载的 skill**
+- `ui-conventions`：这是新页面，所以按它的「新界面」流程走，读完了它的四份参考：间距、交互状态、文案、无障碍。没加载其他 skill。
+**读过的文件**
+- `~/.claude/skills/ui-conventions/SKILL.md` 和 `references/` 下的 `spatial.md`、`interaction.md`、`copy.md`、`a11y-web.md`
+- 同目录的 `ai-h5/prompt.txt`：内容和这次需求一样，只是写到 `detail1.html`
+- 查过 `blog/node_modules/@pkgs` 不存在，本机也没装 playwright。为了验证，在临时目录装了 `playwright-core@1.48.2`，调用本机 Chrome，没装到全局，也没进仓库。
+**交付前怎么检查的**（用 Chrome 模拟 375×667 手机屏，带触屏）
+| 发送评论 | 加到列表最后，「评论 · 3」跟着变 4；输入框清空，焦点留在输入框，键盘不会收起；回车也能发送 |
+| 新评论可见 | 新评论自动滚出来，不被底部输入栏挡住（一开始被挡了 1px，已修） |
+| 栏高 | 顶栏 44px，底栏 52px，加起来约占屏幕 14% |
+| 按钮大小 | 最小是发送按钮，高 36px，满足 24px 的底线，比手机上建议的 44px 小 |
+**没验证的**
+- iOS 键盘弹起时底栏的位置：代码里按 iOS 的可见区域变化把底栏顶到键盘上方。这只是按 iOS 的已知行为写的，headless 测不出来，要在真机上看。
+- 刘海和底部横条的安全区：只用 CSS 适配了，没在真机上看效果。
+
+== detail1.html ==
+**加载的 skill**
+- `ui-conventions`：按「新界面」档走，开工前先过它的六问（主任务、常驻操作、状态归谁、键盘路径、各种状态、375px 下顶栏和底栏的高度），交付前过它的六项验收。
+**读过的文件**
+- `/Users/joy/.claude/skills/ui-conventions/references/` 下的 `interaction.md`、`a11y-web.md`、`spatial.md`、`copy.md`
+- `blog/public/lab/ai-h5/prompt.txt`，和你这次给的需求一样
+- 确认项目没有自己的 `CLAUDE.md`；`blog` 下没有 `@pkgs/us-icons`。同目录别的输出没读。
+**交付前的检查（Playwright 驱动系统 Chrome，375×667）**
+| 顶栏 / 底栏高度 | 45 / 57px，合计约占屏幕高度 15% |
+**检查中发现并修好的 3 个问题**
+1. 新发的评论被底部输入栏挡住。加了 `scroll-padding` 修好，复测时评论底边正好贴着输入栏上沿。
+**没验证的部分：**
+  - WebKit 内核没跑，因为本机没装 Playwright 的 WebKit。
+  - 刘海屏和底部的安全区留白、软键盘弹起时底部栏的位置，没在真机上看过。
+  - 中文输入法按回车选词时不会误发的防护，写了但没法在自动化里模拟，属于推断。
+
+== detail3.html ==
+**Skills loaded**
+- `ui-conventions`, the only skill I invoked. I read its main file and all four reference files: accessibility, interaction, spacing and wording.
+- I also read the first 40 lines of the repo's `building-post-demos` skill. It is for components under `blog/src/components/`, so it doesn't cover this lab file, and I didn't follow it.
+**Files read**
+- `blog/public/lab/ai-h5/prompt.txt`. It is the same brief as yours, written for detail1.
+- I did not read `detail1.html` or `detail2.html`. While tracking down a problem with my checks (described below), I searched all three detail files for a word from another page's comments. Only detail2 matched; I saw the match count, not its content.
+**Checks before handing over** (Playwright with local Chrome, 375×667)
+| Height of fixed bars | Top bar 45px plus bottom bar 57px is 15.3% of the screen, just over the skill's 15% guideline. On phones with a notch the safe areas add more |
+**Not checked:**
+- How the bottom bar behaves when the keyboard opens in a real WKWebView or Android WebView, and the safe-area spacing on real devices.
+- System font scaling (iOS Dynamic Type, Android text zoom). I only simulated it with browser zoom.
+**About the parallel runs:** the agents writing detail1 and detail2 share my scratch folder. In my first check run, some screenshots with the same names were overwritten by their pages. The pass/fail results came from code running inside my page, so they were not affected.

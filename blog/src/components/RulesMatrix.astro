@@ -1,0 +1,75 @@
+---
+/**
+ * 规则对照表：同一个「通知」页需求，三组各 3 份：不带规则、只给规则、规则加检查脚本，逐条看做到了哪些。
+ * 判定在构建时从 blog/public/lab/ai-constraints/data/{plain,rulesonly,rules}-N.json（rules-probe.mjs 的输出）算出，规则写在 CHECKS 里。
+ * 表里测的是「照没照规则做」，不是页面质量的全部；布局、动效的规则这个页面用不上，没有测。
+ */
+import '../styles/spacing-lab.css'
+
+type R = Record<string, any>
+const data = import.meta.glob<R>('../../public/lab/ai-constraints/data/*-[123].json', { eager: true, import: 'default' })
+const get = (g: string, i: number) => data[`../../public/lab/ai-constraints/data/${g}-${i}.json`]
+const GROUPS = [{ g: 'plain', name: '不带规则' }, { g: 'rulesonly', name: '只给规则' }, { g: 'rules', name: '规则加检查' }]
+const COLS = GROUPS.flatMap(({ g }) => [1, 2, 3].map((i) => ({ g, i, label: `${i}` })))
+
+const CHECKS: [string, string, (d: R) => boolean][] = [
+  ['排版', '分组标题和条目标题，除了字号还有别的不同', (d) => (d.light.channels ?? []).length > 0],
+  ['排版', '接口来的文案打开了 text-autospace', (d) => d.light.autospace === 'normal' || d.light.autospace === 'auto'],
+  ['间距', '单行文字用 text-box 裁掉了上下空白', (d) => d.light.trimmed > 0],
+  ['风格', '颜色只用了设计变量（浅色、深色）', (d) => d.light.outside.length === 0 && d.dark.outside.length === 0],
+  ['风格', '文字对比度都在 4.5:1 以上（浅色、深色）', (d) => d.light.lowContrast.length === 0 && d.dark.lowContrast.length === 0],
+  ['状态', '列表请求一直不回来：最后报错', (d) => d.listHang.escaped],
+  ['状态', '标为已读一直不回来：最后报错、不卡住', (d) => d.readHang.escaped],
+  ['状态', '重试以后焦点没有掉到 body', (d) => d.retryFocus.ok],
+  ['H5', '横屏时没有元素伸进安全区边距', (d) => d.landscape.length === 0],
+  ['H5', '悬停样式只写在 @media (hover: hover) 里', (d) => d.light.hoverOutside === 0],
+  ['变量表', '跟着系统切到深色（变量表里有深色值）', (d) => d.light.bodyBg !== d.dark.bodyBg],
+]
+const rows = CHECKS.map(([group, label, fn]) => ({ group, label, cells: COLS.map((c) => fn(get(c.g, c.i))) }))
+const sum = (g: string) => rows.reduce((n, r) => n + r.cells.filter((ok, k) => ok && COLS[k].g === g).length, 0)
+---
+
+<figure class="rmx sx-panel not-prose">
+  <table>
+    <thead>
+      <tr><th rowspan="2" scope="col">规则</th>{GROUPS.map((x, k) => <th colspan="3" scope="colgroup" class:list={{ 'rmx-r': k > 0 }}>{x.name}</th>)}</tr>
+      <tr>{COLS.map((c) => <th scope="col" class:list={{ 'rmx-r': c.i === 1 && c.g !== 'plain' }}><span class="rmx-n">第 </span>{c.label}<span class="rmx-n"> 份</span></th>)}</tr>
+    </thead>
+    <tbody>
+      {rows.map((r, i) => (
+        <tr class:list={{ 'is-first': i === 0 || rows[i - 1].group !== r.group }}>
+          <th scope="row"><span class="rmx-row"><span class="rmx-g">{r.group}</span><span>{r.label}</span></span></th>
+          {r.cells.map((ok, k) => <td class:list={['rmx-c', ok ? 'is-ok' : 'is-bad', { 'rmx-r': k % 3 === 0 && k > 0 }]}><span aria-label={ok ? '做到了' : '没做到'}>{ok ? '✓' : '✗'}</span></td>)}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  <figcaption class="sx-cap">同一个「通知」页需求、同一份设计变量，每组三个全新的 subagent。{rows.length} 行里，不带规则的三份一共做到 {sum('plain')} 格，只给规则的 {sum('rulesonly')} 格，规则加检查脚本的 {sum('rules')} 格（每组满分 {rows.length * 3}）。表里测的是「照没照规则做」，不是页面好不好；用色、对比度两行主要靠变量表，最后一行由变量表决定，不在规则里；布局、动效的规则这个页面用不上，没有测。接口由测量脚本拦截后回复，安全区边距用 CDP 模拟，2026-11-18 在 Chrome 157 里跑。</figcaption>
+</figure>
+
+<style is:global>
+  .rmx table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .rmx th, .rmx td { padding: 7px 6px; border-top: 1px solid var(--line); text-align: left; font-weight: 400; }
+  .rmx thead th { border-top: 0; color: var(--muted); font-size: 12px; white-space: nowrap; text-align: center; }
+  .rmx thead tr:first-child th:first-child { text-align: left; vertical-align: bottom; }
+  .rmx tbody th { color: var(--strong); }
+  .rmx tr.is-first th, .rmx tr.is-first td { border-top-color: var(--line-hi); }
+  .rmx-row { display: flex; gap: 6px; }
+  .rmx-g { flex: none; width: 3em; color: var(--muted); }
+  .rmx tr:not(.is-first) .rmx-g { visibility: hidden; }
+  .rmx-r { border-left: 1px solid var(--line-hi); }
+  .rmx-c { width: 3.4em; text-align: center !important; font-weight: 600; }
+  .rmx-c.is-ok { color: #3f8f6b; }
+  .rmx-c.is-bad { color: #c2334a; background: color-mix(in srgb, #c2334a 10%, transparent); }
+  :root:not([data-theme="light"]) .rmx-c.is-ok { color: #6fcf9f; }
+  :root:not([data-theme="light"]) .rmx-c.is-bad { color: #ff8a94; }
+  @media (max-width: 640px) {
+    .rmx { padding: 16px 10px; }
+    .rmx table { font-size: 12px; }
+    .rmx th, .rmx td { padding: 6px 3px; }
+    .rmx thead th { font-size: 10.5px; }
+    .rmx-c { width: 1.9em; }
+    .rmx-n { display: none; }
+    .rmx-g { display: none; }
+  }
+</style>

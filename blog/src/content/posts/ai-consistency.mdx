@@ -1,0 +1,201 @@
+---
+title: 风格统一：变量表写到哪，它就守到哪
+description: 风格该从哪来、来源要先验什么、变量表要写全哪几项；附一段列出页面实际画出来的颜色、圆角和字号的脚本。
+date: 2026-11-18T10:10:00+08:00
+tags: [UI, 设计变量, 颜色, AI, 审美]
+column: ui-taste
+meta: 系列第五篇 · 风格统一
+draft: false
+---
+
+import StyleSources from '../../components/StyleSources.astro'
+import ContrastSwatches from '../../components/ContrastSwatches.astro'
+import Figure from '../../components/Figure.astro'
+import SnippetRun from '../../components/SnippetRun.astro'
+
+下面是同一个 App 里的两个页面：「团队成员」和「升级套餐」。每个页面在三种条件下各让 AI 写了两次，演示里是第一轮：只给需求；另外给一张已有的参考页；另外给一组设计变量。手机下面的色块是页面实际画出来的颜色，虚线框的是来源之外的颜色。
+
+<StyleSources />
+
+只给需求时，两个页面像是两个 App：一个用蓝色做强调色，头像有橙、紫、蓝、绿四种底色；一个用墨绿色做主按钮。浅色模式下画出来的颜色只有白色是共同的。给了参考页，两个页面的颜色几乎全部来自参考页，连参考页里那个对比度不合格的按钮也照抄了。给了设计变量，颜色一个不差；可变量表没写字重，两页各用一套，也没写深色值，两页都只做了浅色。
+
+这篇讲四件事：风格为什么每次都要重新选；给参考页时，它会照抄什么；变量表要写全哪几项；颜色为什么要成对定义。最后给一段能列出任何页面实际用色的脚本。
+
+范围：两个页面、三种条件，每份 prompt 交给全新的 Claude Code subagent 写两次（2026-10-31 和 2026-11-18），共 12 份，上面的演示是第一轮；2026-11-18 在 macOS 的 Chrome 157 里量，375px 宽的手机视口，浅色和深色各量一遍。prompt 和原始数据在附录。
+
+## 风格是每次重新选的
+
+AI 每写一个页面，配色、圆角、字重都是这一次现选的；不告诉它和谁一致，它就没有理由和谁一致。只给需求的两个页面，各自都很规整，都在 `:root` 里定义了自己的一套变量，「团队成员」58 个，「升级套餐」38 个。只是这是两套：
+
+| | 团队成员 | 升级套餐 |
+| --- | --- | --- |
+| 强调色 | 蓝 #1f5ad6（「邀请」是蓝字按钮），头像另有橙、紫、蓝、绿四种底色 | 墨绿 #0b6e5c |
+| 圆角 | 4、10、胶囊 | 6、10、14、胶囊 |
+| 字重 | 400、500、600 | 400、500、600、700 |
+| 控件高度 | 32、40、44 | 44、47 |
+
+第二轮两页都选了蓝色，但是两种蓝（`#2457e0` 和 `#2f5bea`），两页共有的颜色只有白色和两种浅灰，圆角、字号、字重也不完全一样。同一份 prompt 跑两次也会变：「升级套餐」第一轮的主色是墨绿 `#0b6e5c`，第二轮换成了蓝 `#2f5bea`。[系列导读](/blog/ai-ui-taste/)里，同一个「团队空间」卡片写了三次，两次是陶土色，一次是蓝色，按钮圆角有 10 和 12 两种。
+
+所以风格统一的第一步，不是检查每个页面好不好看，而是给每次生成指定同一个来源。实际项目里，页面常常是不同的人、不同的会话、隔几个月写的，每一次都等于这里的「全新 subagent」。把两个页面并排打开看一眼，或者用文末的脚本把两页的颜色列表各列一遍，差别马上就出来。
+
+来源有两种给法：一张参考页，或者一组设计变量。下面两节分别看它们管住了什么。
+
+## 参考页会被连同错误一起照抄
+
+给参考页，AI 会把它当成标准答案，参考页里错的地方也一起抄过去。两个页面的颜色几乎全部来自参考页：按浅色、深色合起来数，第一轮「团队成员」画出来的 18 种颜色全在参考页的源码里，「升级套餐」19 种里只多了 1 种（深色模式下月付 / 年付开关的滑块）；第二轮的 17 种、18 种全在参考页里。参考页「升级套餐」按钮的白字配陶土色，对比度只有 3.9:1，不到 [WCAG](https://www.w3.org/TR/WCAG22/#contrast-minimum) 要求的 4.5:1。两轮四个页面都照搬了这个陶土色 #c96442：三个拿它配白字做主按钮（第一轮的「邀请」「升级到团队版」，第二轮的「升级到团队版」），都是 3.9:1；第四个把它当文字色，放在浅灰底上做「邀请」，3.54:1，同样不合格。
+
+第一轮的两个 subagent 其实都发现了。一个在汇报里写：这和参考卡片里「升级套餐」是同一对颜色，改了就和现有 App 对不上，「That's a call for whoever owns the App's style」。另一个也说这是两边共用的配色，「需要你决定」。一致和正确冲突时，它们选了一致，把决定留给人。第二轮的两个 subagent 在汇报里都没有提到这对颜色。这个选择本身说得通，可结果是：参考页里的一个错误，变成了每个新页面里的错误。
+
+参考页还有一个管不到的地方：它没有的组件。参考页是一张卡片，没有开关、没有价格，「升级套餐」里这两样的样式只能自己定，两轮都多出了 8px、12px 的圆角和 28px 的字号。
+
+**怎么看出来。** 在 DevTools 里选中参考页的主按钮，点样式面板里文字颜色前面的色块，取色器会直接显示这一对颜色的对比度，以及过没过 AA。参考页里不合格的，新页面里大概率也不合格。
+
+**怎么写对。** 参考页先修好再给。给之前用 axe 在浅色、深色模式下各扫一遍（导读里的四步验收法第一步），不合格的先改掉：
+
+```css title="参考页改一个变量，新页面跟着就对了"
+:root {
+  --accent: #b65a3c;   /* 原来是 #c96442，白字对比度 3.9:1；改后 4.65:1 */
+}
+```
+
+**还有哪里会这样。** 复制一个旧页面当模板，旧页面的遗留问题就跟着复制；把设计稿截图丢给 AI 照着写，截图里的错也是标准答案；组件库里有一个不合格的按钮，所有用它的页面都不合格。
+
+## 变量表写到哪，它就守到哪
+
+给设计变量，AI 会一字不差地守住变量表写到的那几项，没写到的，要么自己补，要么干脆不做。这一组的 prompt 写的是「必须使用下面这组设计变量，不要自己另选颜色、圆角和字号」，给了 7 个颜色变量（其中主色上的文字和卡片底都是白色，实际是 6 个值）、2 个圆角、3 个字号、5 档间距。两轮四个页面画出来的颜色正好是这 6 个值，字号只有 13、15、18 三种。圆角多出来两样：四个页面都用了胶囊形（全圆角），用在标签、徽章上，第二轮的「团队成员」用在头像上；第一轮的「升级套餐」还有一个由变量算出来的 6px（`calc(var(--radius-control) - var(--space-1))`）。这两样变量表里都没有。颜色和字号一个不差，圆角也基本守住了。
+
+变量表没写的就不一样了：
+
+- **字重。** 第一轮的「团队成员」只用了 400 和 600；「升级套餐」用了四种，价格 700，开关和问答标题 500。第二轮两页各用了三种，组合还不一样（400、500、600 和 400、600、700）。
+- **控件高度。** 第一轮「团队成员」的「撤回」按钮 32px，第二轮 36px；「升级套餐」两轮的问答行都是 47px。
+- **深色模式。** 四个页面都只做了浅色。一个 subagent 的理由是：「给的变量只有浅色一套，加深色就得自己选颜色，所以固定为浅色。」
+
+第二轮的一个也说：「变量只有浅色一套，我也不该自己另选深色值。」不做深色，比自己编一套深色更好：它守住了「不要自己另选颜色」。可对用户来说，系统切到深色以后，这些页面还是白的。变量表少写一项，AI 就只剩两种选择：自己编，或者不做，哪种都不是统一。
+
+**怎么看出来。** 在两个页面上各跑一遍文末的脚本，比较字重和控件高度两栏；再把系统切到深色看一眼。两页不一样的那一栏，就是变量表缺的那一项。
+
+**怎么写对。** 变量表要写全 AI 会碰到的每一项，而不只是颜色、圆角、字号：
+
+```css title="变量表至少写全这几项"
+:root {
+  /* 颜色：每个颜色配好「在它上面的文字色」，浅色、深色各一套 */
+  --color-accent: #b65a3c;  --color-on-accent: #ffffff;
+  --color-bg: #f4f4f1;      --color-card: #ffffff;
+  --color-text: #1c1c1a;    --color-text-2: #5f5e59;   --color-line: #e7e6e1;
+  /* 字号和字重成对：每一级都写清楚用哪个字重；--font-sans 也要写进来，下面三行都引用它 */
+  --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-title: 600 18px/1.4 var(--font-sans);
+  --font-body: 400 15px/1.6 var(--font-sans);
+  --font-caption: 400 13px/1.5 var(--font-sans);
+  /* 圆角、控件高度、阴影 */
+  --radius-card: 16px;  --radius-control: 10px;
+  --control-h: 44px;    --control-h-sm: 32px;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px rgb(0 0 0 / 0.06);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-accent: #d97757;  --color-on-accent: #1a1a19;   /* 主色变亮，上面的字换成深色 */
+    --color-bg: #141413;      --color-card: #1f1e1c;
+    --color-text: #f0efea;    --color-text-2: #a3a199;   --color-line: #2f2e2b;
+  }
+}
+```
+
+深色这一套取自参考页 run1 的深色值。悬停、按下、禁用的颜色，如果团队有固定的做法，也写进来；没写，就和字重一样要由 AI 自己定。
+
+**还有哪里会这样。** 动效的时长和缓动、弹层的层级（`z-index`）、断点、图标尺寸，这一组没有测，但道理一样：变量表里没有的项，每个页面都要自己定一次。
+
+## 颜色要成对定义
+
+对比度是一对颜色的事，不是一个颜色的事：主色本身无所谓合不合格，主色配上它上面的字才有。导读里同一个 prompt 生成的三张卡片，每一张都有按钮在某个模式下不合格，看下面每一列的上下两格：
+
+<Figure caption="上排是 AI 原样的按钮和徽章颜色，下排是修正后的；比值按 WCAG 公式算出，不到 4.5:1 的标红。深色的两列放在深色底上看。颜色取自导读里三张卡片的 CSS 变量。">
+  <ContrastSwatches />
+</Figure>
+
+第 3 次只在深色模式下不合格，第 2 次浅色（4.07:1）、深色都不合格。深色模式下这两张出问题的原因一样：深色底上，主色要调亮才显眼（第 2 次从 #c4623a 调到 #e07a52，第 3 次从 #2f5bea 调到 #5b7cff），上面的字却还是白色，亮底配白字，对比度就掉到了 2.97:1 和 3.64:1。第 1 次在深色模式下反倒做对了：主色调亮的同时，按钮上的字换成了深色，5.58:1；它没过的是浅色模式，3.9:1。
+
+所以「主色」不能单独定义，要和「主色上的文字色」成对定义，浅色、深色各一对，在变量表里就算好对比度。这也是 [Material 3 的颜色角色](https://developer.android.com/design/ui/mobile/guides/styles/color)的做法：每个「容器」颜色配一个「on-容器」颜色，「Color role pairs … have tonal values that provide accessible contrast」。给了变量的那组页面，主色 #b65a3c 配白字是 4.65:1，四个页面里主色配白字的地方（升级按钮、「推荐」徽章、「所有者」标签）因此都合格。变量表里可以直接放一段检查：
+
+```js title="变量表旁边放一段检查：每一对都要过 4.5:1"
+const pairs = [
+  ['--color-accent', '--color-on-accent'],
+  ['--color-card', '--color-text'],
+  ['--color-card', '--color-text-2'],
+]
+// 浅色、深色各跑一次（DevTools 的 Rendering 面板里切 prefers-color-scheme）
+const probe = document.createElement('i')
+document.body.append(probe)
+const rgb = (v) => { probe.style.color = `var(${v})`; return getComputedStyle(probe).color.match(/[\d.]+/g).slice(0, 3).map(Number) }
+const lum = (c) => c.map((x) => { x /= 255; return x <= 0.04045 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4 }).reduce((s, x, i) => s + x * [0.2126, 0.7152, 0.0722][i], 0)
+for (const [bg, fg] of pairs) {
+  const [a, b] = [lum(rgb(bg)), lum(rgb(fg))].sort((x, y) => y - x)
+  const ratio = (a + 0.05) / (b + 0.05)
+  console.log(bg, fg, ratio.toFixed(2), ratio >= 4.5 ? '通过' : '不到 4.5:1')
+}
+probe.remove()
+```
+
+**还有哪里会这样。** 浅色底上的彩色字（第 2 次的「Pro」徽章，浅陶土底配陶土字，3.44:1）、禁用按钮的灰字、彩色底上的链接、图表里贴着色块的标签。凡是「一个颜色放在另一个颜色上」的地方，都要当成一对来定。
+
+## 验收：列出页面实际画出来的值
+
+验收要看页面上实际画出来的值，而不是源码里写了哪些变量。这篇的脚本就做这件事，贴进 DevTools 的 Console 回车，右下角出现一个面板，列出页面上实际画出来的颜色、圆角、字号、字重、阴影和控件高度，并标出不等于任何一个 CSS 变量的值。
+
+<SnippetRun src="ai-consistency/style-snippet.js" panel="__style_audit__" note="右下角会出现一个面板：每一类值有几种、各用在几处，不等于任何 CSS 变量的标成「变量之外」。点一行，就在页面上框出用它的元素。" />
+
+在第一轮的六个页面上跑（[输出](/blog/lab/ai-consistency/data/snippet-output.txt)），结果要这样读：
+
+- **给变量的两页**：变量之外 1 处和 3 处。「团队成员」是胶囊形；「升级套餐」是胶囊形、算出来的 6px 和 47px 高的问答行。和上面量到的一致。
+- **给参考页的两页**：颜色全在页面自己定义的变量里（深色的月付滑块颜色，是「升级套餐」自己新加的一个变量），圆角、字号、控件高度却标出了 12 处和 14 处。因为参考页自己只把颜色做成了变量，圆角和字号都是直接写的数字，照抄过来也是直接写的数字。
+- **不给来源的两页**：变量之外各 1 处。这不代表它们和谁一致，只代表它们和自己新起的那 58 个、38 个变量几乎一致。
+
+所以看结果之前，先看面板第二行读到了多少个变量、是不是来自团队的变量文件。是，「变量之外」的每一处就都要有个说法；不是，这个页面根本没有接上来源。
+
+## 给 AI 的规则
+
+AI 已经会守住给定的变量、会照抄参考页了，规则只补它做不到的：
+
+```md title="写进 AGENTS.md 或 skill 的风格规则"
+- 新页面先确定风格来源：引入团队的变量文件（首选），或者指定一张参考页。
+  只写「和现有风格一致」不算来源。
+- 变量文件里没有的项（字重、控件高度、悬停和按下的颜色），可以先定一个值，
+  但只在页面开头一个集中的 `:root` 块里定义成变量，全页只引用它；缺深色值就不做深色，不要自己编一套。
+  交付说明里列出缺了哪几项、用在哪里，请人补进变量文件。
+- 照着参考页写时，参考页里对比度不到 4.5:1 的配色，不要用到新元素上：
+  改用变量表里合格的一对，并在交付说明里写明。
+- 交付前在页面上跑一遍 /blog/lab/ai-consistency/style-snippet.js，把「变量之外」的每一处列出来，说明为什么不用变量。
+```
+
+第三条是一个取舍：它让新页面和参考页有一处不一样。团队更在意一致，就把它换成「先修参考页」。
+
+## 附录：实测材料
+
+十二个页面由十二个全新的 Claude Code subagent 各写一次：六份 prompt 在 2026-10-31 写了第一轮，2026-11-18 又各写了一次（文件名带 -2）。模型都是当时会话的默认模型 Claude Opus 5.5（subagent 继承它，汇报里没有自己写模型名）。prompt 里只有需求，派发时另加了一句「写完后简短汇报：加载了哪些 skill、读了哪些文件、交付前怎么检查的」。它们继承这台机器上的全局配置 `~/.claude/CLAUDE.md` 和 skill 列表。据它们自己的汇报（[第一轮摘录](/blog/lab/ai-consistency/data/provenance.txt)、[第二轮摘录](/blog/lab/ai-consistency/data/provenance-2.txt)）：十二个都加载了团队的 UI 规范 skill（ui-conventions），都说没有打开同目录下其他条件的 prompt 和第一轮的页面；第一轮有三个中途遇到 API 限额中断，恢复后接着完成；第二轮六个都为了找到怎么启动浏览器，看过测量脚本的开头：四个看了 style-probe.mjs 的前 20 或 30 行，一个看了 style-probe.mjs 和 tools/snippet-run.mjs 的文件头，一个看了 ai-ui-taste/probe.mjs 的开头。style-probe.mjs 的文件头写着「用来和参考页、设计变量比对」，看过它的五个（包括两个不给来源的）都能读到这句，等于知道了实验在比什么。第一轮的「团队成员 · 给设计变量」也看过 ai-typography/type-probe.mjs 的前 30 行。全局配置里有「颜色用 token」这类通用规则，不给来源的两页各自起了一套变量，可能和它有关。
+
+```text title="「团队成员」的 prompt（三种条件只差倒数第二段）"
+用 HTML + CSS + 少量原生 JS 写一个单文件页面：移动端 H5 的「团队成员」页。
+
+内容从上到下：
+- 顶部导航栏：左边返回按钮，中间标题「团队成员」，右边「邀请」按钮
+- 一个搜索框，占位文字「搜索成员」，输入时按名字过滤列表
+- 「成员 · 6」分组：六行，每行头像、名字、一个角色标签（所有者 / 管理员 / 成员）、一行小字最近活跃时间（如「2 小时前活跃」），右侧一个「更多」按钮，点开是菜单：设为管理员、移出团队
+- 「待接受的邀请 · 2」分组：两行，每行邮箱、「3 天前发出」，右侧一个「撤回」按钮
+- 页面底部一行小字：Pro 套餐最多 10 人，已用 6 个名额
+
+【给参考页时加这一段】
+这个页面和已有的「团队空间」卡片属于同一个 App，视觉风格要和它保持一致：……/ai-ui-taste/run1.html
+
+【给设计变量时加这一段】
+必须使用下面这组设计变量，不要自己另选颜色、圆角和字号：
+（7 个颜色、2 个圆角、3 个字号、5 档间距，原文见 prompt-members-token.txt）
+
+把完整代码写到这个文件：……/members-plain.html
+```
+
+「升级套餐」的 prompt 结构相同，需求是：顶部关闭按钮和标题、月付 / 年付切换（年付旁标「省 20%」）、三张套餐卡片（免费版、Pro 标「当前套餐」、团队版标「推荐」，当前套餐的按钮不可点）、三条可展开的常见问题、底部一行小字。六份 prompt 原文：[members-plain](/blog/lab/ai-consistency/prompt-members-plain.txt)、[members-ref](/blog/lab/ai-consistency/prompt-members-ref.txt)、[members-token](/blog/lab/ai-consistency/prompt-members-token.txt)、[upgrade-plain](/blog/lab/ai-consistency/prompt-upgrade-plain.txt)、[upgrade-ref](/blog/lab/ai-consistency/prompt-upgrade-ref.txt)、[upgrade-token](/blog/lab/ai-consistency/prompt-upgrade-token.txt)。参考页是导读里的第 1 张卡片 [run1.html](/blog/lab/ai-ui-taste/run1.html)。
+
+- 原样产出，第一轮：[members-plain.html](/blog/lab/ai-consistency/members-plain.html)、[members-ref.html](/blog/lab/ai-consistency/members-ref.html)、[members-token.html](/blog/lab/ai-consistency/members-token.html)、[upgrade-plain.html](/blog/lab/ai-consistency/upgrade-plain.html)、[upgrade-ref.html](/blog/lab/ai-consistency/upgrade-ref.html)、[upgrade-token.html](/blog/lab/ai-consistency/upgrade-token.html)；第二轮：[members-plain-2.html](/blog/lab/ai-consistency/members-plain-2.html)、[members-ref-2.html](/blog/lab/ai-consistency/members-ref-2.html)、[members-token-2.html](/blog/lab/ai-consistency/members-token-2.html)、[upgrade-plain-2.html](/blog/lab/ai-consistency/upgrade-plain-2.html)、[upgrade-ref-2.html](/blog/lab/ai-consistency/upgrade-ref-2.html)、[upgrade-token-2.html](/blog/lab/ai-consistency/upgrade-token-2.html)。
+- 测量：[style-probe.mjs](/blog/lab/ai-consistency/style-probe.mjs) 列出页面上实际画出来的颜色、圆角、阴影、字号、字重和控件高度，浅色、深色各一份，原始输出在 [data/](/blog/lab/ai-consistency/data/members-ref.json) 下（2026-11-18 量）；[style-diff.py](/blog/lab/ai-consistency/style-diff.py) 把它们和来源比，结果在 [diff-summary.txt](/blog/lab/ai-consistency/data/diff-summary.txt)。1px 以下的读屏专用隐藏元素不算。
+- 对比度：按 WCAG 2.2 的相对亮度公式计算。三张卡片的数值和导读里的测量一致。
+- 浏览器版脚本：[style-snippet.js](/blog/lab/ai-consistency/style-snippet.js)，在第一轮的六个页面和参考页上跑的是 [tools/snippet-run.mjs](/blog/lab/ai-consistency/tools/snippet-run.mjs)（[输出](/blog/lab/ai-consistency/data/snippet-output.txt)）。

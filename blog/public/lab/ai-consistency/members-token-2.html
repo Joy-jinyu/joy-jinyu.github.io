@@ -1,0 +1,758 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>团队成员</title>
+<style>
+  :root {
+    --color-accent: #b65a3c;      /* 主色 */
+    --color-on-accent: #ffffff;   /* 主色上的文字 */
+    --color-text: #1c1c1a;
+    --color-text-2: #5f5e59;
+    --color-line: #e7e6e1;
+    --color-bg: #f4f4f1;
+    --color-card: #ffffff;
+    --radius-card: 16px;
+    --radius-control: 10px;
+    --font-sm: 13px;
+    --font-md: 15px;
+    --font-lg: 18px;
+    --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    font-size: var(--font-md);
+    line-height: 1.5;
+  }
+
+  button, input { font: inherit; color: inherit; }
+
+  button {
+    margin: 0;
+    border: 0;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  /* 导航栏：底色用 card，因为主色文字在 --color-bg 上对比度只有 4.22:1，不到 4.5 */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: env(safe-area-inset-top) var(--space-2) 0;
+    background: var(--color-card);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .nav h1 {
+    margin: 0;
+    font-size: var(--font-lg);
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .nav-back {
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-control);
+  }
+
+  .nav-back::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    margin-left: var(--space-1);
+    border-left: 2px solid var(--color-text);
+    border-bottom: 2px solid var(--color-text);
+    transform: rotate(45deg);
+  }
+
+  .nav-invite {
+    justify-self: end;
+    min-height: 44px;
+    padding: 0 var(--space-3);
+    border-radius: var(--radius-control);
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  .nav-back:active,
+  .nav-invite:active { background: var(--color-bg); }
+
+  main {
+    padding: var(--space-4) var(--space-4) calc(var(--space-5) + env(safe-area-inset-bottom));
+  }
+
+  .search {
+    position: relative;
+    margin-bottom: var(--space-5);
+  }
+
+  /* 放大镜用 CSS 画：圆圈 + 斜杠 */
+  .search::before,
+  .search::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .search::before {
+    left: var(--space-3);
+    top: 50%;
+    width: 12px;
+    height: 12px;
+    margin-top: -8px;
+    border: 2px solid var(--color-text-2);
+    border-radius: 50%;
+  }
+
+  .search::after {
+    left: 26px;
+    top: 50%;
+    width: 2px;
+    height: 6px;
+    margin-top: 4px;
+    background: var(--color-text-2);
+    transform: rotate(-45deg);
+  }
+
+  .search input {
+    width: 100%;
+    min-height: 44px;
+    padding: 0 var(--space-3) 0 36px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-control);
+    background: var(--color-card);
+    font-size: var(--font-md);
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .search input::placeholder { color: var(--color-text-2); }
+
+  /* WebKit 自带的清除按钮是系统蓝，不在设计变量里，隐藏掉 */
+  .search input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+
+  .search input:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 0;
+    border-color: var(--color-accent);
+  }
+
+  .group + .group { margin-top: var(--space-5); }
+
+  .group h2 {
+    margin: 0 0 var(--space-2);
+    padding: 0 var(--space-1);
+    color: var(--color-text-2);
+    font-size: var(--font-sm);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  /* 卡片不设 overflow: hidden，否则会裁掉焦点环和弹出菜单 */
+  .card {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: var(--color-card);
+    border-radius: var(--radius-card);
+  }
+
+  .row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-2) var(--space-3) var(--space-4);
+  }
+
+  #member-list .row:not(.is-first)::before,
+  .invite-list .row + .row::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 68px;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .invite-list .row + .row::before { left: var(--space-4); }
+
+  .row[hidden] { display: none; }
+
+  .avatar {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--color-bg);
+    color: var(--color-text-2);
+    font-size: var(--font-md);
+    font-weight: 600;
+  }
+
+  .row-main {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .row-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-1) var(--space-2);
+  }
+
+  .name {
+    font-size: var(--font-md);
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+
+  .email {
+    font-size: var(--font-md);
+    overflow-wrap: anywhere;
+  }
+
+  .meta {
+    margin-top: 2px;
+    color: var(--color-text-2);
+    font-size: var(--font-sm);
+    line-height: 1.4;
+  }
+
+  /* 角色靠文字区分，颜色只是第二编码 */
+  .tag {
+    flex: none;
+    padding: 0 var(--space-2);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-control);
+    color: var(--color-text-2);
+    font-size: var(--font-sm);
+    line-height: 20px;
+    white-space: nowrap;
+  }
+
+  .tag[data-role="owner"] {
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+
+  .tag[data-role="admin"] {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .actions { position: relative; flex: none; }
+
+  .more-btn {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-control);
+    color: var(--color-text-2);
+    font-size: var(--font-lg);
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+
+  .more-btn:active,
+  .more-btn[aria-expanded="true"] {
+    background: var(--color-bg);
+    color: var(--color-text);
+  }
+
+  .menu {
+    position: absolute;
+    top: calc(100% + var(--space-1));
+    right: 0;
+    z-index: 5;
+    min-width: 168px;
+    margin: 0;
+    padding: var(--space-1);
+    list-style: none;
+    background: var(--color-card);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-control);
+  }
+
+  .menu[hidden] { display: none; }
+
+  .menu li + li { margin-top: var(--space-1); }
+
+  .menu-sep {
+    height: 0;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .menu-item {
+    display: block;
+    width: 100%;
+    min-height: 44px;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-control);
+    text-align: left;
+    font-size: var(--font-md);
+    line-height: 1.4;
+  }
+
+  .menu-item:hover,
+  .menu-item:focus-visible { background: var(--color-bg); }
+
+  .menu-item:focus-visible { outline-offset: -2px; }
+
+  .menu-item[aria-disabled="true"] {
+    color: var(--color-text-2);
+    cursor: default;
+  }
+
+  .menu-item[aria-disabled="true"]:hover { background: none; }
+
+  .menu-hint {
+    display: block;
+    font-size: var(--font-sm);
+  }
+
+  .withdraw-btn {
+    flex: none;
+    min-height: 36px;
+    margin-right: var(--space-2);
+    padding: 0 var(--space-3);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-control);
+    font-size: var(--font-sm);
+  }
+
+  .withdraw-btn:active { background: var(--color-bg); }
+
+  .empty {
+    padding: var(--space-4);
+    color: var(--color-text-2);
+    font-size: var(--font-sm);
+    text-align: center;
+  }
+
+  .empty[hidden] { display: none; }
+
+  .footnote {
+    margin: var(--space-5) 0 0;
+    color: var(--color-text-2);
+    font-size: var(--font-sm);
+    text-align: center;
+  }
+
+  dialog {
+    width: calc(100% - 2 * var(--space-5));
+    max-width: 320px;
+    padding: var(--space-5) var(--space-4) var(--space-4);
+    border: 0;
+    border-radius: var(--radius-card);
+    background: var(--color-card);
+    color: var(--color-text);
+  }
+
+  dialog::backdrop {
+    background: var(--color-text);
+    opacity: 0.4;
+  }
+
+  dialog h3 {
+    margin: 0 0 var(--space-2);
+    font-size: var(--font-lg);
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  dialog p {
+    margin: 0 0 var(--space-5);
+    color: var(--color-text-2);
+    font-size: var(--font-md);
+  }
+
+  .dialog-actions {
+    display: flex;
+    gap: var(--space-3);
+  }
+
+  .dialog-actions button {
+    flex: 1;
+    min-height: 44px;
+    border-radius: var(--radius-control);
+    font-weight: 600;
+  }
+
+  .btn-secondary {
+    border: 1px solid var(--color-line);
+    background: var(--color-card);
+  }
+
+  .btn-primary {
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .nav-back, .nav-invite, .more-btn, .menu-item, .withdraw-btn, .dialog-actions button {
+      transition: background-color 0.15s ease;
+    }
+  }
+</style>
+</head>
+<body>
+  <header class="nav">
+    <button type="button" class="nav-back" aria-label="返回" title="返回" onclick="history.back()"></button>
+    <h1>团队成员</h1>
+    <button type="button" class="nav-invite">邀请</button>
+  </header>
+
+  <main>
+    <div class="search" role="search">
+      <label for="member-search" class="visually-hidden">按名字搜索成员</label>
+      <input id="member-search" type="search" placeholder="搜索成员" autocomplete="off" enterkeyhint="search">
+    </div>
+
+    <section class="group" aria-labelledby="members-title">
+      <h2 id="members-title">成员 · <span id="member-count">6</span></h2>
+      <ul class="card" id="member-list"></ul>
+      <p class="card empty" id="member-empty" hidden>没有名字匹配的成员</p>
+    </section>
+
+    <section class="group" aria-labelledby="invites-title">
+      <h2 id="invites-title">待接受的邀请 · <span id="invite-count">2</span></h2>
+      <ul class="card invite-list" id="invite-list"></ul>
+      <p class="card empty" id="invite-empty" hidden>没有待接受的邀请</p>
+    </section>
+
+    <p class="footnote">Pro 套餐最多 10 人，已用 <span id="seat-used">6</span> 个名额</p>
+
+    <p class="visually-hidden" id="live" aria-live="polite"></p>
+  </main>
+
+  <ul class="menu" id="member-menu" role="menu" hidden></ul>
+
+  <dialog id="remove-dialog" aria-labelledby="remove-title" aria-describedby="remove-desc">
+    <form method="dialog">
+      <h3 id="remove-title"></h3>
+      <p id="remove-desc">移出后 TA 将无法访问团队内容，需要重新邀请才能加入。</p>
+      <div class="dialog-actions">
+        <button type="submit" value="cancel" class="btn-secondary" autofocus>取消</button>
+        <button type="submit" value="confirm" class="btn-primary">移出</button>
+      </div>
+    </form>
+  </dialog>
+
+<script>
+  const ROLE_LABEL = { owner: '所有者', admin: '管理员', member: '成员' };
+  const SEAT_LIMIT = 10;
+
+  let members = [
+    { id: 'm1', name: '林晓', role: 'owner', active: '刚刚活跃' },
+    { id: 'm2', name: '陈一鸣', role: 'admin', active: '2 小时前活跃' },
+    { id: 'm3', name: '周雨桐', role: 'admin', active: '昨天活跃' },
+    { id: 'm4', name: '王浩', role: 'member', active: '3 天前活跃' },
+    { id: 'm5', name: '赵思琪', role: 'member', active: '5 天前活跃' },
+    { id: 'm6', name: '孙磊', role: 'member', active: '2 周前活跃' },
+  ];
+
+  let invites = [
+    { id: 'i1', email: 'hanmei@example.com', sent: '3 天前发出' },
+    { id: 'i2', email: 'liu.yang.design@example.com', sent: '3 天前发出' },
+  ];
+
+  const $ = (id) => document.getElementById(id);
+  const memberList = $('member-list');
+  const inviteList = $('invite-list');
+  const searchInput = $('member-search');
+  const menu = $('member-menu');
+  const dialog = $('remove-dialog');
+  const live = $('live');
+
+  let openTrigger = null;
+  let pendingRemoveId = null;
+
+  function el(tag, props = {}, children = []) {
+    const node = document.createElement(tag);
+    Object.entries(props).forEach(([key, value]) => {
+      if (key === 'text') node.textContent = value;
+      else if (key === 'className') node.className = value;
+      else node.setAttribute(key, value);
+    });
+    children.forEach((child) => node.append(child));
+    return node;
+  }
+
+  function renderMembers() {
+    memberList.replaceChildren(...members.map((m) =>
+      el('li', { className: 'row', 'data-id': m.id, 'data-name': m.name }, [
+        el('span', { className: 'avatar', 'aria-hidden': 'true', text: m.name.slice(-1) }),
+        el('div', { className: 'row-main' }, [
+          el('div', { className: 'row-title' }, [
+            el('span', { className: 'name', text: m.name }),
+            el('span', { className: 'tag', 'data-role': m.role, text: ROLE_LABEL[m.role] }),
+          ]),
+          el('div', { className: 'meta', text: m.active }),
+        ]),
+        el('div', { className: 'actions' }, [
+          el('button', {
+            type: 'button',
+            className: 'more-btn',
+            'aria-label': `更多操作：${m.name}`,
+            title: '更多',
+            'aria-haspopup': 'menu',
+            'aria-expanded': 'false',
+            'aria-controls': 'member-menu',
+            'data-id': m.id,
+            text: '⋯',
+          }),
+        ]),
+      ])
+    ));
+    $('member-count').textContent = members.length;
+    $('seat-used').textContent = Math.min(members.length, SEAT_LIMIT);
+    applyFilter(false);
+  }
+
+  function renderInvites() {
+    inviteList.replaceChildren(...invites.map((inv) =>
+      el('li', { className: 'row', 'data-id': inv.id }, [
+        el('div', { className: 'row-main' }, [
+          el('div', { className: 'email', text: inv.email }),
+          el('div', { className: 'meta', text: inv.sent }),
+        ]),
+        el('button', {
+          type: 'button',
+          className: 'withdraw-btn',
+          'aria-label': `撤回发给 ${inv.email} 的邀请`,
+          'data-id': inv.id,
+          text: '撤回',
+        }),
+      ])
+    ));
+    $('invite-count').textContent = invites.length;
+    inviteList.hidden = invites.length === 0;
+    $('invite-empty').hidden = invites.length > 0;
+  }
+
+  function applyFilter(announce = true) {
+    const query = searchInput.value.trim().toLowerCase();
+    let shown = 0;
+    memberList.querySelectorAll('.row').forEach((row) => {
+      const match = row.dataset.name.toLowerCase().includes(query);
+      row.hidden = !match;
+      row.classList.toggle('is-first', match && shown === 0);
+      if (match) shown += 1;
+    });
+    memberList.hidden = shown === 0;
+    $('member-empty').hidden = shown > 0;
+    if (announce) live.textContent = query ? `找到 ${shown} 位成员` : '';
+  }
+
+  /* ---------- 更多菜单 ---------- */
+
+  function menuItems() {
+    return [...menu.querySelectorAll('[role="menuitem"]')];
+  }
+
+  function buildMenu(member) {
+    const items = [];
+    const canPromote = member.role === 'member';
+    const canRemove = member.role !== 'owner';
+    const promoteHint = member.role === 'owner' ? '所有者无需设置' : '已是管理员';
+
+    items.push(menuItem('promote', '设为管理员', canPromote ? '' : promoteHint));
+    items.push(el('li', { role: 'separator', className: 'menu-sep' }));
+    items.push(menuItem('remove', '移出团队', canRemove ? '' : '不能移出所有者'));
+    menu.replaceChildren(...items);
+  }
+
+  function menuItem(action, label, disabledHint) {
+    const btn = el('button', {
+      type: 'button',
+      role: 'menuitem',
+      className: 'menu-item',
+      tabindex: '-1',
+      'data-action': action,
+    }, [label]);
+    if (disabledHint) {
+      btn.setAttribute('aria-disabled', 'true');
+      btn.append(el('span', { className: 'menu-hint', text: disabledHint }));
+    }
+    return el('li', { role: 'none' }, [btn]);
+  }
+
+  function openMenu(trigger) {
+    const member = members.find((m) => m.id === trigger.dataset.id);
+    if (!member) return;
+    closeMenu(false);
+    buildMenu(member);
+    menu.setAttribute('aria-label', `${member.name} 的操作`);
+    trigger.parentElement.append(menu);
+    menu.hidden = false;
+    trigger.setAttribute('aria-expanded', 'true');
+    openTrigger = trigger;
+    focusItem(0);
+  }
+
+  function closeMenu(restoreFocus = true) {
+    if (!openTrigger) return;
+    const trigger = openTrigger;
+    menu.hidden = true;
+    trigger.setAttribute('aria-expanded', 'false');
+    openTrigger = null;
+    document.body.append(menu);
+    if (restoreFocus && trigger.isConnected) trigger.focus();
+  }
+
+  function focusItem(index) {
+    const items = menuItems();
+    if (!items.length) return;
+    const next = (index + items.length) % items.length;
+    items.forEach((item, i) => item.setAttribute('tabindex', i === next ? '0' : '-1'));
+    items[next].focus();
+  }
+
+  menu.addEventListener('keydown', (e) => {
+    const items = menuItems();
+    const current = items.indexOf(document.activeElement);
+    if (e.key === 'ArrowDown') { e.preventDefault(); focusItem(current + 1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); focusItem(current - 1); }
+    else if (e.key === 'Home') { e.preventDefault(); focusItem(0); }
+    else if (e.key === 'End') { e.preventDefault(); focusItem(items.length - 1); }
+    else if (e.key === 'Escape') { e.preventDefault(); closeMenu(); }
+    else if (e.key === 'Tab') { closeMenu(false); }
+  });
+
+  menu.addEventListener('click', (e) => {
+    const item = e.target.closest('[role="menuitem"]');
+    if (!item || item.getAttribute('aria-disabled') === 'true' || !openTrigger) return;
+    const id = openTrigger.dataset.id;
+    const action = item.dataset.action;
+    if (action === 'promote') {
+      closeMenu(false);
+      promote(id);
+    } else if (action === 'remove') {
+      closeMenu(false);
+      askRemove(id);
+    }
+  });
+
+  document.addEventListener('pointerdown', (e) => {
+    if (!openTrigger) return;
+    if (menu.contains(e.target) || openTrigger.contains(e.target)) return;
+    closeMenu(false);
+  });
+
+  memberList.addEventListener('click', (e) => {
+    const trigger = e.target.closest('.more-btn');
+    if (!trigger) return;
+    if (openTrigger === trigger) closeMenu();
+    else openMenu(trigger);
+  });
+
+  memberList.addEventListener('keydown', (e) => {
+    const trigger = e.target.closest('.more-btn');
+    if (!trigger || (e.key !== 'ArrowDown' && e.key !== 'ArrowUp')) return;
+    e.preventDefault();
+    openMenu(trigger);
+    if (e.key === 'ArrowUp') focusItem(-1);
+  });
+
+  /* ---------- 操作 ---------- */
+
+  function focusMoreButton(id) {
+    const btn = memberList.querySelector(`.more-btn[data-id="${id}"]`);
+    if (btn) btn.focus();
+  }
+
+  function promote(id) {
+    const target = members.find((m) => m.id === id);
+    members = members.map((m) => (m.id === id ? { ...m, role: 'admin' } : m));
+    renderMembers();
+    live.textContent = `已将 ${target.name} 设为管理员`;
+    focusMoreButton(id);
+  }
+
+  function askRemove(id) {
+    const target = members.find((m) => m.id === id);
+    pendingRemoveId = id;
+    $('remove-title').textContent = `将 ${target.name} 移出团队？`;
+    dialog.showModal();
+  }
+
+  dialog.addEventListener('close', () => {
+    const id = pendingRemoveId;
+    pendingRemoveId = null;
+    if (!id) return;
+    if (dialog.returnValue !== 'confirm') {
+      focusMoreButton(id);
+      return;
+    }
+    const index = members.findIndex((m) => m.id === id);
+    const target = members[index];
+    members = members.filter((m) => m.id !== id);
+    renderMembers();
+    live.textContent = `已将 ${target.name} 移出团队`;
+    const visible = [...memberList.querySelectorAll('.row:not([hidden]) .more-btn')];
+    (visible[Math.min(index, visible.length - 1)] || searchInput).focus();
+  });
+
+  inviteList.addEventListener('click', (e) => {
+    const btn = e.target.closest('.withdraw-btn');
+    if (!btn) return;
+    const index = invites.findIndex((inv) => inv.id === btn.dataset.id);
+    const target = invites[index];
+    invites = invites.filter((inv) => inv.id !== btn.dataset.id);
+    renderInvites();
+    live.textContent = `已撤回发给 ${target.email} 的邀请`;
+    const rest = [...inviteList.querySelectorAll('.withdraw-btn')];
+    (rest[Math.min(index, rest.length - 1)] || searchInput).focus();
+  });
+
+  searchInput.addEventListener('input', () => {
+    closeMenu(false);
+    applyFilter();
+  });
+
+  renderMembers();
+  renderInvites();
+</script>
+</body>
+</html>

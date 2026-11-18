@@ -1,0 +1,173 @@
+---
+title: 排版：标点都照顾到了，层级只靠字号
+description: 上下两级要在字号以外再分开一处，接口文案的空格交给 CSS，全角引号挨着要处理；附一段贴进 DevTools 的字号表脚本。
+date: 2026-11-18T10:00:00+08:00
+updated: 2026-11-18
+tags: [UI, 排版, 字体, AI, 审美]
+column: ui-taste
+meta: 系列第四篇 · 排版
+draft: false
+---
+
+import TypeLevels from '../../components/TypeLevels.astro'
+import TypeScale from '../../components/TypeScale.astro'
+import AutospaceLab from '../../components/AutospaceLab.astro'
+import PunctLab from '../../components/PunctLab.astro'
+import TypeAuditRun from '../../components/TypeAuditRun.astro'
+
+下面是 AI 写的「版本更新」页。左边是页面本身，右边是从页面上量出来的各层级样式。点「拿掉字号」，页面里所有文字会改成同一个字号，只剩字重和颜色，看还剩几级。
+
+<TypeLevels />
+
+第 2、3 份里，「新功能」是分组标题，「断点续传」是它下面的条目标题。两者都是 600 的字重、同一种黑，只差 2px：一个 18，一个 16。字号一拿掉，两级就并成了一级。改过的版本里，分组标题是 13px 的灰色小字，加了字距；拿掉字号以后，它还是灰色、还隔着字距，和条目标题分得开。
+
+中文排版的细节，三份反倒都做得很好：汉字和英文、数字之间加了空格，「Wi-Fi」「2 GB」不让折行，引号和破折号交给了苹方。这些现在的模型已经会了，不用再写进规则。这篇讲它们没做到的三件事：层级为什么只靠字号分不开；文案来自接口时，空格该交给谁；用全角引号时，挨在一起的两个怎么办。最后给一段能列出任何页面字号表的脚本。
+
+范围：三个全新的 Claude Code subagent 各写一次，2026-10-31；在 macOS 的 Chrome 156 里量（深色数据、空格和引号宽度是 2026-11-18 在 Chrome 157 里补测的），375px 宽的手机视口，没有在 Safari、Windows、Android 和真机上量过。prompt 和原始数据在附录。
+
+## 档多不是问题
+
+<TypeScale />
+
+字号分几档不要紧，要紧的是页面上的上下两级靠什么分开。三份页面的文字各用了 6–7 种字号，13 到 18 之间几乎每个整数都用上了，看上去很乱；可 Apple 的 [iOS 默认字号表](https://developer.apple.com/design/human-interface-guidelines/typography)也有 10 档，17、16、15、13、12、11，相邻两档只差 1–2 个点。
+
+这里要分清两件事：刻度上相邻的两档，和页面上的上下两级。iOS 的 Callout 16 和 Subhead 15 只差 1 个点，它们是刻度上的邻居，各管各的用处。iOS 字号表里同样大小的两档，靠的是别的通道：Headline 和 Body 都是 17 点，一个半粗、一个常规。刻度上挨得近不要紧，要紧的是上下两级之间，除了字号还有没有别的不同。
+
+## 两级之间要有字号以外的不同
+
+上下两级之间，要有字号以外的不同。开头的演示把所有文字改成同一个字号：还靠字重、颜色、字距分开的两级，仍然分得开；只靠字号的，就并成了一级。我们的解释是，字号的差别要放在一起比才看得出来，字重、颜色、字距是每段文字自己带着的，单独看一段也认得出属于哪一级；这个解释没有找到实验出处。留白和位置也要靠比较，所以下面说的「通道」只算字重、颜色、字距。
+
+分组标题和条目标题偏偏很少紧挨着。「新功能」下面先是「断点续传」，再是一段说明，再是「链接有效期」。读者看到「链接有效期」时，要拿它和几行之上的「新功能」比，18 和 16 之间那 2px 比不出来，两级就看成了一级。三份页面在这一对上都只用了字号：
+
+| | 分组标题 | 条目标题 |
+| --- | --- | --- |
+| 第 1 份 | 20px · 600 · 黑 | 16px · 600 · 黑 |
+| 第 2 份 | 18px · 600 · 黑 | 16px · 600 · 黑 |
+| 第 3 份 | 18px · 600 · 黑 | 16px · 600 · 黑 |
+
+紧挨着的条目标题和说明反倒没问题：字号只差 1px，但一个是 600 的黑字，一个是 400 的灰字，很好分。第 1 份的 subagent 自查时注意到了分组标题不够突出，在汇报里写，把它从 18 改到 20，「so they stand out more from item titles」。改大有用，但还是只在字号这一个通道上；开头的演示切到第 1 份再拿掉字号，两级照样并成一级。
+
+**怎么看出来。** 在 DevTools 的 Console 里运行下面这行，把所有文字改成同一个字号，再看页面上还剩几级：
+
+```js
+document.querySelectorAll('body *').forEach((el) => el.style.setProperty('font-size', '16px', 'important'))
+```
+
+拿掉字号以后并成一级的两种样式，如果在页面上是上下两级，就要再拉开一个通道。
+
+**怎么写对。** 要么把分组标题放大到一眼就能看出差别，要么干脆换一种样式。我们试的是后一种，只在第 2 份的 `<head>` 末尾加了一段样式：
+
+```css title="改过的版本加的样式（节选）"
+.group-title {               /* 新功能、体验优化、问题修复；原来是 18px、600、黑 */
+  font-size: 0.8125rem;      /* 13px */
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+}
+.feature-title { font-size: 1.0625rem; }   /* 断点续传：16 → 17px */
+```
+
+改完以后，分组标题和条目标题在字号（13 和 17）、颜色（灰和黑）、字距三处同时不同，拿掉任何一处都还分得开。灰色小字的对比度，浅色模式 6.82:1，深色模式 8.54:1。没用主色，是不想让分组标题和链接长得一样。另外把条目标题和导语改成 17px、版本号 32px，文字的字号收成 13、15、17、32 四档。
+
+**还有哪里会这样。** 凡是「一个标题管着下面好几项」的地方：表单里的分区标题和字段标签，卡片里的卡片标题和小节标题，设置页的分组标题和每一行的标题。它们之间都隔着别的内容，只靠字号拉开的，隔几行就认不出来。
+
+## `pretty` 只治一个字的孤行
+
+三份页面的段落都加了 `text-wrap: pretty`，它能做的比看上去少。我们把同样七段话，宽度从 300 到 430px 每 1px 排一次：最后一行只剩一个字的情况，`wrap` 下有 115 次，`pretty` 下是 0 次。但它只是把一个字变成两个字：最后一行只剩一两个字的总次数没变，都是 175 次，占 19.1%（[输出](/blog/lab/ai-typography/data/wrap.txt)）。[Chrome 的说明](https://developer.chrome.com/blog/css-text-wrap-pretty)也写着，`pretty` 目前「only handles orphans」。
+
+所以加上它没坏处，但别指望它管住段尾。真正在意的短段落，比如提示框、按钮下的小字，要在最窄和最宽的视口下各看一次最后一行。
+
+## 文案来自接口时，空格交给 CSS
+
+空格写死在文案里，文案一换就没了；文案来自接口或运营后台时，空格要交给 CSS。三份页面的空格都是写进文案里的，这个静态页面没问题，接到接口上就不行了。
+
+CSS 有专门做这件事的属性 [`text-autospace`](https://developer.mozilla.org/en-US/docs/Web/CSS/text-autospace)：在汉字和西文、数字之间自动加一点空白，不改文案。按 MDN，它 2025 年 11 月成为 Baseline，Chrome 140、Safari 18.4、Firefox 145 起支持。要注意的是，**浏览器默认不开。** [规范](https://drafts.csswg.org/css-text-4/)里它的初始值是 `normal`，会加；但 MDN 的兼容数据注明，三家浏览器目前的默认值都是 `no-autospace`（见 CSSWG 的 [issue #12386](https://github.com/w3c/csswg-drafts/issues/12386)）。三份 AI 页面都没有打开它。要用就自己写一行：
+
+```css
+body { text-autospace: normal; }   /* 浏览器默认是 no-autospace，不写就不加 */
+```
+
+<AutospaceLab />
+
+它加的空白比手敲的空格窄：规范定的是 1/8 个汉字宽，手敲的空格落在英文系统字体上，正文字号下约 1/4 个字宽（[输出](/blog/lab/ai-typography/data/space-width.txt)）。W3C 的[中文排版需求](https://www.w3.org/TR/clreq/)（clreq）建议汉字和西文之间「up to 1/4 em」，两种都在范围里，看上去一个紧一点、一个松一点。
+
+两者可以一起用。文案里已经有空格的地方，`text-autospace` 不会再加：我们量过，手敲空格再打开它，空隙和只敲空格时一样（[输出](/blog/lab/ai-typography/data/mixing.txt)）。所以稳妥的做法是 CSS 里打开 `text-autospace: normal`，接口来的文案照原样显示；手写的静态文案照常加空格。不支持的浏览器里，接口来的原文还是挨着的，至少内容没被改动。
+
+## 全角引号挨在一起时，要自己挤
+
+<PunctLab />
+
+用全角引号，就要把「两个引号挨在一起」当成一种要处理的情况。先说背景：字体栈把英文系统字体放在前面时，引号和破折号会用上英文字体的字形：引号只有 0.44em 宽（15px 正文；字号越大越窄，40px 时 0.37em，[输出](/blog/lab/ai-typography/data/quote-width.txt)），细得像英寸符号；两个破折号并排时中间断开。三份 AI 页面都处理了，办法一样：用 `@font-face` 加 `unicode-range` 定义一个只覆盖这几个字符的字体，排在字体栈第一位，指向本机的苹方。这一条现在的模型也已经会了。
+
+值得说的是第 3 份多走的一步：它打开了 `fwid`，取全角字形，每个引号占一个字宽，clreq 也写着标点「usually occupy 1 em」。全角引号的麻烦在挨在一起的时候。「“1 天”“7 天”」里，前一个的后引号和后一个的前引号各占一个字宽，中间空出将近一个字。
+
+Chrome 默认的 [`text-spacing-trim`](https://developer.mozilla.org/en-US/docs/Web/CSS/text-spacing-trim) 会把相邻的全角标点挤紧，比如「）。」从 2em 挤成 1.5em。可对这种用 `fwid` 换出来的全角引号，它不起作用：挨着的两个仍然各是 1em（[输出](/blog/lab/ai-typography/data/quotes.txt)）。规范把弯引号列进了要挤的全角标点（「Also includes LEFT SINGLE QUOTATION MARK (U+2018) and LEFT DOUBLE QUOTATION MARK (U+201C).」），但也留了口子：字体没法区分全角和半角字形时，浏览器不能加减空隙。Chrome 判断引号是不是全角，看的是字体默认的字形；[Chromium 的源码注释](https://chromium.googlesource.com/chromium/src/+/main/third_party/blink/renderer/platform/fonts/shaping/han_kerning.cc)写着，用 `fwid` 切到全角字形是 Adobe 的约定，「The current logic doesn't support this convention」。第 3 份只好手动把前一个引号包进 `<span>`，换回英文系统字体的窄引号：
+
+```html
+<!-- 第 3 份的写法：挨着的前一个后引号换回英文系统字体的窄引号，.punct-tight { font-family: var(--font-text); }，字体栈以 -apple-system 开头 -->
+分享链接可以选“1 天<span class="punct-tight">”</span>“7 天”或“永久”
+```
+
+所以选全角引号，就要把「挨在一起的引号」当成一种要处理的情况；选苹方的默认字形（0.54em），就不用操心。`local()` 只认本机装了的字体，各平台的字体名也不一样，换平台前要先量。
+
+## 验收：列出页面的字号表
+
+[间距篇](/blog/ai-spacing/)给了一段量间距的 X 光脚本，这篇给一段列字号表的。贴进 DevTools 的 Console 回车，右下角出现一个面板。
+
+<TypeAuditRun />
+
+它做三件事：
+
+1. 列出页面上每一种文字样式，按字号排好，点一行就在页面上框出用它的文字。字号的计数包括提示框里的「!」图标，所以第 2、3 份和改过的版本会比正文里说的多一种。
+2. 挑出「在页面上离得近、只差一个通道、而且差得不多」的样式对。离得近，指左右有重叠、上下间隔不超过两个字号；差得不多，指字号差 2px 以内、字重差 100 以内，或者两种颜色几乎一样。这几个阈值是经验值，不是哪份规范规定的。只看离得近的，是为了把比较限定在同一块内容里；分组标题和它下面紧贴着的第一条条目标题，正好落在这个范围里。
+3. 查三件中文排版的事：`<html lang>`、`text-autospace` 开没开、正文字体排出来的引号是不是英文字体的窄引号。
+
+在第 2、3 份上，它都只挑出 1 对：「新功能」和「断点续传」，只差字号 18 和 16。第 1 份的分组标题是 20px，差了 4px，超出阈值，没被挑出来，可它同样只靠字号区分。改过的版本上是 0 对。四份页面都没开 `text-autospace`（[输出](/blog/lab/ai-typography/data/snippet-output.txt)）。脚本挑出来的要逐个看；第 1 份这种差得多一点的，还要靠上一节那行「拿掉字号」。
+
+## 给 AI 的规则
+
+规则只补 AI 实测里漏掉的：
+
+```md title="写进 AGENTS.md 或 skill 的排版规则"
+- 页面上的上下两级（分组标题和条目标题、标题和说明），除了字号，至少还要在字重、颜色、字距里的一项上不同。
+  交付前把所有文字改成同一个字号看一遍，并成一级的上下两级要再拉开一项；
+  也可以在页面上跑一遍 /blog/lab/ai-typography/type-snippet.js，把它挑出的「容易看成同一级」的样式对逐个说明。
+- 来自接口或后台的文案，不指望里面有空格：CSS 里写 `text-autospace: normal`（浏览器默认不开）。
+```
+
+## 附录：实测材料
+
+三份页面由三个全新的 Claude Code subagent 在 2026-10-31 各写一次，模型是当时会话的默认模型 Claude Opus 5.5（subagent 继承它，汇报里没有自己写模型名）。prompt 里只有需求，派发时另加了一句「写完后简短汇报：加载了哪些 skill、读了哪些文件、交付前怎么检查的」。它们继承这台机器上的全局配置（`~/.claude/CLAUDE.md` 和 `~/.claude/rules/`）和 skill 列表。据它们自己的汇报（[摘录](/blog/lab/ai-typography/data/provenance.txt)）：三份都加载了团队的 UI 规范 skill（ui-conventions）和 frontend-design，都读了同目录下的 prompt.txt；三份都用 Playwright 驱动的 Chrome 检查过。
+
+「会加空格」有一部分是环境教的：这台机器的全局配置（`~/.claude/rules/coding-style.md`）里提到了 [autocorrect](https://github.com/huacnlee/autocorrect)（一个按中文排版习惯自动改文案的工具），第 2 份说加空格的依据之一就是它；第 3 份用 `rg` 搜过这个博客的文章，照着博客的写法加的空格。
+
+```text title="prompt（三次只有最后一行的文件名不同）"
+用 HTML + CSS + 少量原生 JS 写一个单文件页面：移动端 H5 的「版本更新」详情页。
+
+内容从上到下：
+- 顶部导航栏：左边返回按钮，中间标题「版本更新」
+- 版本信息：App 图标、版本号「3.9.0」、一行发布日期和安装包大小「2026年10月28日 · 86.4MB」
+- 一段导语：这次更新重做了文件上传。用Claude Code上传的大文件（超过2GB）会自动分片，断网后能从断点继续，平均速度提升35%。
+- 「新功能」分组，三条，每条一个标题加一段说明：
+  - 断点续传：上传中断后，重新连上Wi-Fi会从中断的位置继续，不用从头再传。
+  - 链接有效期：分享链接可以选“1天”“7天”或“永久”，过期后自动失效。
+  - 支持AirDrop：在iPhone和Mac之间，可以直接把文件投送到团队空间。
+- 「体验优化」分组，三条，每条一句话：
+  - 文件列表的加载速度提升约2倍，1万个文件的文件夹也能在1秒内打开。
+  - 搜索支持拼音首字母——输入“bg”就能找到《报告-2026Q3》。
+  - 深色模式下，图片缩略图不再发灰。
+- 「问题修复」分组，两条：
+  - 修复了在iOS 18上偶尔无法预览PDF的问题。
+  - 修复了文件名含有emoji时，下载后文件名乱码的问题。
+- 一个提示框：3.9.0起不再支持iOS 15及以下版本。
+- 底部固定一个「立即更新」按钮，按钮上方一行小字：更新约需1分钟，期间请勿关闭App。
+
+把完整代码写到这个文件：……/release1.html
+```
+
+需求里的文案故意不加空格：汉字和英文、数字之间不加空格，有 35 处直接挨着；引号用“”，还有一个破折号、一对书名号、一对全角括号。三份都在汉字和英文、数字之间加了空格，第 2、3 份连日期也加了，写成「2026 年 10 月 28 日」，第 1 份认为日期是标准格式，没动。所有文字的对比度在浅色、深色模式下都在 4.5:1 以上；只有第 2、3 份提示框里的「!」图标在浅色模式下是 3.82–3.89:1（深色是 6.23 和 6.92），它按图形算，[要求是 3:1](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)。
+
+- 原样产出：[release1.html](/blog/lab/ai-typography/release1.html)、[release2.html](/blog/lab/ai-typography/release2.html)、[release3.html](/blog/lab/ai-typography/release3.html)。作者改的：[release2-fixed.html](/blog/lab/ai-typography/release2-fixed.html)，只在 `<head>` 末尾加了一段样式，其余和第 2 份一致。
+- 样式测量：[type-probe.mjs](/blog/lab/ai-typography/type-probe.mjs) 列出每段文字的字号、字重、颜色、对比度、折行和标点宽度，[roles.mjs](/blog/lab/ai-typography/roles.mjs) 按文案把它们归到层级上。原始输出在 [data/](/blog/lab/ai-typography/data/roles.json) 下，浅色是 `release*.json`，深色是 `release*-dark.json`（深色是 2026-11-18 在 Chrome 157 上补跑的）。
+- 对照实验：[tools/mixing.mjs](/blog/lab/ai-typography/tools/mixing.mjs) 逐像素量中英之间的空隙（[输出](/blog/lab/ai-typography/data/mixing.txt)），[tools/space-width.mjs](/blog/lab/ai-typography/tools/space-width.mjs) 量不同字号下空格的宽度（[输出](/blog/lab/ai-typography/data/space-width.txt)，2026-11-18 在 Chrome 157 上补量），[tools/quotes.mjs](/blog/lab/ai-typography/tools/quotes.mjs) 量三种引号的宽度（[输出](/blog/lab/ai-typography/data/quotes.txt)），[tools/wrap.mjs](/blog/lab/ai-typography/tools/wrap.mjs) 比较 `wrap` 和 `pretty` 的末行（[输出](/blog/lab/ai-typography/data/wrap.txt)）。
+- 浏览器版脚本：[type-snippet.js](/blog/lab/ai-typography/type-snippet.js)，在四份页面上跑的是 [tools/snippet-run.mjs](/blog/lab/ai-typography/tools/snippet-run.mjs)（[输出](/blog/lab/ai-typography/data/snippet-output.txt)）。
+- 来源：`text-autospace`、`text-spacing-trim` 的支持情况和默认值来自 MDN 及其兼容数据，规范原文来自 CSS Text Module Level 4 的编辑草稿；clreq 引自 W3C 的 Requirements for Chinese Text Layout；iOS 字号表来自 Apple Human Interface Guidelines 的 Typography 页（Large 档）。

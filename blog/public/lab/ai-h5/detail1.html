@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="format-detection" content="telephone=no">
+<title>文件详情</title>
+<style>
+  :root {
+    --bg: #f5f6f8;
+    --surface: #ffffff;
+    --surface-2: #eef0f3;
+    --text: #1a1d23;
+    --text-2: #4b5260;
+    --text-3: #6b7280;
+    --border: #e3e6eb;
+    --accent: #2563eb;
+    --accent-weak: #e8efff;
+    --on-accent: #ffffff;
+    --disabled-bg: #d5d9e0;
+    --disabled-text: #6b7280;
+    --toast-bg: rgba(26, 29, 35, 0.92);
+    --toast-text: #ffffff;
+    /* 头像底色两种主题共用，均与白字对比 ≥ 4.5:1 */
+    --avatar-1: #047857;
+    --avatar-2: #b45309;
+    --avatar-3: #7c3aed;
+    --avatar-me: #2563eb;
+    --on-avatar: #ffffff;
+
+    --s-1: 4px;
+    --s-2: 8px;
+    --s-3: 12px;
+    --s-4: 16px;
+    --s-6: 24px;
+    --s-8: 32px;
+
+    --nav-h: 44px;
+    --composer-h: 56px;
+    --tap: 44px;
+    --radius: 12px;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f1115;
+      --surface: #181b21;
+      --surface-2: #232730;
+      --text: #eef0f3;
+      --text-2: #c2c7d0;
+      --text-3: #9aa1ad;
+      --border: #2c313b;
+      --accent: #6b9bff;
+      --accent-weak: #1f2a44;
+      --on-accent: #0f1115;
+      --disabled-bg: #2c313b;
+      --disabled-text: #8a919c;
+      --toast-bg: rgba(238, 240, 243, 0.94);
+      --toast-text: #0f1115;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1115;
+    --surface: #181b21;
+    --surface-2: #232730;
+    --text: #eef0f3;
+    --text-2: #c2c7d0;
+    --text-3: #9aa1ad;
+    --border: #2c313b;
+    --accent: #6b9bff;
+    --accent-weak: #1f2a44;
+    --on-accent: #0f1115;
+    --disabled-bg: #2c313b;
+    --disabled-text: #8a919c;
+    --toast-bg: rgba(238, 240, 243, 0.94);
+    --toast-text: #0f1115;
+  }
+
+  * { box-sizing: border-box; }
+  html {
+    -webkit-text-size-adjust: 100%; text-size-adjust: 100%;
+    scroll-padding-top: calc(var(--nav-h) + var(--safe-top));
+    scroll-padding-bottom: calc(var(--composer-h) + var(--safe-bottom));
+  }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 15px/1.5 -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    padding-bottom: calc(var(--composer-h) + var(--safe-bottom) + var(--s-4));
+  }
+  button, input { font: inherit; color: inherit; }
+  button { cursor: pointer; background: none; border: 0; padding: 0; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 8px; }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+  .icon { width: 24px; height: 24px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .icon--sm { width: 18px; height: 18px; }
+  .icon--solid { fill: currentColor; stroke: none; }
+
+  /* 顶部导航 */
+  .nav {
+    position: sticky; top: 0; z-index: 10;
+    padding-top: var(--safe-top);
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav__bar {
+    height: var(--nav-h);
+    display: grid;
+    grid-template-columns: 1fr minmax(0, max-content) 1fr;
+    align-items: center;
+    padding: 0 var(--s-1);
+  }
+  .nav__title {
+    margin: 0; font-size: 17px; font-weight: 600; text-align: center;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .nav__end { display: flex; justify-content: flex-end; }
+  .icon-btn {
+    width: var(--tap); height: var(--tap);
+    display: inline-grid; place-items: center;
+    border-radius: 50%;
+    color: var(--text);
+  }
+  .icon-btn:active { background: var(--surface-2); }
+
+  /* 文件信息 */
+  .file {
+    background: var(--surface);
+    padding: var(--s-6) var(--s-4) var(--s-4);
+    text-align: center;
+  }
+  .file__thumb {
+    width: 96px; height: 128px; margin: 0 auto var(--s-4);
+    border-radius: 8px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    display: grid; place-items: center;
+    color: var(--text-3); font-size: 13px; font-weight: 600; letter-spacing: 0.04em;
+  }
+  .file__name {
+    margin: 0 0 var(--s-1);
+    font-size: 18px; font-weight: 600; line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+  .file__meta { margin: 0; font-size: 13px; color: var(--text-3); }
+
+  /* 操作行 */
+  .actions {
+    list-style: none; margin: 0;
+    padding: var(--s-2) var(--s-2) var(--s-4);
+    background: var(--surface);
+    display: grid; grid-template-columns: repeat(4, 1fr);
+  }
+  .action {
+    width: 100%; min-height: 64px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--s-1);
+    padding: var(--s-2) var(--s-1);
+    border-radius: var(--radius);
+    font-size: 13px; color: var(--text-2);
+  }
+  .action:active { background: var(--surface-2); }
+  .action .icon { color: var(--text); }
+  .action[aria-pressed="true"],
+  .action[aria-pressed="true"] .icon { color: var(--accent); }
+  .action[aria-pressed="true"] .icon { fill: currentColor; }
+
+  /* 评论 */
+  .comments { margin-top: var(--s-2); background: var(--surface); }
+  .comments__title {
+    margin: 0; padding: var(--s-4) var(--s-4) var(--s-1);
+    font-size: 15px; font-weight: 600;
+  }
+  .comment-list { list-style: none; margin: 0; padding: 0 var(--s-4); }
+  .comment {
+    display: grid; grid-template-columns: 36px 1fr auto; gap: var(--s-3);
+    padding: var(--s-3) 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .comment:last-child { border-bottom: 0; }
+  .avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: grid; place-items: center;
+    font-size: 15px; font-weight: 600; color: var(--on-avatar);
+    background: var(--avatar, var(--avatar-me));
+  }
+  .comment__body { min-width: 0; }
+  .comment__head { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: var(--s-2); }
+  .comment__name { font-size: 14px; font-weight: 600; }
+  .comment__time { font-size: 12px; color: var(--text-3); }
+  .comment__text { margin: var(--s-1) 0 0; color: var(--text); overflow-wrap: anywhere; white-space: pre-wrap; }
+  .like {
+    min-width: var(--tap); height: var(--tap); margin: calc(var(--s-3) * -1) calc(var(--s-2) * -1) 0 0;
+    display: inline-flex; align-items: center; justify-content: center; gap: var(--s-1);
+    padding: 0 var(--s-2);
+    border-radius: 22px;
+    font-size: 13px; color: var(--text-3);
+    font-variant-numeric: tabular-nums;
+  }
+  .like:active { background: var(--surface-2); }
+  .like[aria-pressed="true"] { color: var(--accent); }
+  .like[aria-pressed="true"] .icon { fill: currentColor; }
+
+  /* 底部评论栏 */
+  .composer {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding-bottom: var(--safe-bottom);
+  }
+  .composer__row {
+    height: var(--composer-h);
+    display: flex; align-items: center; gap: var(--s-2);
+    padding: 0 var(--s-4);
+  }
+  .composer__input {
+    flex: 1; min-width: 0; height: 40px;
+    padding: 0 var(--s-3);
+    border: 1px solid transparent; border-radius: 20px;
+    background: var(--surface-2);
+    font-size: 16px; /* iOS 输入框字号小于 16px 会在聚焦时自动放大页面 */
+  }
+  .composer__input::placeholder { color: var(--text-3); }
+  .composer__input:focus { outline: none; border-color: var(--accent); background: var(--surface); }
+  .send {
+    flex: none; height: 40px; padding: 0 var(--s-4);
+    border-radius: 20px;
+    background: var(--accent); color: var(--on-accent);
+    font-size: 15px; font-weight: 600;
+  }
+  .send:active { opacity: 0.85; }
+  .send:disabled { background: var(--disabled-bg); color: var(--disabled-text); cursor: not-allowed; opacity: 1; }
+
+  .toast {
+    position: fixed; left: 50%; z-index: 20;
+    bottom: calc(var(--composer-h) + var(--safe-bottom) + var(--s-3));
+    transform: translateX(-50%);
+    max-width: calc(100% - var(--s-8));
+    padding: var(--s-2) var(--s-4);
+    border-radius: 8px;
+    background: var(--toast-bg); color: var(--toast-text);
+    font-size: 14px; text-align: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .toast.is-on { opacity: 1; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .toast { transition: none; }
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></symbol>
+  <symbol id="i-rename" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></symbol>
+  <symbol id="i-move" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 13.5h6"/><path d="M12.5 11l2.5 2.5-2.5 2.5"/></symbol>
+  <symbol id="i-like" viewBox="0 0 24 24"><path d="M7 10.5V20H4.5a1 1 0 0 1-1-1v-7.5a1 1 0 0 1 1-1z"/><path d="M7 10.5l3.6-6.3a1.8 1.8 0 0 1 3.3 1.3L13.2 9.5h5.2a2 2 0 0 1 2 2.4l-1.3 6.5a2 2 0 0 1-2 1.6H7"/></symbol>
+</svg>
+
+<header class="nav">
+  <div class="nav__bar">
+    <div>
+      <button class="icon-btn" type="button" id="btn-back" aria-label="返回" title="返回">
+        <svg class="icon" aria-hidden="true"><use href="#i-back"/></svg>
+      </button>
+    </div>
+    <h1 class="nav__title">文件详情</h1>
+    <div class="nav__end">
+      <button class="icon-btn" type="button" id="btn-share" aria-label="分享" title="分享">
+        <svg class="icon" aria-hidden="true"><use href="#i-share"/></svg>
+      </button>
+      <button class="icon-btn" type="button" data-todo="更多" aria-label="更多" title="更多">
+        <svg class="icon icon--solid" aria-hidden="true"><use href="#i-more"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="file" aria-labelledby="file-name">
+    <div class="file__thumb" aria-hidden="true">PDF</div>
+    <h2 class="file__name" id="file-name">2026Q3 报告.pdf</h2>
+    <p class="file__meta">2.4 MB · <time datetime="2026-10-28">10月28日</time>修改</p>
+  </section>
+
+  <ul class="actions" aria-label="文件操作">
+    <li>
+      <button class="action" type="button" data-todo="下载">
+        <svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>下载
+      </button>
+    </li>
+    <li>
+      <button class="action" type="button" id="btn-fav" aria-pressed="false">
+        <svg class="icon" aria-hidden="true"><use href="#i-star"/></svg><span id="fav-label">收藏</span>
+      </button>
+    </li>
+    <li>
+      <button class="action" type="button" data-todo="重命名">
+        <svg class="icon" aria-hidden="true"><use href="#i-rename"/></svg>重命名
+      </button>
+    </li>
+    <li>
+      <button class="action" type="button" data-todo="移动">
+        <svg class="icon" aria-hidden="true"><use href="#i-move"/></svg>移动
+      </button>
+    </li>
+  </ul>
+
+  <section class="comments" aria-labelledby="comments-title">
+    <h2 class="comments__title" id="comments-title">评论 · <span id="comment-count">3</span></h2>
+    <ul class="comment-list" id="comment-list">
+      <li class="comment">
+        <span class="avatar" style="--avatar:var(--avatar-1)" aria-hidden="true">林</span>
+        <div class="comment__body">
+          <div class="comment__head">
+            <span class="comment__name">林晓</span>
+            <time class="comment__time" datetime="2026-10-29T10:24">10月29日 10:24</time>
+          </div>
+          <p class="comment__text">第 6 页的营收同比口径和上季度不一致，建议在脚注里说明一下。</p>
+        </div>
+        <button class="like" type="button" aria-pressed="false">
+          <svg class="icon icon--sm" aria-hidden="true"><use href="#i-like"/></svg><span class="sr-only">赞</span><span class="like__count">12</span>
+        </button>
+      </li>
+      <li class="comment">
+        <span class="avatar" style="--avatar:var(--avatar-2)" aria-hidden="true">周</span>
+        <div class="comment__body">
+          <div class="comment__head">
+            <span class="comment__name">周子航</span>
+            <time class="comment__time" datetime="2026-11-03T16:05">11月3日 16:05</time>
+          </div>
+          <p class="comment__text">图表配色很清楚，汇报时直接用这版。</p>
+        </div>
+        <button class="like" type="button" aria-pressed="false">
+          <svg class="icon icon--sm" aria-hidden="true"><use href="#i-like"/></svg><span class="sr-only">赞</span><span class="like__count">5</span>
+        </button>
+      </li>
+      <li class="comment">
+        <span class="avatar" style="--avatar:var(--avatar-3)" aria-hidden="true">陈</span>
+        <div class="comment__body">
+          <div class="comment__head">
+            <span class="comment__name">陈一诺</span>
+            <time class="comment__time" datetime="2026-11-17T21:40">昨天 21:40</time>
+          </div>
+          <p class="comment__text">附录的数据源链接失效了，麻烦更新。</p>
+        </div>
+        <button class="like" type="button" aria-pressed="false">
+          <svg class="icon icon--sm" aria-hidden="true"><use href="#i-like"/></svg><span class="sr-only">赞</span><span class="like__count">0</span>
+        </button>
+      </li>
+    </ul>
+  </section>
+</main>
+
+<form class="composer" id="composer" autocomplete="off">
+  <div class="composer__row">
+    <label class="sr-only" for="comment-input">写评论</label>
+    <input class="composer__input" id="comment-input" type="text" placeholder="写评论…" maxlength="500" enterkeyhint="send">
+    <button class="send" id="btn-send" type="submit" disabled>发送</button>
+  </div>
+</form>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<template id="tpl-comment">
+  <li class="comment">
+    <span class="avatar" aria-hidden="true">我</span>
+    <div class="comment__body">
+      <div class="comment__head">
+        <span class="comment__name">我</span>
+        <time class="comment__time">刚刚</time>
+      </div>
+      <p class="comment__text"></p>
+    </div>
+    <button class="like" type="button" aria-pressed="false">
+      <svg class="icon icon--sm" aria-hidden="true"><use href="#i-like"/></svg><span class="sr-only">赞</span><span class="like__count">0</span>
+    </button>
+  </li>
+</template>
+
+<script>
+(function () {
+  var toastEl = document.getElementById('toast');
+  var toastTimer = 0;
+  function toast(msg) {
+    clearTimeout(toastTimer);
+    toastEl.textContent = msg;
+    toastEl.classList.add('is-on');
+    toastTimer = setTimeout(function () { toastEl.classList.remove('is-on'); }, 2000);
+  }
+
+  document.getElementById('btn-back').addEventListener('click', function () {
+    if (history.length > 1) history.back();
+    else toast('没有上一页');
+  });
+
+  document.getElementById('btn-share').addEventListener('click', function () {
+    var data = { title: '2026Q3 报告.pdf', url: location.href };
+    if (navigator.share) {
+      navigator.share(data).catch(function (err) {
+        if (err && err.name !== 'AbortError') toast('没能打开分享，请稍后重试');
+      });
+      return;
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(data.url).then(
+        function () { toast('链接已复制'); },
+        function () { toast('没能复制链接'); }
+      );
+      return;
+    }
+    toast('当前环境不支持分享');
+  });
+
+  document.querySelectorAll('[data-todo]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      toast('演示页：「' + btn.dataset.todo + '」未接入');
+    });
+  });
+
+  var favBtn = document.getElementById('btn-fav');
+  var favLabel = document.getElementById('fav-label');
+  favBtn.addEventListener('click', function () {
+    var on = favBtn.getAttribute('aria-pressed') !== 'true';
+    favBtn.setAttribute('aria-pressed', String(on));
+    favLabel.textContent = on ? '已收藏' : '收藏';
+  });
+
+  var list = document.getElementById('comment-list');
+  list.addEventListener('click', function (e) {
+    var btn = e.target.closest('.like');
+    if (!btn) return;
+    var countEl = btn.querySelector('.like__count');
+    var on = btn.getAttribute('aria-pressed') !== 'true';
+    btn.setAttribute('aria-pressed', String(on));
+    countEl.textContent = String(Number(countEl.textContent) + (on ? 1 : -1));
+  });
+
+  var form = document.getElementById('composer');
+  var input = document.getElementById('comment-input');
+  var sendBtn = document.getElementById('btn-send');
+  var countEl = document.getElementById('comment-count');
+  var tpl = document.getElementById('tpl-comment');
+
+  function syncSend() { sendBtn.disabled = input.value.trim() === ''; }
+  input.addEventListener('input', syncSend);
+
+  /* 中文输入法按回车选词时，Safari 会在 compositionend 之后再发一个 keyCode 229 的 Enter，
+     不拦住就会把半截拼音当评论发出去 */
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && (e.isComposing || e.keyCode === 229)) e.preventDefault();
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var text = input.value.trim();
+    if (!text) return;
+    var node = tpl.content.firstElementChild.cloneNode(true);
+    node.querySelector('.comment__text').textContent = text;
+    node.querySelector('.comment__time').setAttribute('datetime', new Date().toISOString());
+    list.appendChild(node);
+    countEl.textContent = String(list.children.length);
+    input.value = '';
+    syncSend();
+    node.scrollIntoView({
+      block: 'nearest',
+      behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+    });
+  });
+})();
+</script>
+</body>
+</html>

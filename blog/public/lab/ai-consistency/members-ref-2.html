@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>团队成员</title>
+<style>
+  /* 色值、阴影与「团队空间」卡片（ai-ui-taste/run1.html）同一套，仅新增 --danger-ink 与 --scrim */
+  :root {
+    --bg: #f4f4f1;
+    --card: #ffffff;
+    --text: #1c1c1a;
+    --text-2: #6b6a65;
+    --line: #e7e6e1;
+    --track: #ecebe6;
+    --accent: #c96442;
+    --accent-ink: #ffffff;
+    --tag-bg: #f6e9e3;
+    --tag-ink: #a24f32;
+    --danger: #c43d3d;
+    --danger-ink: #ffffff;
+    --hover: #f3f2ee;
+    --scrim: rgba(0,0,0,.4);
+    --shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --menu-shadow: 0 2px 6px rgba(0,0,0,.06), 0 12px 32px rgba(0,0,0,.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141413;
+      --card: #1f1e1c;
+      --text: #f0efea;
+      --text-2: #a3a199;
+      --line: #2f2e2b;
+      --track: #2f2e2b;
+      --accent: #d97757;
+      --accent-ink: #1a1a19;
+      --tag-bg: #3a2a23;
+      --tag-ink: #eba78d;
+      --danger: #ef6b6b;
+      --danger-ink: #1a1a19;
+      --hover: #2a2926;
+      --scrim: rgba(0,0,0,.6);
+      --shadow: 0 1px 2px rgba(0,0,0,.3);
+      --menu-shadow: 0 12px 32px rgba(0,0,0,.5);
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font: 15px/1.5 -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+  p { margin: 0; }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+
+  /* 顶部导航栏 */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    padding-top: env(safe-area-inset-top);
+    background: var(--bg);
+    border-bottom: 1px solid transparent;
+    transition: border-color .15s ease;
+  }
+  .nav.scrolled { border-bottom-color: var(--line); }
+  .nav-inner {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    max-width: 452px;
+    min-height: 52px;
+    margin: 0 auto;
+    padding: 0 6px;
+  }
+  .nav h1 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.3;
+    white-space: nowrap;
+  }
+  .icon-btn, .text-btn, .more {
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    font: inherit;
+    cursor: pointer;
+    transition: background-color .15s ease;
+  }
+  .icon-btn:active, .text-btn:active, .more:active, .more[aria-expanded="true"] { background: var(--hover); }
+  .back {
+    justify-self: start;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    color: var(--text);
+  }
+  .back i {
+    width: 10px;
+    height: 10px;
+    border-left: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: translateX(2px) rotate(45deg);
+  }
+  .text-btn {
+    justify-self: end;
+    min-height: 40px;
+    padding: 0 10px;
+    color: var(--accent);
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  main {
+    max-width: 452px;
+    margin: 0 auto;
+    padding: 8px 16px calc(24px + env(safe-area-inset-bottom));
+  }
+
+  /* 搜索框 */
+  .search { position: relative; }
+  .search::before, .search::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+  }
+  .search::before {
+    left: 14px;
+    top: 50%;
+    width: 12px;
+    height: 12px;
+    margin-top: -8px;
+    border: 2px solid var(--text-2);
+    border-radius: 50%;
+  }
+  .search::after {
+    left: 25px;
+    top: 50%;
+    width: 2px;
+    height: 6px;
+    margin-top: 2px;
+    border-radius: 1px;
+    background: var(--text-2);
+    transform: rotate(-45deg);
+  }
+  .search input {
+    width: 100%;
+    min-height: 44px;
+    padding: 0 12px 0 40px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--card);
+    color: var(--text);
+    font: inherit;
+    font-size: 16px; /* iOS Safari 输入框字号小于 16px 会在聚焦时自动放大页面 */
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .search input::placeholder { color: var(--text-2); opacity: 1; }
+
+  /* 分组与列表 */
+  .group-title {
+    margin: 24px 4px 8px;
+    color: var(--text-2);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.5;
+    font-variant-numeric: tabular-nums;
+  }
+  .card {
+    position: relative;
+    background: var(--card);
+    border-radius: 16px;
+    padding: 4px 20px;
+    box-shadow: var(--shadow);
+  }
+  .rows { margin: 0; padding: 0; list-style: none; }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+  }
+  .row:not([hidden]) ~ .row:not([hidden]) { border-top: 1px solid var(--line); }
+  .avatar {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--track);
+    color: var(--text);
+    font-weight: 600;
+  }
+  .avatar-pending { color: var(--text-2); font-weight: 400; }
+  .info { flex: 1; min-width: 0; }
+  .line1 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2px 8px;
+  }
+  .name { font-weight: 600; overflow-wrap: anywhere; }
+  .meta { margin-top: 2px; color: var(--text-2); font-size: 13px; }
+  .tag {
+    flex: none;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 20px;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: var(--tag-bg);
+    color: var(--tag-ink);
+  }
+  .tag-admin { background: var(--track); color: var(--text); }
+  .tag-member { background: transparent; color: var(--text-2); box-shadow: inset 0 0 0 1px var(--line); }
+  .empty { padding: 20px 0; color: var(--text-2); font-size: 14px; text-align: center; overflow-wrap: anywhere; }
+
+  .more {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    margin-right: -11px; /* 抵掉按钮内留白，让三个点与卡片右侧内边距对齐 */
+    display: grid;
+    place-items: center;
+    color: var(--text-2);
+  }
+  .dots { display: flex; gap: 3px; }
+  .dots i { width: 4px; height: 4px; border-radius: 50%; background: currentColor; }
+
+  .btn {
+    min-height: 44px;
+    border-radius: 10px;
+    font: inherit;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: transform .1s ease, background-color .15s ease;
+  }
+  .btn:active { transform: scale(.98); }
+  .btn-secondary { background: transparent; color: var(--text); border-color: var(--line); }
+  .btn-secondary:active { background: var(--hover); }
+  .btn-danger { background: var(--danger); color: var(--danger-ink); }
+  .btn-sm { flex: none; min-height: 36px; padding: 0 14px; font-size: 14px; }
+
+  .icon-btn:focus-visible, .text-btn:focus-visible, .more:focus-visible, .btn:focus-visible,
+  .menu button:focus-visible, .search input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* 成员操作菜单：全列表共用一个，打开时定位到触发按钮旁 */
+  .menu {
+    position: absolute;
+    top: 0;
+    right: 12px;
+    min-width: 152px;
+    max-width: 240px;
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: var(--menu-shadow);
+    transform-origin: top right;
+    opacity: 0;
+    transform: scale(.96) translateY(-4px);
+    visibility: hidden;
+    transition: opacity .15s ease, transform .15s ease, visibility 0s linear .15s;
+    z-index: 10;
+  }
+  .menu.up { transform-origin: bottom right; transform: scale(.96) translateY(4px); }
+  .menu.open {
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+    transition: opacity .15s ease, transform .15s ease, visibility 0s;
+  }
+  .menu button {
+    width: 100%;
+    min-height: 40px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    font-size: 15px;
+    text-align: left;
+    cursor: pointer;
+  }
+  .menu button:hover, .menu button:focus-visible { background: var(--hover); }
+  .menu .sep { height: 1px; margin: 6px 4px; background: var(--line); }
+  .menu .danger { color: var(--danger); }
+  .menu button[aria-disabled="true"] { color: var(--text-2); cursor: not-allowed; }
+  .menu button[aria-disabled="true"]:hover { background: transparent; }
+  .menu .note { padding: 6px 12px 8px; color: var(--text-2); font-size: 13px; }
+
+  .footnote {
+    margin-top: 24px;
+    color: var(--text-2);
+    font-size: 13px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* 移出确认 */
+  dialog {
+    width: min(calc(100% - 32px), 360px);
+    padding: 0;
+    border: 0;
+    border-radius: 16px;
+    background: var(--card);
+    color: var(--text);
+    box-shadow: var(--menu-shadow);
+  }
+  dialog::backdrop { background: var(--scrim); }
+  .dialog-body { padding: 20px; }
+  .dialog-body h2 { margin: 0; font-size: 18px; font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; }
+  .dialog-body p { margin-top: 8px; color: var(--text-2); font-size: 14px; }
+  .dialog-actions { display: flex; gap: 12px; margin-top: 20px; }
+  .dialog-actions .btn { flex: 1; }
+
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: calc(32px + env(safe-area-inset-bottom));
+    transform: translate(-50%, 8px);
+    max-width: calc(100% - 32px);
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: var(--text);
+    color: var(--bg);
+    font-size: 14px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease, transform .2s ease;
+    z-index: 30;
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: 0s !important; }
+  }
+</style>
+</head>
+<body>
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <button class="icon-btn back" type="button" aria-label="返回" data-action="back"><i aria-hidden="true"></i></button>
+    <h1>团队成员</h1>
+    <button class="text-btn" type="button" data-action="invite">邀请</button>
+  </div>
+</header>
+
+<main>
+  <div class="search" role="search">
+    <input id="q" type="search" placeholder="搜索成员" aria-label="搜索成员" autocomplete="off" enterkeyhint="search">
+  </div>
+  <div class="sr-only" id="searchStatus" role="status" aria-live="polite"></div>
+
+  <section aria-labelledby="membersTitle">
+    <h2 class="group-title" id="membersTitle" tabindex="-1">成员 · <span id="memberCount">6</span></h2>
+    <div class="card" id="memberCard">
+      <ul class="rows" id="memberList">
+        <li class="row" data-name="林知夏" data-role="owner" data-self="true">
+          <span class="avatar" aria-hidden="true">林</span>
+          <div class="info">
+            <div class="line1"><span class="name">林知夏（你）</span><span class="tag">所有者</span></div>
+            <p class="meta">刚刚活跃</p>
+          </div>
+          <button class="more" type="button" aria-label="更多操作：林知夏" aria-haspopup="menu" aria-expanded="false" aria-controls="memberMenu"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span></button>
+        </li>
+        <li class="row" data-name="周启明" data-role="admin">
+          <span class="avatar" aria-hidden="true">周</span>
+          <div class="info">
+            <div class="line1"><span class="name">周启明</span><span class="tag tag-admin">管理员</span></div>
+            <p class="meta">2 小时前活跃</p>
+          </div>
+          <button class="more" type="button" aria-label="更多操作：周启明" aria-haspopup="menu" aria-expanded="false" aria-controls="memberMenu"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span></button>
+        </li>
+        <li class="row" data-name="何雨桐" data-role="member">
+          <span class="avatar" aria-hidden="true">何</span>
+          <div class="info">
+            <div class="line1"><span class="name">何雨桐</span><span class="tag tag-member">成员</span></div>
+            <p class="meta">3 小时前活跃</p>
+          </div>
+          <button class="more" type="button" aria-label="更多操作：何雨桐" aria-haspopup="menu" aria-expanded="false" aria-controls="memberMenu"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span></button>
+        </li>
+        <li class="row" data-name="许嘉禾" data-role="member">
+          <span class="avatar" aria-hidden="true">许</span>
+          <div class="info">
+            <div class="line1"><span class="name">许嘉禾</span><span class="tag tag-member">成员</span></div>
+            <p class="meta">昨天活跃</p>
+          </div>
+          <button class="more" type="button" aria-label="更多操作：许嘉禾" aria-haspopup="menu" aria-expanded="false" aria-controls="memberMenu"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span></button>
+        </li>
+        <li class="row" data-name="孙乐" data-role="member">
+          <span class="avatar" aria-hidden="true">孙</span>
+          <div class="info">
+            <div class="line1"><span class="name">孙乐</span><span class="tag tag-member">成员</span></div>
+            <p class="meta">3 天前活跃</p>
+          </div>
+          <button class="more" type="button" aria-label="更多操作：孙乐" aria-haspopup="menu" aria-expanded="false" aria-controls="memberMenu"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span></button>
+        </li>
+        <li class="row" data-name="Alexandra Montgomery-Whitfield" data-role="member">
+          <span class="avatar" aria-hidden="true">A</span>
+          <div class="info">
+            <div class="line1"><span class="name">Alexandra Montgomery-Whitfield</span><span class="tag tag-member">成员</span></div>
+            <p class="meta">1 周前活跃</p>
+          </div>
+          <button class="more" type="button" aria-label="更多操作：Alexandra Montgomery-Whitfield" aria-haspopup="menu" aria-expanded="false" aria-controls="memberMenu"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span></button>
+        </li>
+      </ul>
+      <p class="empty" id="memberEmpty" hidden></p>
+
+      <ul class="menu" id="memberMenu" role="menu" aria-label="成员操作">
+        <li role="none" class="note" id="menuNote" hidden>所有者的身份不能更改，也不能被移出</li>
+        <li role="none"><button type="button" role="menuitem" data-cmd="role" tabindex="-1">设为管理员</button></li>
+        <li role="separator" class="sep"></li>
+        <li role="none"><button type="button" role="menuitem" data-cmd="remove" class="danger" tabindex="-1">移出团队</button></li>
+      </ul>
+    </div>
+  </section>
+
+  <section aria-labelledby="invitesTitle">
+    <h2 class="group-title" id="invitesTitle" tabindex="-1">待接受的邀请 · <span id="inviteCount">2</span></h2>
+    <div class="card">
+      <ul class="rows" id="inviteList">
+        <li class="row">
+          <span class="avatar avatar-pending" aria-hidden="true">@</span>
+          <div class="info">
+            <p class="name">wang.lei@example.com</p>
+            <p class="meta">3 天前发出</p>
+          </div>
+          <button class="btn btn-secondary btn-sm" type="button" data-cmd="revoke" data-email="wang.lei@example.com" aria-label="撤回发给 wang.lei@example.com 的邀请">撤回</button>
+        </li>
+        <li class="row">
+          <span class="avatar avatar-pending" aria-hidden="true">@</span>
+          <div class="info">
+            <p class="name">chen.yue@northstudio.io</p>
+            <p class="meta">3 天前发出</p>
+          </div>
+          <button class="btn btn-secondary btn-sm" type="button" data-cmd="revoke" data-email="chen.yue@northstudio.io" aria-label="撤回发给 chen.yue@northstudio.io 的邀请">撤回</button>
+        </li>
+      </ul>
+      <p class="empty" id="inviteEmpty" hidden>没有待接受的邀请</p>
+    </div>
+  </section>
+
+  <p class="footnote">Pro 套餐最多 10 人，已用 <span id="seatUsed">6</span> 个名额</p>
+</main>
+
+<dialog id="removeDialog" aria-labelledby="removeTitle" aria-describedby="removeDesc">
+  <form method="dialog" class="dialog-body">
+    <h2 id="removeTitle"></h2>
+    <p id="removeDesc">对方将无法再访问团队空间里的文件。之后可以重新邀请。</p>
+    <div class="dialog-actions">
+      <button class="btn btn-secondary" type="submit" value="cancel" autofocus>取消</button>
+      <button class="btn btn-danger" type="submit" value="confirm">移出</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+  (function () {
+    var $ = function (id) { return document.getElementById(id); };
+    var nav = $('nav');
+    var q = $('q');
+    var memberList = $('memberList');
+    var memberCard = $('memberCard');
+    var memberEmpty = $('memberEmpty');
+    var menu = $('memberMenu');
+    var menuNote = $('menuNote');
+    var roleItem = menu.querySelector('[data-cmd="role"]');
+    var removeItem = menu.querySelector('[data-cmd="remove"]');
+    var items = [roleItem, removeItem];
+    var dialog = $('removeDialog');
+    var toast = $('toast');
+
+    var ROLES = {
+      admin: { label: '管理员', cls: 'tag tag-admin' },
+      member: { label: '成员', cls: 'tag tag-member' }
+    };
+
+    function memberRows() { return Array.prototype.slice.call(memberList.children); }
+    function visibleMoreButtons() {
+      return memberRows().filter(function (r) { return !r.hidden; })
+        .map(function (r) { return r.querySelector('.more'); });
+    }
+
+    window.addEventListener('scroll', function () {
+      nav.classList.toggle('scrolled', window.scrollY > 0);
+    }, { passive: true });
+
+    var toastTimer;
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 1600);
+    }
+
+    /* 搜索：按名字过滤成员 */
+    function applyFilter() {
+      var raw = q.value.trim();
+      var key = raw.toLowerCase();
+      var shown = 0;
+      memberRows().forEach(function (row) {
+        var hit = !key || row.getAttribute('data-name').toLowerCase().indexOf(key) !== -1;
+        row.hidden = !hit;
+        if (hit) shown++;
+      });
+      memberEmpty.hidden = shown > 0;
+      memberEmpty.textContent = '没有名字包含「' + raw + '」的成员';
+      $('searchStatus').textContent = key ? (shown ? '找到 ' + shown + ' 位成员' : '没有匹配的成员') : '';
+    }
+    q.addEventListener('input', function () {
+      if (isOpen()) close(false);
+      applyFilter();
+    });
+
+    /* 成员操作菜单 */
+    var trigger = null;
+    function isOpen() { return menu.classList.contains('open'); }
+
+    function configure(row) {
+      var name = row.getAttribute('data-name');
+      var role = row.getAttribute('data-role');
+      var locked = role === 'owner';
+      menu.setAttribute('aria-label', name + ' 的操作');
+      menuNote.hidden = !locked;
+      roleItem.textContent = role === 'admin' ? '取消管理员' : '设为管理员';
+      items.forEach(function (el) {
+        if (locked) el.setAttribute('aria-disabled', 'true');
+        else el.removeAttribute('aria-disabled');
+      });
+    }
+
+    function position(btn) {
+      var gap = 4;
+      var h = menu.offsetHeight;
+      var rect = btn.getBoundingClientRect();
+      var below = window.innerHeight - rect.bottom;
+      var above = rect.top - nav.offsetHeight;
+      var up = below < h + gap + 8 && above > below;
+      var top = btn.offsetTop + (up ? -h - gap : btn.offsetHeight + gap);
+      menu.classList.toggle('up', up);
+      menu.style.top = top + 'px';
+    }
+
+    function open(btn, focusIndex) {
+      if (trigger && trigger !== btn) close(false);
+      trigger = btn;
+      configure(btn.closest('.row'));
+      position(btn);
+      menu.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+      items[focusIndex || 0].focus();
+    }
+    function close(returnFocus) {
+      menu.classList.remove('open');
+      if (!trigger) return;
+      trigger.setAttribute('aria-expanded', 'false');
+      if (returnFocus) trigger.focus();
+    }
+
+    memberList.addEventListener('click', function (e) {
+      var btn = e.target.closest('.more');
+      if (!btn) return;
+      (isOpen() && trigger === btn) ? close(false) : open(btn, 0);
+    });
+    memberList.addEventListener('keydown', function (e) {
+      var btn = e.target.closest('.more');
+      if (!btn) return;
+      if (e.key === 'ArrowDown') { e.preventDefault(); open(btn, 0); }
+      if (e.key === 'ArrowUp') { e.preventDefault(); open(btn, items.length - 1); }
+    });
+    menu.addEventListener('keydown', function (e) {
+      var i = items.indexOf(document.activeElement);
+      if (e.key === 'ArrowDown') { e.preventDefault(); items[(i + 1) % items.length].focus(); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); items[(i - 1 + items.length) % items.length].focus(); }
+      else if (e.key === 'Home') { e.preventDefault(); items[0].focus(); }
+      else if (e.key === 'End') { e.preventDefault(); items[items.length - 1].focus(); }
+      else if (e.key === 'Escape') { e.preventDefault(); close(true); }
+      else if (e.key === 'Tab') { close(false); }
+    });
+    document.addEventListener('pointerdown', function (e) {
+      if (isOpen() && !menu.contains(e.target) && !trigger.contains(e.target)) close(false);
+    });
+    window.addEventListener('resize', function () { if (isOpen()) close(false); });
+
+    menu.addEventListener('click', function (e) {
+      var item = e.target.closest('[role="menuitem"]');
+      if (!item || item.getAttribute('aria-disabled') === 'true') return;
+      var row = trigger.closest('.row');
+      close(true);
+      if (item === roleItem) toggleAdmin(row);
+      else confirmRemove(row, trigger);
+    });
+
+    function toggleAdmin(row) {
+      var name = row.getAttribute('data-name');
+      var next = row.getAttribute('data-role') === 'admin' ? 'member' : 'admin';
+      var tag = row.querySelector('.tag');
+      row.setAttribute('data-role', next);
+      tag.className = ROLES[next].cls;
+      tag.textContent = ROLES[next].label;
+      showToast(next === 'admin' ? '已将 ' + name + ' 设为管理员' : '已取消 ' + name + ' 的管理员身份');
+    }
+
+    function confirmRemove(row, btn) {
+      var name = row.getAttribute('data-name');
+      $('removeTitle').textContent = '将「' + name + '」移出团队？';
+      if (typeof dialog.showModal !== 'function') {
+        if (window.confirm('将「' + name + '」移出团队？对方将无法再访问团队空间里的文件。')) removeMember(row, btn);
+        return;
+      }
+      dialog.returnValue = '';
+      dialog.onclose = function () {
+        if (dialog.returnValue === 'confirm') removeMember(row, btn);
+        else btn.focus();
+      };
+      dialog.showModal();
+    }
+    dialog.addEventListener('click', function (e) {
+      if (e.target === dialog) dialog.close('cancel');
+    });
+
+    function removeMember(row, btn) {
+      var name = row.getAttribute('data-name');
+      var buttons = visibleMoreButtons();
+      var idx = buttons.indexOf(btn);
+      row.remove();
+      var count = memberRows().length;
+      $('memberCount').textContent = count;
+      $('seatUsed').textContent = count;
+      applyFilter();
+      var rest = visibleMoreButtons();
+      var next = rest[idx] || rest[idx - 1];
+      (next || q).focus();
+      showToast('已将 ' + name + ' 移出团队');
+    }
+
+    /* 撤回邀请：可以重新邀请，不再二次确认 */
+    $('inviteList').addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-cmd="revoke"]');
+      if (!btn) return;
+      var list = $('inviteList');
+      var buttons = Array.prototype.slice.call(list.querySelectorAll('[data-cmd="revoke"]'));
+      var idx = buttons.indexOf(btn);
+      btn.closest('.row').remove();
+      var rest = Array.prototype.slice.call(list.querySelectorAll('[data-cmd="revoke"]'));
+      $('inviteCount').textContent = rest.length;
+      $('inviteEmpty').hidden = rest.length > 0;
+      var next = rest[idx] || rest[idx - 1];
+      (next || $('invitesTitle')).focus();
+      showToast('已撤回发给 ' + btn.getAttribute('data-email') + ' 的邀请');
+    });
+
+    var labels = { back: '返回上一页', invite: '前往邀请成员' };
+    nav.addEventListener('click', function (e) {
+      var target = e.target.closest('[data-action]');
+      if (target) showToast(labels[target.getAttribute('data-action')]);
+    });
+  })();
+</script>
+</body>
+</html>

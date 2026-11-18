@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>团队成员</title>
+<style>
+  /* 语义色只在这里定义，下面的规则一律按角色取值 */
+  :root {
+    --bg: #f4f5f7;
+    --surface: #ffffff;
+    --surface-pressed: #eceef2;
+    --text: #1a1d23;
+    --text-secondary: #575d6a;
+    --hairline: #e3e5ea;
+    --accent: #2457e0;
+    --accent-soft: #e9efff;
+    --accent-on: #ffffff;
+    --danger: #c42b2b;
+    --danger-on: #ffffff;
+    --focus: #2457e0;
+    --tag-owner-bg: #fff1d6;
+    --tag-owner-text: #7a4a00;
+    --tag-admin-bg: #e6edff;
+    --tag-admin-text: #1d43a8;
+    --tag-member-bg: #eceef2;
+    --tag-member-text: #464c58;
+    --avatar-text: #ffffff;
+    --shadow: 0 8px 24px rgb(16 24 40 / 0.16);
+    --backdrop: rgb(16 24 40 / 0.4);
+
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-6: 24px;
+    --space-8: 32px;
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --hit: 44px;
+    --nav-h: 52px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1115;
+      --surface: #1a1d23;
+      --surface-pressed: #262a32;
+      --text: #eceef2;
+      --text-secondary: #a6acb8;
+      --hairline: #2c3039;
+      --accent: #84a6ff;
+      --accent-soft: #1f2a45;
+      --accent-on: #0f1115;
+      --danger: #ff8080;
+      --danger-on: #0f1115;
+      --focus: #84a6ff;
+      --tag-owner-bg: #3a2c12;
+      --tag-owner-text: #f5c46b;
+      --tag-admin-bg: #1f2a45;
+      --tag-admin-text: #a9c0ff;
+      --tag-member-bg: #2a2e36;
+      --tag-member-text: #c3c8d2;
+      --shadow: 0 8px 24px rgb(0 0 0 / 0.5);
+      --backdrop: rgb(0 0 0 / 0.6);
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+
+  /* 导航栏：顶部留出安全区，属于对齐外部表面的具名例外 */
+  .nav {
+    position: sticky; top: 0; z-index: 10;
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+    min-height: calc(var(--nav-h) + env(safe-area-inset-top));
+    padding: env(safe-area-inset-top) var(--space-1) 0;
+    background: var(--bg);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .nav h1 { margin: 0; font-size: 17px; font-weight: 600; }
+  .nav-end { justify-self: end; padding-right: var(--space-3); }
+
+  .icon-btn {
+    display: inline-grid; place-items: center;
+    width: var(--hit); height: var(--hit);
+    padding: 0; border: 0; border-radius: var(--radius-md);
+    background: transparent; cursor: pointer;
+  }
+  .icon-btn:active, .icon-btn[aria-expanded="true"] { background: var(--surface-pressed); }
+
+  /* 返回箭头：用边框画出的 chevron */
+  .chevron-left {
+    width: 11px; height: 11px;
+    border-left: 2px solid currentColor; border-bottom: 2px solid currentColor;
+    transform: translateX(2px) rotate(45deg);
+  }
+  /* 「更多」：三个点 */
+  .dots { display: flex; gap: 3px; }
+  .dots i { width: 4px; height: 4px; border-radius: 50%; background: var(--text-secondary); }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 32px; padding: 0 var(--space-3);
+    border: 1px solid transparent; border-radius: 999px;
+    font-size: 14px; font-weight: 500; cursor: pointer; white-space: nowrap;
+  }
+  .btn-soft { background: var(--accent-soft); color: var(--accent); }
+  .btn-outline { background: var(--surface); border-color: var(--hairline); color: var(--text); }
+  .btn-danger { background: var(--danger); color: var(--danger-on); }
+  .btn-plain { background: var(--surface-pressed); color: var(--text); }
+  .btn:active { filter: brightness(0.92); }
+  .btn-lg { min-height: var(--hit); padding: 0 var(--space-4); font-size: 16px; border-radius: var(--radius-md); }
+
+  @media (hover: hover) {
+    .icon-btn:hover { background: var(--surface-pressed); }
+    .btn-outline:hover { background: var(--surface-pressed); }
+  }
+
+  main {
+    max-width: 640px; margin: 0 auto;
+    padding: var(--space-3) var(--space-4) calc(var(--space-8) + env(safe-area-inset-bottom));
+  }
+
+  .search { position: relative; margin-bottom: var(--space-6); }
+  .search input {
+    width: 100%; height: 40px;
+    padding: 0 var(--space-3) 0 36px;
+    border: 1px solid var(--hairline); border-radius: var(--radius-md);
+    background: var(--surface); color: var(--text);
+    font: inherit; font-size: 16px;
+    -webkit-appearance: none; appearance: none;
+  }
+  .search input::placeholder { color: var(--text-secondary); }
+  .search input:focus-visible { outline: 2px solid var(--focus); outline-offset: 0; border-color: transparent; }
+  /* 放大镜：圆 + 柄 */
+  .search::before, .search::after { content: ""; position: absolute; pointer-events: none; }
+  .search::before {
+    left: 13px; top: 12px; width: 11px; height: 11px;
+    border: 2px solid var(--text-secondary); border-radius: 50%;
+  }
+  .search::after {
+    left: 24px; top: 24px; width: 6px; height: 2px;
+    background: var(--text-secondary); transform: rotate(45deg); transform-origin: left center;
+  }
+
+  section + section { margin-top: var(--space-6); }
+  .section-title {
+    margin: 0 0 var(--space-2) var(--space-4);
+    font-size: 13px; font-weight: 500; color: var(--text-secondary);
+  }
+  .section-title:focus { outline: none; }
+  .section-title:focus-visible { outline: 2px solid var(--focus); }
+
+  .list {
+    list-style: none; margin: 0; padding: 0;
+    background: var(--surface); border-radius: var(--radius-lg); overflow: clip;
+    overflow-clip-margin: 4px;
+  }
+  .row {
+    display: grid; grid-template-columns: 40px minmax(0, 1fr) auto;
+    align-items: center; column-gap: var(--space-3);
+    min-height: 64px; padding: var(--space-3) var(--space-1) var(--space-3) var(--space-4);
+    position: relative;
+  }
+  /* 分隔线归列表所有，从正文列起画，和头像列错开 */
+  .row + .row::before {
+    content: ""; position: absolute; top: 0; right: 0;
+    left: calc(var(--space-4) + 40px + var(--space-3));
+    border-top: 1px solid var(--hairline);
+  }
+  .row[hidden] { display: none; }
+
+  .avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: grid; place-items: center;
+    color: var(--avatar-text); font-size: 15px; font-weight: 600;
+  }
+  .avatar-invite { background: var(--surface-pressed); color: var(--text-secondary); font-weight: 500; }
+
+  .name-line { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-2); }
+  .name { font-size: 16px; font-weight: 500; overflow-wrap: anywhere; }
+  .email { font-size: 15px; overflow-wrap: anywhere; }
+  .meta { margin-top: var(--space-1); font-size: 13px; color: var(--text-secondary); }
+
+  .tag { padding: 2px 6px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 500; line-height: 16px; }
+  .tag-owner { background: var(--tag-owner-bg); color: var(--tag-owner-text); }
+  .tag-admin { background: var(--tag-admin-bg); color: var(--tag-admin-text); }
+  .tag-member { background: var(--tag-member-bg); color: var(--tag-member-text); }
+
+  /* 尾部操作列固定宽度，没有按钮的行也占位，名字不会左右跳 */
+  .trail { width: var(--hit); display: grid; place-items: center; }
+  .trail-wide { width: auto; min-width: var(--hit); padding-right: var(--space-3); }
+
+  .empty { margin: 0; padding: var(--space-6) var(--space-4); text-align: center; font-size: 14px; color: var(--text-secondary); background: var(--surface); border-radius: var(--radius-lg); }
+
+  .quota { margin: var(--space-6) 0 0; text-align: center; font-size: 12px; color: var(--text-secondary); }
+
+  /* 菜单 */
+  .menu {
+    position: fixed; z-index: 30; min-width: 176px;
+    padding: var(--space-1); margin: 0;
+    background: var(--surface); border-radius: var(--radius-md); box-shadow: var(--shadow);
+    border: 1px solid var(--hairline);
+  }
+  .menu[hidden] { display: none; }
+  .menu-item {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
+    width: 100%; min-height: var(--hit); padding: 0 var(--space-3);
+    border: 0; border-radius: var(--radius-sm); background: transparent;
+    text-align: left; font-size: 15px; cursor: pointer;
+  }
+  .menu-item:focus-visible { outline-offset: -2px; }
+  .menu-item:active { background: var(--surface-pressed); }
+  .menu-item[aria-disabled="true"] { color: var(--text-secondary); cursor: not-allowed; }
+  .menu-item[aria-disabled="true"]:active { background: transparent; }
+  .menu-item .hint { font-size: 12px; }
+  .menu-item-danger { color: var(--danger); }
+  .menu-sep { height: 1px; margin: var(--space-1) 0; background: var(--hairline); }
+  @media (hover: hover) {
+    .menu-item:not([aria-disabled="true"]):hover { background: var(--surface-pressed); }
+  }
+
+  /* 确认弹窗 */
+  dialog {
+    width: min(320px, calc(100vw - 2 * var(--space-6)));
+    padding: var(--space-6) var(--space-4) var(--space-4);
+    border: 0; border-radius: var(--radius-lg);
+    background: var(--surface); color: var(--text); box-shadow: var(--shadow);
+  }
+  dialog::backdrop { background: var(--backdrop); }
+  dialog h2 { margin: 0 0 var(--space-2); font-size: 17px; font-weight: 600; text-align: center; overflow-wrap: anywhere; }
+  dialog p { margin: 0 0 var(--space-6); font-size: 14px; color: var(--text-secondary); text-align: center; }
+  .dialog-actions { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
+
+  /* 底部通知 */
+  .toast {
+    position: fixed; z-index: 40; left: 50%;
+    bottom: calc(var(--space-6) + env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    display: flex; align-items: center; gap: var(--space-3);
+    width: max-content; max-width: calc(100vw - 2 * var(--space-4));
+    padding: var(--space-1) var(--space-1) var(--space-1) var(--space-4);
+    min-height: var(--hit);
+    border-radius: var(--radius-md);
+    background: var(--text); color: var(--bg);
+    font-size: 14px; box-shadow: var(--shadow);
+    transition: opacity 160ms ease, transform 160ms ease;
+  }
+  .toast.is-hidden { opacity: 0; transform: translate(-50%, 8px); pointer-events: none; visibility: hidden; }
+  .toast-msg { padding: var(--space-2) 0; }
+  .toast-msg:last-child { padding-right: var(--space-3); }
+  .toast button {
+    min-height: 36px; padding: 0 var(--space-3);
+    border: 0; border-radius: var(--radius-sm);
+    background: transparent; color: var(--bg); font-weight: 600; cursor: pointer;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .toast button:focus-visible { outline-color: var(--bg); outline-offset: -2px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .toast { transition: none; }
+  }
+</style>
+</head>
+<body>
+  <header class="nav">
+    <div>
+      <button type="button" class="icon-btn" id="back" aria-label="返回" title="返回">
+        <span class="chevron-left" aria-hidden="true"></span>
+      </button>
+    </div>
+    <h1>团队成员</h1>
+    <div class="nav-end">
+      <button type="button" class="btn btn-soft" id="invite">邀请</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="search" role="search">
+      <label for="q" class="sr-only">搜索成员</label>
+      <input id="q" type="search" placeholder="搜索成员" autocomplete="off" enterkeyhint="search">
+    </div>
+
+    <section aria-labelledby="members-title">
+      <h2 class="section-title" id="members-title" tabindex="-1">成员 · 6</h2>
+      <ul class="list" id="member-list"></ul>
+      <p class="empty" id="member-empty" hidden></p>
+    </section>
+
+    <section aria-labelledby="invites-title">
+      <h2 class="section-title" id="invites-title" tabindex="-1">待接受的邀请 · 2</h2>
+      <ul class="list" id="invite-list"></ul>
+      <p class="empty" id="invite-empty" hidden>没有待接受的邀请</p>
+    </section>
+
+    <p class="quota" id="quota">Pro 套餐最多 10 人，已用 6 个名额</p>
+  </main>
+
+  <div class="menu" id="menu" role="menu" aria-label="成员操作" hidden>
+    <button type="button" class="menu-item" role="menuitem" data-action="admin" tabindex="-1">
+      <span>设为管理员</span><span class="hint" hidden>已是管理员</span>
+    </button>
+    <div class="menu-sep" role="separator"></div>
+    <button type="button" class="menu-item menu-item-danger" role="menuitem" data-action="remove" tabindex="-1">移出团队…</button>
+  </div>
+
+  <dialog id="confirm" aria-labelledby="confirm-title" aria-describedby="confirm-desc">
+    <form method="dialog">
+      <h2 id="confirm-title"></h2>
+      <p id="confirm-desc">对方将无法再访问团队内容，名额会立即释放。要再加入需重新邀请。</p>
+      <div class="dialog-actions">
+        <button class="btn btn-plain btn-lg" value="cancel" autofocus>取消</button>
+        <button class="btn btn-danger btn-lg" value="ok">移出</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast is-hidden" id="toast" role="status" aria-live="polite">
+    <span class="toast-msg" id="toast-msg"></span>
+    <button type="button" id="toast-undo" hidden>撤销</button>
+  </div>
+  <div class="sr-only" id="live" aria-live="polite"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  var SEAT_LIMIT = 10;
+  var TOAST_MS = 5000;
+  var ROLE_LABEL = { owner: "所有者", admin: "管理员", member: "成员" };
+  /* 头像底色只用于区分人，不承载信息；都与白字对比度 ≥ 4.5 */
+  var AVATAR_COLORS = ["#c2410c", "#1d4ed8", "#047857", "#7c3aed", "#be185d", "#0e7490"];
+
+  var members = [
+    { id: "m1", name: "林晓", role: "owner", active: "刚刚活跃" },
+    { id: "m2", name: "陈一鸣", role: "admin", active: "2 小时前活跃" },
+    { id: "m3", name: "王思远", role: "member", active: "昨天活跃" },
+    { id: "m4", name: "赵敏", role: "member", active: "3 天前活跃" },
+    { id: "m5", name: "周子涵", role: "member", active: "1 周前活跃" },
+    { id: "m6", name: "Alexander Thompson", role: "member", active: "2 周前活跃" }
+  ];
+  var invites = [
+    { id: "i1", email: "hello.design@example.com", sent: "3 天前发出" },
+    { id: "i2", email: "liu.yang.frontend.engineer@example.com", sent: "3 天前发出" }
+  ];
+
+  var $ = function (id) { return document.getElementById(id); };
+  var memberList = $("member-list");
+  var inviteList = $("invite-list");
+  var memberEmpty = $("member-empty");
+  var q = $("q");
+  var menu = $("menu");
+  var confirmDlg = $("confirm");
+  var toast = $("toast");
+  var live = $("live");
+
+  var menuState = { trigger: null, memberId: null };
+  var toastTimer = 0;
+  var undoFn = null;
+
+  function el(tag, cls, text) {
+    var node = document.createElement(tag);
+    if (cls) node.className = cls;
+    if (text != null) node.textContent = text;
+    return node;
+  }
+
+  function initials(name) {
+    var t = name.trim();
+    if (/^[一-鿿]/.test(t)) return t.slice(-2);
+    return t.split(/\s+/).map(function (w) { return w[0]; }).join("").slice(0, 2).toUpperCase();
+  }
+
+  function colorFor(id) {
+    var n = 0;
+    for (var i = 0; i < id.length; i++) n += id.charCodeAt(i);
+    return AVATAR_COLORS[n % AVATAR_COLORS.length];
+  }
+
+  function renderMemberRow(m) {
+    var li = el("li", "row");
+    li.dataset.id = m.id;
+    li.dataset.name = m.name.toLowerCase();
+
+    var av = el("span", "avatar", initials(m.name));
+    av.style.background = colorFor(m.id);
+    av.setAttribute("aria-hidden", "true");
+
+    var body = el("div");
+    var line = el("div", "name-line");
+    line.appendChild(el("span", "name", m.name));
+    line.appendChild(el("span", "tag tag-" + m.role, ROLE_LABEL[m.role]));
+    body.appendChild(line);
+    body.appendChild(el("div", "meta", m.active));
+
+    var trail = el("div", "trail");
+    if (m.role !== "owner") {
+      var more = el("button", "icon-btn more");
+      more.type = "button";
+      more.setAttribute("aria-label", "更多：" + m.name);
+      more.title = "更多";
+      more.setAttribute("aria-haspopup", "menu");
+      more.setAttribute("aria-expanded", "false");
+      more.setAttribute("aria-controls", "menu");
+      more.innerHTML = '<span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>';
+      more.addEventListener("click", function () { toggleMenu(more, m.id); });
+      trail.appendChild(more);
+    }
+
+    li.appendChild(av);
+    li.appendChild(body);
+    li.appendChild(trail);
+    return li;
+  }
+
+  function renderInviteRow(inv) {
+    var li = el("li", "row");
+    li.dataset.id = inv.id;
+
+    var av = el("span", "avatar avatar-invite", "@");
+    av.setAttribute("aria-hidden", "true");
+
+    var body = el("div");
+    body.appendChild(el("div", "email", inv.email));
+    body.appendChild(el("div", "meta", inv.sent));
+
+    var trail = el("div", "trail trail-wide");
+    var btn = el("button", "btn btn-outline revoke", "撤回");
+    btn.type = "button";
+    btn.setAttribute("aria-label", "撤回给 " + inv.email + " 的邀请");
+    btn.addEventListener("click", function () { revokeInvite(inv.id); });
+    trail.appendChild(btn);
+
+    li.appendChild(av);
+    li.appendChild(body);
+    li.appendChild(trail);
+    return li;
+  }
+
+  function renderMembers() {
+    memberList.replaceChildren.apply(memberList, members.map(renderMemberRow));
+    $("members-title").textContent = "成员 · " + members.length;
+    $("quota").textContent = "Pro 套餐最多 " + SEAT_LIMIT + " 人，已用 " + members.length + " 个名额";
+    applyFilter(false);
+  }
+
+  function renderInvites() {
+    inviteList.replaceChildren.apply(inviteList, invites.map(renderInviteRow));
+    $("invites-title").textContent = "待接受的邀请 · " + invites.length;
+    inviteList.hidden = invites.length === 0;
+    $("invite-empty").hidden = invites.length !== 0;
+  }
+
+  function applyFilter(announceResult) {
+    var term = q.value.trim().toLowerCase();
+    var shown = 0;
+    Array.prototype.forEach.call(memberList.children, function (li) {
+      var hit = !term || li.dataset.name.indexOf(term) !== -1;
+      li.hidden = !hit;
+      if (hit) shown++;
+    });
+    var none = shown === 0;
+    memberList.hidden = none;
+    memberEmpty.hidden = !none;
+    if (none) memberEmpty.textContent = term ? "没有名字包含「" + q.value.trim() + "」的成员" : "还没有成员";
+    if (announceResult) announce(term ? "找到 " + shown + " 位成员" : "");
+  }
+
+  function announce(text) {
+    live.textContent = "";
+    if (text) setTimeout(function () { live.textContent = text; }, 50);
+  }
+
+  /* ---------- 菜单 ---------- */
+
+  function menuItems() {
+    return Array.prototype.slice.call(menu.querySelectorAll('[role="menuitem"]'));
+  }
+
+  function toggleMenu(trigger, memberId) {
+    if (menuState.trigger === trigger) { closeMenu(true); return; }
+    closeMenu(false);
+    openMenu(trigger, memberId);
+  }
+
+  function openMenu(trigger, memberId) {
+    var m = findMember(memberId);
+    var adminItem = menu.querySelector('[data-action="admin"]');
+    var isAdmin = m.role === "admin";
+    adminItem.setAttribute("aria-disabled", String(isAdmin));
+    adminItem.querySelector(".hint").hidden = !isAdmin;
+
+    menuState = { trigger: trigger, memberId: memberId };
+    trigger.setAttribute("aria-expanded", "true");
+    menu.setAttribute("aria-label", m.name + " 的操作");
+    menu.hidden = false;
+    positionMenu(trigger);
+    menuItems()[0].focus();
+  }
+
+  function positionMenu(trigger) {
+    var r = trigger.getBoundingClientRect();
+    var gap = 4;
+    var mw = menu.offsetWidth;
+    var mh = menu.offsetHeight;
+    var left = Math.max(8, Math.min(r.right - mw, window.innerWidth - mw - 8));
+    var below = r.bottom + gap;
+    var top = below + mh > window.innerHeight - 8 ? r.top - gap - mh : below;
+    menu.style.left = left + "px";
+    menu.style.top = Math.max(8, top) + "px";
+  }
+
+  function closeMenu(restoreFocus) {
+    if (!menuState.trigger) return;
+    var trigger = menuState.trigger;
+    trigger.setAttribute("aria-expanded", "false");
+    menu.hidden = true;
+    menuState = { trigger: null, memberId: null };
+    if (restoreFocus) trigger.focus();
+  }
+
+  menu.addEventListener("keydown", function (e) {
+    var items = menuItems();
+    var i = items.indexOf(document.activeElement);
+    if (e.key === "ArrowDown") { e.preventDefault(); items[(i + 1) % items.length].focus(); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); items[(i - 1 + items.length) % items.length].focus(); }
+    else if (e.key === "Home") { e.preventDefault(); items[0].focus(); }
+    else if (e.key === "End") { e.preventDefault(); items[items.length - 1].focus(); }
+    else if (e.key === "Escape") { e.preventDefault(); closeMenu(true); }
+    else if (e.key === "Tab") { closeMenu(true); }
+  });
+
+  menu.addEventListener("click", function (e) {
+    var item = e.target.closest('[role="menuitem"]');
+    if (!item || item.getAttribute("aria-disabled") === "true") return;
+    var id = menuState.memberId;
+    var trigger = menuState.trigger;
+    closeMenu(false);
+    if (item.dataset.action === "admin") makeAdmin(id);
+    else askRemove(id, trigger);
+  });
+
+  document.addEventListener("pointerdown", function (e) {
+    if (!menuState.trigger) return;
+    if (menu.contains(e.target) || menuState.trigger.contains(e.target)) return;
+    closeMenu(false);
+  });
+  window.addEventListener("resize", function () { closeMenu(false); });
+  window.addEventListener("scroll", function () { closeMenu(false); }, { passive: true });
+
+  /* ---------- 操作 ---------- */
+
+  function findMember(id) {
+    return members.filter(function (m) { return m.id === id; })[0];
+  }
+
+  function focusMore(id) {
+    var btn = memberList.querySelector('[data-id="' + id + '"] .more');
+    if (btn) btn.focus();
+  }
+
+  function makeAdmin(id) {
+    members = members.map(function (m) { return m.id === id ? Object.assign({}, m, { role: "admin" }) : m; });
+    renderMembers();
+    focusMore(id);
+    announce("已将 " + findMember(id).name + " 设为管理员");
+  }
+
+  function askRemove(id, trigger) {
+    var m = findMember(id);
+    $("confirm-title").textContent = "将「" + m.name + "」移出团队？";
+    confirmDlg.returnValue = "";
+    confirmDlg.onclose = function () {
+      if (confirmDlg.returnValue === "ok") removeMember(id);
+      else if (trigger && trigger.isConnected) trigger.focus();
+    };
+    confirmDlg.showModal();
+  }
+
+  function removeMember(id) {
+    var idx = members.findIndex(function (m) { return m.id === id; });
+    var name = members[idx].name;
+    members = members.filter(function (m) { return m.id !== id; });
+    renderMembers();
+    var rows = Array.prototype.filter.call(memberList.children, function (li) { return !li.hidden; });
+    var sameSlot = rows[Math.min(idx, rows.length - 1)];
+    var target = (sameSlot && sameSlot.querySelector(".more")) || memberList.querySelector(".row:not([hidden]) .more");
+    if (target) target.focus();
+    else $("members-title").focus();
+    announce("已将 " + name + " 移出团队");
+  }
+
+  function revokeInvite(id) {
+    var idx = invites.findIndex(function (inv) { return inv.id === id; });
+    var removed = invites[idx];
+    invites = invites.filter(function (inv) { return inv.id !== id; });
+    renderInvites();
+    var buttons = inviteList.querySelectorAll(".revoke");
+    if (buttons.length) buttons[Math.min(idx, buttons.length - 1)].focus();
+    else $("invites-title").focus();
+
+    showToast("已撤回给 " + removed.email + " 的邀请", function () {
+      invites = invites.slice(0, idx).concat([removed], invites.slice(idx));
+      renderInvites();
+      var btn = inviteList.querySelector('[data-id="' + removed.id + '"] .revoke');
+      if (btn) btn.focus();
+    });
+  }
+
+  /* ---------- 通知 ---------- */
+
+  function showToast(message, onUndo) {
+    clearTimeout(toastTimer);
+    undoFn = onUndo || null;
+    $("toast-msg").textContent = message;
+    $("toast-undo").hidden = !onUndo;
+    toast.classList.remove("is-hidden");
+    toastTimer = setTimeout(hideToast, TOAST_MS);
+  }
+
+  function hideToast() {
+    clearTimeout(toastTimer);
+    toast.classList.add("is-hidden");
+    undoFn = null;
+  }
+
+  $("toast-undo").addEventListener("click", function () {
+    var fn = undoFn;
+    hideToast();
+    if (fn) fn();
+  });
+  /* 键盘或指针停在通知上时不自动消失 */
+  toast.addEventListener("focusin", function () { clearTimeout(toastTimer); });
+  toast.addEventListener("focusout", function () { toastTimer = setTimeout(hideToast, TOAST_MS); });
+  toast.addEventListener("pointerenter", function () { clearTimeout(toastTimer); });
+  toast.addEventListener("pointerleave", function () { toastTimer = setTimeout(hideToast, TOAST_MS); });
+
+  /* ---------- 页面级 ---------- */
+
+  q.addEventListener("input", function () { applyFilter(true); });
+  $("back").addEventListener("click", function () {
+    if (history.length > 1) history.back();
+  });
+  $("invite").addEventListener("click", function () {
+    showToast("演示页未接入邀请流程");
+  });
+
+  renderMembers();
+  renderInvites();
+})();
+</script>
+</body>
+</html>

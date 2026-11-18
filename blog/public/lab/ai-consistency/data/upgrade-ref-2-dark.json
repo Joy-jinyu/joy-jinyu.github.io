@@ -1,0 +1,280 @@
+{
+ "file": "upgrade-ref-2.html",
+ "scheme": "dark",
+ "bag": {
+  "bg": {
+   "#141413": {
+    "n": 1,
+    "who": [
+     "header.nav「升级套餐」"
+    ]
+   },
+   "#2f2e2b": {
+    "n": 3,
+    "who": [
+     "fieldset.period「付费周期 月付 年付 省 2」",
+     "span.tag「当前套餐」",
+     "button.btn「当前套餐」"
+    ]
+   },
+   "#1f1e1c": {
+    "n": 5,
+    "who": [
+     "label「月付」",
+     "article.card「免费版 ¥0 永久免费 5G」",
+     "article.card「Pro 当前套餐 ¥30/月」",
+     "article.card「团队版 推荐 ¥88/月 按」"
+    ]
+   },
+   "#3a2a23": {
+    "n": 2,
+    "who": [
+     "span.tag「省 20%」",
+     "span.tag「推荐」"
+    ]
+   },
+   "#d97757": {
+    "n": 1,
+    "who": [
+     "button.btn「升级到团队版」"
+    ]
+   }
+  },
+  "radius": {
+   "8": {
+    "n": 2,
+    "who": [
+     "label「月付」",
+     "label「年付 省 20%」"
+    ]
+   },
+   "10": {
+    "n": 4,
+    "who": [
+     "button.icon-btn「关闭」",
+     "button.btn「降级到免费版」",
+     "button.btn「当前套餐」",
+     "button.btn「升级到团队版」"
+    ]
+   },
+   "12": {
+    "n": 1,
+    "who": [
+     "fieldset.period「付费周期 月付 年付 省 2」"
+    ]
+   },
+   "16": {
+    "n": 4,
+    "who": [
+     "article.card「免费版 ¥0 永久免费 5G」",
+     "article.card「Pro 当前套餐 ¥30/月」",
+     "article.card「团队版 推荐 ¥88/月 按」",
+     "div.card「升级后怎么计费？ 升级立即生」"
+    ]
+   },
+   "pill": {
+    "n": 3,
+    "who": [
+     "span.tag「省 20%」",
+     "span.tag「当前套餐」",
+     "span.tag「推荐」"
+    ]
+   }
+  },
+  "controlHeight": {
+   "40": {
+    "n": 1,
+    "who": [
+     "button.icon-btn「关闭」"
+    ]
+   },
+   "44": {
+    "n": 3,
+    "who": [
+     "button.btn「降级到免费版」",
+     "button.btn「当前套餐」",
+     "button.btn「升级到团队版」"
+    ]
+   },
+   "52": {
+    "n": 3,
+    "who": [
+     "button.faq-q「升级后怎么计费？」",
+     "button.faq-q「可以随时取消吗？」",
+     "button.faq-q「降级后超出空间的文件会被删除」"
+    ]
+   }
+  },
+  "text": {
+   "#f0efea": {
+    "n": 21,
+    "who": [
+     "h1「升级套餐」",
+     "label「月付」",
+     "h2「免费版」",
+     "span.amount「¥0」"
+    ]
+   },
+   "#a3a199": {
+    "n": 10,
+    "who": [
+     "label「年付 省 20%」",
+     "p.note「永久免费」",
+     "span.tag「当前套餐」",
+     "span.unit「/月」"
+    ]
+   },
+   "#eba78d": {
+    "n": 2,
+    "who": [
+     "span.tag「省 20%」",
+     "span.tag「推荐」"
+    ]
+   },
+   "#1a1a19": {
+    "n": 1,
+    "who": [
+     "button.btn「升级到团队版」"
+    ]
+   }
+  },
+  "fontSize": {
+   "12": {
+    "n": 3,
+    "who": [
+     "span.tag「省 20%」",
+     "span.tag「当前套餐」",
+     "span.tag「推荐」"
+    ]
+   },
+   "13": {
+    "n": 3,
+    "who": [
+     "span.unit「/月」",
+     "span.unit「/月」",
+     "p.fineprint「价格含税，可随时取消」"
+    ]
+   },
+   "14": {
+    "n": 4,
+    "who": [
+     "p.note「永久免费」",
+     "p.note「按月扣费」",
+     "p.note「按月扣费」",
+     "h2「常见问题」"
+    ]
+   },
+   "15": {
+    "n": 17,
+    "who": [
+     "label「月付」",
+     "label「年付 省 20%」",
+     "li「5GB 空间」",
+     "li「最多 3 人」"
+    ]
+   },
+   "18": {
+    "n": 4,
+    "who": [
+     "h1「升级套餐」",
+     "h2「免费版」",
+     "h2「Pro」",
+     "h2「团队版」"
+    ]
+   },
+   "28": {
+    "n": 3,
+    "who": [
+     "span.amount「¥0」",
+     "span.amount「¥30」",
+     "span.amount「¥88」"
+    ]
+   }
+  },
+  "fontWeight": {
+   "400": {
+    "n": 19,
+    "who": [
+     "label「年付 省 20%」",
+     "p.note「永久免费」",
+     "li「5GB 空间」",
+     "li「最多 3 人」"
+    ]
+   },
+   "600": {
+    "n": 15,
+    "who": [
+     "h1「升级套餐」",
+     "label「月付」",
+     "span.tag「省 20%」",
+     "h2「免费版」"
+    ]
+   }
+  },
+  "shadow": {
+   "#000000/0.3 0px 1px 2px 0px": {
+    "n": 4,
+    "who": [
+     "label「月付」",
+     "article.card「免费版 ¥0 永久免费 5G」",
+     "article.card「Pro 当前套餐 ¥30/月」",
+     "div.card「升级后怎么计费？ 升级立即生」"
+    ]
+   },
+   "#d97757 0px 0px 0px 2px, #000000/0.3 0px 1px 2px 0px": {
+    "n": 1,
+    "who": [
+     "article.card「团队版 推荐 ¥88/月 按」"
+    ]
+   }
+  },
+  "border": {
+   "1px #2f2e2b": {
+    "n": 9,
+    "who": [
+     "ul.perks「5GB 空间 最多 3 人 」",
+     "button.btn「降级到免费版」",
+     "button.btn「降级到免费版」",
+     "button.btn「降级到免费版」"
+    ]
+   },
+   "1px null": {
+    "n": 8,
+    "who": [
+     "button.btn「当前套餐」",
+     "button.btn「当前套餐」",
+     "button.btn「当前套餐」",
+     "button.btn「当前套餐」"
+    ]
+   },
+   "2px #a3a199": {
+    "n": 6,
+    "who": [
+     "span.chevron",
+     "span.chevron",
+     "span.chevron",
+     "span.chevron"
+    ]
+   }
+  }
+ },
+ "vars": {
+  "--bg": "#141413",
+  "--card": "#1f1e1c",
+  "--text": "#f0efea",
+  "--text-2": "#a3a199",
+  "--line": "#2f2e2b",
+  "--track": "#2f2e2b",
+  "--accent": "#d97757",
+  "--accent-ink": "#1a1a19",
+  "--tag-bg": "#3a2a23",
+  "--tag-ink": "#eba78d",
+  "--danger": "#ef6b6b",
+  "--hover": "#2a2926",
+  "--shadow": "0 1px 2px rgba(0,0,0,.3)",
+  "--menu-shadow": "0 12px 32px rgba(0,0,0,.5)"
+ },
+ "darkRule": true,
+ "literalColorsOutsideRoot": 0,
+ "errors": []
+}

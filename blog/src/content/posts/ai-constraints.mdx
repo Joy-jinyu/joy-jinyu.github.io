@@ -1,0 +1,291 @@
+---
+title: 把审美写成约束：写进规则的，AI 照做
+description: 哪些事该写进规则、什么时候能删、写成什么样 AI 会自己去查，哪些交给 lint；附合并好的 AGENTS.md 和检查脚本。
+date: 2026-11-18T10:40:00+08:00
+tags: [UI, AGENTS.md, lint, AI, 审美]
+column: ui-taste
+meta: 系列第八篇 · 把审美写成约束
+draft: false
+---
+
+import RulesMatrix from '../../components/RulesMatrix.astro'
+
+这个系列前面七篇，每篇的附录都有一份「给 AI 的规则」。这一篇把它们合在一起，做了一次对照：同一个「通知」页的需求、同一份设计变量，派给九个全新的 subagent，分成三组。第一组只拿到需求；第二组多拿到一份 47 行的规则；第三组拿到 57 行的规则，多出来的 10 行列了五段现成的检查脚本。下面是逐条量出来的结果。
+
+<RulesMatrix />
+
+不带规则的三份做到了 33 格里的 22 格，两组带规则的六份都是满格。差别在五行，每一行都是规则里逐字写了的做法（不带规则对带规则）：
+- 列表请求一直不回来，最后报错：1/3 对 3/3。
+- 「标为已读」一直不回来，最后报错：1/3 对 3/3。
+- 重试以后，焦点有去处：0/3 对 3/3。
+- 单行文字用 `text-box` 裁掉上下空白：0/3 对 3/3。
+- 接口来的文案打开 `text-autospace`：2/3 对 3/3。
+
+其余六行三组都做到了，其中用色、对比度、深色三行靠的是变量表：它带了深色值，也标了哪些颜色对合格。
+
+读完这篇，你能判断一件事该不该写进规则、什么时候能删；能把一条规则写成 AI 会自己去查的样子；也能把规则分成三类，分别交给 lint、浏览器和人。
+
+范围：每组三个全新的 Claude Code subagent，2026-11-18；规则文件在 prompt 里点名给出，不是放在仓库里自动加载；在 macOS 的 Chrome 157 里量，接口由测量脚本拦截后回复，安全区边距用调试协议模拟。只做了这一个页面，表里的 11 行也只覆盖了规则的一部分；「只给规则」一组比另两组晚跑，目录里已经有别组的产出，细节见附录。prompt、规则原文、原始数据和各组的用时在附录。
+
+## 没写下的事，AI 每次重新决定
+
+写进规则的事 AI 照做；没写进的，每次生成都重新决定一次，结果取决于这一次碰到了什么。写规则，就是把这个决定提前做掉。
+
+请求超时是个好例子。fetch 没有默认超时，不设也能把正常的路径跑通，所以「设不设」完全看这一次。不带规则的三份里，只有第 2 份给请求设了超时（10&nbsp;秒）；另外两份在接口不回时，等了 22&nbsp;秒还停在「正在加载…」。重试以后的焦点也一样：三份点完「重试」，焦点都掉到了 `body`。带规则的六份，超时都是 15&nbsp;秒；重试以后焦点交给了标题、主区域或列表，没有一份掉到 `body`，和规则写的一样。
+
+```js title="只给规则的第 1 份：每个请求都走同一个带超时的 request()"
+const REQUEST_TIMEOUT_MS = 15000;   // 不带规则的第 1、3 份没有超时：fetch(API.list, { headers })
+
+async function request(url, options = {}) {
+  const res = await fetch(url, {
+    ...options,
+    headers: { Accept: 'application/json' },
+    signal: timeoutSignal(REQUEST_TIMEOUT_MS),   // 有 AbortSignal.timeout 就用它，没有就退回 AbortController
+  });
+  // ……
+}
+```
+
+系列里每一篇也都看到过同样的分布，写了的做到了，没写的有人漏：
+- [状态篇](/blog/ai-states/)的三份都加载了团队的 UI 规范。规范要求检查「空 / 加载 / 失败 / 无权限」，三份都写全了；规范没写请求超时，也没写弹层以外的元素消失后焦点去哪，红格全出在这两处。
+- [风格统一篇](/blog/ai-consistency/)的 prompt 写着「不要自己另选颜色、圆角和字号」，两轮四个页面颜色和字号一个不差、圆角基本守住。变量表里没有字重和深色值，结果字重各用一套，深色干脆不做。这一次的变量表里有深色值，九份就都做了深色。
+- [H5 篇](/blog/ai-h5/)的三份照着规范「以 375px 为基准」查了栏高；规范只在一处例外里提到 WebView 安全区，没要求处理，也没提横屏，自查就没查这两样。
+
+想知道一件事会不会这样，十秒就能查：拿一个你在意的细节，看需求、规则、变量表里有没有一处写了它。哪里都没写，它就是每次重新决定的事。所以写规则时，要问的不是「AI 会不会」，而是「这件事有没有人决定过」。
+
+## 删一条规则之前，看不止一批
+
+一件没写进规则的事，这一批做对了，不说明下一批也会；要在两三批里都做对，才能从规则里删掉。
+
+左右两条安全区边距，H5 篇那三份都没处理，这一次不带规则的三份全都处理了。`text-autospace`，系列前面 40 份 AI 页面一份都没打开；这一次不带规则的三份里，有两份打开了。其中第 2 份在汇报里写了原因：接口来的文案里，中文和英文、数字之间没有空格。另一份的汇报摘录里没提原因。我们能看到的只有结果，看不到它这一批为什么注意到了，也就保证不了下一批还会注意到。
+
+查一条规则在各批里的表现，最便宜的办法是对所有存下来的产出跑一遍静态检查（脚本在附录）：
+
+```sh title="在 blog/public/lab/ 下，对系列 49 份 AI 原样产出跑 ui-lint.mjs，按规则数没通过的份数"
+node ai-constraints/ui-lint.mjs <文件清单> | grep '^    ✗' | sort | uniq -c | sort -rn
+#   41     ✗ 中文页面要打开 text-autospace
+#   32     ✗ viewport-fit=cover 要同时处理左右安全区边距
+#   20     ✗ 颜色只在 :root 里定义
+#   17     ✗ 悬停样式要写在 @media (hover: hover) 里
+#    3     ✗ 用了 fetch 就要设超时
+#    1     ✗ 去掉了点击高亮，就要有 :active
+```
+
+这些页面大多是在没有这份规则的时候写的，所以这组数字是「没写进规则时」的样子，不算那几篇做错。比如前面几篇的 prompt 多数没给变量表，「颜色只在 `:root` 里定义」就无从谈起。
+
+系列里每一篇都说过「规则只写它漏掉的」，这条要再加一个前提：**漏没漏，要看不止一批**。两三批都做对的，可以不写；只在一批里做对的，规则留着。
+
+## 规则写清怎么查，AI 会自己去量
+
+一条规则写清「要什么、在什么环境里查、看什么算过」，AI 就会自己写检查去量；现成的检查脚本替代不了规则里的这一句，这一次也没有多换来一格。
+
+两组带规则的，差别只在末尾 10 行：57 行的版本列了五段现成脚本（间距、字号层级、用色、接口出错、安全区），47 行的版本没有。原本以为没有脚本，AI 会查得少、做得差；量下来，两组 11 行都是满格。规则里写了怎么查的三件事，只给规则的三份都自己查了：
+- 规则要求浏览器自查时模拟安全区，竖屏 393×852、横屏 852×393 各查一遍。三份都自己用调试协议模拟了这两个尺寸。
+- 规则写了「交付前把所有文字改成同一个字号看一遍」，三份都这样看过，有两份还截了图。
+- 规则要求超时按失败处理，把按钮上的「……中」和禁用状态恢复过来。三份都让请求一直不回来，看着按钮在 15&nbsp;秒左右恢复。
+
+时间上，配上脚本的三份每份用了约 570&nbsp;秒，只给规则的是 384–484&nbsp;秒，不带规则的是 273–336&nbsp;秒。配上脚本的一组最慢，在这张表的 11 行上也没有多做到一格。
+
+反过来，规则里没写环境，AI 就在它自己的环境里查。[H5 篇](/blog/ai-h5/)的三份都查了栏高，汇报的占比在 14–15%，用的是 375×667 的视口，没有模拟安全区。在那个环境里，这个数是真的。所以一条规则要写成这样，三部分都在：
+
+```md title="一条写清怎么查的规则（排版，实验用的版本）"
+- 页面上的上下两级（分组标题和条目标题、标题和说明），除了字号，至少还要在字重、颜色、字距里的一项上不同。
+  交付前把所有文字改成同一个字号看一遍，并成一级的上下两级要再拉开一项。
+```
+
+第一句说要什么，第二句说怎么查、看到什么算没过。自己的规则也能这样十秒过一遍：逐条看有没有写「在哪查、看什么」，只写了「要什么」的那几条，AI 只能在它自己的环境里查。
+
+检查脚本还有一个代价：它只认它量的那个数。规则加检查的第 2、3 份，第一次跑字号层级脚本，都被挑出正文和时间只差字号（脚本的原话是「容易看成同一级」）。第 2 份把正文换成深一档的颜色，两级拉开了；第 3 份把正文改成了和时间一模一样的样式，脚本看到的只剩一级，自然不再报警：
+
+```css title="规则加检查的第 3 份，第 182–183 行"
+.notice-time { display: block; font: var(--font-caption); color: var(--color-text-2); white-space: nowrap; }
+/* 据它的汇报，正文原来是 15px；脚本报出只差字号以后，改成了和时间完全一样的 13px、二级文字色 */
+.notice-body { display: block; grid-column: 1 / -1; font: var(--font-caption); color: var(--color-text-2); }
+```
+
+脚本分不出「拉开了」和「合并了」。正文和时间该不该是同一级，要人看过才能定。
+
+## 按要不要渲染，分三类查
+
+一条规则怎么查，看它要不要渲染：读源码就能判断的交给静态检查，要渲染才知道的开浏览器量，量不出来的留给人看截图。系列导读问过这三类各有哪些，这个系列的规则分下来是这样：
+
+- **读源码就能判断写没写**：写了 `viewport-fit=cover` 就要有左右安全区；悬停关在 `@media (hover: hover)` 里；用了 fetch 就要设超时；中文页面要开 `text-autospace`；颜色只在 `:root` 里定义。几十行脚本就能查，放进 pre-commit 或 CI，人写的和 AI 写的一起拦。附录的 ui-lint.mjs 有 7 条，在系列 49 份 AI 原样产出上，全部通过的 7 份都出自这一篇：两组带规则的六份，加上不带规则的第 2 份。
+- **要在浏览器里量**：文字和底色的真实对比度；看到的间距；层级拿掉字号还剩几级；可点元素伸没伸进安全区边距；请求挂起后能不能走出来；元素消失后焦点去哪。规则里写清环境和看哪个数，AI 会自己量；系列每篇的附录也有一段现成的测量脚本。
+- **只能人看**：层级分得开，但分得对不对；横屏时栏高超了预算，要不要收；参考页的配色不合格，是改参考页还是让新页面不一样；整体好不好看。这一类不写进规则：拆得出可量的部分，就归到第二类；拆不出的，留给人看截图。上面第 3 份把正文和时间合成一级，就属于这一类。
+
+静态检查的写法很简单，一条规则就是一个只读源码的判断：
+
+```js title="ui-lint.mjs 里的一条（全文在附录）"
+['用了 fetch 就要设超时', ({ js }) => !/\bfetch\s*\(/.test(js) || /AbortSignal\.timeout|new AbortController/.test(js)],
+// 用法：node ui-lint.mjs page.html；有任何一条不通过，退出码就是 1，可以直接挂进 pre-commit
+```
+
+它查的只是「写没写」：写了 `AbortSignal.timeout`，不代表每个请求都用上了。所以第二类省不掉。
+
+规则本身放在哪，导读也问过：写进 AGENTS.md，还是写进 skill？这次有一点侧面的数据。规则加检查的三份里，两份说既然 prompt 点名了规则文件，就不再加载团队的 UI 规范 skill，免得两套规则混在一起；另一份两样都加载了，说没有冲突。只给规则的三份也都没加载，但其中两份说的理由是输出文件名里有 rulesonly，这一组不算数。这次规则是在 prompt 里点名给的，没有测放在仓库里自动加载时会怎样，所以放在哪更好，这次答不了。能看到的是：同时有两份规则时，三份里有两份只认其中一份。我们的建议是只放一处：团队已经有 UI 规范 skill，就把这些条目并进去；没有，就放进 AGENTS.md。
+
+## 附录：合并后的 AGENTS.md
+
+这是各篇审稿改定以后的最新版本，每一条的来历在系列各篇的附录里。实验用的是更早的 57 行版本（[AGENTS.md](/blog/lab/ai-constraints/AGENTS.md)）和它去掉「交付前的检查」一节的 47 行版本（[AGENTS-rulesonly.md](/blog/lab/ai-constraints/AGENTS-rulesonly.md)），两份都留在 lab 里。
+
+```md title="AGENTS.md"
+# UI 规则
+
+只写 AI 实测里漏掉、或者这一批做对了但不稳定的事，每条都写成能检查的动作。出处是 UI 审美系列各篇的附录；
+脚本路径相对博客根目录（https://www.pairwise.site）。
+
+## 布局
+
+- 两块看起来该对齐的元素，用同一个公式算宽度，留白也算在里面：
+  例如两块都写 width: min(var(--col-w), 100% - 2 * var(--gutter))，外层不再加左右留白。
+  只共用一个 max-width 变量还不够：一个把留白写进自己的 padding、一个写在外层，照样对不齐。
+  改完把窗口从最宽拖到最窄，确认边始终重合。
+- 只让局部区域滚动时，滚动的那一层和要跟它对齐的每一层都加 scrollbar-gutter: stable；
+  用常显滚动条检查一遍两者的中线。
+- 新内容到达时，只有用户离底部不到 120px 才自动滚到底，这个距离在插入内容之前算；
+  用户自己刚发的消息可以直接滚到底。
+- 藏起来的内容要同时藏掉点击、焦点和读屏：transform、opacity、height: 0 都不够，
+  收起时用 visibility: hidden 或 inert。
+  带遮罩的抽屉按 WAI-ARIA APG 的模态对话框来做：打开时焦点移进去，
+  后面的页面设为 inert，Esc 关闭后焦点回到打开它的按钮。
+- 改完跑 node layout-check.mjs <页面>（脚本在 /blog/lab/ai-chat-layout/layout-check.mjs，先下载到本地），全部通过再交付。
+
+## 动效
+
+- 同一个动画要走不同距离时（折叠面板的长短答案、大小不一的弹层），
+  时长按距离算，不要共用一个固定值：例如 clamp(200ms, 160ms + 0.5ms × 高度, 450ms)。
+  曲线最陡处的斜率不超过 2，例如 cubic-bezier(0.5, 1, 0.89, 1)；
+  减速曲线最陡处在起点，斜率是 y1 ÷ x1；起点平缓的曲线要看整条（cubic-bezier(0.2, 0, 0, 1) 中段是 4.05）。
+  估算：每帧最大位移 ≈ 最陡处斜率 × 距离 × 16.7 ÷ 时长，控制在 60px 以内。
+- 动画结束后的收尾（移除节点、设 hidden）等 transitionend 或 animation.finished，
+  定时器只做兜底；不要在 JS 里再写一个和 CSS 差不多长的时长。
+
+## 间距
+
+- 文字相关的间距按「看到的」定：从字形的上下边量，不从行盒量。
+- 单行的标题、标签、说明，用 `text-box: trim-both cap alphabetic` 裁掉上下的空白，
+  再用 `padding-block: 0.16em 0.12em` 把汉字冒出去的部分补回来，整段包在
+  `@supports (text-box: trim-both cap alphabetic)` 里。字体栈不是「英文系统字体在前」时，先量再定这两个值。
+- 同一组里看到的间距，不超过组与组之间的一半。
+- 交付前在页面上跑一遍间距 X 光（/blog/lab/ai-spacing/xray-snippet.js），列出每组「写的 / 看到的」间距。
+
+## 排版
+
+- 页面上的上下两级（分组标题和条目标题、标题和说明），除了字号，至少还要在字重、颜色、字距里的一项上不同。
+  交付前把所有文字改成同一个字号看一遍，并成一级的上下两级要再拉开一项；
+  也可以在页面上跑一遍 /blog/lab/ai-typography/type-snippet.js，把它挑出的「容易看成同一级」的样式对逐个说明。
+- 来自接口或后台的文案，不指望里面有空格：CSS 里写 `text-autospace: normal`（浏览器默认不开）。
+
+## 风格
+
+- 新页面先确定风格来源：引入团队的变量文件（首选），或者指定一张参考页。只写「和现有风格一致」不算来源。
+- 变量文件里没有的项（字重、控件高度、悬停和按下的颜色），可以先定一个值，但只在页面开头一个集中的 `:root` 块里
+  定义成变量，全页只引用它；缺深色值就不做深色，不要自己编一套。交付说明里列出缺了哪几项、用在哪里，请人补进变量文件。
+- 照着参考页写时，参考页里对比度不到 4.5:1 的配色，不要用到新元素上：改用变量表里合格的一对，并在交付说明里写明。
+- 交付前在页面上跑一遍 /blog/lab/ai-consistency/style-snippet.js，把「变量之外」的每一处列出来，说明为什么不用变量。
+
+## 状态
+
+- 每个请求都要设超时（fetch 没有默认超时），例如 `AbortSignal.timeout(15000)`；超时按失败处理：
+  给出能看懂的提示和重试入口，把按钮上的「……中」和禁用状态恢复过来。
+- 一个操作会让当前聚焦的元素消失或被藏起来时（重试、删除、关闭），先把焦点移到下一个合理的位置，再移除元素。
+- 交付前在浏览器里自测，接口模拟脚本是 net-snippet.js（/blog/lab/ai-states/net-snippet.js，先下载到本地）。
+  用 Playwright 的 `addInitScript` 只注入一段，内容依次是 `window.__netLabHeadless = true;`（不画面板）和脚本全文；
+  多段 init 脚本的执行顺序没有保证，不要拆开注入。分两次测：
+  首次加载：在这一段末尾再加 `window.__netLab.set('hang');`，打开页面，等过超时，确认加载状态结束了（reload 后又会是 hang）；
+  按钮：不加这一句，等页面正常加载完，再用 `page.evaluate(() => window.__netLab.set('hang'))` 切过去，
+  把每个会发请求的按钮点一遍，等过超时，确认每个「……中」都结束了；
+  再只用键盘把会自己消失的按钮按一遍，确认焦点没有落回 body。
+
+## H5
+
+- 写了 `viewport-fit=cover`，四条边都要处理：贴边的栏和正文同时补上左右的安全区边距，
+  写成 `padding-left: max(原来的值, env(safe-area-inset-left))`，右边同理；不能只处理上下。
+- 交付前的浏览器自查要模拟安全区边距（CDP 的 Emulation.setSafeAreaInsetsOverride），
+  竖屏 393×852（上 59、下 34）和横屏 852×393（左右 59、下 21）各查一遍：可点元素不能伸进边距；
+  栏高的预算按安全区以内的高度算，横屏也要算；横屏超了，先让顶栏不吸顶（`position: static`）。
+```
+
+## 附录：静态检查脚本 ui-lint.mjs
+
+只读源码、不开浏览器，查上面规则里能从代码直接判断的 7 条。也可以[直接下载](/blog/lab/ai-constraints/ui-lint.mjs)。
+
+```js title="ui-lint.mjs"
+/**
+ * UI 静态检查：只读源码、不开浏览器，查 AGENTS.md 里能从代码直接判断的几条规则。
+ * 能查的只是「写没写」，不是「对不对」：比如写了 AbortSignal.timeout，不代表每个请求都用上了。
+ * 用法：node ui-lint.mjs <html 文件…>；只看文件里内联的 <style> 和 <script>。
+ * 系列里的用法：在 blog/public/lab/ 下运行，参数是各篇目录里 AI 原样产出的文件，清单见 data/ui-lint-output.txt 第一行。
+ * 退出码：有任何一条不通过就是 1，可以直接放进 CI 或 pre-commit。
+ */
+import { readFileSync } from 'node:fs'
+
+/** 去掉 @media (hover: hover) { … } 块（花括号配对），剩下的部分里不该再有 :hover */
+const withoutHoverMedia = (css) => {
+  let out = '', i = 0
+  for (;;) {
+    const m = css.slice(i).match(/@media[^{]*\(\s*hover\s*:\s*hover\s*\)[^{]*\{/)
+    if (!m) return out + css.slice(i)
+    out += css.slice(i, i + m.index)
+    let j = i + m.index + m[0].length, depth = 1
+    while (depth && j < css.length) { depth += css[j] === '{' ? 1 : css[j] === '}' ? -1 : 0; j++ }
+    i = j
+  }
+}
+
+const RULES = [
+  ['viewport-fit=cover 要同时处理左右安全区边距', ({ html, css }) => !/viewport-fit\s*=\s*cover/.test(html) || (/safe-area-inset-left/.test(css) && /safe-area-inset-right/.test(css))],
+  ['悬停样式要写在 @media (hover: hover) 里', ({ css }) => !/:hover/.test(withoutHoverMedia(css))],
+  ['用了 fetch 就要设超时', ({ js }) => !/\bfetch\s*\(/.test(js) || /AbortSignal\.timeout|new AbortController/.test(js)],
+  ['中文页面要打开 text-autospace', ({ html, css }) => !/<html[^>]*lang=["']zh/.test(html) || /text-autospace\s*:\s*(normal|auto)/.test(css)],
+  // 选择器里带 :root 的规则块（包括写在 @media 里的深色那一套）都算变量定义，先剔掉再找写死的颜色
+  ['颜色只在 :root 里定义', ({ css }) => !/#[0-9a-f]{3,8}\b|rgba?\(\s*\d/i.test(css.replace(/[^{}]*:root[^{}]*\{[^}]*\}/g, ''))],
+  ['去掉了点击高亮，就要有 :active', ({ css }) => !/-webkit-tap-highlight-color\s*:\s*(transparent|rgba\([^)]*,\s*0\))/.test(css) || /:active/.test(css)],
+  ['去掉了焦点轮廓，就要有 :focus-visible', ({ css }) => !/outline\s*:\s*(none|0)\b/.test(css) || /:focus-visible/.test(css)],
+]
+
+let failed = 0
+for (const file of process.argv.slice(2)) {
+  const html = readFileSync(file, 'utf8')
+  const css = [...html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map((m) => m[1]).join('\n')
+  const js = [...html.matchAll(/<script(?![^>]*src=)[^>]*>([\s\S]*?)<\/script>/g)].map((m) => m[1]).join('\n')
+  const results = RULES.map(([name, check]) => [name, check({ html, css, js })])
+  const bad = results.filter(([, ok]) => !ok)
+  failed += bad.length
+  console.log(`${bad.length ? '✗' : '✓'} ${file}${bad.length ? '' : '：全部通过'}`)
+  for (const [name] of bad) console.log(`    ✗ ${name}`)
+}
+process.exit(failed ? 1 : 0)
+```
+
+## 附录：实测材料
+
+九个页面由九个全新的 Claude Code subagent 在 2026-11-18 各写一次，模型是当时会话的默认模型 Claude Opus 5.5（subagent 继承它，汇报里没有自己写模型名）。三组的 prompt 只差一句「写的时候遵守这份 UI 规则」和它指向的规则文件；派发时都另加了一句「写完后简短汇报：加载了哪些 skill、读了哪些文件、交付前怎么检查的」。它们继承这台机器上的全局配置 `~/.claude/CLAUDE.md` 和 skill 列表。规则文件放在输出目录以外，不带规则的一组看不到；前两组结束后，57 行的版本才拷进 lab 目录，47 行的版本在全部结束后才拷进去。
+
+```text title="prompt（三组只差【】里那一句）"
+用 HTML + CSS + 少量原生 JS 写一个单文件页面：移动端 H5 的「通知」页，会在 App 的 WebView 和手机浏览器里打开。
+
+内容和行为：
+- 顶部导航栏：左边返回按钮，中间标题「通知」，右边「全部已读」按钮
+- 打开页面时用 fetch 从 ./api/notices.json 拉取通知，返回的格式是 [{ "id": 1, "group": "今天", "title": "…", "body": "…", "time": "10:24", "read": false }, …]；按 group 分组显示，每组上面一个分组标题（「今天」「更早」），组内每条通知显示标题、正文和时间，未读的标题前面有一个小圆点
+- 点一条未读通知，用 fetch 发 POST ./api/notices/{id}/read，成功后把它标为已读
+- 点「全部已读」，用 fetch 发 POST ./api/notices/read-all，成功后全部标为已读
+- 页面底部固定一个「通知设置」按钮
+
+视觉使用团队的设计变量文件：……/ai-constraints/tokens.css（把内容复制进页面的 <style> 里）。
+
+【写的时候遵守这份 UI 规则：……/AGENTS.md】（「只给规则」一组指向 47 行的版本）
+
+把完整代码写到这个文件：……/notices-plain-1.html（另外两组是 notices-rulesonly-1.html、notices-rules-1.html）
+```
+
+各组的情况，据它们自己的汇报（[不带规则](/blog/lab/ai-constraints/data/provenance-plain.txt)、[只给规则](/blog/lab/ai-constraints/data/provenance-rulesonly.txt)、[规则加检查](/blog/lab/ai-constraints/data/provenance-rules.txt)）：
+- **不带规则**：三份都加载了团队的 UI 规范 skill（ui-conventions）。
+- **规则加检查**：两份说既然给了规则文件，就没再加载这个 skill；另一份加载了，说两者没有冲突。三份都读了规则里列的五段检查脚本，汇报里能看到跑过的有字号层级、接口出错和安全区三段。实验进行中，作者为了修改另外两篇，改过其中两段脚本：h5-snippet.js 改了框的颜色和文案，style-snippet.js 加了「控件高度」一栏和胶囊形的判定。第 1 份注意到了这件事，它的结果用的是改过之后的版本。
+- **只给规则**：在前两组结束约 20&nbsp;分钟后才派发，开始时间比它们晚约半小时。开始时 lab 目录里已经有前两组的页面、prompt.txt、57 行的 AGENTS.md（带脚本清单的那份）和两个测量脚本。三份都说没打开别组的页面和测量脚本；第 1、3 份明说没打开那份 AGENTS.md，第 2 份读过的文件清单里也没有它。第 2 份读了 prompt.txt，里面只有需求和「带规则的一组加这一句」的说明，没有规则内容。输出文件名里的 rulesonly 透露了分组：三份都没加载 ui-conventions，其中两份说的理由就是这个文件名。
+
+材料：
+- **原样产出**：不带规则 [notices-plain-1](/blog/lab/ai-constraints/notices-plain-1.html)、[2](/blog/lab/ai-constraints/notices-plain-2.html)、[3](/blog/lab/ai-constraints/notices-plain-3.html)；只给规则 [notices-rulesonly-1](/blog/lab/ai-constraints/notices-rulesonly-1.html)、[2](/blog/lab/ai-constraints/notices-rulesonly-2.html)、[3](/blog/lab/ai-constraints/notices-rulesonly-3.html)；规则加检查 [notices-rules-1](/blog/lab/ai-constraints/notices-rules-1.html)、[2](/blog/lab/ai-constraints/notices-rules-2.html)、[3](/blog/lab/ai-constraints/notices-rules-3.html)。设计变量 [tokens.css](/blog/lab/ai-constraints/tokens.css)，接口数据 [api/notices.json](/blog/lab/ai-constraints/api/notices.json)（文案故意不加空格），prompt 原文 [prompt.txt](/blog/lab/ai-constraints/prompt.txt)。
+- **逐条判定**：[rules-probe.mjs](/blog/lab/ai-constraints/rules-probe.mjs)。浅色、深色各量一遍层级、`text-autospace`、`text-box`、用色和对比度。拦截接口，量列表和「标为已读」一直不回来的情况：22&nbsp;秒内每半秒读一次页面文字，出现过报错、最后又没停在「……中」，算走出来。另外量重试以后的焦点，并用调试协议模拟横屏、竖屏的安全区边距。原始输出：[plain-1](/blog/lab/ai-constraints/data/plain-1.json)、[plain-2](/blog/lab/ai-constraints/data/plain-2.json)、[plain-3](/blog/lab/ai-constraints/data/plain-3.json)、[rulesonly-1](/blog/lab/ai-constraints/data/rulesonly-1.json)、[rulesonly-2](/blog/lab/ai-constraints/data/rulesonly-2.json)、[rulesonly-3](/blog/lab/ai-constraints/data/rulesonly-3.json)、[rules-1](/blog/lab/ai-constraints/data/rules-1.json)、[rules-2](/blog/lab/ai-constraints/data/rules-2.json)、[rules-3](/blog/lab/ai-constraints/data/rules-3.json)。开头的对照表在构建时从这九份输出算出。报错文案各份说法不同（「没能加载」「通知没有加载出来」「请再试一次」），判定用的关键词收全以后，又回源码逐份核对过。
+- **静态检查**：[ui-lint.mjs](/blog/lab/ai-constraints/ui-lint.mjs) 在系列 49 份 AI 原样产出上的结果见 [ui-lint-output.txt](/blog/lab/ai-constraints/data/ui-lint-output.txt)。第一行是文件清单，不含人改过的 -fixed / -zero / -trimall 版本和骨架文件。
+- **用时**：取自 Claude Code 后台任务结束通知里的耗时，摘录在 [durations.txt](/blog/lab/ai-constraints/data/durations.txt)。规则加检查的三份是 574、571、573&nbsp;秒，只给规则的是 484、384、415&nbsp;秒，不带规则的是 336、273、301&nbsp;秒（四舍五入到秒）。

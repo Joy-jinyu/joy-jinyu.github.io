@@ -1,0 +1,148 @@
+---
+/**
+ * 安全区实验台：把 AI 写的「文件详情」页（blog/public/lab/ai-h5/detail1-3.html，原样）按 iPhone 15 的尺寸放进手机框，
+ * 竖屏 393×852（安全区边距上 59、下 34），横屏 852×393（左右 59、下 21）。页面里的 env(safe-area-inset-*) 换成这些常数，
+ * 边距画斜线，伸进去的按钮和输入框标红框；「套用修正」给顶栏、底栏和正文补上左右的安全区边距（第 3 份不需要）。
+ * 安全区边距的数值来自 useyourloaf.com 的 iPhone 15 screen sizes。下方读数从 iframe 里实时量出；栏高同时给安全区以内和整屏两个占比。
+ */
+import '../styles/spacing-lab.css'
+const base = `${import.meta.env.BASE_URL.replace(/\/?$/, '/')}lab/ai-h5/`
+---
+
+<safe-area-lab class="sal sx-panel sx-bleed not-prose" data-base={base}>
+  <div class="sal-ctrl">
+    <div class="sx-seg" role="group" aria-label="第几份">
+      {[1, 2, 3].map((n) => <button type="button" data-page={n} aria-pressed={n === 1 ? 'true' : 'false'}>第 {n} 份</button>)}
+    </div>
+    <div class="sx-seg" role="group" aria-label="方向">
+      <button type="button" data-orient="land" aria-pressed="true">横屏</button>
+      <button type="button" data-orient="port" aria-pressed="false">竖屏</button>
+    </div>
+    <div class="sx-seg" role="group" aria-label="修正">
+      <button type="button" data-fix="0" aria-pressed="true">原样</button>
+      <button type="button" data-fix="1" aria-pressed="false">套用修正</button>
+    </div>
+  </div>
+  <div class="sal-stage">
+    <div class="sal-phone" data-orient="land">
+      <iframe title="AI 写的「文件详情」页，按 iPhone 15 的尺寸和安全区边距显示" tabindex="-1"></iframe>
+      <div class="sal-zones" aria-hidden="true"><i class="z-t"></i><i class="z-r"></i><i class="z-b"></i><i class="z-l"></i><b class="sal-island"></b><b class="sal-home"></b></div>
+    </div>
+  </div>
+  <dl class="sal-read" aria-live="polite">
+    <div><dt>伸进安全区边距的可点元素</dt><dd data-k="out">—</dd></div>
+    <div><dt>顶栏 + 底栏占屏幕高度</dt><dd data-k="bars">—</dd></div>
+  </dl>
+  <p class="sx-cap">斜线是安全区边距：屏幕圆角、灵动岛和底部横条所在的位置，内容画在这里会被挡住或很难点到。红框是伸进去的按钮和输入框。横屏时，第 1、2 份的返回、分享、发送都在里面；第 3 份的内容最宽 640px、居中，碰巧躲开了，所以「套用修正」对它不做改动。</p>
+</safe-area-lab>
+
+<script>
+  const SIZES = { port: { w: 393, h: 852, ins: { top: 59, right: 0, bottom: 34, left: 0 } }, land: { w: 852, h: 393, ins: { top: 0, right: 59, bottom: 21, left: 59 } } }
+  // 修正：顶栏、底栏和正文补上左右的安全区（三份页面的底栏类名不同）
+  const FIX = '.nav, .composer, .bar, main { padding-left: max(0px, env(safe-area-inset-left)); padding-right: max(0px, env(safe-area-inset-right)); }'
+  // 在页面里量：哪些可点元素落在安全区以外，固定栏占多高
+  const PROBE = (ins: Record<string, number>) => `<script>addEventListener('load', () => setTimeout(() => {
+    const ins = ${JSON.stringify(ins)}, W = innerWidth, H = innerHeight
+    const out = []
+    for (const el of document.querySelectorAll('button, a[href], input, textarea, [role="button"]')) {
+      const r = el.getBoundingClientRect()
+      if (!r.width || r.bottom < 0 || r.top > H) continue
+      const cs = getComputedStyle(el.closest('.nav, .composer, .bar') || el)
+      const fixed = cs.position === 'fixed' || cs.position === 'sticky'
+      if (r.left < ins.left - 0.5 || r.right > W - ins.right + 0.5 || (fixed && (r.top < ins.top - 0.5 || r.bottom > H - ins.bottom + 0.5))) {
+        el.style.outline = '3px solid #e11d48'; el.style.outlineOffset = '-3px'
+        out.push((el.getAttribute('aria-label') || el.textContent || el.placeholder || '').trim().replace(/\\s+/g, ' ').slice(0, 8))
+      }
+    }
+    const bars = [...document.querySelectorAll('body *')].filter((el) => { const cs = getComputedStyle(el); const r = el.getBoundingClientRect(); return (cs.position === 'fixed' || cs.position === 'sticky') && r.width > W * 0.8 && r.height > 20 })
+    const sum = bars.reduce((s, el) => s + el.getBoundingClientRect().height, 0)
+    // 安全区以内的占比：栏高和屏高都去掉上下的安全区边距
+    window.__sal = { out, bars: Math.round(sum / H * 100), inner: Math.round((sum - ins.top - ins.bottom) / (H - ins.top - ins.bottom) * 100) }
+  }, 300))<\/script>`
+
+  class SafeAreaLab extends HTMLElement {
+    private state = { page: '1', orient: 'land' as 'land' | 'port', fix: false }
+    private cache = new Map<string, string>()
+    private ro?: ResizeObserver
+
+    connectedCallback() {
+      this.addEventListener('click', (e) => {
+        const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button')
+        if (!b) return
+        if (b.dataset.page) this.state.page = b.dataset.page
+        if (b.dataset.orient) this.state.orient = b.dataset.orient as 'land' | 'port'
+        if (b.dataset.fix) this.state.fix = b.dataset.fix === '1'
+        this.render()
+      })
+      this.ro = new ResizeObserver(() => this.fit())
+      this.ro.observe(this.querySelector('.sal-stage')!)
+      this.render()
+    }
+
+    disconnectedCallback() { this.ro?.disconnect() }
+
+    /** 手机框按舞台宽度整体缩放 */
+    private fit() {
+      const { w, h } = SIZES[this.state.orient]
+      const stage = this.querySelector<HTMLElement>('.sal-stage')!
+      const k = Math.min(1, stage.clientWidth / (w + 24), this.state.orient === 'port' ? 560 / (h + 24) : 1)
+      const phone = this.querySelector<HTMLElement>('.sal-phone')!
+      phone.style.setProperty('--k', String(k))
+      stage.style.height = `${(h + 24) * k}px`
+    }
+
+    private async render() {
+      const { page, orient, fix } = this.state
+      for (const [k, v] of [['page', page], ['orient', orient], ['fix', fix ? '1' : '0']]) {
+        this.querySelectorAll<HTMLButtonElement>(`button[data-${k}]`).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset[k] === v)))
+      }
+      const { w, h, ins } = SIZES[orient]
+      const phone = this.querySelector<HTMLElement>('.sal-phone')!
+      phone.dataset.orient = orient
+      phone.style.setProperty('--w', `${w}px`); phone.style.setProperty('--h', `${h}px`)
+      for (const side of ['top', 'right', 'bottom', 'left'] as const) phone.style.setProperty(`--${side}`, `${ins[side]}px`)
+      this.fit()
+      const name = `detail${page}.html`
+      if (!this.cache.has(name)) this.cache.set(name, await fetch(this.dataset.base + name).then((r) => r.text()))
+      let html = this.cache.get(name)!
+      // 第 3 份内容限宽居中，本来就没伸进边距，不套修正
+      if (fix && page !== '3') html = html.replace('</head>', `<style>${FIX}</style></head>`)
+      html = html.replace(/env\(\s*safe-area-inset-(top|right|bottom|left)\s*(,[^)]*)?\)/g, (_, side: keyof typeof ins) => `${ins[side]}px`)
+      html = html.replace('</body>', `${PROBE(ins)}</body>`)
+      const frame = this.querySelector('iframe')!
+      frame.onload = () => setTimeout(() => this.read(), 600)
+      frame.srcdoc = html
+    }
+
+    private read() {
+      const r = (this.querySelector('iframe')!.contentWindow as Window & { __sal?: { out: string[]; bars: number; inner: number } })?.__sal
+      if (!r) return
+      this.querySelector('[data-k="out"]')!.textContent = r.out.length ? `${r.out.length} 个：${r.out.join('、')}` : '0 个'
+      this.querySelector('[data-k="bars"]')!.textContent = `安全区以内 ${r.inner}% · 整屏 ${r.bars}%`
+    }
+  }
+  if (!customElements.get('safe-area-lab')) customElements.define('safe-area-lab', SafeAreaLab)
+</script>
+
+<style is:global>
+  .sal-ctrl { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+  .sal-stage { position: relative; overflow: hidden; }
+  /* 手机框：内容按 --w × --h 渲染，再整体缩放 --k */
+  .sal-phone { --k: 1; position: absolute; top: 0; left: 50%; width: calc(var(--w) + 24px); height: calc(var(--h) + 24px); padding: 12px; border-radius: 56px; background: #111; transform: translateX(-50%) scale(var(--k)); transform-origin: 50% 0; }
+  .sal-phone iframe, .sal-zones { position: absolute; top: 12px; left: 12px; width: var(--w); height: var(--h); border: 0; border-radius: 44px; }
+  .sal-phone iframe { background: #fff; }
+  .sal-zones { pointer-events: none; overflow: hidden; }
+  .sal-zones i { position: absolute; background: repeating-linear-gradient(45deg, rgba(225, 29, 72, 0.22) 0 6px, rgba(225, 29, 72, 0.06) 6px 12px); }
+  .z-t { top: 0; left: 0; right: 0; height: var(--top); }
+  .z-b { bottom: 0; left: 0; right: 0; height: var(--bottom); }
+  .z-l { top: 0; bottom: 0; left: 0; width: var(--left); }
+  .z-r { top: 0; bottom: 0; right: 0; width: var(--right); }
+  .sal-island { position: absolute; border-radius: 20px; background: #000; }
+  .sal-phone[data-orient="port"] .sal-island { top: 11px; left: 50%; width: 126px; height: 37px; transform: translateX(-50%); }
+  .sal-phone[data-orient="land"] .sal-island { left: 11px; top: 50%; width: 37px; height: 126px; transform: translateY(-50%); }
+  .sal-home { position: absolute; bottom: 8px; left: 50%; width: 140px; height: 5px; border-radius: 3px; background: rgba(0, 0, 0, 0.75); transform: translateX(-50%); }
+  .sal-read { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin: 16px 0 0; }
+  .sal-read div { padding: 10px 14px; border-radius: 10px; background: var(--panel); }
+  .sal-read dt { color: var(--muted); font-size: 12.5px; }
+  .sal-read dd { margin: 4px 0 0; color: var(--strong); font: 600 14px/1.5 var(--sans); font-variant-numeric: tabular-nums; }
+</style>

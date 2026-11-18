@@ -1,0 +1,524 @@
+[
+ {
+  "file": "release1.html",
+  "sizes": [
+   13,
+   14,
+   15,
+   16,
+   17,
+   20,
+   40
+  ],
+  "roles": {
+   "nav": {
+    "label": "导航标题",
+    "fs": 17,
+    "fw": 600,
+    "color": "#1a1b1e",
+    "contrast": 16.48,
+    "lh": 23.8,
+    "ls": "normal",
+    "n": 1
+   },
+   "version": {
+    "label": "版本号",
+    "fs": 40,
+    "fw": 700,
+    "color": "#1a1b1e",
+    "contrast": 16.48,
+    "lh": 44,
+    "ls": "-0.8px",
+    "n": 1
+   },
+   "meta": {
+    "label": "日期和大小",
+    "fs": 14,
+    "fw": 400,
+    "color": "#6b7079",
+    "contrast": 4.76,
+    "lh": 21,
+    "ls": "normal",
+    "n": 2
+   },
+   "lead": {
+    "label": "导语",
+    "fs": 16,
+    "fw": 400,
+    "color": "#1a1b1e",
+    "contrast": 16.48,
+    "lh": 28,
+    "ls": "normal",
+    "n": 1
+   },
+   "group": {
+    "label": "分组标题",
+    "fs": 20,
+    "fw": 600,
+    "color": "#1a1b1e",
+    "contrast": 16.48,
+    "lh": 28,
+    "ls": "normal",
+    "n": 3
+   },
+   "title": {
+    "label": "条目标题",
+    "fs": 16,
+    "fw": 600,
+    "color": "#1a1b1e",
+    "contrast": 16.48,
+    "lh": 24,
+    "ls": "normal",
+    "n": 3
+   },
+   "desc": {
+    "label": "条目说明",
+    "fs": 15,
+    "fw": 400,
+    "color": "#4a4f57",
+    "contrast": 7.89,
+    "lh": 25.5,
+    "ls": "normal",
+    "n": 3
+   },
+   "item": {
+    "label": "列表条目",
+    "fs": 15,
+    "fw": 400,
+    "color": "#1a1b1e",
+    "contrast": 16.48,
+    "lh": 25.5,
+    "ls": "normal",
+    "n": 5
+   },
+   "notice": {
+    "label": "提示框",
+    "fs": 14,
+    "fw": 400,
+    "color": "#6a4300",
+    "contrast": 7.91,
+    "lh": 22.4,
+    "ls": "normal",
+    "n": 1
+   },
+   "hint": {
+    "label": "按钮上方小字",
+    "fs": 13,
+    "fw": 400,
+    "color": "#4a4f57",
+    "contrast": 7.89,
+    "lh": 19.5,
+    "ls": "normal",
+    "n": 1
+   },
+   "button": {
+    "label": "按钮",
+    "fs": 17,
+    "fw": 600,
+    "color": "#ffffff",
+    "contrast": 6.76,
+    "lh": 23.8,
+    "ls": "normal",
+    "n": 1
+   }
+  },
+  "other": [
+   "span.visually-hidden「版本」40/700",
+   "span.sep「·」14/400",
+   "span.nowrap「Wi-Fi」15/400",
+   "span.nowrap「《报告-2026Q3》」15/400"
+  ]
+ },
+ {
+  "file": "release2.html",
+  "sizes": [
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   28
+  ],
+  "roles": {
+   "nav": {
+    "label": "导航标题",
+    "fs": 17,
+    "fw": 600,
+    "color": "#17191e",
+    "contrast": 17.58,
+    "lh": 23.8,
+    "ls": "normal",
+    "n": 1
+   },
+   "version": {
+    "label": "版本号",
+    "fs": 28,
+    "fw": 600,
+    "color": "#17191e",
+    "contrast": 17.58,
+    "lh": 33.6,
+    "ls": "normal",
+    "n": 1
+   },
+   "meta": {
+    "label": "日期和大小",
+    "fs": 13,
+    "fw": 400,
+    "color": "#6a7180",
+    "contrast": 4.9,
+    "lh": 18.2,
+    "ls": "normal",
+    "n": 2
+   },
+   "lead": {
+    "label": "导语",
+    "fs": 16,
+    "fw": 400,
+    "color": "#17191e",
+    "contrast": 17.58,
+    "lh": 27.2,
+    "ls": "normal",
+    "n": 1
+   },
+   "group": {
+    "label": "分组标题",
+    "fs": 18,
+    "fw": 600,
+    "color": "#17191e",
+    "contrast": 17.58,
+    "lh": 25.2,
+    "ls": "normal",
+    "n": 3
+   },
+   "title": {
+    "label": "条目标题",
+    "fs": 16,
+    "fw": 600,
+    "color": "#17191e",
+    "contrast": 17.58,
+    "lh": 24,
+    "ls": "normal",
+    "n": 3
+   },
+   "desc": {
+    "label": "条目说明",
+    "fs": 15,
+    "fw": 400,
+    "color": "#545b69",
+    "contrast": 6.82,
+    "lh": 24,
+    "ls": "normal",
+    "n": 3
+   },
+   "item": {
+    "label": "列表条目",
+    "fs": 15,
+    "fw": 400,
+    "color": "#17191e",
+    "contrast": 17.58,
+    "lh": 24,
+    "ls": "normal",
+    "n": 5
+   },
+   "notice": {
+    "label": "提示框",
+    "fs": 14,
+    "fw": 400,
+    "color": "#5a3b00",
+    "contrast": 9.26,
+    "lh": 22.4,
+    "ls": "normal",
+    "n": 1
+   },
+   "hint": {
+    "label": "按钮上方小字",
+    "fs": 13,
+    "fw": 400,
+    "color": "#6a7180",
+    "contrast": 4.9,
+    "lh": 18.2,
+    "ls": "normal",
+    "n": 1
+   },
+   "button": {
+    "label": "按钮",
+    "fs": 17,
+    "fw": 600,
+    "color": "#ffffff",
+    "contrast": 5.72,
+    "lh": 23.8,
+    "ls": "normal",
+    "n": 1
+   }
+  },
+  "other": [
+   "span.vh「版本」28/600",
+   "span「·」13/400",
+   "span.nowrap「Wi-Fi」15/400",
+   "span.nowrap「《报告-2026Q3》」15/400",
+   "span.note-mark「!」12/700"
+  ]
+ },
+ {
+  "file": "release3.html",
+  "sizes": [
+   12,
+   13,
+   15,
+   16,
+   17,
+   18,
+   28
+  ],
+  "roles": {
+   "nav": {
+    "label": "导航标题",
+    "fs": 17,
+    "fw": 600,
+    "color": "#15171c",
+    "contrast": 17.93,
+    "lh": 23.8,
+    "ls": "normal",
+    "n": 1
+   },
+   "version": {
+    "label": "版本号",
+    "fs": 28,
+    "fw": 600,
+    "color": "#15171c",
+    "contrast": 17.93,
+    "lh": 32.2,
+    "ls": "-0.28px",
+    "n": 1
+   },
+   "meta": {
+    "label": "日期和大小",
+    "fs": 13,
+    "fw": 400,
+    "color": "#545b67",
+    "contrast": 6.84,
+    "lh": 19.5,
+    "ls": "normal",
+    "n": 2
+   },
+   "lead": {
+    "label": "导语",
+    "fs": 16,
+    "fw": 400,
+    "color": "#15171c",
+    "contrast": 17.93,
+    "lh": 27.2,
+    "ls": "normal",
+    "n": 1
+   },
+   "group": {
+    "label": "分组标题",
+    "fs": 18,
+    "fw": 600,
+    "color": "#15171c",
+    "contrast": 17.93,
+    "lh": 25.2,
+    "ls": "normal",
+    "n": 3
+   },
+   "title": {
+    "label": "条目标题",
+    "fs": 16,
+    "fw": 600,
+    "color": "#15171c",
+    "contrast": 17.93,
+    "lh": 22.4,
+    "ls": "normal",
+    "n": 3
+   },
+   "desc": {
+    "label": "条目说明",
+    "fs": 15,
+    "fw": 400,
+    "color": "#545b67",
+    "contrast": 6.84,
+    "lh": 25.5,
+    "ls": "normal",
+    "n": 3
+   },
+   "item": {
+    "label": "列表条目",
+    "fs": 16,
+    "fw": 400,
+    "color": "#15171c",
+    "contrast": 17.93,
+    "lh": 27.2,
+    "ls": "normal",
+    "n": 5
+   },
+   "notice": {
+    "label": "提示框",
+    "fs": 15,
+    "fw": 400,
+    "color": "#5c4100",
+    "contrast": 8.68,
+    "lh": 24,
+    "ls": "normal",
+    "n": 1
+   },
+   "hint": {
+    "label": "按钮上方小字",
+    "fs": 13,
+    "fw": 400,
+    "color": "#545b67",
+    "contrast": 6.84,
+    "lh": 19.5,
+    "ls": "normal",
+    "n": 1
+   },
+   "button": {
+    "label": "按钮",
+    "fs": 17,
+    "fw": 600,
+    "color": "#ffffff",
+    "contrast": 5.88,
+    "lh": 23.8,
+    "ls": "normal",
+    "n": 1
+   }
+  },
+  "other": [
+   "span.sr-only「版本」28/600",
+   "span.nowrap「Wi-Fi」15/400",
+   "span.punct-tight「”」15/400",
+   "span.nowrap「《报告-2026Q3》」16/400",
+   "span.notice-icon「!」12/700"
+  ]
+ },
+ {
+  "file": "release2-fixed.html",
+  "sizes": [
+   12,
+   13,
+   15,
+   17,
+   32
+  ],
+  "roles": {
+   "nav": {
+    "label": "导航标题",
+    "fs": 17,
+    "fw": 600,
+    "color": "#17191e",
+    "contrast": 17.58,
+    "lh": 23.8,
+    "ls": "normal",
+    "n": 1
+   },
+   "version": {
+    "label": "版本号",
+    "fs": 32,
+    "fw": 700,
+    "color": "#17191e",
+    "contrast": 17.58,
+    "lh": 38.4,
+    "ls": "normal",
+    "n": 1
+   },
+   "meta": {
+    "label": "日期和大小",
+    "fs": 13,
+    "fw": 400,
+    "color": "#6a7180",
+    "contrast": 4.9,
+    "lh": 18.2,
+    "ls": "normal",
+    "n": 2
+   },
+   "lead": {
+    "label": "导语",
+    "fs": 17,
+    "fw": 400,
+    "color": "#17191e",
+    "contrast": 17.58,
+    "lh": 28.9,
+    "ls": "normal",
+    "n": 1
+   },
+   "group": {
+    "label": "分组标题",
+    "fs": 13,
+    "fw": 600,
+    "color": "#545b69",
+    "contrast": 6.82,
+    "lh": 18.2,
+    "ls": "1.04px",
+    "n": 3
+   },
+   "title": {
+    "label": "条目标题",
+    "fs": 17,
+    "fw": 600,
+    "color": "#17191e",
+    "contrast": 17.58,
+    "lh": 25.5,
+    "ls": "normal",
+    "n": 3
+   },
+   "desc": {
+    "label": "条目说明",
+    "fs": 15,
+    "fw": 400,
+    "color": "#545b69",
+    "contrast": 6.82,
+    "lh": 24,
+    "ls": "normal",
+    "n": 3
+   },
+   "item": {
+    "label": "列表条目",
+    "fs": 15,
+    "fw": 400,
+    "color": "#17191e",
+    "contrast": 17.58,
+    "lh": 24,
+    "ls": "normal",
+    "n": 5
+   },
+   "notice": {
+    "label": "提示框",
+    "fs": 15,
+    "fw": 400,
+    "color": "#5a3b00",
+    "contrast": 9.26,
+    "lh": 24,
+    "ls": "normal",
+    "n": 1
+   },
+   "hint": {
+    "label": "按钮上方小字",
+    "fs": 13,
+    "fw": 400,
+    "color": "#6a7180",
+    "contrast": 4.9,
+    "lh": 18.2,
+    "ls": "normal",
+    "n": 1
+   },
+   "button": {
+    "label": "按钮",
+    "fs": 17,
+    "fw": 600,
+    "color": "#ffffff",
+    "contrast": 5.72,
+    "lh": 23.8,
+    "ls": "normal",
+    "n": 1
+   }
+  },
+  "other": [
+   "span.vh「版本」32/700",
+   "span「·」13/400",
+   "span.nowrap「Wi-Fi」15/400",
+   "span.nowrap「《报告-2026Q3》」15/400",
+   "span.note-mark「!」12/700"
+  ]
+ }
+]
