@@ -7,7 +7,8 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 OUT="$ROOT/public"
-REMOTE="git@github.com:Joy-jinyu/joy-jinyu.github.io.git"
+# 本机走 SSH；CI（.github/workflows/deploy.yml）传入带 token 的 https 地址
+REMOTE="${DEPLOY_REMOTE:-git@github.com:Joy-jinyu/joy-jinyu.github.io.git}"
 
 cd "$ROOT"
 # 一并清掉 Astro 内容缓存：缓存里的页面 HTML 会引用旧的代码块样式文件名（改了 expressiveCode 配置也不失效），发出去就丢样式
