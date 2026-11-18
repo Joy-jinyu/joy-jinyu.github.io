@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config'
 import mdx from '@astrojs/mdx'
 import expressiveCode from 'astro-expressive-code'
 import { satteri } from '@astrojs/markdown-satteri'
-import { tableWrap } from './src/lib/satteri-prose.mjs'
+import { tableWrap, contribSanitize } from './src/lib/satteri-prose.mjs'
 import sitemap from '@astrojs/sitemap'
 
 export default defineConfig({
@@ -12,7 +12,7 @@ export default defineConfig({
   base: '/blog',
   trailingSlash: 'always',
   // mdx 默认沿用这里的处理器（extendMarkdownConfig），所以插件只需挂一处
-  markdown: { processor: satteri({ hastPlugins: [tableWrap] }) },
+  markdown: { processor: satteri({ hastPlugins: [tableWrap, contribSanitize] }) },
   integrations: [
     // 必须排在 mdx 前面，否则 mdx 里的代码块不会交给它渲染
     expressiveCode({
