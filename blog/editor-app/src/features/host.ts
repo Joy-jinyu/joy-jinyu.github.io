@@ -1,8 +1,8 @@
-/** 按 host-contract.ts 加上类型的 host.call / host.on。耗时的调用不设超时（登录、AI、提 PR 可能要几十秒）。 */
+/** 按 blog/src/lib/editor-host/contract.ts 加上类型的 host.call / host.on。耗时的调用不设超时（登录、AI、存图、画图、提 PR 可能要几十秒）。 */
 import { host } from "nsh";
-import type { HostCalls, HostEvents } from "../../host-contract";
+import type { HostCalls, HostEvents } from "../../../src/lib/editor-host/contract";
 
-const LONG: ReadonlySet<keyof HostCalls> = new Set(["auth.login", "ai.complete", "contrib.submit"]);
+const LONG: ReadonlySet<keyof HostCalls> = new Set(["auth.login", "ai.complete", "media.add", "diagram.render", "contrib.submit"]);
 
 /** 调宿主函数；失败时 reject 一个带宿主错误信息的 Error。 */
 export function call<K extends keyof HostCalls>(name: K, args: HostCalls[K]["args"]): Promise<HostCalls[K]["result"]> {

@@ -1,7 +1,7 @@
-// 未登录 → 登录：说明页、登录中、宿主拒绝、用户没完成授权。
+// 未登录 → 登录：说明页、登录中、宿主拒绝、用户没完成授权；首屏出来后告诉宿主一次（site.ready）。
 import { expect, open, test } from "nsh/test";
 import type { App } from "nsh/test";
-import { ADA, AI_OFF } from "./fixtures";
+import { ADA, AI_OFF, later } from "./fixtures";
 
 const LOGIN = "role:button[用 GitHub 登录]";
 
@@ -89,4 +89,56 @@ test("logging out goes back to the signed-out page", async () => {
   await app.waitFor("ada");
   await app.press("role:button[退出]");
   await app.waitFor("投稿到 Pairwise");
+});
+
+// auth.status 晚一点回答：open() 先在「读取中」那一屏返回，site.ready 的回答函数里才拿得到 app。
+test("site.ready is called once, after the first screen is on screen", async () => {
+  let app: App | undefined;
+  const screens: string[] = [];
+  app = await open("../App.tsx", {
+    host: {
+      handlers: {
+        "auth.status": () => later(null, 300),
+        "ai.status": AI_OFF,
+        "auth.login": ADA,
+        "site.ready": () => {
+          screens.push(app ? String(app.shows("投稿到 Pairwise")) : "before open");
+          return null;
+        },
+      },
+    },
+  });
+  expect(screens).toEqual([]);
+  await app.waitFor("投稿到 Pairwise");
+  await app.waitUntil(() => screens.length > 0);
+  // 登录后换到写稿页，不再调。
+  await app.press(LOGIN);
+  await app.waitFor("role:button[提交审核…]");
+  await app.wait(300);
+  expect(screens).toEqual(["true"]);
+});
+
+test("site.ready is also called when the status read fails, and its rejection changes nothing", async () => {
+  let app: App | undefined;
+  const screens: string[] = [];
+  app = await open("../App.tsx", {
+    host: {
+      handlers: {
+        "ai.status": AI_OFF,
+        "auth.status": async () => {
+          await later(null, 300);
+          throw new Error("宿主还没准备好");
+        },
+        "site.ready": () => {
+          screens.push(app ? String(app.shows("text:/没能读取登录状态/")) : "before open");
+          throw new Error("宿主没有加载层");
+        },
+      },
+    },
+  });
+  await app.waitFor("text:/没能读取登录状态/");
+  await app.waitUntil(() => screens.length > 0);
+  await app.wait(300);
+  expect(screens).toEqual(["true"]);
+  expect(app.shows("role:button[重试]")).toBe(true);
 });

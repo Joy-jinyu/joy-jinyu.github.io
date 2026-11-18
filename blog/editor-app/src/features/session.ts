@@ -1,6 +1,6 @@
 /** 登录和 AI 状态：启动时问一次宿主，之后跟着 auth.changed / ai.changed 走。信号私有，页面通过函数读写。 */
-import { computed, signal } from "nsh";
-import type { AiStatus, Login } from "../../host-contract";
+import { computed, effect, signal } from "nsh";
+import type { AiStatus, Login } from "../../../src/lib/editor-host/contract";
 import { call, messageOf, on } from "./host";
 
 /** undefined：还没问到。 */
@@ -31,6 +31,21 @@ export function startSession() {
   });
   void loadLogin();
   void loadAi();
+}
+
+/**
+ * 首屏（未登录、写稿或读取失败）出现后的下一帧告诉宿主一次，宿主收起它的加载层。在根组件里调用一次。
+ * 宿主拒绝也不管：加载层怎么收是宿主的事，应用照常用。
+ */
+export function announceReady() {
+  let sent = false;
+  effect(() => {
+    if (sent || phase() === "loading") return;
+    sent = true;
+    requestAnimationFrame(() => {
+      call("site.ready", null).catch(() => undefined);
+    });
+  });
 }
 
 /** 读登录状态；失败时进入 error 屏，可重试。 */

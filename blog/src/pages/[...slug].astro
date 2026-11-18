@@ -49,7 +49,53 @@ const base = import.meta.env.BASE_URL
   <button class="to-top" type="button" aria-label="回到顶部" title="回到顶部">↑</button>
 </Base>
 
+<script>
+  /**
+   * ```mermaid 代码块画成图：只有页面里有这种代码块时才加载 mermaid。
+   * 画好的 SVG 放进 <img>（data: 地址）而不是直接插进页面：<img> 里的 SVG 不执行脚本，投稿里写的图表也碰不到页面。
+   */
+  const blocks = [...document.querySelectorAll<HTMLElement>('.prose pre[data-language="mermaid"]')]
+  if (blocks.length) {
+    const { renderMermaid } = await import('../lib/mermaid-render')
+    const toData = (svg: string) => {
+      const bytes = new TextEncoder().encode(svg)
+      let bin = ''
+      for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000))
+      return `data:image/svg+xml;base64,${btoa(bin)}`
+    }
+    const figures = blocks.map((pre) => {
+      const code = [...pre.querySelectorAll('.ec-line')].map((l) => l.textContent ?? '').join('\n')
+      const holder = pre.closest('.expressive-code') ?? pre
+      const fig = document.createElement('figure')
+      fig.className = 'mermaid-figure'
+      holder.after(fig)
+      return { code, holder, fig }
+    })
+    const paint = async () => {
+      const dark = document.documentElement.dataset.theme !== 'light'
+      for (const { code, holder, fig } of figures) {
+        try {
+          const img = new Image()
+          img.alt = '图表'
+          img.src = toData(await renderMermaid(code, dark))
+          fig.replaceChildren(img)
+          fig.hidden = false
+          ;(holder as HTMLElement).hidden = true
+        } catch {
+          // 画不出来就露出原来的代码块
+          fig.hidden = true
+          ;(holder as HTMLElement).hidden = false
+        }
+      }
+    }
+    await paint()
+    new MutationObserver(() => void paint()).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
+  }
+</script>
+
 <style>
+  .prose :global(.mermaid-figure) { margin: 1.6em 0; text-align: center; }
+  .prose :global(.mermaid-figure img) { max-width: 100%; height: auto; }
   /* 阅读进度条：支持滚动驱动动画的浏览器纯 CSS，其余由下面的脚本写 --p */
   .progress { position: fixed; top: 0; left: 0; right: 0; z-index: 40; height: 2px; pointer-events: none; }
   .progress span {

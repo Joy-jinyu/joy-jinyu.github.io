@@ -75,6 +75,8 @@ export interface TextInputProps {
   /** 回车：提交（单行输入框）。 */
   onSubmit?: () => void;
   onBlur?: () => void;
+  /** 光标或选区变了（UTF-16 位置）。 */
+  onSelectionChange?: (selection: { start: number; end: number }) => void;
   testID?: string;
   ref?: (ref: InputRef) => void;
 }
@@ -120,6 +122,7 @@ export function TextArea(props: TextInputProps & { rows?: "short" | "medium" | "
       value={props.value}
       onChange={({ value }) => props.onChange(value)}
       onBlur={props.onBlur}
+      onSelectionChange={props.onSelectionChange}
       placeholder={props.placeholder}
       readonly={props.readonly}
       autoFocus={props.autoFocus}

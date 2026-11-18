@@ -1,7 +1,7 @@
 // AI：没设置时打开站点设置；起稿填入稿件（非空先确认）；润色替换正文；起标题和摘要逐项采用；关掉对话框丢弃迟到的结果。
 import { expect, open, test } from "nsh/test";
 import type { App } from "nsh/test";
-import type { AiTask, Draft } from "../host-contract";
+import type { AiTask, Draft } from "../../src/lib/editor-host/contract";
 import { AI_OFF, AI_ON, later, READY_DRAFT, signedIn, withDraft } from "./fixtures";
 
 const WIDE = { platform: "web", width: 1280, height: 860 } as const;
@@ -23,7 +23,7 @@ test("without AI settings, the tools open the site's settings and explain", asyn
 test("AI 起稿 fills every field of an empty draft", async () => {
   const tasks: AiTask[] = [];
   let app!: App;
-  // 宿主回答之前看一眼：按钮显示进行中，输入框只读。
+  // 宿主回答之前看一眼：输入区换成了生成过程，底部只有「停止」。
   let running = false;
   app = await open("../App.tsx", {
     ...WIDE,
@@ -31,7 +31,7 @@ test("AI 起稿 fills every field of an empty draft", async () => {
       handlers: signedIn({
         "ai.complete": (task: AiTask) => {
           tasks.push(task);
-          running = app.shows("生成中…") && app.shows("text:/通常要半分钟/");
+          running = app.shows("id:ai-stream") && app.shows("text:/通常要半分钟/") && app.shows("role:button[停止]") && !app.shows("label:主题或提纲");
           return AI_DRAFT;
         },
       }),
@@ -46,7 +46,8 @@ test("AI 起稿 fills every field of an empty draft", async () => {
   await app.press("role:button[生成]");
   await app.waitFor("id:ai-draft-result");
   expect(running).toBe(true);
-  expect(tasks).toEqual([{ task: "draft", input: "怎么给博客加投稿", extra: "短一点" }]);
+  expect(tasks).toMatchObject([{ task: "draft", input: "怎么给博客加投稿", extra: "短一点" }]);
+  expect(typeof (tasks[0] as { id?: unknown }).id).toBe("string");
   expect(app.shows("id:ai-draft-result >> text:AI 写的标题")).toBe(true);
 
   await app.press("role:button[填入稿件]");

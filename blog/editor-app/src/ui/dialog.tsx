@@ -1,6 +1,6 @@
 /** 卡片对话框和二次确认。对话框：遮罩淡入，卡片从 0.97 上浮 10pt（slow，软落定）。 */
 import type { JSX } from "nsh";
-import { cleanup, createMotion, effect, keymap, Scroll, Text, View, windowSize } from "nsh";
+import { cleanup, createMotion, effect, keymap, Scroll, type ScrollRef, Text, View, windowSize } from "nsh";
 import { AlertDialog, Dialog as BaseDialog } from "nsh/base";
 import { IconButton } from "./button";
 import { duration, rise } from "./motion";
@@ -19,6 +19,8 @@ export interface DialogProps {
   width?: DialogWidth;
   /** ⌘/Ctrl + 回车 触发的默认操作（只在打开时生效）。 */
   onShortcut?: () => void;
+  /** 内容在流进来（AI 正在写）：内容区固定在最大高度，不随内容长高；停在底部时跟着末尾走，往上翻就不跟。 */
+  follow?: boolean;
   /** 底部操作区，从右往左：主操作在最右。 */
   footer?: JSX.Element;
   testID?: string;
@@ -68,14 +70,59 @@ export function Dialog(props: DialogProps) {
             <IconButton icon="close" label="关闭" size="sm" onPress={props.onClose} />
           </If>
         </View>
-        <Scroll style={{ maxHeight: Math.max(240, windowSize().height * 0.62) }}>
-          <View class="gap-4">{props.children}</View>
-        </Scroll>
+        <FollowScroll follow={!!props.follow} height={Math.max(240, windowSize().height * 0.62)}>
+          {props.children}
+        </FollowScroll>
         <If when={props.footer}>
           <View class="flex-row flex-wrap items-center justify-end gap-2">{props.footer}</View>
         </If>
       </View>
     </BaseDialog>
+  );
+}
+
+/** 离底部多近（pt）还算「停在底部」：差一点点也接着跟。 */
+const FOLLOW_SLACK = 24;
+
+/** 对话框的内容区：平时最高 `height`；`follow` 时就是 `height` 高，内容长了自己滚到末尾（不带动画），除非用户往上翻了。 */
+function FollowScroll(props: { follow: boolean; height: number; children?: JSX.Element }) {
+  let scroll: ScrollRef | undefined;
+  let pinned = true;
+  let lastY = 0;
+  let viewHeight = 0;
+  let contentHeight = 0;
+  const toEnd = () => {
+    if (props.follow && pinned && contentHeight > viewHeight) scroll?.scrollTo({ y: contentHeight - viewHeight, animated: false });
+  };
+  // 每次开始跟随（新一次生成）都从「停在底部」开始。
+  effect(() => {
+    if (props.follow) pinned = true;
+  });
+  return (
+    <Scroll
+      ref={scroll}
+      style={props.follow ? { height: props.height } : { maxHeight: props.height }}
+      onLayout={(e) => {
+        viewHeight = e.bounds.size.height;
+        toEnd();
+      }}
+      onScroll={(e) => {
+        // 往上翻就松开；回到底部（用户翻回来或我们滚过去）再接着跟。
+        if (e.offset.y < lastY - 1) pinned = false;
+        if (e.offset.y + e.size.height >= e.contentSize.height - FOLLOW_SLACK) pinned = true;
+        lastY = e.offset.y;
+      }}
+    >
+      <View
+        class="gap-4"
+        onLayout={(e) => {
+          contentHeight = e.bounds.size.height;
+          toEnd();
+        }}
+      >
+        {props.children}
+      </View>
+    </Scroll>
   );
 }
 
