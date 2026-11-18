@@ -7,8 +7,29 @@ const posts = await listPosts()
 const base = import.meta.env.BASE_URL
 // 专栏内按阅读顺序排：早发的在前；listPosts 是新的在前，所以反过来
 const groups = COLUMNS.map((c) => ({ ...c, posts: posts.filter((p) => p.data.column === c.id).reverse() })).filter((g) => g.posts.length)
-/** 每个专栏第一张卡片在整页里的序号，入场动画按它依次错开 */
-const starts = groups.map((_, gi) => groups.slice(0, gi).reduce((n, g) => n + g.posts.length, 0))
+
+/** 封面后面压几张文章卡：再多扇面就挤成一团，看不出标题 */
+const BEHIND = 3
+/**
+ * 第 k 张（共 n 张）压在后面的卡：静止时往上错开露边，hover 时散成扇形。
+ * 扇面左右对称展开，正中那张不转、往上抬，露出标题；越靠中间的越靠前（depth 小），
+ * 静止和散开用同一个层级，切换时不会突然换层。
+ */
+function fan(k: number, n: number) {
+  const t = n === 1 ? 0.6 : (k / (n - 1)) * 2 - 1
+  const dist = (i: number) => Math.abs(i - (n - 1) / 2)
+  const depth = [...Array(n).keys()].sort((a, b) => dist(a) - dist(b) || b - a).indexOf(k) + 1
+  return [
+    `--rest-y:${-depth * 9}px`,
+    `--rest-s:${1 - depth * 0.05}`,
+    `--rest-r:${(k % 2 ? 1 : -1) * 1.2}deg`,
+    `--fan-r:${t * 9}deg`,
+    `--fan-x:${t * 30}px`,
+    `--fan-y:${-(1 - Math.abs(t)) * 30 - 10}px`,
+    `--z:${BEHIND - depth}`,
+    `--k:${k}`,
+  ].join(';')
+}
 ---
 
 <Base title="Pairwise · Joy 的博客" description="Joy 的博客：工具、工程化与 AI 应用开发的实践记录。">
@@ -16,54 +37,87 @@ const starts = groups.map((_, gi) => groups.slice(0, gi).reduce((n, g) => n + g.
     <div class="eyebrow">Blog · {posts.length} 篇 · {groups.length} 个专栏</div>
     <h1>写给未来的自己</h1>
     <p class="lede">日常在用的工具、踩过的坑和做过的取舍。笔记站放成体系的知识点，这里放完整的一篇；按专栏分组，专栏里按阅读顺序排。</p>
-    {groups.length > 1 && (
-      <nav class="jump" aria-label="专栏">
-        {groups.map((g) => (
-          <a href={`#${g.id}`}>
-            {g.title}
-            <span>{g.posts.length}</span>
-          </a>
-        ))}
-      </nav>
-    )}
   </section>
 
   {posts.length === 0 && <p class="empty">还没有文章。</p>}
 
-  {groups.map((g, gi) => (
-    <section class="column" id={g.id} aria-labelledby={`${g.id}-title`}>
-      <header class="column-head">
-        <div class="column-row">
-          <h2 id={`${g.id}-title`}>{g.title}</h2>
-          <span class="count">{g.posts.length} 篇 · 按阅读顺序</span>
-        </div>
-        <p>{g.blurb}</p>
-      </header>
-      <div class="list">
-        {g.posts.map((p, i) => (
-          <a class="card" href={`${base}${p.id}/`} style={`--i:${starts[gi] + i}`}>
-            <div class="row">
-              <time datetime={p.data.date.toISOString()}>{formatDate(p.data.date)}</time>
-              <span class="dot" aria-hidden="true" />
-              <span>{p.data.meta ?? `约 ${readingMinutes(p.body)} 分钟`}</span>
-            </div>
-            <h3 style={`view-transition-name:${titleTransition(p.id)}`}>{p.data.title}</h3>
-            <p>{p.data.description}</p>
-            <div class="foot">
-              <div class="tags">
-                {p.data.tags.map((t) => (
-                  <span class="chip">{t}</span>
-                ))}
+  <div class="decks">
+    {groups.map((g, gi) => {
+      const behind = g.posts.slice(0, BEHIND)
+      return (
+        <>
+          <section class="deck" id={g.id} data-deck={g.id} style={`--i:${gi}`}>
+            <div class="stack">
+              {behind.map((p, k) => (
+                <div class="mini" aria-hidden="true" style={`${fan(k, behind.length)};--vt:deck-${g.id}-${k}`}>
+                  <span class="mini-n">{String(k + 1).padStart(2, '0')}</span>
+                  <span class="mini-t">{p.data.title}</span>
+                </div>
+              ))}
+              <div class="cover spot" style={`--vt:deck-${g.id}-cover`}>
+                <div class="row">
+                  <span>专栏</span>
+                  <span class="dot" aria-hidden="true" />
+                  <span>{g.posts.length} 篇</span>
+                </div>
+                <h2>
+                  <button type="button" aria-expanded="false" aria-controls={`${g.id}-list`}>
+                    {g.title}
+                  </button>
+                </h2>
+                <p>{g.blurb}</p>
+                <div class="cover-foot">
+                  <time datetime={g.posts.at(-1)!.data.date.toISOString()}>更新于 {formatDate(g.posts.at(-1)!.data.date)}</time>
+                  <span class="go" aria-hidden="true">
+                    <span class="go-open">展开 ↓</span>
+                    <span class="go-close">收起 ↑</span>
+                  </span>
+                </div>
               </div>
-              <span class="go" aria-hidden="true">
-                阅读 →
-              </span>
             </div>
-          </a>
-        ))}
-      </div>
-    </section>
-  ))}
+          </section>
+          <div class="panel" id={`${g.id}-list`} role="region" aria-label={`${g.title}的文章`} hidden>
+            {g.posts.map((p, i) => (
+              <a class:list={['card spot', i < behind.length && 'flown']} href={`${base}${p.id}/`} style={`--i:${i}${i < behind.length ? `;--vt:deck-${g.id}-${i}` : ''}`}>
+                <div class="row">
+                  <time datetime={p.data.date.toISOString()}>{formatDate(p.data.date)}</time>
+                  <span class="dot" aria-hidden="true" />
+                  <span>{p.data.meta ?? `约 ${readingMinutes(p.body)} 分钟`}</span>
+                </div>
+                <h3 style={`view-transition-name:${titleTransition(p.id)}`}>{p.data.title}</h3>
+                <p>{p.data.description}</p>
+                <div class="foot">
+                  <div class="tags">
+                    {p.data.tags.map((t) => (
+                      <span class="chip">{t}</span>
+                    ))}
+                  </div>
+                  <span class="go" aria-hidden="true">
+                    阅读 →
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </>
+      )
+    })}
+  </div>
+
+  {/* 首帧前恢复展开状态：从文章页返回时，标题的跨页形变要落在展开后的卡片上 */}
+  <script is:inline>
+    try {
+      const id = location.hash.slice(1) || sessionStorage.getItem('blog-open-deck')
+      const deck = id && document.querySelector(`.deck[data-deck="${CSS.escape(id)}"]`)
+      if (deck) {
+        deck.setAttribute('data-open', '')
+        deck.querySelector('button').setAttribute('aria-expanded', 'true')
+        document.getElementById(`${id}-list`).hidden = false
+      }
+    } catch {
+      /* 存储不可用时全部收起，不影响阅读 */
+    }
+  </script>
 </Base>
 
 <style>
@@ -78,45 +132,102 @@ const starts = groups.map((_, gi) => groups.slice(0, gi).reduce((n, g) => n + g.
     color: transparent;
   }
   .lede { max-width: 38em; margin: 18px 0 0; color: var(--muted); font-size: 17px; }
-  .jump { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
-  .jump a {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    min-height: 36px;
-    padding: 6px 14px;
-    border: 1px solid var(--line-hi);
-    border-radius: 999px;
-    background: var(--panel);
-    color: var(--strong);
-    font: 500 14px/1.2 var(--sans);
-    transition: border-color 0.2s var(--ease), background 0.2s var(--ease);
-  }
-  .jump a span { color: var(--muted); font: 500 12px/1 var(--mono); font-variant-numeric: tabular-nums; }
-  @media (hover: hover) { .jump a:hover { border-color: color-mix(in srgb, var(--brand) 55%, transparent); text-decoration: none; } }
-  .jump a:active { background: color-mix(in srgb, var(--brand) 12%, var(--panel)); }
 
   .empty { max-width: 880px; margin: 0 auto; padding: 0 24px; color: var(--muted); }
-  .column { max-width: 880px; margin: 0 auto; padding: 32px 24px 0; scroll-margin-top: calc(var(--header-h) + 8px); }
-  .column-head { margin-bottom: 18px; }
-  .column-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
-  .column-head h2 { margin: 0; color: var(--strong); font: 650 22px/1.3 var(--sans); letter-spacing: -0.02em; }
-  .count { color: var(--muted); font: 400 12px/1 var(--mono); }
-  .column-head p { max-width: 40em; margin: 8px 0 0; color: var(--muted); font-size: 15px; }
-  .list { display: grid; gap: 16px; }
+
+  /*
+   * 专栏一叠一格；展开的列表占满整行。dense 让后面的叠回填到上一行，
+   * 所以列表总是落在它那一行专栏的下方，而不是把同一行的其它叠挤下去。
+   */
+  .decks {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+    grid-auto-flow: row dense;
+    gap: 28px 32px;
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 56px 24px 0;
+  }
+  .deck { position: relative; scroll-margin-top: calc(var(--header-h) + 56px); }
+  .deck:hover, .deck:focus-within { z-index: 2; }
+  .stack { position: relative; display: grid; cursor: var(--cursor-pointer); }
+  .stack > * { grid-area: 1 / 1; }
+
+  .cover, .mini, .card {
+    border: 1px solid var(--line-hi);
+    border-radius: 18px;
+    color: var(--text);
+  }
+  .cover, .mini {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--strong) 6%, var(--bg)), color-mix(in srgb, var(--strong) 3%, var(--bg)));
+    box-shadow: 0 1px 0 rgba(var(--ink-rgb), 0.04) inset, 0 18px 40px -26px rgba(0, 0, 0, 0.55);
+  }
+  .cover {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    min-height: 236px;
+    padding: 22px 22px 18px;
+    overflow: hidden;
+    transition: border-color 0.25s var(--ease), transform 0.5s var(--spring), box-shadow 0.35s var(--ease);
+  }
+  .cover h2 { margin: 12px 0 0; color: var(--strong); font: 650 22px/1.3 var(--sans); letter-spacing: -0.02em; }
+  /* 按钮的点击区铺满整张封面；扇出去的小卡另由脚本转发点击 */
+  .cover button { all: unset; cursor: inherit; }
+  .cover button::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+  .cover button:focus-visible::after { outline: 2px solid var(--brand); outline-offset: 3px; }
+  .cover p { margin: 8px 0 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
+  .cover-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: auto; padding-top: 16px; color: var(--muted); font: 400 12px/1 var(--mono); }
+  .go-close, .deck[data-open] .go-open { display: none; }
+  .deck[data-open] .go-close { display: inline; }
+
+  .mini {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 12px 16px;
+    overflow: hidden;
+    z-index: var(--z);
+    /* 静止时绕顶边缩放，缩小后顶边不动，才露得出边；散开时绕卡片下方的一点转，像捏着牌的手腕 */
+    transform-origin: 50% 0;
+    transform: translateY(var(--rest-y)) scale(var(--rest-s)) rotate(var(--rest-r));
+    transition: transform 0.6s var(--spring), transform-origin 0.6s var(--spring), opacity 0.3s var(--ease);
+  }
+  .mini-n { flex: none; color: var(--brand-ink); font: 500 11px/1.5 var(--mono); }
+  .mini-t { min-width: 0; color: var(--strong); font: 600 13px/1.5 var(--sans); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* 散开：只在能 hover 的设备上，键盘聚焦也算；展开后小卡已经飞进列表，不再参与 */
+  @media (hover: hover) and (pointer: fine) {
+    .deck:not([data-open]) .stack:hover .mini,
+    .deck:not([data-open]) .stack:has(:focus-visible) .mini {
+      transform-origin: 50% 150%;
+      transform: translate(var(--fan-x), var(--fan-y)) rotate(var(--fan-r));
+      transition-delay: calc(var(--k) * 35ms);
+    }
+    .deck:not([data-open]) .stack:hover .cover,
+    .deck:not([data-open]) .stack:has(:focus-visible) .cover {
+      transform: translateY(6px);
+      border-color: color-mix(in srgb, var(--brand) 45%, transparent);
+      box-shadow: 0 1px 0 rgba(var(--ink-rgb), 0.04) inset, 0 28px 60px -30px var(--brand-glow);
+    }
+  }
+  .deck[data-open] .mini { opacity: 0; pointer-events: none; }
+  .deck[data-open] .cover { border-color: color-mix(in srgb, var(--brand) 45%, transparent); }
+
+  .panel { grid-column: 1 / -1; display: grid; gap: 16px; }
+  .panel[hidden] { display: none; }
   .card {
     position: relative;
     display: block;
     padding: 26px 28px 22px;
-    border: 1px solid var(--line);
-    border-radius: 18px;
+    border-color: var(--line);
     background: linear-gradient(180deg, var(--panel-hi), var(--panel));
-    color: var(--text);
     overflow: hidden;
     transition: border-color 0.25s var(--ease), transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
   }
   /* 鼠标位置跟随的光斑：--mx / --my 由下面的脚本写入 */
-  .card::before {
+  .spot::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -125,13 +236,13 @@ const starts = groups.map((_, gi) => groups.slice(0, gi).reduce((n, g) => n + g.
     transition: opacity 0.3s var(--ease);
     pointer-events: none;
   }
+  .stack:hover .spot::before, .card:hover::before, .card:focus-visible::before { opacity: 1; }
   .card:hover, .card:focus-visible {
     border-color: rgba(0, 184, 184, 0.45);
     transform: translateY(-2px);
     box-shadow: 0 24px 60px -30px var(--brand-glow);
     text-decoration: none;
   }
-  .card:hover::before, .card:focus-visible::before { opacity: 1; }
   .row { display: flex; align-items: center; gap: 10px; color: var(--muted); font: 400 12px/1 var(--mono); }
   .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--faint); }
   h3 { margin: 14px 0 0; color: var(--strong); font: 600 26px/1.3 var(--sans); letter-spacing: -0.02em; }
@@ -140,24 +251,102 @@ const starts = groups.map((_, gi) => groups.slice(0, gi).reduce((n, g) => n + g.
   .tags { display: flex; flex-wrap: wrap; gap: 6px; }
   .go { color: var(--brand-2); font: 500 13px/1 var(--mono); transition: transform 0.3s var(--ease); }
   .card:hover .go { transform: translateX(4px); }
+
+  /*
+   * 展开的页内过渡：只在过渡期间、只给被点的那一叠（[data-vt]）挂名字，平时不挂，免得干扰切页过渡。
+   * 小卡和列表前几张同名，于是从扇面飞到列表；封面也挂名，盖在小卡上面，飞出时像从牌堆后面抽出来。
+   * 文章标题的切页名字这时要撤掉，否则标题会脱离卡片单独飞。
+   */
+  :global(.deck-vt) .deck[data-vt]:not([data-open]) .mini,
+  :global(.deck-vt) .deck[data-vt][data-open] + .panel .card,
+  :global(.deck-vt) .deck[data-vt] .cover { view-transition-name: var(--vt, none); view-transition-class: deck-card; }
+  :global(.deck-vt) .card h3 { view-transition-name: none !important; }
+  :global(::view-transition-group(.deck-card)) { animation-duration: 0.62s; animation-timing-function: var(--spring); }
+  /* 小卡和列表卡宽高比差很多，默认把快照拉伸着交叉淡入会把字压扁；改成不缩放、左上对齐、按圆角裁掉 */
+  :global(::view-transition-image-pair(.deck-card)) { overflow: hidden; border-radius: 18px; }
+  /* 新旧两张同时长、同曲线淡入淡出，plus-lighter 叠起来才始终是满的，否则中途发灰透底 */
+  :global(::view-transition-old(.deck-card)),
+  :global(::view-transition-new(.deck-card)) { width: 100%; height: 100%; object-fit: none; object-position: 0 0; animation-duration: 0.16s; animation-timing-function: linear; }
+  /* 9% 回弹的弹簧（ζ≈0.6，0.75s 稳定），由阻尼振动公式采样；挂在 :root 上，过渡伪元素也能继承到 */
+  :global(:root) {
+    --spring: linear(0, 0.037, 0.129, 0.255, 0.396, 0.537, 0.67, 0.786, 0.884, 0.961, 1.018, 1.058, 1.082, 1.093, 1.094, 1.089, 1.079, 1.066, 1.053, 1.04, 1.028, 1.017, 1.008, 1.002, 0.997, 0.994, 0.992, 0.991, 0.991, 0.992, 0.993, 0.994, 0.995, 0.997, 0.998, 0.999, 1);
+  }
+
   @media (prefers-reduced-motion: no-preference) {
-    .card { animation: rise 0.7s var(--ease) both; animation-delay: calc(var(--i) * 80ms + 120ms); }
+    .deck { animation: rise 0.7s var(--ease) both; animation-delay: calc(var(--i) * 90ms + 120ms); }
+    /* 没从扇面飞过来的卡片依次升起 */
+    :global(.deck-vt) .deck[data-vt] + .panel .card:not(.flown) { animation: rise 0.6s var(--ease) both; animation-delay: calc(var(--i) * 45ms + 80ms); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mini, .cover { transition: none; }
   }
   @keyframes rise { from { opacity: 0; transform: translateY(14px); } }
   @media (max-width: 640px) {
     .hero { padding: 56px 16px 16px; }
-    .column { padding: 28px 16px 0; }
+    .decks { padding: 40px 16px 0; gap: 28px; }
+    .cover { min-height: 0; }
     .card { padding: 20px 18px 18px; }
     h3 { font-size: 22px; }
   }
 </style>
 
 <script>
-  document.querySelectorAll<HTMLElement>('.card').forEach((card) => {
-    card.addEventListener('pointermove', (e) => {
-      const r = card.getBoundingClientRect()
-      card.style.setProperty('--mx', `${e.clientX - r.left}px`)
-      card.style.setProperty('--my', `${e.clientY - r.top}px`)
+  /** 同一时间只展开一叠：记下展开的那一叠的 id，首帧前的内联脚本按它恢复 */
+  const KEY = 'blog-open-deck'
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)')
+  const decks = [...document.querySelectorAll<HTMLElement>('.deck')]
+
+  function save(id: string | null) {
+    try {
+      if (id) sessionStorage.setItem(KEY, id)
+      else sessionStorage.removeItem(KEY)
+    } catch {
+      /* 存储不可用就不记，下次进来全部收起 */
+    }
+  }
+
+  /** 展开 target 并收起其它叠；target 为 null 时全部收起 */
+  function show(target: HTMLElement | null) {
+    const apply = () => {
+      for (const deck of decks) {
+        const open = deck === target
+        deck.toggleAttribute('data-open', open)
+        deck.querySelector('button')!.setAttribute('aria-expanded', String(open))
+        document.getElementById(`${deck.dataset.deck}-list`)!.hidden = !open
+      }
+      save(target?.dataset.deck ?? null)
+    }
+    if (!document.startViewTransition || reduced.matches) return apply()
+    const root = document.documentElement
+    root.classList.add('deck-vt')
+    // 只给要展开的那一叠飞卡；收起时三张大卡缩回牌堆会横穿相邻的专栏，乱，所以被收起的只做整页淡入淡出
+    if (target) target.dataset.vt = ''
+    document.startViewTransition(apply).finished.finally(() => {
+      root.classList.remove('deck-vt')
+      if (target) delete target.dataset.vt
+    })
+  }
+
+  decks.forEach((deck) => {
+    // 键盘回车 / 空格在按钮上触发的 click 也会冒泡到这里，所以只挂这一处
+    deck.querySelector('.stack')!.addEventListener('click', () => show(deck.hasAttribute('data-open') ? null : deck))
+  })
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return
+    const active = document.activeElement
+    const panel = active?.closest<HTMLElement>('.panel')
+    const deck = panel ? document.querySelector<HTMLElement>(`.deck[data-deck="${panel.id.replace(/-list$/, '')}"]`) : active?.closest<HTMLElement>('.deck')
+    if (!deck?.hasAttribute('data-open')) return
+    show(null)
+    deck.querySelector('button')!.focus()
+  })
+
+  document.querySelectorAll<HTMLElement>('.spot').forEach((el) => {
+    el.addEventListener('pointermove', (e) => {
+      const r = el.getBoundingClientRect()
+      el.style.setProperty('--mx', `${e.clientX - r.left}px`)
+      el.style.setProperty('--my', `${e.clientY - r.top}px`)
     })
   })
 </script>
