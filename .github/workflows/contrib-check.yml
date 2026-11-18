@@ -1,0 +1,61 @@
+# 读者投稿（来自 fork 的 PR）的检查，分两段：
+# - guard：pull_request_target，跑的是 master 上的规则脚本，PR 改不到它；只把 PR 的文件当文本读，不执行，token 只读
+# - build：pull_request，试构建一次校验 frontmatter；会执行 PR 里的代码，所以拿不到任何密钥，只作审稿参考
+name: contrib-check
+
+on:
+  pull_request_target:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  guard:
+    if: github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.full_name != github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          persist-credentials: false
+      # 装的是 master 的依赖（守门脚本要用构建时同一套解析器），PR 改不到
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - name: 取 PR 的文件（只读数据，不检出、不执行）
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          gh api "repos/${{ github.repository }}/pulls/$PR/files" --paginate \
+            --jq '[.[] | {status, filename, previous_filename}]' | jq -s 'add' > pr-files.json
+          git fetch --no-tags --depth=1 "https://github.com/${{ github.repository }}.git" "pull/$PR/head"
+          # 检查的必须是这次事件对应的提交，PR 中途又推了新提交就让新事件去查
+          test "$(git rev-parse FETCH_HEAD)" = "$HEAD_SHA"
+      - name: 投稿规则
+        env:
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: node .github/scripts/check-contrib.mjs pr-files.json "$HEAD_SHA" "$PR_AUTHOR"
+
+  build:
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - name: 试构建博客（frontmatter 不合格会在这里失败）
+        run: npx astro build --root blog
