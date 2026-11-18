@@ -1,0 +1,30 @@
+---
+/**
+ * 读者投稿编辑器：界面是 NSH 应用（blog/editor-app，打包到 /blog/editor-app/，同源 iframe），
+ * 登录、GitHub、AI 请求都在本页（lib/editor-host），token 和 AI key 不进应用。
+ */
+import Base from '../layouts/Base.astro'
+
+const base = import.meta.env.BASE_URL
+---
+
+<Base title="投稿 · Pairwise" description="在 Pairwise 博客投稿：GitHub 登录后写稿，提交后变成一个 PR，审过后发布。" bgIntensity={0.25} footer={false}>
+  <section class="editor" aria-label="投稿编辑器">
+    {/* src 由下面的脚本在宿主挂好之后再设：iframe 里的 host.js 一启动就要找父页面的 pairwiseEditorHost */}
+    <iframe data-src={`${base}editor-app/`} title="投稿编辑器" allow="clipboard-write"></iframe>
+    <noscript><p class="fallback">投稿编辑器需要开启 JavaScript。</p></noscript>
+  </section>
+</Base>
+
+<script>
+  import '../lib/editor-host'
+
+  const frame = document.querySelector<HTMLIFrameElement>('.editor iframe')!
+  frame.src = frame.dataset.src!
+</script>
+
+<style>
+  .editor { height: calc(100dvh - var(--header-h)); }
+  iframe { display: block; width: 100%; height: 100%; border: 0; background: transparent; color-scheme: normal; }
+  .fallback { padding: 24px; color: var(--muted); text-align: center; }
+</style>

@@ -2,6 +2,7 @@
 /** 全站外壳：head、顶栏、动态背景、页脚；文章页和首页都套这一层 */
 import '../styles/global.css'
 import ThemeToggle from '../components/ThemeToggle.astro'
+import AiSettings from '../components/AiSettings.astro'
 
 interface Props {
   title: string
@@ -10,8 +11,10 @@ interface Props {
   bgIntensity?: number
   /** 文章页传入：og:type 变成 article，并带上发布 / 更新时间和标签 */
   article?: { published: Date; updated?: Date; tags?: string[] }
+  /** 投稿编辑器这类占满一屏的工具页传 false：不要页脚 */
+  footer?: boolean
 }
-const { title, description, bgIntensity = 0.55, article } = Astro.props
+const { title, description, bgIntensity = 0.55, article, footer = true } = Astro.props
 const base = import.meta.env.BASE_URL
 const canonical = new URL(Astro.url.pathname, Astro.site)
 // 分享卡片的图片：site/og.png，部署后在站点根目录
@@ -77,9 +80,10 @@ const ogImage = new URL('/og.png', Astro.site)
         </a>
         <nav aria-label="站点导航">
           <a href={base} aria-current={Astro.url.pathname === base ? 'page' : undefined}>文章</a>
-          <a href={`${base}admin/`}>投稿</a>
+          <a href={`${base}editor/`} aria-current={Astro.url.pathname === `${base}editor/` ? 'page' : undefined}>投稿</a>
           <a href="/notes/">Notes</a>
           <a href="/">简历</a>
+          <AiSettings />
           <ThemeToggle />
         </nav>
       </div>
@@ -87,11 +91,13 @@ const ogImage = new URL('/og.png', Astro.site)
     <main id="main" tabindex="-1">
       <slot />
     </main>
-    <footer class="foot">
-      <span>© {new Date().getFullYear()} Joy</span>
-      <span class="sep">·</span>
-      <a href="https://github.com/Joy-jinyu/joy-jinyu.github.io">源码</a>
-    </footer>
+    {footer && (
+      <footer class="foot">
+        <span>© {new Date().getFullYear()} Joy</span>
+        <span class="sep">·</span>
+        <a href="https://github.com/Joy-jinyu/joy-jinyu.github.io">源码</a>
+      </footer>
+    )}
   </body>
 </html>
 
@@ -167,6 +173,11 @@ const ogImage = new URL('/og.png', Astro.site)
   .foot a { color: var(--muted); }
   @media (max-width: 640px) {
     .top-in { padding: 0 16px; }
-    nav a { padding: 8px 8px; }
+    nav { gap: 2px; }
+    nav a { padding: 8px 7px; white-space: nowrap; }
+  }
+  /* 手机上导航放不下站名：文字只对读屏保留，避免导航被挤成竖排 */
+  @media (max-width: 420px) {
+    .brand span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   }
 </style>
