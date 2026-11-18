@@ -9,6 +9,7 @@
  * 动作：
  * - 腿用两段 IK：前腿肘向后、后腿膝向前；走路是猫的侧对步（左后、左前、右后、右前），脚掌落地不打滑
  * - 状态：来回走 / 站着转头看你 / 坐下 / 揣手趴着；所有切换和转头都是弹簧，起止有缓动
+ * - 转身：绕身子中点转，先转头、脊柱往那边弯，身子再跟上；边转边踏步，着地的脚钉在地上不打滑
  * - 尾巴每节比前一节慢半拍；呼吸、眨眼（偶尔慢眨）、抖耳朵、歪头
  * - 点击：停下、转头看你、蓄力跳一下（落地压扁再回弹），冒爱心；随机冒说话气泡
  * - 可收起，状态记在 localStorage；打印时隐藏；prefers-reduced-motion 下只渲染静止画面
@@ -96,13 +97,28 @@ const DIM = {
     [1.03, 0.12, 0, 0],
   ],
   stride: 0.26, duty: 0.6, lift: 0.1, speed: 0.5,
-  roam: 0.5,                     // 走动范围：髋关节 x 在 ±0.5 之间
+  roam: 0.5,                     // 走动范围：身子中点 x 在 ±0.5 之间
+  pivot: 0.35,                   // 转身的支点：髋和肩的中点（body 坐标 x）
+  bend: [0.15, 0.75],            // 脊柱侧弯从这里开始弯、到这里弯完（body 坐标 x），前面一段整体转过去
+  turnRate: 1.7,                 // 转身最快多少弧度 / 秒：再快，短腿的步子就跟不上
 }
 // 姿势：髋高、俯仰、前脚/后脚落点（相对肩/髋）、掌骨方向、腿往身体下面收的比例
 const POSE = {
   stand: { hip: 0.5, pitch: 0.0, fx: -0.02, hx: 0.0, fm: [-0.15, 1], hm: [-0.3, 1], lz: 1 },
   sit: { hip: 0.3, pitch: 0.3, fx: 0.0, hx: 0.3, fm: [-0.1, 1], hm: [-1, 0.15], lz: 0.85 },
   loaf: { hip: 0.33, pitch: 0.02, fx: 0.1, hx: 0.24, fm: [-1, 0.4], hm: [-1, 0.1], lz: 0.5 },
+}
+
+// 脊柱侧弯：脊柱线在 DIM.bend 这一段弯成圆弧，总共转过 B，前面一段直的跟着转过去；
+// 返回 body 坐标水平面里 (x, z) 弯过之后的位置和那一截的朝向。躯干着色器里的 bendP 是同一个公式，改这里要一起改
+function bendAt(B, x, z) {
+  const [x0, x1] = DIM.bend, k = B / (x1 - x0)
+  const xr = clamp(x, x0, x1) - x0, th = k * xr
+  let cx = x0 + Math.min(x - x0, 0), cz
+  if (Math.abs(k) < 1e-4) { cx += xr; cz = -0.5 * k * xr * xr } else { cx += Math.sin(th) / k; cz = -(1 - Math.cos(th)) / k }
+  const ex = Math.max(x - x1, 0)
+  cx += ex * Math.cos(B); cz -= ex * Math.sin(B)
+  return [cx + z * Math.sin(th), cz + z * Math.cos(th), th]
 }
 
 const COL = { fur: [0.955, 0.962, 0.98], accent: [0.18, 0.776, 0.753], pink: [1, 0.61, 0.71], ink: 0x161a24 }
@@ -230,17 +246,33 @@ function buildCat(THREE) {
   const body = new THREE.Group() // 原点在髋关节，rotation.z = 俯仰
   rig.add(body)
 
-  // 身子：放样出来的“豆子”；围兜在着色器里逐像素画在胸前
+  // 身子：放样出来的“豆子”；围兜在着色器里逐像素画在胸前；转身时在着色器里侧弯（uBend）
   const bodyMat = fur.clone()
+  const bendU = { value: 0 }
+  const [bx0, bx1] = DIM.bend.map((v) => v.toFixed(3))
   bodyMat.onBeforeCompile = (sh) => {
     sh.uniforms.uBib = { value: new THREE.Color().setRGB(...COL.accent, THREE.SRGBColorSpace) }
-    sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vObj;').replace('#include <begin_vertex>', '#include <begin_vertex>\nvObj = position;')
+    sh.uniforms.uBend = bendU
+    sh.vertexShader = sh.vertexShader.replace('#include <common>', `#include <common>
+      varying vec3 vObj;
+      uniform float uBend;
+      float bendTh(float x) { return uBend * (clamp(x, ${bx0}, ${bx1}) - ${bx0}) / (${bx1} - ${bx0}); }
+      vec3 bendP(vec3 p) {
+        float k = uBend / (${bx1} - ${bx0}), xr = clamp(p.x, ${bx0}, ${bx1}) - ${bx0}, th = k * xr;
+        vec2 c = vec2(${bx0} + min(p.x - ${bx0}, 0.0), 0.0);
+        if (abs(k) < 1e-4) c += vec2(xr, -0.5 * k * xr * xr); else c += vec2(sin(th) / k, -(1.0 - cos(th)) / k);
+        c += max(p.x - ${bx1}, 0.0) * vec2(cos(uBend), -sin(uBend));
+        return vec3(c.x + p.z * sin(th), p.y, c.y + p.z * cos(th));
+      }`)
+      .replace('#include <beginnormal_vertex>', `#include <beginnormal_vertex>
+      { float th = bendTh(position.x); objectNormal = vec3(objectNormal.x * cos(th) + objectNormal.z * sin(th), objectNormal.y, -objectNormal.x * sin(th) + objectNormal.z * cos(th)); }`)
+      .replace('#include <begin_vertex>', '#include <begin_vertex>\nvObj = position;\ntransformed = bendP(transformed);')
     sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying vec3 vObj;\nuniform vec3 uBib;').replace('#include <color_fragment>', `#include <color_fragment>
       float e = pow(vObj.z / 0.2, 2.0) + pow((vObj.y + 0.02) / 0.24, 2.0);
       float bib = smoothstep(1.0, 0.82, e) * smoothstep(0.8, 0.9, vObj.x);
       diffuseColor.rgb = mix(diffuseColor.rgb, uBib, bib);`)
   }
-  bodyMat.customProgramCacheKey = () => 'joy-pet-bib'
+  bodyMat.customProgramCacheKey = () => 'joy-pet-bib-bend'
   const torso = new THREE.Mesh(loft(DIM.body), bodyMat)
   body.add(torso)
   // 后腿根两侧各一块圆鼓鼓的“大腿肉”，把大腿穿出身体的地方包住
@@ -362,7 +394,7 @@ function buildCat(THREE) {
   const tail = tube(TN, 18, (u) => { const t = smooth(0.6, 0.85, u); return COL.fur.map((v, i) => lerp(v, COL.accent[i], t)) })
   rig.add(tail.mesh)
 
-  return { root, rig, body, torso, headBase, head, ears, eyes, legs, tail, TN, LEG_RINGS }
+  return { root, rig, body, torso, headBase, head, ears, eyes, legs, tail, TN, LEG_RINGS, bendU }
 }
 
 async function start() {
@@ -410,7 +442,7 @@ async function start() {
   scene.add(rimL)
 
   const cat = buildCat(THREE)
-  const { root, rig, body, torso, headBase, head, ears, eyes, legs, tail, TN, LEG_RINGS } = cat
+  const { root, rig, body, torso, headBase, head, ears, eyes, legs, tail, TN, LEG_RINGS, bendU } = cat
   scene.add(root)
 
   // 脚下：柔和的青色光晕 + 接触阴影，跟着猫走
@@ -450,8 +482,9 @@ async function start() {
   const rand = Math.random
   const pointer = { x: 0, y: 0, t: -99 }
   const st = {
-    mode: 'stand', until: 3, x: 0, targetX: 0,
-    yaw: spring(-0.55), speed: spring(0), gait: 0,
+    // x 是身子中点（转身支点）的位置；odo 只在展示台里累加：猫原地走，脚掌按假想的位移落地
+    mode: 'stand', until: 3, x: 0, targetX: 0, odo: [0, 0],
+    yaw: spring(-0.55), speed: spring(0), gait: 0, bend: spring(0),
     w: { sit: spring(0), loaf: spring(0) },
     hy: spring(0), hp: spring(0), ht: spring(0), tiltTarget: 0, tiltUntil: 0, nextIdle: 4,
     happyUntil: -1, hop: -1, sx: spring(1), sy: spring(1), lift: spring(0),
@@ -516,14 +549,22 @@ async function start() {
       wantYaw = facing > 0 ? -turn : -Math.PI + turn
     }
     if (SHOW && params.get('petyaw')) wantYaw = (+params.get('petyaw') * Math.PI) / 180
-    step(st.yaw, wrapNear(wantYaw, yaw), mode === 'walk' ? 2.4 : 1.8, dt)
+    const yawErr = wrapNear(wantYaw, yaw) - yaw
+    step(st.yaw, yaw + yawErr, mode === 'walk' ? 2.4 : 1.8, dt)
+    // 限住转速：转得比步子快，脚就只能在地上蹭
+    if (Math.abs(st.yaw.v) > DIM.turnRate) { st.yaw.v = Math.sign(st.yaw.v) * DIM.turnRate; st.yaw.x = yaw + st.yaw.v * dt }
     step(st.speed, wantSpeed, 3, dt)
     const speed = Math.max(0, st.speed.x)
     if (!SHOW) st.x = clamp(st.x + Math.cos(st.yaw.x) * speed * dt, -DIM.roam - 0.1, DIM.roam + 0.1)
-    // 转身时原地踏步
-    const stepping = Math.max(speed, Math.min(DIM.speed * 0.6, Math.abs(st.yaw.v) * 0.25))
+    else { st.odo[0] += Math.cos(st.yaw.x) * speed * dt; st.odo[1] -= Math.sin(st.yaw.x) * speed * dt }
+    // 转身时原地踏步：步频跟着转速走，让前脚每一步扫过的弧长约等于一个步幅（0.45 ≈ 前脚到支点的距离）
+    const stepping = Math.max(speed, Math.min(DIM.speed * 1.6, Math.abs(st.yaw.v) * 0.45))
     st.gait = (st.gait + (dt * stepping * DIM.duty) / DIM.stride) % 1
     const amp = clamp(stepping / DIM.speed)
+    // 转身先转头和肩：脊柱往要去的方向弯，身子随后跟上；坐着、趴着不弯
+    step(st.bend, clamp(yawErr * 0.4, -0.45, 0.45) * (1 - Math.max(st.w.sit.x, st.w.loaf.x)), 5, dt)
+    const B = st.bend.x
+    bendU.value = B
 
     // ---- 姿势权重
     step(st.w.sit, mode === 'sit' && !happy ? 1 : 0, 2.6, dt)
@@ -545,8 +586,14 @@ async function start() {
     const bob = amp * 0.018 * (1 - Math.cos(ph * 2)) * 0.5
     const hipY = mixP('hip', wsHip) - bob
     const pitch = mixP('pitch', wsPitch) + amp * 0.02 * Math.sin(ph * 2 + 0.6)
-    root.position.x = st.x
+    // 根节点在髋关节，绕身子中点转：中点不动，髋跟着转半圈
+    const cy = Math.cos(st.yaw.x), sy = Math.sin(st.yaw.x)
+    const hipX = st.x - DIM.pivot * cy, hipZ = DIM.pivot * sy
+    root.position.set(hipX, 0, hipZ)
     root.rotation.y = st.yaw.x
+    // 根节点水平面坐标 ↔ 地面坐标（脚掌落地后按地面坐标钉住）
+    const toW = (x, z) => [hipX + x * cy + z * sy + st.odo[0], hipZ - x * sy + z * cy + st.odo[1]]
+    const toL = (wx, wz) => { const dx = wx - hipX - st.odo[0], dz = wz - hipZ - st.odo[1]; return [dx * cy - dz * sy, dx * sy + dz * cy] }
     body.position.set(0, hipY, amp * 0.015 * Math.sin(ph))
     body.rotation.set(amp * 0.04 * Math.sin(ph + 0.4), amp * 0.04 * Math.sin(ph), pitch)
     const br = 1 + 0.012 * Math.sin(st.breath)
@@ -555,10 +602,20 @@ async function start() {
     const toRoot = (x, y) => [x * cp - y * sp, hipY + x * sp + y * cp]
 
     // ---- 腿：步态 → 脚掌位置 → 两段 IK → 沿平滑曲线重建整条腿
+    // 每条腿在自己的“腿坐标”里算：后腿就是根节点坐标；前腿跟着脊柱侧弯，整体平移、转过肩部那一截的朝向
+    // 迈步时着地的脚钉在地面上不动，抬起的脚落到“走到半步时正好在肩 / 髋下面”的位置（算上这半步里身子的平移和转动）
     const [shX, shY] = toRoot(...DIM.shoulder)
     const fm = mixDir('fm'), hm = mixDir('hm')
+    const [sbx, sbz, phS] = bendAt(B, DIM.shoulder[0], 0)
+    const sdx = sbx - DIM.shoulder[0], cS = Math.cos(phS), sS = Math.sin(phS)
+    const halfStance = DIM.stride / (2 * Math.max(stepping, 1e-3))
+    const dTh = clamp(st.yaw.v * halfStance, -0.4, 0.4), adv = speed * halfStance
+    const planted = smooth(0, 0.3, amp) // 不迈步时脚回到姿势规定的位置（坐下、趴下要收腿）
     for (const L of legs) {
       const front = L.type === 'front'
+      const fr = front ? (x, z) => [shX + sdx + (x - shX) * cS + z * sS, sbz - (x - shX) * sS + z * cS] : (x, z) => [x, z]
+      const toF = front ? (x, z) => { const dx = x - shX - sdx, dz = z - sbz; return [shX + dx * cS - dz * sS, dx * sS + dz * cS] } : (x, z) => [x, z]
+      const frameYaw = st.yaw.x + (front ? phS : 0)
       const jx = front ? shX : 0, jy = front ? shY : hipY
       const restX = jx + mixP(front ? 'fx' : 'hx')
       const p = (st.gait + L.phase) % 1
@@ -570,28 +627,52 @@ async function start() {
         lift = Math.sin(Math.PI * q ** 0.8) * DIM.lift // 抬得快、放得轻
         curl = Math.sin(Math.PI * q)
       }
-      const pawX = restX + off * amp + 0.03, pawY = 0.06 + lift * amp
+      const z = L.side * L.d.z * mixP('lz')
+      const idealX = restX + off * amp + 0.03
+      // 落点：支点在腿坐标里的位置，绕它把“肩 / 髋正下方”转过半步的角度，再往前挪半步的位移
+      const [pvx, pvz] = toF(DIM.pivot, 0), rx = restX + 0.03 - pvx, rz = z - pvz
+      const tc = Math.cos(dTh), ts = Math.sin(dTh)
+      const tgx = pvx + rx * tc + rz * ts + adv, tgz = pvz - rx * ts + rz * tc
+      if (!L.plant) L.plant = [...toW(...fr(idealX, z)), frameYaw]
+      let fx, fz, fyaw
+      if (p < DIM.duty) {
+        ;[fx, fz] = toF(...toL(L.plant[0], L.plant[1]))
+        fyaw = wrapNear(L.plant[2] - frameYaw, 0)
+        L.stance = true
+      } else {
+        if (L.stance || !L.lift) L.lift = L.plant.slice()
+        L.stance = false
+        const e = smooth(0, 1, (p - DIM.duty) / (1 - DIM.duty))
+        const [lx, lz] = toF(...toL(L.lift[0], L.lift[1]))
+        fx = lerp(lx, tgx, e); fz = lerp(lz, tgz, e)
+        fyaw = lerp(wrapNear(L.lift[2] - frameYaw, 0), dTh, e)
+      }
+      const pawX = lerp(idealX, fx, planted), pawZ = lerp(z, fz, planted), pawYaw = fyaw * planted
+      L.plant = [...toW(...fr(pawX, pawZ)), frameYaw + pawYaw]
+      const pawY = 0.06 + lift * amp
       const md = front ? fm : hm
       const ca = curl * amp * (front ? 0.8 : 0.5), cc = Math.cos(ca), cs = Math.sin(ca)
       const mdx = md[0] * cc - md[1] * cs, mdy = md[0] * cs + md[1] * cc
       const wx = pawX + mdx * L.d.meta, wy = pawY + mdy * L.d.meta
       const [kx, ky] = ik(jx, jy, wx, wy, L.d.L[0], L.d.L[1], front ? -1 : 1)
-      const z = L.side * L.d.z * mixP('lz')
-      // 腿根锚点沿大腿方向往身体里延长：关节处不拐急弯，管子不会自相交出尖角
-      const ctrl = [V(jx - (kx - jx) * 0.7, jy - (ky - jy) * 0.7, z * 0.55), V(jx, jy, z * 0.9), V(kx, ky, z), V(wx, wy, z), V(pawX, pawY, z)]
+      // 腿根锚点沿大腿方向往身体里延长：关节处不拐急弯，管子不会自相交出尖角；脚掌落在侧面时，膝和腕按比例往那边偏
+      const ctrl = [[jx - (kx - jx) * 0.7, jy - (ky - jy) * 0.7, z * 0.55], [jx, jy, z * 0.9], [kx, ky, lerp(z, pawZ, 0.5)], [wx, wy, lerp(z, pawZ, 0.9)], [pawX, pawY, pawZ]]
+        .map(([x, y, cz]) => { const [rx2, rz2] = fr(x, cz); return V(rx2, y, rz2) })
       curve(ctrl, LEG_RINGS, legPts)
       for (let i = 0; i < LEG_RINGS; i++) {
         const f = (i / (LEG_RINGS - 1)) * 4, s = Math.min(3, Math.floor(f))
         legR[i] = lerp(L.d.r[s], L.d.r[s + 1], f - s)
       }
       L.t.write(legPts, legR)
-      L.paw.position.set(pawX + 0.025, pawY - 0.01, z)
-      L.paw.rotation.set(0, 0, ca * 0.8)
+      const [ppx, ppz] = fr(pawX + 0.025, pawZ)
+      L.paw.position.set(ppx, pawY - 0.01, ppz)
+      L.paw.rotation.set(0, frameYaw - st.yaw.x + pawYaw, ca * 0.8)
     }
 
-    // ---- 头：看鼠标 / 看镜头 / 随便张望；抵消躯干俯仰，头始终正着
-    headBase.rotation.z = -pitch
-    headBase.position.y = DIM.head[1] + bob * 0.7
+    // ---- 头：看鼠标 / 看镜头 / 随便张望；抵消躯干俯仰，头始终正着；跟着脊柱侧弯挪到弯过去的位置
+    const [hbx, hbz] = bendAt(B, DIM.head[0], 0)
+    headBase.rotation.set(0, B, -pitch, 'ZYX')
+    headBase.position.set(hbx, DIM.head[1] + bob * 0.7, hbz)
     let look = null
     const now = performance.now() / 1000
     if (happy || SHOW) look = camera.position
@@ -610,6 +691,10 @@ async function start() {
     const walking = mode === 'walk' ? amp : 0
     wantHY *= 1 - walking * 0.5
     wantHP *= 1 - walking * 0.5
+    // 转身时先看要去的方向
+    const turning = smooth(0.1, 0.5, Math.abs(yawErr))
+    wantHY = lerp(wantHY, clamp(yawErr, -1.1, 1.1), turning)
+    wantHP *= 1 - turning
     if (!SHOW && t > st.nextIdle) {
       const r = rand()
       if (r < 0.4) { st.tiltTarget = (rand() < 0.5 ? -1 : 1) * (0.14 + rand() * 0.08); st.tiltUntil = t + 1.4 + rand() }
@@ -619,9 +704,15 @@ async function start() {
     }
     if (t > st.tiltUntil) st.tiltTarget = 0
     step(st.hy, wantHY, 4.5, dt)
+    // 脸始终朝镜头一侧、至少露出四分之三：头的朝向角限在 [-π, 0]（这一半朝着镜头）往里收 0.6 弧度；
+    // 镜头是俯视的，正侧面看过去基本只剩后脑勺。身子转得快时弹簧跟不上，所以限在弹簧之后
+    {
+      const w = st.yaw.x + st.hy.x, w2 = wrapNear(w, -Math.PI / 2), c = clamp(w2, -Math.PI + 0.6, -0.6)
+      if (c !== w2) { st.hy.x = c - (w2 - w) - st.yaw.x; st.hy.v = 0 }
+    }
     step(st.hp, wantHP, 4.5, dt)
     step(st.ht, st.tiltTarget + (happy ? 0.16 : 0), 3.2, dt)
-    head.rotation.set(st.hp.x, Math.PI / 2 + st.hy.x, -st.ht.x)
+    head.rotation.set(st.hp.x, Math.PI / 2 + st.hy.x - B, -st.ht.x) // hy 是相对身子的转角，headBase 已经转过 B
 
     // ---- 耳朵、眨眼
     for (const e of ears) {
@@ -689,7 +780,7 @@ async function start() {
     tail.write(tailPts, tailR)
 
     // ---- 脚下的光晕和阴影
-    const cx = st.x + Math.cos(st.yaw.x) * 0.35, cz = -Math.sin(st.yaw.x) * 0.35
+    const cx = st.x, cz = 0
     const up = Math.max(0, st.lift.x)
     glow.position.set(cx, 0.001, cz)
     glow.scale.setScalar(2.4)
