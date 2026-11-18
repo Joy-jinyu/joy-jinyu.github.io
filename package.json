@@ -7,6 +7,7 @@
     "dev:blog": "astro dev --root blog",
     "build": "astro build --root notes",
     "build:blog": "astro build --root blog",
+    "package:editor": "bash scripts/package-editor.sh",
     "preview": "python3 -m http.server 4173 --directory public",
     "deploy": "bash deploy-gh.sh"
   },

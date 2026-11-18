@@ -102,3 +102,5 @@ assets/icons/
 
 blog/dist/
 blog/.astro/
+# 投稿编辑器的打包产物，由 scripts/package-editor.sh 生成
+blog/public/editor-app/
