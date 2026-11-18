@@ -1,0 +1,175 @@
+# Pairwise 投稿编辑器：设计约定
+
+这是博客「投稿」页（`/blog/editor/`）里嵌的 NSH TSX 应用。宿主是父页面：登录、AI、提 PR 都走 `host.call`，协议见 `host-contract.ts`。本文件是应用的设计系统和每个屏幕的动效清单；写屏幕代码之前先改这里。
+
+## 目标平台
+
+- **Web（桌面浏览器）**：主要场景。iframe 里的桌面 idiom，指针 + 键盘，紧凑控件。
+- **Web（手机浏览器）**：同一页面在窄屏和触屏上跑，控件按 44pt 触控目标放大，编辑 / 预览改成分段切换。
+- 不做 TUI，不单独做原生 App。
+
+## 视觉语言
+
+跟博客一致：深色为主、安静、少装饰。品牌青色只用在主操作、选中态、链接和「已发布」状态上；其余靠灰阶层级、留白和细线分区。卡片用大圆角（18），控件 12，标签和状态 chip 用胶囊。元信息（字数、日期、模型名）用等宽小字，对应博客 Geist Mono 的用法；字体本身不指定（`font-sans` / `font-mono` 留空，用系统字体，嵌入页里不保证能加载站点字体）。
+
+外观由宿主 `player.setDark` 决定（跟随博客的明暗切换），每个 token 都有 light / dark 两个值，组件里不写 `dark:`。
+
+## Token（`theme.json`）
+
+颜色角色，组件里只用这些，不写十六进制和调色板类：
+
+| 角色 | 用途 |
+|---|---|
+| `background` / `foreground` | 页面底色 / 正文字 |
+| `strong` | 标题、输入框里的字、按钮字 |
+| `muted-foreground` | 次要说明、元信息 |
+| `faint` | 占位符、最弱的提示、未开始的步骤点 |
+| `card` / `popover` / `field` | 卡片（预览）/ 对话框和侧栏 / 输入框底色（不透明） |
+| `primary` / `primary-hover` / `primary-active` / `primary-foreground` | 主按钮三态和上面的字 |
+| `primary-tint` / `brand-2` | 品牌浅底（标签 chip、「已发布」）/ 第二品牌色（预留给强调线） |
+| `secondary` / `secondary-foreground` | 普通按钮底色和字 |
+| `muted` / `accent` | 静态浅底（分段控件轨道、骨架屏）/ 选中行 |
+| `hover` / `pressed` | 所有可按控件的悬停洗色 / 按下洗色（同一色相、强度递增） |
+| `border` / `border-strong` / `input` / `ring` | 分隔线 / 输入框边 / 同前 / 键盘焦点环 |
+| `destructive` / `destructive-tint` | 错误、删除；浅底用于错误提示条 |
+| `warn` / `warn-tint` | 「审核中」、AI 未设置之类的提醒 |
+| `scrim` | 对话框和侧栏背后的遮罩 |
+
+圆角：`radius`（12，控件）、`radius-card`（18，卡片、对话框、侧栏）、`radius-sm`（8，按钮里的小件、代码块）；胶囊只给标签 chip、状态 badge、AI 状态 chip、分段控件。嵌套按「内圆角 ≈ 外圆角 − 间距」取最近一档。
+
+## 字号、间距、尺寸
+
+- 字号只用四档：`text-xs`（12，元信息、计数、badge）、`text-sm`（14，控件和表单）、`text-base`（16，预览正文）、`text-lg` / `text-2xl`（对话框标题 18 / 预览和未登录页大标题 24）。一屏最多 4 档、2 种字重（normal / semibold，按钮 medium）。
+- 间距用 Tailwind 4pt 刻度：控件内部 `gap-1`/`gap-2`，同组 `gap-3`，组与组 `gap-4`/`gap-5`，区块 `gap-6`/`gap-8`。
+- 控件尺寸（`size`）：桌面 `sm` 28 / `md` 36 高，触屏 `sm` 36 / `md` 44 高；输入框和按钮同高。图标按钮是控件高的正方形。用 `min-h-*` 不用固定高度，跟随系统字号。
+
+## 动效 token（`src/ui/motion.ts` 和 `nsh.json` 的 `tailwind.ease`）
+
+| Token | 值 | 用途 |
+|---|---|---|
+| `instant` | 120ms | 颜色变化 |
+| `fast` | 180ms | 控件悬停 + 按下（一条 transition 同时管洗色和缩放）、字段报错出现、标签 chip 进出 |
+| `base` | 240ms | 步骤图标切换、编辑 / 预览交叉淡入、骨架屏淡出 |
+| `slow` | 360ms | 对话框、页面进入 |
+| `slower` | 500ms | 列表波浪进入的总时长上限 |
+| `settle` | `cubic-bezier(0.22, 1, 0.36, 1)` | 按下和所有进入；类名 `ease-settle` |
+| 距离 | 4 / 8 / 16pt | 文字上浮 / 弹层滑入 / 列表项进入 |
+| 缩放 | 按下 0.97，图标按钮 0.95，进入从 0.97 |
+
+减少动效（`reduceMotion()` / `motion-reduce:`）：所有 transition 立即生效，按下不缩放，`createMotion` 进入直接到位，波浪不播，spinner 和骨架屏的循环动画停住（状态由文字说明，不靠动画）。
+
+## `ui` 层（`src/ui/`）
+
+功能代码（`src/features/`）只用 `src/ui` 和 `nsh` 的布局原语（`View`、`Text`、`Scroll`、`List`）组合，不直接引入 `nsh/base`，不写颜色、圆角、字号。所有组件、变体和状态集中在 `tests/Gallery.tsx` 一页上，`nsh run tests/Gallery.tsx --target web` 打开看（`tests/nsh.json` 没有宿主，可以直接在浏览器里跑）。
+
+| 组件 | 说明 |
+|---|---|
+| `Button` | `variant`：primary / secondary / ghost / danger；`size`：sm / md；`loading`（变暗一点、显示 spinner、不改尺寸、防重复点击）/ `disabled`（半透明，无悬停无按下） |
+| `IconButton` | 正方形，必须有 `label`（读屏名） |
+| `Icon` | 一套字形图标（✕ ✓ ↗ ✦ ·），固定槽宽 |
+| `Spinner` | 环形转圈，`tone` 跟随所在表面 |
+| `Field` | 标签行（标签 + 计数或右侧操作）、控件、说明 / 错误（错误上浮淡入） |
+| `TextInput` / `TextArea` / `TagInput` | 同一套边框、焦点环、错误态 |
+| `Segmented` | 一个滑动的选中块（`Tabs` 的 indicator，由内核滑动） |
+| `Dialog` | 卡片对话框：标题、说明、内容、底部操作；淡入遮罩 + 卡片上浮 |
+| `confirm()` | `AlertDialog.show` 的薄封装，用于二次确认 |
+| `Sheet` | 宽屏从右侧滑出，窄屏从底部 |
+| `Badge` | neutral / brand / warn / danger，始终带文字 |
+| `Avatar` | 头像，加载前和失败时显示首字母 |
+| `Card` | 卡片表面 |
+| `Notice` | 行内提示条（错误 / 提醒），可关闭 |
+| `StepList` | 进度步骤：未开始点 → 进行中 spinner → 完成勾 / 失败叉 |
+| `OrderedSteps` | 编号说明步骤（未登录页） |
+| `RowButton` | 可按的列表行（整行洗色，不缩放），尾部固定图标槽 |
+| `Markdown` | `TextView` 包一层，按文章页层级给各部分配 token |
+| `Appear` | 挂载时上浮淡入一次（label 4pt fast / panel、page 8pt slow） |
+| `Separator` | 细分隔线 |
+| `Empty` / `Skeleton` | 空状态 / 加载占位 |
+| `StatusChip` | 顶栏 AI 状态胶囊（可按） |
+
+没做 `Toast`、`Menu`、`Popover`、`Tooltip`、`Select`、`Checkbox`、`Switch`：这个应用没有用到的地方，等第一个功能需要时按同一标准加。
+
+## 屏幕与动效清单
+
+每行：变化 → 工具和 token → 减少动效时。
+
+### 启动
+
+| 变化 | 动效 | 减少动效 |
+|---|---|---|
+| 读取登录状态时 | 居中 spinner（循环） | spinner 停住，文字「正在读取登录状态」 |
+| 读取失败 | 错误提示条上浮 4pt 淡入，`fast`，settle | 直接出现 |
+| 进入「未登录」或「写稿」 | 屏幕根节点 `createMotion` 上浮 8pt + 淡入，`slow`，settle | 直接出现 |
+
+### 未登录
+
+| 变化 | 动效 | 减少动效 |
+|---|---|---|
+| 「用 GitHub 登录」悬停 / 按下 | 洗色 + 缩到 0.97，`fast`，settle | 只有洗色 |
+| 登录中 | 按钮内 spinner 出现、文字换成「等待 GitHub 授权…」，按钮保持尺寸 | spinner 停住 |
+| 登录失败 / 未完成 | 提示条上浮 4pt 淡入，`fast` | 直接出现 |
+| 选择、拖拽、实时内容 | 无（这一屏没有） | — |
+
+### 写稿
+
+| 变化 | 动效 | 减少动效 |
+|---|---|---|
+| 顶栏按钮、AI chip、工具栏按钮悬停 / 按下 | 洗色 + 0.97（图标按钮 0.95），`fast`，settle | 只有洗色 |
+| 输入框获得焦点 | 边框变品牌色 + 外圈焦点环，`instant` | 直接切换 |
+| 字段报错出现 / 消失 | 错误文字上浮 4pt 淡入，`fast`；消失直接移除 | 直接出现 |
+| 标题 / 摘要计数变化 | 数字原地更新，接近上限变 warn、超限变 destructive，颜色 `instant` | 同 |
+| 标签添加 / 删除 | chip 从 0.97 淡入上浮 4pt，`fast`；删除直接移除 | 直接出现 |
+| 「已保存」状态 | 文字在「保存中…」/「已保存」之间淡入切换，`base` | 直接切换 |
+| 窄屏 编辑 / 预览 切换 | 分段控件的选中块滑到新位置（内核 indicator 动画）；内容区交叉淡入，`base` | 选中块直接到位，内容直接切换 |
+| 宽屏预览随输入更新 | 不加动画（每次按键都在变，动画只会抖） | — |
+| AI 工具运行中 | 触发它的按钮显示 spinner（循环），对话框里同样 | spinner 停住，文字说明 |
+| 应用级提示条（退出失败等） | 上浮 4pt 淡入，`fast` | 直接出现 |
+| 拖拽 / 抛掷 | 无 | — |
+
+### AI 对话框（起稿 / 润色 / 起标题和摘要）
+
+| 变化 | 动效 | 减少动效 |
+|---|---|---|
+| 打开 / 关闭 | 遮罩淡入（`Dialog animation="fade"`），卡片从 0.97 上浮 10pt，`slow`，settle；关闭随遮罩淡出 | 直接出现 / 消失 |
+| 生成中 | 主按钮 spinner + 「生成中…」，输入框只读 | spinner 停住 |
+| 结果到达 | 结果区上浮 8pt 淡入，`slow` | 直接出现 |
+| 「采用」后 | 按钮文字换成「已采用 ✓」并变成不可按，标签淡入上浮 4pt，`fast` | 直接切换 |
+| 出错 | 提示条上浮 4pt 淡入 | 直接出现 |
+
+### 提交
+
+| 变化 | 动效 | 减少动效 |
+|---|---|---|
+| 二次确认 | `AlertDialog`（平台样式） | 平台决定 |
+| 进度对话框打开 | 同 AI 对话框 | 同 |
+| 步骤 未开始 → 进行中 → 完成 | 步骤标记交换：旧标记移除，新标记从 0.6 放大淡入，`base`，settle；进行中是 spinner（循环） | 直接切换，spinner 停住 |
+| 成功 | 结果区（PR 编号 + 两个按钮）上浮 8pt 淡入，`slow` | 直接出现 |
+| 失败 | 当前步骤换成失败叉，提示条上浮淡入，「重试」出现 | 直接切换 |
+
+### 我的投稿（Sheet）
+
+| 变化 | 动效 | 减少动效 |
+|---|---|---|
+| 打开 / 关闭 | `Sheet` 从边缘滑入 / 滑出（nsh/base 自带），遮罩淡入 | 直接出现 |
+| 加载中 | 3 行骨架屏，`animate-pulse` 慢呼吸 | 骨架静止 |
+| 列表到达 | 行从 8pt 下方淡入，每行间隔 40ms，最多错开前 10 行（每次打开只播一次） | 直接出现 |
+| 行悬停 / 按下 | 整行洗色（不缩放），`fast` | 只有洗色 |
+| 空 / 出错 | 空状态或错误提示 + 「重试」，淡入 | 直接出现 |
+
+## 键盘
+
+- Tab / Shift+Tab 按视觉顺序走；所有按钮、输入框、分段控件、列表行都有 `focus-visible` 焦点环（边框外 2pt，`ring`）。
+- 分段控件里左右方向键切换（`Tabs`）。标签输入：回车或逗号添加，空输入时退格删最后一个。
+- 对话框：Esc 关（提交进行中除外），⌘/Ctrl + 回车 触发默认操作（生成 / 填入稿件 / 替换正文 / 重试），焦点在多行输入框里也生效；同一时刻只有打开的那个对话框绑定这个键。二次确认用平台 `AlertDialog`，回车确认、Esc 取消。
+
+## 文案约定
+
+- 名词表：稿件、正文、摘要、标签、投稿、PR、审核中 / 已发布 / 已关闭。
+- 按钮是动词，短：登录、提交、填入稿件、替换正文、采用、重试、清空、退出。打开对话框的按钮带「…」（「AI 起稿…」「清空…」）。
+- 不写「请」「成功」「您确定要…吗」；错误说清发生了什么和下一步。
+
+## 测试
+
+`nsh test tests`（不是根目录的 `nsh test`）。原因：`nsh.json` 的 `web.host` 指向 `host.js`，无头测试会为每个 `open()` 加载它，而它只能在 `/blog/editor/` 的 iframe 里拿到父页面的桥，在测试里会直接抛错，`open()` 就失败了。`tests/` 有自己的 `nsh.json`（主题和 `capabilities` 跟应用一样，没有 `web`），所以测试里由 `open(..., { host: { handlers } })` 扮演宿主。`tests/App.tsx` 只是让 `nsh test tests` 能找到入口。`tests/nsh.json` 里的 `theme`、`tailwind`、`capabilities` 必须和根目录 `nsh.json` 一致（`tests/` 下的入口按它解析类名，比如 `ease-settle`）。
+
+测试里的宿主回答会让当前步骤一直等到它返回，所以「等待中」的样子要在回答函数里看（`app.shows(...)`），不能在步骤之后看；进度事件也由 `contrib.submit` 的回答函数用 `app.host.send` 发。

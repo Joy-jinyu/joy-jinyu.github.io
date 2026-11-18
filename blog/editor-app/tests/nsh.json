@@ -1,0 +1,9 @@
+{
+  "name": "Pairwise 投稿 tests",
+  "id": "site.pairwise.editor.tests",
+  "theme": "../theme.json",
+  "tailwind": {
+    "ease": { "settle": [0.22, 1, 0.36, 1] }
+  },
+  "capabilities": { "host": ["auth.*", "ai.*", "contrib.*", "site.*"] }
+}
