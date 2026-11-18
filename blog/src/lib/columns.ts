@@ -18,6 +18,11 @@ export const COLUMNS = [
     title: '拆解',
     blurb: '把别人做出来的东西拆开，看它是怎么搭起来的，记下能借走的做法。',
   },
+  {
+    id: 'contrib',
+    title: '投稿',
+    blurb: '读者写的文章：在站内编辑器里写好提交，审过后发布。',
+  },
 ] as const
 
 export type ColumnId = (typeof COLUMNS)[number]['id']
