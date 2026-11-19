@@ -99,10 +99,14 @@ test("润色正文 shows the result and replaces the body only when asked", asyn
 
 test("润色 and 起标题 need a body first", async () => {
   const app = await open("../App.tsx", { ...WIDE, host: { handlers: signedIn() } });
-  await app.waitFor("role:button[润色正文…]");
-  expect(app.enabled("role:button[润色正文…]")).toBe(false);
-  expect(app.enabled("role:button[起标题和摘要…]")).toBe(false);
+  // 不能按时读屏名带上原因。
+  await app.waitFor("role:button[润色正文…（先写正文）]");
+  expect(app.enabled("role:button[润色正文…（先写正文）]")).toBe(false);
+  expect(app.enabled("role:button[起标题和摘要…（先写正文）]")).toBe(false);
   expect(app.enabled("role:button[AI 起稿…]")).toBe(true);
+  await app.type("label:正文", "有正文了");
+  expect(app.enabled("role:button[润色正文…]")).toBe(true);
+  expect(app.enabled("role:button[起标题和摘要…]")).toBe(true);
 });
 
 test("起标题和摘要: each suggestion is adopted on its own", async () => {

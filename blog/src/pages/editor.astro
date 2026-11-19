@@ -70,6 +70,8 @@ const base = import.meta.env.BASE_URL
 </script>
 
 <style>
+  /* 编辑器铺满全宽：顶栏也铺满，内边距和编辑器的页边距一致（24px，窄屏 16px），左边缘对齐 */
+  :global(header.top .top-in) { max-width: none; }
   .editor { position: relative; height: calc(100dvh - var(--header-h)); }
   iframe {
     display: block;

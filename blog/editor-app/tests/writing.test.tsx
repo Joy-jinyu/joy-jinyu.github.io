@@ -1,4 +1,4 @@
-// 写稿：校验只在碰过字段后出现、计数、标签输入、预览、自动保存和读回、清空。
+// 写稿：校验只在碰过字段后出现、计数、标签输入、预览、自动保存和读回、清空；顶栏宽窄两种样子。
 import { expect, open, test } from "nsh/test";
 import { READY_DRAFT, signedIn, withDraft } from "./fixtures";
 
@@ -94,4 +94,29 @@ test("clearing asks first, and only 清空 clears", async () => {
   await app.press("role:button[清空…]");
   expect(app.value("label:标题")).toBe("");
   expect(app.storage()["pairwise.draft"]).toBeUndefined();
+});
+
+test("the save status comes after 清空… in the bottom bar", async () => {
+  const app = await open("../App.tsx", { ...WIDE, host: { handlers: signedIn() } });
+  await app.waitFor(SUBMIT);
+  await app.type("label:标题", "存下来");
+  await app.waitFor("草稿已保存");
+  const texts = app.texts();
+  expect(texts.indexOf("清空…")).toBeLessThan(texts.indexOf("草稿已保存"));
+});
+
+test("the top bar: wide shows the login and AI · model, narrow keeps the avatar and just AI", async () => {
+  const wide = await open("../App.tsx", { ...WIDE, host: { handlers: signedIn() } });
+  await wide.waitFor(SUBMIT);
+  expect(wide.shows("text:ada")).toBe(true);
+  expect(wide.shows("text:gpt-test")).toBe(true);
+  expect(wide.shows("role:button[AI：gpt-test，打开 AI 设置]")).toBe(true);
+
+  const narrow = await open("../App.tsx", { host: { handlers: signedIn() } });
+  await narrow.waitFor("role:button[我的投稿]");
+  // 名字收进头像的读屏名，模型名收进 AI 按钮的读屏名；屏幕上不剩半截文字。
+  expect(narrow.shows("text:ada")).toBe(false);
+  expect(narrow.shows("label:ada")).toBe(true);
+  expect(narrow.shows("text:gpt-test")).toBe(false);
+  expect(narrow.shows("role:button[AI：gpt-test，打开 AI 设置]")).toBe(true);
 });
