@@ -2,6 +2,7 @@
 /**
  * 顶栏的「AI 设置」：访客填自己的 OpenAI 兼容接口（地址、模型、key），投稿编辑器等站内 AI 功能都用它。
  * 存取规则见 lib/ai-settings.ts；对话框是原生 <dialog>，焦点圈定和 Esc 关闭由浏览器负责。
+ * 带 #ai-settings 打开页面时自动弹出（简历页的小猫跳过来用）。
  */
 ---
 
@@ -148,6 +149,11 @@
       onAiChange(paint)
       onAiSettingsOpen(openDialog)
       btn.addEventListener('click', openDialog)
+      // 去掉 hash 再打开：刷新页面不会再弹一次
+      if (location.hash === '#ai-settings') {
+        history.replaceState(history.state, '', location.pathname + location.search)
+        openDialog()
+      }
       reveal.addEventListener('click', () => {
         const on = field('key').type === 'password'
         field('key').type = on ? 'text' : 'password'

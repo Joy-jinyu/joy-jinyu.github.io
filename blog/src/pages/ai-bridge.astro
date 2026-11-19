@@ -1,0 +1,22 @@
+---
+/**
+ * 简历页小猫借用的 AI 桥：site/pet-ai.js 在隐藏的同源 iframe 里加载本页，拿 window.pairwiseAi（见 lib/ai-bridge.ts）。
+ * 不套 Base：不要顶栏、背景和小猫，只装桥。不进 sitemap（astro.config.mjs）。
+ */
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>AI bridge</title>
+  </head>
+  <body>
+    <script>
+      import { installAiBridge } from '../lib/ai-bridge'
+
+      installAiBridge()
+    </script>
+  </body>
+</html>

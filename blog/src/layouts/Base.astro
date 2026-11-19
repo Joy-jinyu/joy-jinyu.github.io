@@ -67,6 +67,8 @@ const ogImage = new URL('/og.png', Astro.site)
     />
     {/* 动态背景组件与简历页、笔记站共用一份（notes/public/hero-bg.js，部署后在 /notes/ 下） */}
     <script is:inline src="/notes/hero-bg.js" defer></script>
+    {/* 右下角 3D 小猫（site/pet.js，部署后在站点根目录）；?v= 要和 site/index.html 里的保持一致 */}
+    <script is:inline type="module" src="/pet.js?v=10"></script>
   </head>
   <body>
     <hero-bg variant="neural" intensity={bgIntensity}></hero-bg>
@@ -100,6 +102,12 @@ const ogImage = new URL('/og.png', Astro.site)
     )}
   </body>
 </html>
+
+<script>
+  import { installAiBridge } from '../lib/ai-bridge'
+
+  installAiBridge()
+</script>
 
 <style>
   .skip {

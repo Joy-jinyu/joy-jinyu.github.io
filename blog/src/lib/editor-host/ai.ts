@@ -3,9 +3,8 @@
  * 提示词（含内置的画图规则）只在这里维护；结果按 contract.ts 的 AiResult 返回。
  */
 import type { AiConfig } from '../ai-settings'
+import { chat, type DeltaKind } from '../ai-chat'
 import { LIMITS, type AiResult, type AiTask, type Draft } from './contract'
-
-export type DeltaKind = 'reasoning' | 'content'
 
 const STYLE = '用简体中文，语气平实，像在跟同行讲清楚一件事；不用夸张修辞；中英文之间加空格。'
 const MD = '正文用 Markdown，不能写 HTML 标签，链接只用 http / https。需要流程图、时序图或数据图时，用 ```mermaid 代码块。'
@@ -18,100 +17,6 @@ const PROMPTS: Record<AiTask['task'], string> = {
   draft: `你是中文技术博客的作者。根据用户给的主题或提纲写一篇完整的博客：开头直接讲要解决的问题，用 Markdown 二级、三级标题分节，必要时给代码示例或图，结尾给出可以直接用的结论。${STYLE}${MD}${MERMAID_RULES}严格按下面的格式输出：前三行是 标题：…（不超过 ${LIMITS.title} 字）、摘要：…（不超过 ${LIMITS.description} 字）、标签：a, b（最多 ${LIMITS.tags} 个），第四行是 ---，之后是正文。`,
   diagram: `你会把一段描述画成 Mermaid 图。${MERMAID_RULES}按内容选最合适的图：步骤和分支用 flowchart，谁调谁用 sequenceDiagram，占比用 pie，随时间或分类变化的数值用 xychart-beta。只输出 Mermaid 代码本身，不要代码块标记，不要解释。`,
   svg: `你会把一段描述画成一张 SVG 插图，用来放进技术博客。只输出一个 <svg> 元素：带 xmlns 和 viewBox，宽 800 左右；背景透明；配色只用青色 #00b8b8、#5eead4，中性灰 #7d8596、#c3c9d4，深灰 #4a5160，强调色 #f5b454，保证深色和浅色背景上都看得清；文字用 font-family="sans-serif"，字号不小于 14。不能有 <script>、<style>、style 属性、<foreignObject>、<image>、<a>、动画、事件属性、外部链接或字体；渐变、箭头用 <defs> 里的 id 引用。不要代码块标记，不要解释。`,
-}
-
-/**
- * 有的模型把思考过程放在 content 的 <think>…</think> 里（DeepSeek R1 类），有的放在 reasoning_content / reasoning 字段里；
- * 这里统一拆成两路。标签可能被切在两个分片之间，所以留一小段尾巴等下一片。
- */
-function thinkSplitter(emit: (kind: DeltaKind, text: string) => void) {
-  let inThink = false
-  let pending = ''
-  const flush = (final: boolean) => {
-    for (;;) {
-      const tag = inThink ? '</think>' : '<think>'
-      const i = pending.indexOf(tag)
-      if (i >= 0) {
-        if (i) emit(inThink ? 'reasoning' : 'content', pending.slice(0, i))
-        pending = pending.slice(i + tag.length)
-        inThink = !inThink
-        continue
-      }
-      const keep = final ? 0 : Math.min(pending.length, tag.length - 1)
-      const out = pending.slice(0, pending.length - keep)
-      if (out) emit(inThink ? 'reasoning' : 'content', out)
-      pending = pending.slice(pending.length - keep)
-      return
-    }
-  }
-  return { push: (text: string) => ((pending += text), flush(false)), end: () => flush(true) }
-}
-
-async function chat(config: AiConfig, system: string, user: string, signal: AbortSignal, onDelta: (kind: DeltaKind, text: string) => void): Promise<string> {
-  let res: Response
-  try {
-    res = await fetch(`${config.baseUrl.replace(/\/+$/, '')}/chat/completions`, {
-      method: 'POST',
-      signal,
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${config.key}` },
-      body: JSON.stringify({ model: config.model, stream: true, messages: [{ role: 'system', content: system }, { role: 'user', content: user }] }),
-    })
-  } catch (err) {
-    if (signal.aborted) throw new Error('已停止')
-    throw new Error('请求没发出去：可能是这个接口不允许浏览器直接调用（跨域限制），或网络不通')
-  }
-  if (!res.ok) {
-    const data = await res.json().catch(() => null)
-    throw new Error(`AI 接口返回 ${res.status}${data?.error?.message ? `：${data.error.message}` : ''}`)
-  }
-  let content = ''
-  const split = thinkSplitter((kind, text) => {
-    if (kind === 'content') content += text
-    onDelta(kind, text)
-  })
-  // 不支持流式的接口会直接回一整段 JSON
-  if (!res.headers.get('content-type')?.includes('event-stream')) {
-    const data = await res.json().catch(() => null)
-    const msg = data?.choices?.[0]?.message
-    const reasoning = msg?.reasoning_content ?? msg?.reasoning
-    if (typeof reasoning === 'string' && reasoning) onDelta('reasoning', reasoning)
-    if (typeof msg?.content === 'string') split.push(msg.content)
-  } else {
-    const reader = res.body!.pipeThrough(new TextDecoderStream()).getReader()
-    let buf = ''
-    try {
-      for (;;) {
-        const { value, done } = await reader.read()
-        // 流结束时最后一行可能没有换行，也要处理
-        buf += done ? '\n' : value
-        if (buf.length > 1_000_000) throw new Error('AI 接口返回的数据格式不对')
-        const lines = buf.split('\n')
-        buf = lines.pop()!
-        for (const line of lines) {
-          const m = /^data:\s?(.*)$/.exec(line.trim())
-          if (!m || m[1] === '[DONE]') continue
-          let chunk: { choices?: { delta?: { content?: string; reasoning_content?: string; reasoning?: string } }[]; error?: { message?: string } }
-          try {
-            chunk = JSON.parse(m[1])
-          } catch {
-            continue
-          }
-          if (chunk.error) throw new Error(`AI 接口出错：${chunk.error.message ?? '未知错误'}`)
-          const delta = chunk.choices?.[0]?.delta
-          const reasoning = delta?.reasoning_content ?? delta?.reasoning
-          if (reasoning) onDelta('reasoning', reasoning)
-          if (delta?.content) split.push(delta.content)
-        }
-        if (done) break
-      }
-    } catch (err) {
-      if (signal.aborted) throw new Error('已停止')
-      throw err
-    }
-  }
-  split.end()
-  if (!content.trim()) throw new Error('AI 接口没有返回内容')
-  return content.trim()
 }
 
 const str = (v: unknown, max: number) => (typeof v === 'string' ? v.trim().slice(0, max) : '')
@@ -144,8 +49,8 @@ function parseMeta(text: string): AiResult['meta'] {
   return { titles, description: str(one('摘要'), LIMITS.description), tags: tags(one('标签')) }
 }
 
-/** 渲染前的语法检查交给宿主的 diagram.ts；这里只管拿到代码 */
-export type Finishers = { checkMermaid: (code: string) => Promise<void>; storeSvg: (raw: string) => Promise<AiResult['svg']['image']> }
+/** 渲染前的语法检查交给宿主的 diagram.ts；这里只管拿到代码。onSend：输入检查通过、请求真正发出前调一次 */
+export type Finishers = { checkMermaid: (code: string) => Promise<void>; storeSvg: (raw: string) => Promise<AiResult['svg']['image']>; onSend?: () => void }
 
 export async function complete(
   config: AiConfig,
@@ -157,7 +62,8 @@ export async function complete(
   const input = task.input.trim()
   if (!input) throw new Error(task.task === 'polish' || task.task === 'meta' ? '正文还是空的' : '先写下想要什么')
   const system = task.extra?.trim() ? `${PROMPTS[task.task]}\n额外要求：${task.extra.trim()}` : PROMPTS[task.task]
-  const text = await chat(config, system, input, signal, onDelta)
+  finish.onSend?.()
+  const text = await chat(config, [{ role: 'system', content: system }, { role: 'user', content: input }], signal, onDelta)
   switch (task.task) {
     case 'polish':
       return { body: text }
@@ -195,7 +101,7 @@ export async function ping(config: AiConfig): Promise<{ ms: number; reply: strin
   const ctrl = new AbortController()
   const timer = setTimeout(() => ctrl.abort(), 30_000)
   try {
-    const reply = await chat(config, '只回复「好」。', 'ping', ctrl.signal, () => {})
+    const reply = await chat(config, [{ role: 'system', content: '只回复「好」。' }, { role: 'user', content: 'ping' }], ctrl.signal, () => {})
     return { ms: Math.round(performance.now() - t), reply: reply.slice(0, 40) }
   } finally {
     clearTimeout(timer)

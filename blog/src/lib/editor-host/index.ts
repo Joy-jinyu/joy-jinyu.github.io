@@ -4,6 +4,8 @@
  * 函数和事件的名字、参数见 blog/src/lib/editor-host/contract.ts。
  */
 import type { AiStatus, AiTask, Draft, HostCalls, HostEvents } from './contract'
+import { emitAiActivity } from '../ai-bridge'
+import type { DeltaKind } from '../ai-chat'
 import { loadAi, onAiChange, openAiSettings } from '../ai-settings'
 import { checkMermaid, renderMermaid } from '../mermaid-render'
 import { complete } from './ai'
@@ -30,6 +32,8 @@ const svgUrl = (svg: string) => `data:image/svg+xml;base64,${toBase64(new TextEn
 
 /** 上一次 attach 留下的监听；iframe 重新加载会再 attach 一次，先把旧的撤掉 */
 let detach: (() => void) | null = null
+/** 每次生成一个序号：应用可能拿同一个 id 重跑，旧那次的 cancel 会晚于新那次的 start 到达，小猫按 id#序号 配对 */
+let runSeq = 0
 
 function attach(player: Player) {
   detach?.()
@@ -80,8 +84,16 @@ function attach(player: Player) {
       const ctrl = new AbortController()
       running.get(id)?.abort()
       running.set(id, ctrl)
+      const kind = task.task
+      const run = `${id}#${++runSeq}`
+      // 进度同时广播给页面上的小猫，事件约定见 ../ai-bridge.ts；请求发出前就被拦下的（比如正文还是空的）不算
+      let sent = false
       try {
-        return await complete(config, task as AiTask, ctrl.signal, (kind, text) => emit('ai.delta', { id, kind, text }), {
+        const onDelta = (phase: DeltaKind, text: string) => {
+          emit('ai.delta', { id, kind: phase, text })
+          emitAiActivity({ id: run, task: kind, phase, text })
+        }
+        const result = await complete(config, task as AiTask, ctrl.signal, onDelta, {
           checkMermaid: async (code) => {
             try {
               await checkMermaid(code)
@@ -90,7 +102,16 @@ function attach(player: Player) {
             }
           },
           storeSvg: addSvg,
+          onSend: () => {
+            sent = true
+            emitAiActivity({ id: run, task: kind, phase: 'start' })
+          },
         })
+        emitAiActivity({ id: run, task: kind, phase: 'done' })
+        return result
+      } catch (err) {
+        if (sent) emitAiActivity({ id: run, task: kind, phase: ctrl.signal.aborted ? 'cancel' : 'error', text: (err as Error).message })
+        throw err
       } finally {
         if (running.get(id) === ctrl) running.delete(id)
       }

@@ -156,11 +156,14 @@ const base = import.meta.env.BASE_URL
   /* 隐藏时用 visibility 移出 Tab 顺序，看不见的按钮不能还能被聚焦 */
   .to-top.on { opacity: 1; visibility: visible; transform: none; pointer-events: auto; transition-delay: 0s; }
   .to-top:hover { border-color: var(--brand); }
+  /* 右下角的小猫（site/pet.js）抬到「回到顶部」和「目录」按钮上面，不挡它们 */
+  :global(:root) { --pet-lift: 64px; }
   @media (max-width: 1080px) {
     .layout { grid-template-columns: minmax(0, 760px); }
     .side { position: static; }
     /* 这个宽度下右下角还有「目录」按钮（Toc.astro），回到顶部挪到它上面 */
     .to-top { right: 16px; bottom: 76px; }
+    :global(:root) { --pet-lift: 118px; }
   }
   @media (max-width: 640px) {
     .layout { padding: 0 16px; }

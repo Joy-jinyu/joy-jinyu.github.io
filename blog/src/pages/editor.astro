@@ -72,6 +72,16 @@ const base = import.meta.env.BASE_URL
 <style>
   /* 编辑器铺满全宽：顶栏也铺满，内边距和编辑器的页边距一致（24px，窄屏 16px），左边缘对齐 */
   :global(header.top .top-in) { max-width: none; }
+  /*
+   * 右下角的小猫（变量含义见 site/pet.js 开头）不能挡编辑器。按 2026-11 版编辑器实测：底栏高 61px；
+   * 编辑器的对话框都居中、最宽 768px、按钮靠右，高度能到窗口的六成多，窄一点的屏幕上会压到底栏附近。
+   * ≥1136px：猫用 190×122，抬到底栏上面、贴着右边，脚下是预览卡片右下角（只读区域，透明处点击会穿过去）；
+   *   这个宽度起它整个在对话框卡片右边（猫左边 w − 200 ≥ 卡片右边 (w + 768) / 2 − 16，即 w ≥ 1136），不会压住对话框的按钮。
+   * 更窄时上方是表单、或者会碰到对话框，默认收起，叫回按钮放在底栏中间的空白处（避开左边的保存状态和右边的提示、提交按钮）。
+   */
+  :global(:root) { --pet-start: hidden; --pet-open-right: 128px; }
+  @media (min-width: 900px) { :global(:root) { --pet-open-right: 330px; } }
+  @media (min-width: 1136px) { :global(:root) { --pet-start: shown; --pet-w: 190px; --pet-h: 122px; --pet-lift: 55px; } }
   .editor { position: relative; height: calc(100dvh - var(--header-h)); }
   iframe {
     display: block;
