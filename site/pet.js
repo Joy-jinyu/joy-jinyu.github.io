@@ -69,6 +69,7 @@ const CONFIG_URL = sibling('pet.json')
  * @property {string} selection 「解释选中的内容」时放在选中文字前面的提问
  * @property {number} maxContext 页面资料最多带多少字
  * @property {number} history 最多带上最近几条对话（一问一答算两条）
+ * @property {number} memory 访客浏览器里最多记住几条对话（换页面、刷新后还在，面板上能清空）
  * @property {string} thinkPose 等模型回答时摆的姿势（stand 以外的姿势名）
  */
 /**
@@ -502,7 +503,7 @@ async function loadConfig() {
     for (const k of ['chat', 'chatTitle']) str(text[k], `text.${k}`)
     for (const k of ['start', 'writing', 'done', 'failed', 'noKey']) str(lines.ai?.[k], `lines.ai.${k}`)
     for (const k of ['persona', 'selection']) str(ai[k], `ai.${k}`)
-    for (const k of ['maxContext', 'history']) (Number.isInteger(ai[k]) && ai[k] > 0) || bad(`ai.${k}`)
+    for (const k of ['maxContext', 'history', 'memory']) (Number.isInteger(ai[k]) && ai[k] > 0) || bad(`ai.${k}`)
     if (ai.thinkPose === 'stand' || !Object.hasOwn(others, ai.thinkPose)) bad('ai.thinkPose')
     if (!Array.isArray(ai.sources) || !ai.sources.length) bad('ai.sources')
     ai.sources.forEach((src, i) => {
