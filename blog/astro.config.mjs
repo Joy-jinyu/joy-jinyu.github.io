@@ -35,6 +35,7 @@ export default defineConfig({
       },
     }),
     mdx(),
-    sitemap(),
+    // ai-bridge 是简历页小猫在隐藏 iframe 里用的空页面，不给搜索引擎
+    sitemap({ filter: (page) => !page.includes('/ai-bridge/') }),
   ],
 })

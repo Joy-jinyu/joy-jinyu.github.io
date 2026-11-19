@@ -13,20 +13,84 @@
  * - 尾巴每节比前一节慢半拍；呼吸、眨眼（偶尔慢眨）、抖耳朵、歪头
  * - 点击：停下、转头看你、蓄力跳一下（落地压扁再回弹），冒爱心；随机冒说话气泡
  * - 可收起，状态记在 localStorage；打印时隐藏；prefers-reduced-motion 下只渲染静止画面
- * 展示台：?pet=show 整屏渲染，&petpose=stand|walk|sit|loaf|hop 固定姿势，&petstate=open 固定睁眼（无头浏览器里动画帧很少，截图用）
+ * 展示台：?pet=show 整屏渲染，&petpose=<pet.json 里的姿势名>|walk|hop 固定姿势，&petstate=open 固定睁眼（无头浏览器里动画帧很少，截图用）
  * three.js 走 CDN，页面 load 之后才加载，失败时整个宠物不出现，不影响简历本身
+ * AI（对话面板、陪投稿编辑器干活）在同目录的 pet-ai.js：就绪后把下面的 window.pairwisePet 交给它；pet.json 没有 ai 时不加载
+ * 页面挪开小猫用 CSS 变量（写在 :root 上，可以按媒体查询分别给）：--pet-lift 整体抬高多少（猫、收起按钮、叫回按钮一起），
+ *   --pet-right 猫离右边多远，--pet-w / --pet-h 画布尺寸，--pet-open-right 叫回按钮离右边多远；
+ *   --pet-start: hidden 表示这个页面默认收起（只在加载时读一次，不记进 localStorage）
+ *
+ * 数据和引擎分开：台词、配色、尺寸、姿势、行为节奏都在同目录的 pet.json（字段说明见下面的 PetConfig），
+ * 这个文件只管怎么捏形体、怎么动。加台词、调性格、换配色、加一种静态姿势只改 pet.json；
+ * 新动作（比如舔爪）或新物种要改这里。pet.json、pet-ai.js 跟着 pet.js 的 ?v= 一起刷新缓存，
+ * 改了要给 site/index.html 和 blog/src/layouts/Base.astro 里的版本号一起加一。
  */
 const THREE_URL = 'https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js'
 const STORAGE_KEY = 'joy-pet-hidden'
-const LINES = [
-  '你好呀，我是 Joy 的猫 🐾',
-  '右上角可以切换亮色 / 暗色',
-  '技术笔记在 Notes 里 ↗',
-  '想要 PDF？直接 ⌘P 打印就好',
-  '在找 AI 应用前端？就是他了',
-  '喵～',
-  '摸摸头会开心',
-]
+const sibling = (name) => { const u = new URL(name, import.meta.url); u.search = new URL(import.meta.url).search; return u }
+const CONFIG_URL = sibling('pet.json')
+
+/**
+ * pet.json 的结构。区间 [a, b] 表示每次在 a~b 之间随机取；时间单位都是秒。
+ * @typedef {object} PetConfig
+ * @property {{ canvas: string, close: string, open: string, openButton: string, chat?: string, chatTitle?: string }} text 画布和按钮的读屏名称、收起后的按钮文字；
+ *   open / openButton 只在页面没有预留 #pet-launcher 时用（简历页 index.html 里预留了，那里的文字写在 HTML 里）；chat / chatTitle 是对话按钮和面板标题（有 ai 时必填）
+ * @property {{ greet: string, back: string, poke: string, random: string[], ai?: { start: string, writing: string, done: string, failed: string, noKey: string } }} lines
+ *   进场招呼、叫回来、被摸时（按 behavior.poke.lineChance）、随机说的话；
+ *   ai（有 ai 时必填）：编辑器里 AI 开工 / 开始出正文 / 写完，AI 出错，没配置 AI 时说的话。
+ *   index.html 的 Geist 字体按 text= 子集化：简历页上会显示的台词里新出现的英文 / 数字 / 符号要补进那里，否则会回退成系统字体
+ * @property {object} colors fur / accent（围兜、尾尖）/ pink（耳内、鼻子）是 0~1 的 sRGB 三元组；eye / mouth / rim（背后轮廓光）是 #hex；
+ *   blush（腮红）/ glow（脚下光晕）是 0~255 的 RGB，透明度渐变写在代码里
+ * @property {object} dim 尺寸表。单位：头的半径约 0.5；坐标：猫面朝 +X，Y 向上，Z 指向猫的左侧（镜头一侧），地面 y = 0；
+ *   躯干和头挂在 body 上，body 以髋关节为支点俯仰。
+ *   shoulder / head：肩关节、头部中心相对髋关节的位置（body 坐标）；headScale：头的缩放；
+ *   front / hind：L 大腿和小腿长、meta 掌骨长、z 离中线多远、r 从腿根到脚腕的 5 个半径；
+ *   tail：len 总长、r0 / r1 根部和尖端半径、base 尾根位置、seg 节数；
+ *   body：躯干放样截面 [x, 截面中心 y, 上下半径, 左右半径]，从臀到胸，像一颗横放的豆子；
+ *   stride 步幅、duty 每只脚着地占一个步态周期的比例、lift 抬脚高度、speed 走路速度；
+ *   roam：走动范围，身子中点 x 在 ±roam 之间；pivot：转身支点（髋和肩的中点，body 坐标 x）；
+ *   bend：脊柱侧弯从这里开始弯、到这里弯完（body 坐标 x），前面一段整体转过去；
+ *   turnRate：转身最快多少弧度 / 秒，再快短腿的步子就跟不上
+ * @property {Object<string, PetPose>} poses 必须有 stand（站着，也是混合的基准）；其余姿势按权重叠加在 stand 上
+ * @property {object} behavior 行为节奏：
+ *   next：站够了之后下一步做什么，按 weight 抽，do 是 walk 或 poses 里 stand 以外的姿势名，姿势要写 hold（保持多久）；
+ *   pause：从姿势起身后先站多久；arrive：走到目的地后站多久；
+ *   idle：每隔 every 随机做一个小动作，weights 里 tilt 歪头 / ear 抖耳朵 / tail 甩尾巴，tiltAngle 歪头角度（弧度），tiltHold 歪多久；
+ *   blink：每隔 every 眨一次眼，slowChance 的概率是慢眨，fast / slow 是两种眨眼的时长；
+ *   poke：被点后开心多久（happy）、开心时身子往镜头侧过来多少（turn）、说 lines.poke 的概率（lineChance，否则随机说一句）；
+ *   talk：进场后多久打招呼（greetAfter）、招呼后多久开始随机说话（firstAfterGreet）、之后的间隔（every）、叫回来后多久说话（reopenAfter）、气泡停留多久（show）
+ * @property {PetAi} [ai] 和小猫对话（pet-ai.js）；不写就没有 AI 功能
+ */
+/**
+ * @typedef {object} PetAi
+ * @property {string} persona 系统提示词里的人设和回答规则
+ * @property {{ selector: string, kind: string, prompts: string[] }[]} sources 页面资料从哪取：按顺序取第一个选中了非空文字的 selector（所有匹配元素的文字拼起来），
+ *   kind 是告诉模型这是什么（文章 / 简历…），prompts 是面板上的快捷提问
+ * @property {string} selection 「解释选中的内容」时放在选中文字前面的提问
+ * @property {number} maxContext 页面资料最多带多少字
+ * @property {number} history 最多带上最近几条对话（一问一答算两条）
+ * @property {string} thinkPose 等模型回答时摆的姿势（stand 以外的姿势名）
+ */
+/**
+ * 一种姿势。stand 必须给齐 hip ~ lz 和 turn / breath / swish（stand 上的 eyes / settled / blend / ease 不起作用）；
+ * 其它姿势必须写 blend，缺的其它项沿用 stand 的；姿势名不能用 walk、hop。
+ * @typedef {object} PetPose
+ * @property {number} hip 髋高
+ * @property {number} pitch 身子俯仰
+ * @property {number} fx 前脚落点相对肩的前后偏移
+ * @property {number} hx 后脚落点相对髋的前后偏移
+ * @property {[number, number]} fm 前脚掌骨方向
+ * @property {[number, number]} hm 后脚掌骨方向
+ * @property {number} lz 腿往身体下面收的比例（1 是不收）
+ * @property {number} [turn] 站定时身子往镜头侧过来多少（弧度；0 是正侧面，头另外会转过来看你）
+ * @property {number} [breath] 呼吸快慢
+ * @property {number} [swish] 尾巴摆动快慢
+ * @property {number} [eyes] 眼睛睁开的程度（1 是全睁）
+ * @property {boolean} [settled] 是不是坐下 / 趴下这类歇着的姿势：尾巴绕到身前、转身时脊柱不弯
+ * @property {number} [blend] 进出这个姿势的弹簧刚度，越大越快（stand 以外必填）
+ * @property {Object<string, 'out' | 'smooth'>} [ease] 某几项不按权重线性混合：out 先快后慢，smooth 两头慢
+ * @property {string} [label] 给模型看的动作说明（对话时模型可以点名做这个姿势），不写就用姿势名
+ */
 
 const params = new URLSearchParams(location.search)
 const SHOW = params.get('pet') === 'show'
@@ -35,23 +99,25 @@ const SHOW_STATE = params.get('petstate') || ''
 const debug = (window.__pet = { ready: false, errors: [], frames: 0 })
 
 const css = `
-.joy-pet{position:fixed;right:10px;bottom:6px;z-index:20;width:280px;height:180px;user-select:none;-webkit-user-select:none}
+.joy-pet{position:fixed;right:var(--pet-right,10px);bottom:calc(6px + var(--pet-lift,0px));z-index:20;width:var(--pet-w,280px);height:var(--pet-h,180px);user-select:none;-webkit-user-select:none;pointer-events:none}
 .joy-pet.show{right:0;bottom:0;width:100vw;height:100vh;background:#0d1118}
-.joy-pet canvas{display:block;width:100%!important;height:100%!important;cursor:pointer;outline:none}
+.joy-pet canvas{display:block;width:100%!important;height:100%!important;cursor:pointer;outline:none;pointer-events:none}
+/* 画布大部分是透明的：只有指针在猫身上时（.hot）才接收点击，其余让给下面的页面选字、点链接 */
+.joy-pet canvas.hot{pointer-events:auto}
 .joy-pet canvas:focus-visible{outline:2px solid #00b8b8;outline-offset:-4px;border-radius:16px}
-.joy-pet-bubble{position:absolute;right:42%;bottom:150px;max-width:200px;width:max-content;padding:8px 12px;border-radius:12px 12px 2px 12px;font:500 12px/1.45 "Geist","PingFang SC",sans-serif;color:var(--strong,#f3f5f9);background:color-mix(in srgb,var(--bg,#07090f) 82%,transparent);border:1px solid var(--line-hi,rgba(255,255,255,.14));-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 10px 30px -10px rgba(0,0,0,.5);opacity:0;transform:translateY(6px) scale(.96);transform-origin:right bottom;transition:opacity .25s ease,transform .3s cubic-bezier(.22,1,.36,1);pointer-events:none}
+.joy-pet-bubble{position:absolute;right:42%;bottom:calc(var(--pet-h,180px) + 4px);max-width:200px;width:max-content;padding:8px 12px;border-radius:12px 12px 2px 12px;font:500 12px/1.45 "Geist","PingFang SC",sans-serif;color:var(--strong,#f3f5f9);background:color-mix(in srgb,var(--bg,#07090f) 82%,transparent);border:1px solid var(--line-hi,rgba(255,255,255,.14));-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 10px 30px -10px rgba(0,0,0,.5);opacity:0;transform:translateY(6px) scale(.96);transform-origin:right bottom;transition:opacity .25s ease,transform .3s cubic-bezier(.22,1,.36,1);pointer-events:none}
 .joy-pet-bubble.on{opacity:1;transform:none}
 .joy-pet-close,.joy-pet-open{position:fixed;z-index:21;display:grid;place-items:center;border-radius:999px;border:1px solid var(--line-hi,rgba(255,255,255,.14));background:color-mix(in srgb,var(--bg,#07090f) 80%,transparent);color:var(--muted,#7d8596);cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:color .2s,border-color .2s,opacity .2s}
-.joy-pet-close{right:20px;bottom:176px;width:22px;height:22px;font:600 12px/1 sans-serif;opacity:0}
+.joy-pet-close{right:calc(var(--pet-right,10px) + 10px);bottom:calc(var(--pet-h,180px) + 2px + var(--pet-lift,0px));width:22px;height:22px;font:600 12px/1 sans-serif;opacity:0}
 .joy-pet:hover~.joy-pet-close,.joy-pet-close:hover,.joy-pet-close:focus-visible{opacity:1}
-.joy-pet-open{right:18px;bottom:18px;height:32px;padding:0 12px;font:500 12px/1 "Geist Mono",monospace;gap:6px}
+.joy-pet-open{right:var(--pet-open-right,18px);bottom:calc(18px + var(--pet-lift,0px));height:32px;padding:0 12px;font:500 12px/1 "Geist Mono",monospace;gap:6px}
 .joy-pet-close:hover,.joy-pet-open:hover{color:var(--brand-2,#5eead4);border-color:var(--brand,#00b8b8)}
 .joy-heart{position:fixed;z-index:22;pointer-events:none;font-size:16px;color:#ff6b9a;animation:joy-heart 1s cubic-bezier(.22,1,.36,1) forwards}
 @keyframes joy-heart{from{opacity:1;transform:translate(0,0) scale(.6)}to{opacity:0;transform:translate(var(--dx),-70px) scale(1.2)}}
 /* 上面给按钮写了 display:grid，会盖掉 [hidden] 的默认隐藏 */
 .joy-pet[hidden],.joy-pet-close[hidden],.joy-pet-open[hidden],#pet-launcher[hidden]{display:none!important}
 @media (hover:none){.joy-pet-close{opacity:1}}
-@media (max-width:820px){.joy-pet{width:190px;height:122px;right:4px;bottom:4px}.joy-pet-close{right:10px;bottom:122px}.joy-pet-bubble{bottom:100px;max-width:170px}}
+@media (max-width:820px){.joy-pet{width:var(--pet-w,190px);height:var(--pet-h,122px);right:var(--pet-right,4px);bottom:calc(4px + var(--pet-lift,0px))}.joy-pet-close{right:calc(var(--pet-right,4px) + 6px);bottom:calc(var(--pet-h,122px) + var(--pet-lift,0px))}.joy-pet-bubble{bottom:calc(var(--pet-h,122px) + 4px);max-width:170px}}
 @media print{.joy-pet,.joy-pet-close,.joy-pet-open,.joy-heart,#pet-launcher{display:none!important}}
 `
 
@@ -74,45 +140,10 @@ function step(s, target, k, dt, zeta = 1) {
 }
 const wrapNear = (a, ref) => a + TAU * Math.round((ref - a) / TAU)
 
-// ---------------------------------------------------------------- 尺寸表
-// 单位：头的半径约 0.5。坐标：猫面朝 +X，Y 向上，Z 指向猫的左侧（镜头一侧），地面 y = 0。
-// 躯干和头挂在 body 上，body 以髋关节为支点俯仰。
-const DIM = {
-  shoulder: [0.7, 0.0],          // 肩关节，相对髋关节（body 坐标）
-  head: [0.96, 0.52],            // 头部中心，相对髋关节（body 坐标）
-  headScale: 0.8,
-  front: { L: [0.2, 0.19], meta: 0.08, z: 0.19, r: [0.13, 0.125, 0.11, 0.1, 0.095] },
-  hind: { L: [0.22, 0.2], meta: 0.1, z: 0.2, r: [0.13, 0.13, 0.11, 0.1, 0.095] },
-  tail: { len: 0.95, r0: 0.085, r1: 0.066, base: [-0.22, 0.14], seg: 14 },
-  // 躯干放样截面：[x, 截面中心 y, 上下半径, 左右半径]，从臀到胸，像一颗横放的豆子
-  body: [
-    [-0.34, 0.1, 0, 0],
-    [-0.31, 0.1, 0.17, 0.17],
-    [-0.2, 0.09, 0.31, 0.3],
-    [0.0, 0.08, 0.36, 0.34],
-    [0.35, 0.07, 0.36, 0.35],
-    [0.68, 0.09, 0.36, 0.33],
-    [0.9, 0.11, 0.29, 0.28],
-    [1.0, 0.12, 0.16, 0.16],
-    [1.03, 0.12, 0, 0],
-  ],
-  stride: 0.26, duty: 0.6, lift: 0.1, speed: 0.5,
-  roam: 0.5,                     // 走动范围：身子中点 x 在 ±0.5 之间
-  pivot: 0.35,                   // 转身的支点：髋和肩的中点（body 坐标 x）
-  bend: [0.15, 0.75],            // 脊柱侧弯从这里开始弯、到这里弯完（body 坐标 x），前面一段整体转过去
-  turnRate: 1.7,                 // 转身最快多少弧度 / 秒：再快，短腿的步子就跟不上
-}
-// 姿势：髋高、俯仰、前脚/后脚落点（相对肩/髋）、掌骨方向、腿往身体下面收的比例
-const POSE = {
-  stand: { hip: 0.5, pitch: 0.0, fx: -0.02, hx: 0.0, fm: [-0.15, 1], hm: [-0.3, 1], lz: 1 },
-  sit: { hip: 0.3, pitch: 0.3, fx: 0.0, hx: 0.3, fm: [-0.1, 1], hm: [-1, 0.15], lz: 0.85 },
-  loaf: { hip: 0.33, pitch: 0.02, fx: 0.1, hx: 0.24, fm: [-1, 0.4], hm: [-1, 0.1], lz: 0.5 },
-}
-
-// 脊柱侧弯：脊柱线在 DIM.bend 这一段弯成圆弧，总共转过 B，前面一段直的跟着转过去；
+// 脊柱侧弯：脊柱线在 [x0, x1] 这一段（dim.bend）弯成圆弧，总共转过 B，前面一段直的跟着转过去；
 // 返回 body 坐标水平面里 (x, z) 弯过之后的位置和那一截的朝向。躯干着色器里的 bendP 是同一个公式，改这里要一起改
-function bendAt(B, x, z) {
-  const [x0, x1] = DIM.bend, k = B / (x1 - x0)
+function bendAt([x0, x1], B, x, z) {
+  const k = B / (x1 - x0)
   const xr = clamp(x, x0, x1) - x0, th = k * xr
   let cx = x0 + Math.min(x - x0, 0), cz
   if (Math.abs(k) < 1e-4) { cx += xr; cz = -0.5 * k * xr * xr } else { cx += Math.sin(th) / k; cz = -(1 - Math.cos(th)) / k }
@@ -121,15 +152,14 @@ function bendAt(B, x, z) {
   return [cx + z * Math.sin(th), cz + z * Math.cos(th), th]
 }
 
-const COL = { fur: [0.955, 0.962, 0.98], accent: [0.18, 0.776, 0.753], pink: [1, 0.61, 0.71], ink: 0x161a24 }
 const linear = (c) => c.map((v) => v ** 2.2)
 
-function buildCat(THREE) {
+function buildCat(THREE, { dim: DIM, colors: COL }) {
   const fur = new THREE.MeshPhysicalMaterial({ vertexColors: true, roughness: 0.72, sheen: 0.8, sheenRoughness: 0.55, sheenColor: new THREE.Color(0xffffff) })
   const pinkMat = new THREE.MeshStandardMaterial({ color: new THREE.Color().setRGB(...COL.pink, THREE.SRGBColorSpace), roughness: 0.6 })
-  const eyeMat = new THREE.MeshPhysicalMaterial({ color: COL.ink, roughness: 0.12, clearcoat: 1, clearcoatRoughness: 0.08 })
+  const eyeMat = new THREE.MeshPhysicalMaterial({ color: COL.eye, roughness: 0.12, clearcoat: 1, clearcoatRoughness: 0.08 })
   const glintMat = new THREE.MeshBasicMaterial({ color: 0xffffff })
-  const inkMat = new THREE.MeshBasicMaterial({ color: 0x3a3f4c })
+  const inkMat = new THREE.MeshBasicMaterial({ color: COL.mouth })
   const FUR = linear(COL.fur)
   const paint = (g, c) => g.setAttribute('color', new THREE.BufferAttribute(new Float32Array(g.attributes.position.count * 3).map((_, i) => c[i % 3]), 3))
 
@@ -359,7 +389,7 @@ function buildCat(THREE) {
   {
     const c = document.createElement('canvas'); c.width = c.height = 64
     const g = c.getContext('2d'), gr = g.createRadialGradient(32, 32, 0, 32, 32, 32)
-    gr.addColorStop(0, 'rgba(255,140,170,0.85)'); gr.addColorStop(0.55, 'rgba(255,140,170,0.35)'); gr.addColorStop(1, 'rgba(255,140,170,0)')
+    gr.addColorStop(0, `rgba(${COL.blush},0.85)`); gr.addColorStop(0.55, `rgba(${COL.blush},0.35)`); gr.addColorStop(1, `rgba(${COL.blush},0)`)
     g.fillStyle = gr; g.fillRect(0, 0, 64, 64)
     const tex = new THREE.CanvasTexture(c)
     tex.colorSpace = THREE.SRGBColorSpace
@@ -397,6 +427,96 @@ function buildCat(THREE) {
   return { root, rig, body, torso, headBase, head, ears, eyes, legs, tail, TN, LEG_RINGS, bendU }
 }
 
+/** 姿势混合的缓动：某几项不按权重线性混合（pose.ease 里写名字） */
+const EASE = { out: (w) => 1 - (1 - w) ** 2, smooth: (w) => w * w * (3 - 2 * w) }
+/** walk 和 hop 是动作不是静态姿势，不能拿来当姿势名；这里的说明给对话里的模型看（pet-ai.js 的动作标记） */
+const MOVES = { walk: '走两步', hop: '开心地跳一下' }
+const RESERVED = Object.keys(MOVES)
+/** 模型点名的姿势保持几秒：够看清就行，之后接着按 behavior 走 */
+const ACT_HOLD = 4
+
+/** 读 pet.json 并检查各块的字段类型：写错直接报错、宠物不出现，免得跑起来才在某一帧里炸 */
+async function loadConfig() {
+  const res = await fetch(CONFIG_URL)
+  if (!res.ok) throw new Error(`pet.json ${res.status}`)
+  const cfg = await res.json()
+  const bad = (path) => { throw new Error(`pet.json 的 ${path} 缺失或格式不对`) }
+  const num = (v, path) => (typeof v === 'number' && Number.isFinite(v)) || bad(path)
+  /** n 个有限数字组成的数组 */
+  const nums = (v, n, path) => (Array.isArray(v) && v.length === n && v.every((x) => typeof x === 'number' && Number.isFinite(x))) || bad(path)
+  const pair = (v, path) => nums(v, 2, path)
+  const str = (v, path) => typeof v === 'string' || bad(path)
+  for (const k of ['text', 'lines', 'colors', 'dim', 'poses', 'behavior']) if (!cfg[k] || typeof cfg[k] !== 'object') bad(k)
+  const { text, lines, colors: C, dim: D, poses, behavior: B } = cfg
+  for (const k of ['fur', 'accent', 'pink', 'blush', 'glow']) nums(C[k], 3, `colors.${k}`)
+  for (const k of ['eye', 'mouth', 'rim']) (typeof C[k] === 'string' && /^#([0-9a-f]{3}){1,2}$/i.test(C[k])) || bad(`colors.${k}`)
+  for (const k of ['shoulder', 'head', 'bend']) pair(D[k], `dim.${k}`)
+  for (const k of ['headScale', 'stride', 'duty', 'lift', 'speed', 'roam', 'pivot', 'turnRate']) num(D[k], `dim.${k}`)
+  for (const leg of ['front', 'hind']) {
+    pair(D[leg]?.L, `dim.${leg}.L`)
+    for (const k of ['meta', 'z']) num(D[leg][k], `dim.${leg}.${k}`)
+    nums(D[leg].r, 5, `dim.${leg}.r`)
+  }
+  for (const k of ['len', 'r0', 'r1']) num(D.tail?.[k], `dim.tail.${k}`)
+  ;(Number.isInteger(D.tail.seg) && D.tail.seg >= 3) || bad('dim.tail.seg')
+  pair(D.tail.base, 'dim.tail.base')
+  if (!Array.isArray(D.body) || D.body.length < 2) bad('dim.body')
+  D.body.forEach((b, i) => nums(b, 4, `dim.body[${i}]`))
+  for (const k of ['canvas', 'close', 'open', 'openButton']) str(text[k], `text.${k}`)
+  for (const k of ['greet', 'back', 'poke']) str(lines[k], `lines.${k}`)
+  if (!Array.isArray(lines.random) || !lines.random.length || !lines.random.every((l) => typeof l === 'string')) bad('lines.random')
+
+  const { stand, ...others } = poses
+  if (!stand) bad('poses.stand')
+  for (const k of ['hip', 'pitch', 'fx', 'hx', 'lz', 'turn', 'breath', 'swish']) num(stand[k], `poses.stand.${k}`)
+  for (const k of ['fm', 'hm']) pair(stand[k], `poses.stand.${k}`)
+  for (const [n, p] of Object.entries(others)) {
+    if (RESERVED.includes(n)) throw new Error(`pet.json 的姿势不能叫 ${n}`)
+    num(p.blend, `poses.${n}.blend`)
+    if (p.settled !== undefined && typeof p.settled !== 'boolean') bad(`poses.${n}.settled`)
+    for (const k of ['hip', 'pitch', 'fx', 'hx', 'lz', 'eyes', 'turn', 'breath', 'swish']) if (p[k] !== undefined) num(p[k], `poses.${n}.${k}`)
+    for (const k of ['fm', 'hm']) if (p[k] !== undefined) pair(p[k], `poses.${n}.${k}`)
+    if (p.label !== undefined) str(p.label, `poses.${n}.label`)
+    for (const [k, e] of Object.entries(p.ease ?? {})) if (!Object.hasOwn(EASE, e)) bad(`poses.${n}.ease.${k}`)
+  }
+
+  if (!Array.isArray(B.next) || !B.next.length) bad('behavior.next')
+  B.next.forEach((n, i) => {
+    num(n.weight, `behavior.next[${i}].weight`)
+    if (n.do === 'walk') return
+    if (n.do === 'stand' || !Object.hasOwn(others, n.do)) bad(`behavior.next[${i}].do`)
+    pair(n.hold, `behavior.next[${i}].hold`)
+  })
+  for (const k of ['pause', 'arrive']) pair(B[k], `behavior.${k}`)
+  for (const k of ['every', 'tiltAngle', 'tiltHold']) pair(B.idle?.[k], `behavior.idle.${k}`)
+  for (const [k, w] of Object.entries(B.idle.weights ?? bad('behavior.idle.weights'))) { if (!['tilt', 'ear', 'tail'].includes(k)) bad(`behavior.idle.weights.${k}`); num(w, `behavior.idle.weights.${k}`) }
+  pair(B.blink?.every, 'behavior.blink.every')
+  for (const k of ['slowChance', 'fast', 'slow']) num(B.blink[k], `behavior.blink.${k}`)
+  for (const k of ['happy', 'turn', 'lineChance']) num(B.poke?.[k], `behavior.poke.${k}`)
+  for (const k of ['greetAfter', 'firstAfterGreet', 'reopenAfter', 'show']) num(B.talk?.[k], `behavior.talk.${k}`)
+  pair(B.talk.every, 'behavior.talk.every')
+
+  if (cfg.ai !== undefined) {
+    const { ai } = cfg
+    if (!ai || typeof ai !== 'object') bad('ai')
+    for (const k of ['chat', 'chatTitle']) str(text[k], `text.${k}`)
+    for (const k of ['start', 'writing', 'done', 'failed', 'noKey']) str(lines.ai?.[k], `lines.ai.${k}`)
+    for (const k of ['persona', 'selection']) str(ai[k], `ai.${k}`)
+    for (const k of ['maxContext', 'history']) (Number.isInteger(ai[k]) && ai[k] > 0) || bad(`ai.${k}`)
+    if (ai.thinkPose === 'stand' || !Object.hasOwn(others, ai.thinkPose)) bad('ai.thinkPose')
+    if (!Array.isArray(ai.sources) || !ai.sources.length) bad('ai.sources')
+    ai.sources.forEach((src, i) => {
+      for (const k of ['selector', 'kind']) str(src?.[k], `ai.sources[${i}].${k}`)
+      try { document.createDocumentFragment().querySelector(src.selector) } catch { bad(`ai.sources[${i}].selector`) }
+      if (!Array.isArray(src.prompts) || !src.prompts.every((q) => typeof q === 'string')) bad(`ai.sources[${i}].prompts`)
+    })
+  }
+
+  return { ...cfg, poses: { stand, ...Object.fromEntries(Object.entries(others).map(([n, p]) => [n, { ...stand, settled: false, ...p }])) } }
+}
+
+const rand = Math.random
+
 async function start() {
   const style = el('style')
   style.textContent = css
@@ -404,20 +524,31 @@ async function start() {
 
   const wrap = el('div', 'joy-pet' + (SHOW ? ' show' : ''))
   const bubble = el('div', 'joy-pet-bubble', { role: 'status', 'aria-live': 'polite' })
-  const close = el('button', 'joy-pet-close', { type: 'button', 'aria-label': '收起小猫', title: '收起小猫' })
-  close.textContent = '×'
-  // index.html 里预留了 #pet-launcher；没有就自己建一个
-  const open = document.getElementById('pet-launcher') || el('button', 'joy-pet-open', { type: 'button', 'aria-label': '叫小猫出来', title: '叫小猫出来' })
-  if (!open.textContent) open.textContent = '🐾 猫'
 
-  let THREE
+  let THREE, cfg
   try {
-    THREE = await import(THREE_URL)
+    ;[THREE, cfg] = await Promise.all([import(THREE_URL), loadConfig()])
   } catch (err) {
-    console.warn('[pet] three.js 加载失败，跳过宠物', err)
+    console.warn('[pet] three.js 或 pet.json 加载失败，跳过宠物', err)
     debug.errors.push(String(err))
     return
   }
+  const { text: TEXT, lines: LINES, colors: COL, dim: DIM, poses: POSE, behavior: BEH } = cfg
+  /** stand 以外的姿势：按权重叠在 stand 上 */
+  const OTHERS = Object.keys(POSE).filter((n) => n !== 'stand')
+  const SETTLED = OTHERS.filter((n) => POSE[n].settled)
+  const range = ([a, b]) => a + rand() * (b - a)
+  const pick = (entries) => {
+    let r = rand() * entries.reduce((n, [, w]) => n + w, 0)
+    for (const [v, w] of entries) if ((r -= w) < 0) return v
+    return entries[entries.length - 1][0]
+  }
+
+  const close = el('button', 'joy-pet-close', { type: 'button', 'aria-label': TEXT.close, title: TEXT.close })
+  close.textContent = '×'
+  // index.html 里预留了 #pet-launcher；没有就自己建一个
+  const open = document.getElementById('pet-launcher') || el('button', 'joy-pet-open', { type: 'button', 'aria-label': TEXT.open, title: TEXT.open })
+  if (!open.textContent) open.textContent = TEXT.openButton
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
   renderer.setPixelRatio(Math.min(2, devicePixelRatio || 1))
@@ -425,7 +556,7 @@ async function start() {
   const canvas = renderer.domElement
   canvas.setAttribute('tabindex', '0')
   canvas.setAttribute('role', 'button')
-  canvas.setAttribute('aria-label', '小猫，点一下摸摸它')
+  canvas.setAttribute('aria-label', TEXT.canvas)
   wrap.append(bubble, canvas)
   document.body.append(wrap, close)
   if (!open.isConnected) document.body.append(open)
@@ -437,11 +568,11 @@ async function start() {
   const key = new THREE.DirectionalLight(0xfff6ec, 2.2)
   key.position.set(2, 3, 4)
   scene.add(key)
-  const rimL = new THREE.DirectionalLight(0x5eead4, 1.3) // 背后的青色轮廓光，呼应站点主色
+  const rimL = new THREE.DirectionalLight(COL.rim, 1.3) // 背后的青色轮廓光，呼应站点主色
   rimL.position.set(-2.5, 2, -3)
   scene.add(rimL)
 
-  const cat = buildCat(THREE)
+  const cat = buildCat(THREE, cfg)
   const { root, rig, body, torso, headBase, head, ears, eyes, legs, tail, TN, LEG_RINGS, bendU } = cat
   scene.add(root)
 
@@ -454,7 +585,7 @@ async function start() {
     const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace
     return t
   }
-  const glow = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ map: radial([[0, 'rgba(0,184,184,0.3)'], [0.6, 'rgba(0,184,184,0.1)'], [1, 'rgba(0,184,184,0)']]), transparent: true, depthWrite: false }))
+  const glow = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ map: radial([[0, `rgba(${COL.glow},0.3)`], [0.6, `rgba(${COL.glow},0.1)`], [1, `rgba(${COL.glow},0)`]]), transparent: true, depthWrite: false }))
   glow.rotation.x = -Math.PI / 2
   scene.add(glow)
   const contact = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ map: radial([[0, 'rgba(0,0,0,0.5)'], [1, 'rgba(0,0,0,0)']]), transparent: true, depthWrite: false }))
@@ -479,19 +610,18 @@ async function start() {
 
   // ---------------------------------------------------------------- 动作
   const reduced = matchMedia('(prefers-reduced-motion: reduce)')
-  const rand = Math.random
-  const pointer = { x: 0, y: 0, t: -99 }
+  const pointer = { x: 0, y: 0, t: -99, buttons: 0 }
   const st = {
     // x 是身子中点（转身支点）的位置；odo 只在展示台里累加：猫原地走，脚掌按假想的位移落地
     mode: 'stand', until: 3, x: 0, targetX: 0, odo: [0, 0],
     yaw: spring(-0.55), speed: spring(0), gait: 0, bend: spring(0),
-    w: { sit: spring(0), loaf: spring(0) },
+    w: Object.fromEntries(OTHERS.map((n) => [n, spring(0)])),
     hy: spring(0), hp: spring(0), ht: spring(0), tiltTarget: 0, tiltUntil: 0, nextIdle: 4,
-    happyUntil: -1, hop: -1, sx: spring(1), sy: spring(1), lift: spring(0),
-    blinkT: -1, blinkLen: 0.16, nextBlink: 2, swish: 0, breath: 0, flick: 0,
+    happyUntil: -1, hop: -1, sx: spring(1), sy: spring(1), lift: spring(0), thinking: false,
+    blinkT: -1, blinkLen: 0, slowBlink: false, nextBlink: 2, swish: 0, breath: 0, flick: 0,
     tailEl: Array.from({ length: TN }, () => spring(0.6)), tailAz: Array.from({ length: TN }, () => spring(0)),
   }
-  addEventListener('pointermove', (e) => { pointer.x = e.clientX; pointer.y = e.clientY; pointer.t = performance.now() / 1000; if (!running) render() }, { passive: true })
+  addEventListener('pointermove', (e) => { pointer.x = e.clientX; pointer.y = e.clientY; pointer.t = performance.now() / 1000; pointer.buttons = e.buttons; if (!running) render() }, { passive: true })
 
   function ik(ax, ay, tx, ty, l1, l2, bend) {
     const dx = tx - ax, dy = ty - ay
@@ -517,17 +647,20 @@ async function start() {
   const tailPts = Array.from({ length: TN }, () => new THREE.Vector3())
   const tailR = Array.from({ length: TN }, (_, i) => { const u = i / (TN - 1), tip = clamp((u - 0.8) / 0.2); return lerp(DIM.tail.r0, DIM.tail.r1, u) * Math.sqrt(1 - tip * tip * 0.9) })
 
-  // 走一段 → 停下（站着看你 / 坐 / 揣手趴）→ 再走
+  function startWalk() {
+    let tx = (rand() * 2 - 1) * DIM.roam
+    if (Math.abs(tx - st.x) < 0.3) tx = st.x > 0 ? -DIM.roam * (0.5 + rand() * 0.5) : DIM.roam * (0.5 + rand() * 0.5)
+    st.targetX = tx; st.mode = 'walk'
+  }
+  // 走一段 → 停下（站着看你 / 坐 / 揣手趴）→ 再走；等 AI 回答时一直摆 ai.thinkPose
   function think(t) {
-    if (SHOW || st.happyUntil > t || t < st.until || st.mode === 'walk') return
-    if (st.mode !== 'stand') { st.mode = 'stand'; st.until = t + 1 + rand(); return }
-    const r = rand()
-    if (r < 0.55) {
-      let tx = (rand() * 2 - 1) * DIM.roam
-      if (Math.abs(tx - st.x) < 0.3) tx = st.x > 0 ? -DIM.roam * (0.5 + rand() * 0.5) : DIM.roam * (0.5 + rand() * 0.5)
-      st.targetX = tx; st.mode = 'walk'
-    } else if (r < 0.8) { st.mode = 'sit'; st.until = t + 5 + rand() * 6 }
-    else { st.mode = 'loaf'; st.until = t + 7 + rand() * 7 }
+    if (SHOW) return
+    if (st.thinking) { st.mode = cfg.ai.thinkPose; st.until = t; return }
+    if (st.happyUntil > t || t < st.until || st.mode === 'walk') return
+    if (st.mode !== 'stand') { st.mode = 'stand'; st.until = t + range(BEH.pause); return }
+    const next = pick(BEH.next.map((n) => [n, n.weight]))
+    if (next.do === 'walk') startWalk()
+    else { st.mode = next.do; st.until = t + range(next.hold) }
   }
 
   function sim(t, dt) {
@@ -542,10 +675,10 @@ async function start() {
       const dx = SHOW ? 1 : st.targetX - st.x
       wantYaw = dx > 0 ? 0 : -Math.PI
       wantSpeed = DIM.speed * clamp(Math.cos(wantYaw - yaw)) ** 2 * smooth(0, 0.15, Math.abs(dx))
-      if (Math.abs(dx) < 0.02) { st.mode = 'stand'; st.until = t + 1.5 + rand() * 2 }
+      if (Math.abs(dx) < 0.02) { st.mode = 'stand'; st.until = t + range(BEH.arrive) }
     } else {
       const facing = Math.cos(yaw) >= -0.05 ? 1 : -1
-      const turn = happy ? 1.0 : mode === 'sit' ? 0.85 : mode === 'loaf' ? 0.6 : 0.5
+      const turn = happy ? BEH.poke.turn : (Object.hasOwn(POSE, mode) ? POSE[mode] : POSE.stand).turn
       wantYaw = facing > 0 ? -turn : -Math.PI + turn
     }
     if (SHOW && params.get('petyaw')) wantYaw = (+params.get('petyaw') * Math.PI) / 180
@@ -562,30 +695,33 @@ async function start() {
     st.gait = (st.gait + (dt * stepping * DIM.duty) / DIM.stride) % 1
     const amp = clamp(stepping / DIM.speed)
     // 转身先转头和肩：脊柱往要去的方向弯，身子随后跟上；坐着、趴着不弯
-    step(st.bend, clamp(yawErr * 0.4, -0.45, 0.45) * (1 - Math.max(st.w.sit.x, st.w.loaf.x)), 5, dt)
+    step(st.bend, clamp(yawErr * 0.4, -0.45, 0.45) * (1 - Math.max(0, ...SETTLED.map((n) => st.w[n].x))), 5, dt)
     const B = st.bend.x
     bendU.value = B
 
     // ---- 姿势权重
-    step(st.w.sit, mode === 'sit' && !happy ? 1 : 0, 2.6, dt)
-    step(st.w.loaf, mode === 'loaf' && !happy ? 1 : 0, 2.2, dt)
-    const ws = clamp(st.w.sit.x), wl = clamp(st.w.loaf.x)
-    const wsHip = 1 - (1 - ws) ** 2, wsPitch = ws * ws * (3 - 2 * ws) // 坐下时后腿先落，前身后抬
+    const W = {}
+    for (const n of OTHERS) W[n] = clamp(step(st.w[n], mode === n && !happy ? 1 : 0, POSE[n].blend, dt))
     const S = POSE.stand
-    const mixP = (k, sitW = ws) => S[k] + (POSE.sit[k] - S[k]) * sitW + (POSE.loaf[k] - S[k]) * wl
+    const mixP = (k) => OTHERS.reduce((v, n) => { const e = POSE[n].ease?.[k]; return v + (POSE[n][k] - S[k]) * (e ? EASE[e](W[n]) : W[n]) }, S[k])
     const mixDir = (k) => {
       const a = [0, 0]
-      for (const [p, w] of [[S, Math.max(0, 1 - ws - wl)], [POSE.sit, ws], [POSE.loaf, wl]]) { a[0] += p[k][0] * w; a[1] += p[k][1] * w }
+      const wS = Math.max(0, OTHERS.reduce((v, n) => v - W[n], 1))
+      for (const [p, w] of [[S, wS], ...OTHERS.map((n) => [POSE[n], W[n]])]) { a[0] += p[k][0] * w; a[1] += p[k][1] * w }
       const l = Math.hypot(a[0], a[1]) || 1
       return [a[0] / l, a[1] / l]
     }
+    /** 权重过半的那个姿势（没有就是 stand）：呼吸、尾巴摆动快慢按它来 */
+    const main = POSE[OTHERS.reduce((m, n) => (W[n] > 0.5 && (!m || W[n] > W[m]) ? n : m), null) ?? 'stand']
+    /** 歇着的姿势（坐 / 趴）占多少：尾巴绕到身前 */
+    const wrapW = Math.max(0, ...SETTLED.map((n) => W[n]))
 
     // ---- 躯干：呼吸、走路时的起伏和左右摇摆
-    st.breath += dt * (wl > 0.5 ? 1.4 : 2.0)
+    st.breath += dt * main.breath
     const ph = st.gait * TAU
     const bob = amp * 0.018 * (1 - Math.cos(ph * 2)) * 0.5
-    const hipY = mixP('hip', wsHip) - bob
-    const pitch = mixP('pitch', wsPitch) + amp * 0.02 * Math.sin(ph * 2 + 0.6)
+    const hipY = mixP('hip') - bob
+    const pitch = mixP('pitch') + amp * 0.02 * Math.sin(ph * 2 + 0.6)
     // 根节点在髋关节，绕身子中点转：中点不动，髋跟着转半圈
     const cy = Math.cos(st.yaw.x), sy = Math.sin(st.yaw.x)
     const hipX = st.x - DIM.pivot * cy, hipZ = DIM.pivot * sy
@@ -606,7 +742,7 @@ async function start() {
     // 迈步时着地的脚钉在地面上不动，抬起的脚落到“走到半步时正好在肩 / 髋下面”的位置（算上这半步里身子的平移和转动）
     const [shX, shY] = toRoot(...DIM.shoulder)
     const fm = mixDir('fm'), hm = mixDir('hm')
-    const [sbx, sbz, phS] = bendAt(B, DIM.shoulder[0], 0)
+    const [sbx, sbz, phS] = bendAt(DIM.bend, B, DIM.shoulder[0], 0)
     const sdx = sbx - DIM.shoulder[0], cS = Math.cos(phS), sS = Math.sin(phS)
     const halfStance = DIM.stride / (2 * Math.max(stepping, 1e-3))
     const dTh = clamp(st.yaw.v * halfStance, -0.4, 0.4), adv = speed * halfStance
@@ -670,7 +806,7 @@ async function start() {
     }
 
     // ---- 头：看鼠标 / 看镜头 / 随便张望；抵消躯干俯仰，头始终正着；跟着脊柱侧弯挪到弯过去的位置
-    const [hbx, hbz] = bendAt(B, DIM.head[0], 0)
+    const [hbx, hbz] = bendAt(DIM.bend, B, DIM.head[0], 0)
     headBase.rotation.set(0, B, -pitch, 'ZYX')
     headBase.position.set(hbx, DIM.head[1] + bob * 0.7, hbz)
     let look = null
@@ -696,13 +832,14 @@ async function start() {
     wantHY = lerp(wantHY, clamp(yawErr, -1.1, 1.1), turning)
     wantHP *= 1 - turning
     if (!SHOW && t > st.nextIdle) {
-      const r = rand()
-      if (r < 0.4) { st.tiltTarget = (rand() < 0.5 ? -1 : 1) * (0.14 + rand() * 0.08); st.tiltUntil = t + 1.4 + rand() }
-      else if (r < 0.7) ears[rand() < 0.5 ? 0 : 1].flick = 0
+      const act = pick(Object.entries(BEH.idle.weights))
+      if (act === 'tilt') { st.tiltTarget = (rand() < 0.5 ? -1 : 1) * range(BEH.idle.tiltAngle); st.tiltUntil = t + range(BEH.idle.tiltHold) }
+      else if (act === 'ear') ears[rand() < 0.5 ? 0 : 1].flick = 0
       else st.flick = 1
-      st.nextIdle = t + 3 + rand() * 4
+      st.nextIdle = t + range(BEH.idle.every)
     }
     if (t > st.tiltUntil) st.tiltTarget = 0
+    if (st.thinking) st.tiltTarget = (Math.sin(t * 0.9) > 0 ? 1 : -1) * 0.16 // 想事情：约 3.5 秒换一边歪头
     step(st.hy, wantHY, 4.5, dt)
     // 脸始终朝镜头一侧、至少露出四分之三：头的朝向角限在 [-π, 0]（这一半朝着镜头）往里收 0.6 弧度；
     // 镜头是俯视的，正侧面看过去基本只剩后脑勺。身子转得快时弹簧跟不上，所以限在弹簧之后
@@ -720,15 +857,15 @@ async function start() {
       if (e.flick >= 0) { e.flick += dt; f = Math.sin(clamp(e.flick / 0.24) * Math.PI) * 0.35; if (e.flick > 0.24) e.flick = -1 }
       e.g.rotation.set(-f * 0.6, -0.2 * e.s, -0.36 * e.s - f * e.s * 0.5)
     }
-    let lid = 1 - wl * 0.4
+    let lid = OTHERS.reduce((v, n) => v - W[n] * (1 - (POSE[n].eyes ?? 1)), 1)
     if (!SHOW) {
-      if (st.blinkT < 0 && t > st.nextBlink) { st.blinkT = 0; st.blinkLen = rand() < 0.18 ? 0.9 : 0.16 }
+      if (st.blinkT < 0 && t > st.nextBlink) { st.blinkT = 0; st.slowBlink = rand() < BEH.blink.slowChance; st.blinkLen = st.slowBlink ? BEH.blink.slow : BEH.blink.fast }
       if (st.blinkT >= 0) {
         st.blinkT += dt
         const p = st.blinkT / st.blinkLen
-        const k = st.blinkLen > 0.5 ? 1 - 0.9 * (p < 0.3 ? smooth(0, 0.3, p) : p < 0.7 ? 1 : 1 - smooth(0.7, 1, p)) : 1 - Math.sin(clamp(p) * Math.PI) * 0.92
+        const k = st.slowBlink ? 1 - 0.9 * (p < 0.3 ? smooth(0, 0.3, p) : p < 0.7 ? 1 : 1 - smooth(0.7, 1, p)) : 1 - Math.sin(clamp(p) * Math.PI) * 0.92
         lid = Math.min(lid, k)
-        if (p >= 1) { st.blinkT = -1; st.nextBlink = t + 2 + rand() * 3 }
+        if (p >= 1) { st.blinkT = -1; st.nextBlink = t + range(BEH.blink.every) }
       }
     }
     if (SHOW_STATE === 'open') lid = 1
@@ -754,9 +891,8 @@ async function start() {
 
     // ---- 尾巴：每节的目标角度按姿势混合，再用弹簧跟随，越靠尾尖越慢
     const tb = toRoot(...DIM.tail.base)
-    st.swish += dt * (ws > 0.5 || wl > 0.5 ? 1.3 : 1.0)
+    st.swish += dt * main.swish
     st.flick = Math.max(0, st.flick - dt * 1.6)
-    const wrapW = Math.max(ws, wl)
     const hp = happy ? 1 : 0
     const segL = DIM.tail.len / (TN - 1)
     tailPts[0].set(tb[0], tb[1], 0)
@@ -802,6 +938,9 @@ async function start() {
     try { sim(simT, dt) } catch (e) { debug.errors.push(String((e && e.stack) || e)); throw e }
     renderer.render(scene, camera)
     debug.frames++
+    // 指针不动、猫自己走到它下面或走开时也要更新，否则按下和松开落在不同元素上，第一下点击就丢了；
+    // 按着键（正在拖选文字）时不切换，免得拖到一半终点落到画布上
+    if (pointer.t >= 0 && !pointer.buttons && !document.hidden) canvas.classList.toggle('hot', overCat(pointer.x, pointer.y))
   }
   function loop() {
     render()
@@ -818,18 +957,18 @@ async function start() {
 
   let bubbleTimer = 0
   let lastLine = -1
-  function say(text) {
+  function say(text, seconds = BEH.talk.show) {
     if (!text) {
       let i
-      do i = Math.floor(rand() * LINES.length)
-      while (i === lastLine && LINES.length > 1)
+      do i = Math.floor(rand() * LINES.random.length)
+      while (i === lastLine && LINES.random.length > 1)
       lastLine = i
-      text = LINES[i]
+      text = LINES.random[i]
     }
     bubble.textContent = text
     bubble.classList.add('on')
     clearTimeout(bubbleTimer)
-    bubbleTimer = setTimeout(() => bubble.classList.remove('on'), 3800)
+    bubbleTimer = setTimeout(() => bubble.classList.remove('on'), seconds * 1000)
   }
   function hearts() {
     if (reduced.matches) return
@@ -848,54 +987,131 @@ async function start() {
       setTimeout(() => h.remove(), 1300)
     }
   }
-  function poke() {
+  function poke(talk = true) {
     // 停下、转头看你、跳一下
-    st.happyUntil = simT + 2.6
+    st.happyUntil = simT + BEH.poke.happy
     if (st.mode === 'walk') st.mode = 'stand'
     st.until = Math.max(st.until, st.happyUntil + 1)
     if (st.hop < 0) st.hop = 0
     hearts()
-    say(rand() < 0.5 ? '喵！' : '')
+    if (talk) say(rand() < BEH.poke.lineChance ? LINES.poke : '')
     if (!raf) { clock.getDelta(); raf = requestAnimationFrame(function tick() { render(); raf = st.hop >= 0 || running ? requestAnimationFrame(tick) : 0 }) }
   }
-  canvas.addEventListener('click', poke)
+  canvas.addEventListener('click', () => poke())
   canvas.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); poke() } })
 
-  // 随机说话：首次进场 2.5 秒后打招呼，之后每 18~35 秒一句
+  // 指针在不在猫身上：猫的屏幕包围盒外扩 HIT_PAD。鼠标靠 pointermove 和每帧渲染后判定（见 render）；
+  // 触屏没有悬停，在 pointerdown 的捕获阶段判定，随后的 click 会重新命中测试，落到画布或下面的页面
+  const HIT_PAD = 4
+  /** 躯干中线上的三个点（body 坐标），各自外扩 0.4 盖住豆子形的身子（截面半径最大 0.36） */
+  const BODY_PTS = [[-0.3, 0.1], [0.35, 0.08], [0.9, 0.11]].map(([x, y]) => new THREE.Vector3(x, y, 0))
+  const hv = new THREE.Vector3(), hp = new THREE.Vector3()
+  /** 用每帧现成的点（头、躯干、四只脚掌、尾巴各节）各外扩一个半径再投影：不遍历顶点；rig 的矩阵里已经带着跳起和压扁 */
+  function catRect() {
+    const r = canvas.getBoundingClientRect()
+    const out = { left: Infinity, top: Infinity, right: -Infinity, bottom: -Infinity }
+    const add = (p, pad) => {
+      for (let i = 0; i < 4; i++) {
+        hv.set(p.x + (i & 1 ? pad : -pad), p.y + (i & 2 ? pad : -pad), p.z).project(camera)
+        const x = r.left + ((hv.x + 1) / 2) * r.width, y = r.top + ((1 - hv.y) / 2) * r.height
+        out.left = Math.min(out.left, x); out.right = Math.max(out.right, x); out.top = Math.min(out.top, y); out.bottom = Math.max(out.bottom, y)
+      }
+    }
+    // 头：半径约 0.48（缩放后），耳尖比头心高 0.56，所以中心上移 0.1、外扩 0.6
+    hp.setFromMatrixPosition(head.matrixWorld)
+    add(hp.setY(hp.y + 0.1), 0.6)
+    for (const b of BODY_PTS) add(hp.copy(b).applyMatrix4(body.matrixWorld), 0.4)
+    for (const L of legs) add(hp.setFromMatrixPosition(L.paw.matrixWorld), 0.14)
+    for (const t of tailPts) add(hp.copy(t).applyMatrix4(rig.matrixWorld), 0.1)
+    return out
+  }
+  function overCat(x, y) {
+    if (wrap.hidden) return false
+    const b = wrap.getBoundingClientRect()
+    if (x < b.left || x > b.right || y < b.top || y > b.bottom) return false
+    const r = catRect()
+    return x >= r.left - HIT_PAD && x <= r.right + HIT_PAD && y >= r.top - HIT_PAD && y <= r.bottom + HIT_PAD
+  }
+  const aim = (e) => {
+    pointer.buttons = e.buttons
+    if (e.type === 'pointerdown' || !e.buttons) canvas.classList.toggle('hot', overCat(e.clientX, e.clientY))
+  }
+  addEventListener('pointermove', aim, { passive: true })
+  document.addEventListener('pointerdown', aim, { capture: true, passive: true })
+  for (const type of ['pointerup', 'pointercancel']) document.addEventListener(type, (e) => { pointer.buttons = e.buttons }, { capture: true, passive: true })
+  debug.catRect = catRect
+  debug.thinking = () => st.thinking
+
+  // 随机说话：进场后打个招呼，之后每隔 behavior.talk.every 说一句
   let talkTimer = 0
   function scheduleTalk(delay) {
     clearTimeout(talkTimer)
-    talkTimer = setTimeout(() => { if (!wrap.hidden && !document.hidden) say(); scheduleTalk(18000 + rand() * 17000) }, delay)
+    talkTimer = setTimeout(() => { if (!wrap.hidden && !document.hidden && !st.thinking) say(); scheduleTalk(range(BEH.talk.every) * 1000) }, delay)
   }
 
-  function setHidden(hidden) {
+  const hiddenListeners = new Set()
+  function setHidden(hidden, persist = true) {
     wrap.hidden = hidden
     close.hidden = hidden || SHOW
     open.hidden = !hidden
-    try { localStorage.setItem(STORAGE_KEY, hidden ? '1' : '') } catch {}
-    if (hidden) { clearTimeout(talkTimer); bubble.classList.remove('on') } else if (!SHOW) scheduleTalk(1200)
+    if (persist) try { localStorage.setItem(STORAGE_KEY, hidden ? '1' : '') } catch {}
+    if (hidden) { clearTimeout(talkTimer); bubble.classList.remove('on') } else if (!SHOW) scheduleTalk(BEH.talk.reopenAfter * 1000)
     play()
+    hiddenListeners.forEach((cb) => cb(hidden))
   }
   close.addEventListener('click', () => { setHidden(true); open.focus() })
-  open.addEventListener('click', () => { setHidden(false); say('我回来啦～'); canvas.focus() })
+  open.addEventListener('click', () => { setHidden(false); say(LINES.back); canvas.focus() })
 
   let stored = ''
   try { stored = localStorage.getItem(STORAGE_KEY) || '' } catch {}
   if (SHOW) stored = ''
+  const startHidden = stored === '1' || (!SHOW && getComputedStyle(wrap).getPropertyValue('--pet-start').trim() === 'hidden')
   // 先把弹簧、尾巴和腿稳定下来，避免第一帧从零位置弹过来
   if (SHOW && SHOW_POSE === 'walk') st.gait = +(params.get('petgait') || 0.15)
   for (let i = 0; i < 120; i++) { simT += 1 / 60; sim(simT, 1 / 60) }
-  setHidden(stored === '1')
+  setHidden(startHidden, false)
   debug.ready = true
-  if (stored !== '1' && !SHOW) {
+  if (!startHidden && !SHOW) {
     clearTimeout(talkTimer)
-    setTimeout(() => say(LINES[0]), 2500)
-    scheduleTalk(2500 + 20000)
+    setTimeout(() => st.thinking || say(LINES.greet), BEH.talk.greetAfter * 1000)
+    scheduleTalk((BEH.talk.greetAfter + BEH.talk.firstAfterGreet) * 1000)
   }
+  if (SHOW) return
+
+  /** 给 pet-ai.js 用的接口 */
+  /** 谁在让猫想事情（对话、编辑器各算一个）：都结束了才起身 */
+  const thinkers = new Set()
+  function setThinking(on, who = 'ai') {
+    if (on) thinkers.add(who)
+    else thinkers.delete(who)
+    const was = st.thinking
+    st.thinking = thinkers.size > 0
+    if (was && !st.thinking) st.until = simT // 下一拍起身，接着按 behavior 走
+  }
+  function act(name) {
+    if (name === 'hop') poke(false)
+    else if (name === 'walk') startWalk()
+    else if (OTHERS.includes(name)) { st.mode = name; st.until = simT + ACT_HOLD }
+  }
+  const api = (window.pairwisePet = {
+    say: (text, seconds) => text && say(text, seconds),
+    setThinking,
+    act,
+    actions: () => [...OTHERS.map((n) => ({ name: n, label: POSE[n].label ?? n })), ...RESERVED.map((n) => ({ name: n, label: MOVES[n] }))],
+    rect: () => wrap.getBoundingClientRect(),
+    isHidden: () => wrap.hidden,
+    onHiddenChange: (cb) => { hiddenListeners.add(cb); return () => hiddenListeners.delete(cb) },
+  })
+  if (cfg.ai) import(sibling('pet-ai.js').href).then((m) => m.init(api, cfg)).catch((e) => console.warn('[pet] pet-ai.js 加载失败，没有 AI 对话', e))
 }
 
 // three.js 解析 + 首帧编译 shader 是一个 100ms 级的长任务，必须等入场动画（约 2s）播完、浏览器空闲时再加载，否则入场会卡一下
-const run = () => start().catch((e) => { debug.errors.push(String((e && e.stack) || e)); console.error('[pet]', e) })
+// 挂上页面之后才出错（比如 pet.json 里尺寸写错）：把已经放上去的画布、按钮（含自己建的叫回按钮、对话按钮和面板）拿掉，别在角落留个空壳
+const run = () => start().catch((e) => {
+  debug.errors.push(String((e && e.stack) || e))
+  console.error('[pet]', e)
+  document.querySelectorAll('.joy-pet, .joy-pet-close, .joy-pet-open, .joy-ai').forEach((n) => n.remove())
+})
 const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1))
 const later = () => (SHOW ? run() : setTimeout(() => idle(run, { timeout: 2000 }), 2400))
 if (document.readyState === 'complete') later()
