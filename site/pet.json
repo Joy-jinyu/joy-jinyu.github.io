@@ -98,6 +98,7 @@
     "selection": "用大白话解释一下我选中的这段内容：",
     "maxContext": 12000,
     "history": 8,
+    "memory": 40,
     "thinkPose": "sit"
   }
 }
