@@ -28,20 +28,23 @@
 | `primary` / `primary-hover` / `primary-active` / `primary-foreground` | 主按钮三态和上面的字 |
 | `primary-tint` / `brand-2` | 品牌浅底（标签 chip、「已发布」）/ 第二品牌色（预留给强调线） |
 | `secondary` / `secondary-foreground` | 普通按钮底色和字 |
+| `secondary-hover` / `secondary-active` | 普通按钮（含顶栏 AI 状态按钮）的悬停 / 按下底色：在 `secondary` 之上明显加深（`hover` / `pressed` 是给透明底控件的洗色，叠不出层次） |
 | `muted` / `accent` | 静态浅底（分段控件轨道、骨架屏）/ 选中行 |
 | `hover` / `pressed` | 所有可按控件的悬停洗色 / 按下洗色（同一色相、强度递增） |
-| `border` / `border-strong` / `input` / `ring` | 分隔线 / 输入框边 / 同前 / 键盘焦点环 |
+| `border` / `border-strong` / `input` / `ring` | 分隔线 / 输入框边、工具栏组间竖线 / 同前 / 键盘焦点环 |
+| `ring-destructive` | 出错的输入框聚焦时的焦点环（代替 `ring`，不叠两圈） |
 | `destructive` / `destructive-tint` | 错误、删除；浅底用于错误提示条 |
 | `warn` / `warn-tint` | 「审核中」、AI 未设置之类的提醒 |
 | `scrim` | 对话框和侧栏背后的遮罩 |
 
-圆角：`radius`（12，控件）、`radius-card`（18，卡片、对话框、侧栏）、`radius-sm`（8，按钮里的小件、代码块）；胶囊只给标签 chip、状态 badge、AI 状态 chip、分段控件。嵌套按「内圆角 ≈ 外圆角 − 间距」取最近一档。
+圆角：`radius`（12，控件）、`radius-card`（18，卡片、对话框、侧栏）、`radius-sm`（8，按钮里的小件、代码块）；胶囊只给标签 chip、状态 badge、分段控件（顶栏 AI 状态按钮和按钮同一家，用 `radius`）。嵌套按「内圆角 ≈ 外圆角 − 间距」取最近一档。
 
 ## 字号、间距、尺寸
 
 - 字号只用四档：`text-xs`（12，元信息、计数、badge）、`text-sm`（14，控件和表单）、`text-base`（16，预览正文）、`text-lg` / `text-2xl`（对话框标题 18 / 预览和未登录页大标题 24）。一屏最多 4 档、2 种字重（normal / semibold，按钮 medium）。
 - 间距用 Tailwind 4pt 刻度：控件内部 `gap-1`/`gap-2`，同组 `gap-3`，组与组 `gap-4`/`gap-5`，区块 `gap-6`/`gap-8`。
-- 控件尺寸（`size`）：桌面 `sm` 28 / `md` 36 高，触屏 `sm` 36 / `md` 44 高；输入框和按钮同高。图标按钮是控件高的正方形。用 `min-h-*` 不用固定高度，跟随系统字号。
+- 控件尺寸（`size`）：桌面 `sm` 28 / `bar` 32 / `md` 36 高，触屏 `sm`、`bar` 36 / `md` 44 高；输入框和按钮同高。`bar` 只给顶栏（AI 状态、我的投稿、退出同高）。图标按钮是控件高的正方形。用 `min-h-*` 不用固定高度，跟随系统字号。
+- 页面左右边距（`gutter()`，`src/ui/layout.ts`）：窗口宽 ≤ 640pt 时 16，否则 24，和宿主页顶栏的断点、边距一致，顶栏、写稿区、底栏的内容和宿主顶栏左右对齐。宽屏（≥ 900pt）两栏：上、下、左右和栏间距都是 24，正文框的底和预览卡片的底对齐，预览卡片的顶和第一个字段标签行的顶对齐；正文框撑满表单剩下的高度（至少 320）。
 
 ## 动效 token（`src/ui/motion.ts` 和 `nsh.json` 的 `tailwind.ease`）
 
@@ -64,18 +67,20 @@
 
 | 组件 | 说明 |
 |---|---|
-| `Button` | `variant`：primary / secondary / ghost / danger；`size`：sm / md；`loading`（变暗一点、显示 spinner、不改尺寸、防重复点击）/ `disabled`（半透明，无悬停无按下） |
+| `Button` | `variant`：primary / secondary / ghost / danger；`size`：sm / bar / md；`loading`（变暗一点、显示 spinner、不改尺寸、防重复点击）/ `disabled`（整个按钮 45% 不透明，图标和文字一起，无悬停无按下）；`disabledHint`：不能按时说明原因，悬停提示 + 接在读屏名后面（「润色正文…（先写正文）」）。图标按按钮的文字色画（不靠继承）；`edge="start"`：贴内容列左边缘的 ghost 文字按钮往左挪出内边距 + 边框，文字和上面的标签对齐，按的范围不变 |
 | `IconButton` | 正方形，必须有 `label`（读屏名） |
-| `Icon` | 一套字形图标（✕ ✓ ↗ ✦ ·），固定槽宽 |
+| `Icon` | 一套字形图标（✕ ✓ ↗ ✦ ·）和两枚线条图标（`chart`、`image`：16 视框、1.5 描边的 SVG，`tint-*` 上色），固定槽宽；`tone` 取 token 色 |
 | `Spinner` | 环形转圈，`tone` 跟随所在表面 |
-| `Field` | 标签行（标签 + 计数或右侧操作）、控件、说明 / 错误（错误上浮淡入） |
-| `TextInput` / `TextArea` / `TagInput` | 同一套边框、焦点环、错误态 |
+| `Field` | 标签行（标签 + 计数或右侧操作；只有带操作时撑到 28 高）、控件、说明 / 错误（错误上浮淡入） |
+| `TextInput` / `TextArea` / `TagInput` | 同一套边框和焦点环（`fieldState`），只有一圈：正常 `input` 边 → 聚焦品牌色边 + `ring`；出错 `destructive` 边 → 出错又聚焦时环换成 `ring-destructive` |
+| `Toolbar` | 分组工具栏（`role="toolbar"`，每组 `role="group"` 带组名）：组内 8pt，组间 24pt 中间一条竖细线；放不下时整组换行，换了行的两组之间不画线（线绝对定位，不占位置） |
+| `tip()` | 悬停提示的气泡（`Tooltip`）：桌面指针停半秒或键盘聚焦时出现，淡入淡出 `instant`；触屏不出现，所以内容还要另外进读屏名 |
 | `Segmented` | 一个滑动的选中块（`Tabs` 的 indicator，由内核滑动） |
 | `Dialog` | 卡片对话框：标题、说明、内容、底部操作；淡入遮罩 + 卡片上浮。`follow`：内容区定高、停在底部时跟着末尾走（流式输出） |
 | `confirm()` | `AlertDialog.show` 的薄封装，用于二次确认 |
 | `Sheet` | 宽屏从右侧滑出，窄屏从底部 |
 | `Badge` | neutral / brand / warn / danger，始终带文字 |
-| `Avatar` | 头像，加载前和失败时显示首字母 |
+| `Avatar` | 头像，加载前和失败时显示首字母；`label`：旁边不写名字时给（窄屏顶栏），读屏名 + 悬停提示 |
 | `Card` | 卡片表面 |
 | `Notice` | 行内提示条（错误 / 提醒），可关闭 |
 | `StepList` | 进度步骤：未开始点 → 进行中 spinner → 完成勾 / 失败叉 |
@@ -87,9 +92,9 @@
 | `Appear` | 挂载时上浮淡入一次（label 4pt fast / panel、page 8pt slow） |
 | `Separator` | 细分隔线 |
 | `Empty` / `Skeleton` | 空状态 / 加载占位 |
-| `StatusChip` | 顶栏 AI 状态胶囊（可按） |
+| `StatusChip` | 顶栏 AI 状态按钮：状态点 + 名字（「AI」「AI 未设置」），可选「· 详情」（模型名，等宽小字，最宽 160 截断）；外形和 `bar` 尺寸的 secondary 按钮一样；`hint` 悬停提示 |
 
-没做 `Toast`、`Menu`、`Popover`、`Tooltip`、`Select`、`Checkbox`、`Switch`：这个应用没有用到的地方，等第一个功能需要时按同一标准加。
+没做 `Toast`、`Menu`、`Popover`、`Select`、`Checkbox`、`Switch`：这个应用没有用到的地方，等第一个功能需要时按同一标准加。
 
 ## 屏幕与动效清单
 
@@ -117,12 +122,16 @@
 
 | 变化 | 动效 | 减少动效 |
 |---|---|---|
-| 顶栏按钮、AI chip、工具栏按钮悬停 / 按下 | 洗色 + 0.97（图标按钮 0.95），`fast`，settle | 只有洗色 |
-| 输入框获得焦点 | 边框变品牌色 + 外圈焦点环，`instant` | 直接切换 |
+| 顶栏 | 左边头像 + 登录名，右边 AI 状态（「AI · 模型名」）、我的投稿（secondary）、退出（ghost），同高 32；窄屏（≤ 640）只剩头像（登录名进读屏名和悬停提示），AI 只显示「AI」+ 状态点（模型名进读屏名和悬停提示），不出现半截文字 | — |
+| 顶栏按钮、AI 状态按钮、工具栏按钮悬停 / 按下 | secondary 底色加深（`secondary-hover` / `secondary-active`）、边框变 `border-strong`，其余洗色；按下 0.97（图标按钮 0.95），`fast`，settle | 只有颜色变化 |
+| 正文工具栏 | 两组：AI（✦ AI 起稿… / 润色正文… / 起标题和摘要…）和插入（图表线条图标 插入图表… / 图片线条图标 插入图片…），组间竖细线；窄处整组换行 | — |
+| 润色、起标题不能按（正文空） | 整个按钮 45% 不透明；悬停出「先写正文」提示（淡入 `instant`），读屏名带上原因 | 提示直接出现 |
+| 输入框获得焦点 | 边框变品牌色 + 外圈焦点环，`instant`；出错的输入框聚焦时只有一圈 `ring-destructive`，不叠品牌色 | 直接切换 |
 | 字段报错出现 / 消失 | 错误文字上浮 4pt 淡入，`fast`；消失直接移除 | 直接出现 |
 | 标题 / 摘要计数变化 | 数字原地更新，接近上限变 warn、超限变 destructive，颜色 `instant` | 同 |
 | 标签添加 / 删除 | chip 从 0.97 淡入上浮 4pt，`fast`；删除直接移除 | 直接出现 |
-| 「已保存」状态 | 文字在「保存中…」/「已保存」之间淡入切换，`base` | 直接切换 |
+| 「已保存」状态 | 底栏左边先是「清空…」（ghost，`edge="start"`：文字贴左边距），后面隔 12pt 是保存状态：状态出现、消失不挪动按钮；文字在「保存中…」/「已保存」之间淡入切换，`base` | 直接切换 |
+| 窄屏 编辑 / 预览 那一条 | 整条不透明（`background`），左右是页面边距；内容从它下面滚过、在条底被裁掉；滚动后条底出现细线（`border`，颜色 `instant`） | 细线直接出现 |
 | 窄屏 编辑 / 预览 切换 | 分段控件的选中块滑到新位置（内核 indicator 动画）；内容区交叉淡入，`base` | 选中块直接到位，内容直接切换 |
 | 宽屏预览随输入更新 | 不加动画（每次按键都在变，动画只会抖） | — |
 | AI 工具运行中 | 触发它的按钮显示 spinner（循环），对话框里同样 | spinner 停住，文字说明 |
@@ -175,6 +184,7 @@
 ## 键盘
 
 - Tab / Shift+Tab 按视觉顺序走；所有按钮、输入框、分段控件、列表行都有 `focus-visible` 焦点环（边框外 2pt，`ring`）。
+- 有悬停提示的可聚焦控件（AI 状态按钮）键盘聚焦时提示立即出现，Esc 收起；不能按的按钮不能聚焦，原因写在读屏名里。
 - 分段控件里左右方向键切换（`Tabs`）。标签输入：回车或逗号添加，空输入时退格删最后一个。
 - 对话框：Esc 关（提交进行中除外），⌘/Ctrl + 回车 触发默认操作（生成 / 填入稿件 / 替换正文 / 重试），焦点在多行输入框里也生效；同一时刻只有打开的那个对话框绑定这个键。二次确认用平台 `AlertDialog`，回车确认、Esc 取消。
 

@@ -22,17 +22,19 @@ export interface FieldProps {
   children?: JSX.Element;
 }
 
-/** 字段：标签和控件 6pt，控件和说明 6pt；错误出现时上浮淡入。 */
+/** 字段：标签和控件 6pt，控件和说明 6pt；错误出现时上浮淡入。标签行只有带操作时才撑到 sm 按钮高（28），否则就是文字高，标签的顶就是字段的顶。 */
 export function Field(props: FieldProps) {
   const over = () => props.max !== undefined && (props.count ?? 0) > props.max;
   const near = () => props.max !== undefined && !over() && (props.count ?? 0) >= props.max * 0.9;
+  // 只读一次：actions 是元素，每读一次 props.actions 都会再造一份（连同里面的绑定），一直留着
+  const actions = props.actions;
   return (
     <View class={`gap-1.5 ${props.class ?? ""}`}>
-      <View class="min-h-7 flex-row flex-wrap items-center justify-between gap-x-3 gap-y-1">
+      <View class="flex-row flex-wrap items-center justify-between gap-x-3 gap-y-1" classList={{ "min-h-7": !!actions }}>
         <Text class="text-sm font-semibold text-strong">{props.label}</Text>
-        <If when={props.actions} else={<Counter count={props.count} max={props.max} over={over()} near={near()} />}>
+        <If when={actions} else={<Counter count={props.count} max={props.max} over={over()} near={near()} />}>
           {/* 窄屏时操作区折到下一行：限宽到父容器，里面的按钮才会继续换行，不会顶出边距 */}
-          <View class="min-w-0 max-w-full">{props.actions}</View>
+          <View class="min-w-0 max-w-full">{actions}</View>
         </If>
       </View>
       {props.children}
@@ -81,6 +83,18 @@ export interface TextInputProps {
   ref?: (ref: InputRef) => void;
 }
 
+/**
+ * 边框和焦点环只有一圈，按状态取色：正常 border-input，聚焦变品牌色 + ring；
+ * 出错 border-destructive，出错又聚焦时环也换成 ring-destructive（不再叠一圈品牌色）。TextInput、TextArea、TagInput 共用。
+ */
+export function fieldState(invalid: boolean | undefined, focus: "focus" | "focus-within") {
+  if (focus === "focus-within") {
+    return invalid
+      ? "border-destructive focus-within:outline-ring-destructive"
+      : "border-input hover:border-faint focus-within:border-primary focus-within:outline-ring";
+  }
+  return invalid ? "border-destructive focus:outline-ring-destructive" : "border-input hover:border-faint focus:border-primary focus:outline-ring";
+}
 
 /** 单行输入框：桌面 36pt、触屏 44pt 高，和 md 按钮同高。 */
 export function TextInput(props: TextInputProps) {
@@ -97,21 +111,18 @@ export function TextInput(props: TextInputProps) {
       readonly={props.readonly}
       autoFocus={props.autoFocus}
       submitBehavior={props.onSubmit ? "submit" : "blurAndSubmit"}
-      class="rounded-(--radius) border bg-field px-3 text-sm text-strong placeholder:text-faint transition-colors duration-120 focus:outline-2 focus:outline-offset-1 focus:outline-ring motion-reduce:transition-none"
+      class={`rounded-(--radius) border bg-field px-3 text-sm text-strong placeholder:text-faint transition-colors duration-120 focus:outline-2 focus:outline-offset-1 motion-reduce:transition-none ${fieldState(props.invalid, "focus")}`}
       classList={{
         "min-h-9 py-1.5": pointer,
         "min-h-11 py-2.5": !pointer,
-        "border-input hover:border-faint focus:border-primary": !props.invalid,
-        "border-destructive focus:border-destructive": !!props.invalid,
         "opacity-70": !!props.readonly,
       }}
     />
   );
 }
 
-/** 多行输入框。`rows`：short 两三行（摘要、额外要求），medium 五六行（提纲），tall 撑满剩余高度（正文）。 */
-/** `minHeight`（pt）：调用方按可用高度给的最小高度（正文撑满可视区），只在 tall 时用。 */
-export function TextArea(props: TextInputProps & { rows?: "short" | "medium" | "tall"; minHeight?: number }) {
+/** 多行输入框。`rows`：short 两三行（摘要、额外要求），medium 五六行（提纲），tall 至少 320pt、撑满父容器剩下的高度（正文；父容器一路要是 flex-1）。 */
+export function TextArea(props: TextInputProps & { rows?: "short" | "medium" | "tall" }) {
   const rows = () => props.rows ?? "short";
   return (
     <Input
@@ -126,14 +137,11 @@ export function TextArea(props: TextInputProps & { rows?: "short" | "medium" | "
       placeholder={props.placeholder}
       readonly={props.readonly}
       autoFocus={props.autoFocus}
-      style={props.minHeight ? { minHeight: props.minHeight } : undefined}
-      class="rounded-(--radius) border bg-field px-3 text-sm text-strong placeholder:text-faint transition-colors duration-120 focus:outline-2 focus:outline-offset-1 focus:outline-ring motion-reduce:transition-none py-2 leading-6"
+      class={`rounded-(--radius) border bg-field px-3 py-2 text-sm leading-6 text-strong placeholder:text-faint transition-colors duration-120 focus:outline-2 focus:outline-offset-1 motion-reduce:transition-none ${fieldState(props.invalid, "focus")}`}
       classList={{
         "min-h-18": rows() === "short",
         "min-h-36": rows() === "medium",
         "min-h-80 flex-1": rows() === "tall",
-        "border-input hover:border-faint focus:border-primary": !props.invalid,
-        "border-destructive focus:border-destructive": !!props.invalid,
         "opacity-70": !!props.readonly,
       }}
     />

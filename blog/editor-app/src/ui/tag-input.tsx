@@ -2,6 +2,7 @@
 import { platform, signal, Text, View } from "nsh";
 import { Button as BaseButton, Input } from "nsh/base";
 import { Appear } from "./appear";
+import { fieldState } from "./field";
 import { Icon } from "./icon";
 
 const pointer = platform.desktop;
@@ -49,12 +50,10 @@ export function TagInput(props: TagInputProps) {
   return (
     <View
       testID={props.testID}
-      class="flex-row flex-wrap items-center gap-1.5 rounded-(--radius) border bg-field px-1.5 py-1 transition-colors duration-120 focus-within:outline-2 focus-within:outline-offset-1 focus-within:outline-ring motion-reduce:transition-none"
+      class={`flex-row flex-wrap items-center gap-1.5 rounded-(--radius) border bg-field px-1.5 py-1 transition-colors duration-120 focus-within:outline-2 focus-within:outline-offset-1 motion-reduce:transition-none ${fieldState(props.invalid, "focus-within")}`}
       classList={{
         "min-h-9": pointer,
         "min-h-11": !pointer,
-        "border-input hover:border-faint focus-within:border-primary": !props.invalid,
-        "border-destructive": !!props.invalid,
       }}
     >
       <Each of={props.tags} key={(t) => t}>

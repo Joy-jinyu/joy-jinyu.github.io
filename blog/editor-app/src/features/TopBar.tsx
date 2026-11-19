@@ -1,6 +1,6 @@
-/** 写稿页顶栏：谁在写、AI 状态、我的投稿、退出。 */
+/** 写稿页顶栏：谁在写、AI 状态、我的投稿、退出。右边三个控件同高（size bar）；窄屏只留头像，AI 只显示「AI」和状态点。 */
 import { signal, Text, View } from "nsh";
-import { Avatar, Button, StatusChip } from "../ui";
+import { Avatar, Button, compact, gutter, StatusChip } from "../ui";
 import { messageOf } from "./host";
 import { showNotice } from "./notice";
 import { aiStatus, aiStatusError, currentLogin, loadAi, openAiSettings, signOut } from "./session";
@@ -18,29 +18,37 @@ export function TopBar(props: { onOpenMine: () => void }) {
     }
   };
   return (
-    <View role="toolbar" class="flex-row items-center gap-3 border-b border-border px-5 py-2.5">
+    <View role="toolbar" class="flex-row items-center gap-3 border-b border-border py-2" classList={gutter()}>
       <View class="min-w-0 flex-1 flex-row items-center gap-2">
-        <Avatar src={currentLogin()?.avatarUrl} name={currentLogin()?.login ?? ""} size="sm" />
-        <Text style={{ numberOfLines: 1 }} class="min-w-0 flex-1 text-sm font-medium text-strong">
-          {currentLogin()?.login ?? ""}
-        </Text>
+        <Avatar src={currentLogin()?.avatarUrl} name={currentLogin()?.login ?? ""} size="sm" label={compact() ? currentLogin()?.login : undefined} />
+        <If when={!compact()}>
+          <Text style={{ numberOfLines: 1 }} class="min-w-0 flex-1 text-sm font-medium text-strong">
+            {currentLogin()?.login ?? ""}
+          </Text>
+        </If>
       </View>
-      <View class="flex-row items-center gap-2">
+      <View class="min-w-0 flex-row items-center gap-2">
         <AiChip />
-        <Button testID="open-mine" label="我的投稿" size="sm" variant="secondary" onPress={props.onOpenMine} />
-        <Button testID="logout" label="退出" size="sm" variant="ghost" loading={leaving()} onPress={() => void leave()} />
+        <Button testID="open-mine" label="我的投稿" size="bar" variant="secondary" onPress={props.onOpenMine} />
+        <Button testID="logout" label="退出" size="bar" variant="ghost" loading={leaving()} onPress={() => void leave()} />
       </View>
     </View>
   );
 }
 
-/** AI 状态：设置好了显示模型名，没设置或读取失败时提醒；按下打开站点的 AI 设置（读取失败时重读）。 */
+/**
+ * AI 状态按钮：设置好了是「AI · 模型名」（窄屏只有「AI」，模型名在读屏名和悬停提示里），没设置或读取失败时写明；
+ * 按下打开站点的 AI 设置（读取失败时重读）。
+ */
 function AiChip() {
   const settings = () =>
     openAiSettings().catch((e: unknown) => {
       showNotice(`没能打开 AI 设置：${messageOf(e)}`);
     });
-  const status = aiStatus;
+  const model = () => {
+    const status = aiStatus();
+    return status?.configured ? status.model : undefined;
+  };
   return (
     <If
       when={!aiStatusError()}
@@ -48,11 +56,12 @@ function AiChip() {
     >
       <StatusChip
         testID="ai-chip"
-        loading={status() === undefined}
-        label={status()?.configured ? (status() as { model: string }).model : status() ? "AI 未设置" : "AI"}
-        mono={!!status()?.configured}
-        tone={status()?.configured ? "ok" : "warn"}
-        accessibilityLabel={status()?.configured ? `AI：${(status() as { model: string }).model}，打开 AI 设置` : "AI 未设置，打开 AI 设置"}
+        loading={aiStatus() === undefined}
+        label={model() || !aiStatus() ? "AI" : "AI 未设置"}
+        detail={compact() ? undefined : model()}
+        tone={model() ? "ok" : "warn"}
+        hint={model() ? `AI 模型：${model()}` : undefined}
+        accessibilityLabel={model() ? `AI：${model()}，打开 AI 设置` : "AI 未设置，打开 AI 设置"}
         onPress={() => void settings()}
       />
     </If>

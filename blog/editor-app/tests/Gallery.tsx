@@ -28,6 +28,7 @@ import {
   TagInput,
   TextArea,
   TextInput,
+  Toolbar,
 } from "../src/ui";
 
 function Section(props: { title: string; children?: JSX.Element }) {
@@ -65,9 +66,30 @@ function Gallery() {
             <Button label="润色正文…" icon="sparkle" variant="secondary" size="sm" disabled />
             <IconButton icon="close" label="关闭" />
             <IconButton icon="close" label="关闭" size="sm" />
-            <StatusChip label="gpt-4o-mini" mono tone="ok" />
+          </View>
+        </Section>
+        <Section title="顶栏 · StatusChip + Button size bar（同高 32）">
+          <View class="flex-row flex-wrap items-center gap-2">
+            <StatusChip label="AI" detail="gpt-4o-mini" tone="ok" hint="AI 模型：gpt-4o-mini" />
+            <Button label="我的投稿" size="bar" variant="secondary" />
+            <Button label="退出" size="bar" variant="ghost" />
+          </View>
+          <View class="flex-row flex-wrap items-center gap-2">
+            <StatusChip label="AI" detail="vllm/deepseek-r1-distill-qwen-32b-awq" tone="ok" />
+            <StatusChip label="AI" tone="ok" accessibilityLabel="AI：gpt-4o-mini，打开 AI 设置" />
             <StatusChip label="AI 未设置" tone="warn" />
-            <StatusChip label="AI" tone="neutral" loading />
+            <StatusChip label="AI 状态读取失败" tone="warn" />
+            <StatusChip label="AI" tone="warn" loading />
+            <Button label="退出" size="bar" variant="ghost" loading />
+            <Avatar name="joy" size="sm" label="joy" />
+          </View>
+        </Section>
+        <Section title="Toolbar · 分组（AI / 插入）、不能按时的提示、窄处整组换行">
+          <BodyTools />
+          <BodyTools empty />
+          {/* 390 宽的窗口去掉 16 + 16 边距后正文栏是 358pt：AI 一行、插入一行 */}
+          <View class="w-[358px] outline-1 outline-dashed outline-border">
+            <BodyTools empty />
           </View>
         </Section>
         <Section title="Dialog · Sheet">
@@ -115,6 +137,12 @@ function Gallery() {
             </Field>
             <Field label="空输入" description="占位符和只读">
               <TextInput label="空输入" value="" placeholder="文章标题" onChange={() => {}} />
+            </Field>
+            <Field label="出错的标题" error="写一个标题。">
+              <TextInput label="出错的标题" value="" placeholder="点进来看出错 + 聚焦：只有一圈红色焦点环" invalid onChange={() => {}} />
+            </Field>
+            <Field label="出错的标签" error="最多 5 个标签。">
+              <TagInput label="出错的标签" tags={["前端"]} onChange={() => {}} max={5} maxLength={20} invalid />
             </Field>
             <Segmented
               label="编辑或预览"
@@ -200,6 +228,39 @@ function Gallery() {
         </Section>
       </View>
     </Scroll>
+  );
+}
+
+/** 正文工具栏：empty 时润色和起标题不能按（悬停看「先写正文」）。 */
+function BodyTools(props: { empty?: boolean }) {
+  const ai = (label: string, needsBody: boolean) => (
+    <Button label={label} icon="sparkle" size="sm" variant="secondary" disabled={needsBody && !!props.empty} disabledHint={needsBody ? "先写正文" : undefined} />
+  );
+  return (
+    <Toolbar
+      label="正文工具"
+      groups={[
+        {
+          label: "AI",
+          items: (
+            <>
+              {ai("AI 起稿…", false)}
+              {ai("润色正文…", true)}
+              {ai("起标题和摘要…", true)}
+            </>
+          ),
+        },
+        {
+          label: "插入",
+          items: (
+            <>
+              <Button label="插入图表…" icon="chart" size="sm" variant="secondary" />
+              <Button label="插入图片…" icon="image" size="sm" variant="secondary" />
+            </>
+          ),
+        },
+      ]}
+    />
   );
 }
 

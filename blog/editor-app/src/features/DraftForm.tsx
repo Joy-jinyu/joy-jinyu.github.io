@@ -1,7 +1,7 @@
 /** 稿件表单：标题、摘要、标签、正文（正文上方是 AI 工具和插入图片）。错误由写稿页决定什么时候显示。 */
-import { Text, View } from "nsh";
+import { computed, Text, View } from "nsh";
 import { type Draft, LIMITS } from "../../../src/lib/editor-host/contract";
-import { Appear, Button, Card, Field, Notice, StepList, TagInput, TextArea, TextInput } from "../ui";
+import { Appear, Button, Card, Field, Notice, StepList, TagInput, TextArea, TextInput, Toolbar } from "../ui";
 import { aiHintShown, aiRunning, type AiTool, startAi } from "./ai";
 import { currentDraft, setField } from "./draft";
 import { clearImageJobs, dismissImageNotice, imageJobs, imageNotice, imagesBusy, insertImages, noteBodyEdit, noteCaret } from "./images";
@@ -11,14 +11,13 @@ export interface DraftFormProps {
   errorOf: (field: keyof Draft) => string | undefined;
   /** 用户离开了这个字段。 */
   touch: (field: keyof Draft) => void;
-  /** 正文至少多高（pt），让它撑满可视区。 */
-  bodyMinHeight: number;
 }
 
+/** 表单撑满父容器的高度（父容器要是 flex-1 的列），正文框占掉剩下的部分。 */
 export function DraftForm(props: DraftFormProps) {
   const draft = currentDraft;
   return (
-    <View class="gap-5">
+    <View class="flex-1 gap-5">
       <Field label="标题" count={draft().title.trim().length} max={LIMITS.title} error={props.errorOf("title")}>
         <TextInput
           testID="title"
@@ -55,7 +54,7 @@ export function DraftForm(props: DraftFormProps) {
           placeholder="比如：前端、Rust"
         />
       </Field>
-      <Field label="正文" error={props.errorOf("body")} actions={<BodyToolbar />}>
+      <Field label="正文" class="flex-1" error={props.errorOf("body")} actions={<BodyToolbar />}>
         <If when={aiHintShown()}>
           <Notice tone="warn" message="AI 还没设置：在站点顶栏的「AI 设置」里填好接口地址、模型和 key，保存后这里就能用。" />
         </If>
@@ -67,7 +66,6 @@ export function DraftForm(props: DraftFormProps) {
           testID="body"
           label="正文"
           rows="tall"
-          minHeight={props.bodyMinHeight}
           value={draft().body}
           onChange={(v) => {
             setField("body", v);
@@ -83,9 +81,10 @@ export function DraftForm(props: DraftFormProps) {
   );
 }
 
-/** 正文上方的工具：AI 起稿和插入图表随时可用，润色和起标题需要先有正文；最后是插入图片（不用 AI，没有 ✦）。 */
+/** 正文上方的工具，两组：AI（起稿随时可用，润色和起标题要先有正文）和插入（图表、图片）。 */
 function BodyToolbar() {
-  const empty = () => !currentDraft().body.trim();
+  // computed：只在「空 / 不空」翻转时通知，打字时不让按钮和它的提示跟着重算
+  const empty = computed(() => !currentDraft().body.trim());
   const tool = (kind: AiTool, label: string, needsBody: boolean) => (
     <Button
       testID={`ai-${kind}`}
@@ -95,17 +94,43 @@ function BodyToolbar() {
       variant="secondary"
       loading={aiRunning() === kind}
       disabled={needsBody && empty()}
+      disabledHint={needsBody ? "先写正文" : undefined}
       onPress={() => void startAi(kind)}
     />
   );
   return (
-    <View role="toolbar" accessibilityLabel="正文工具" class="flex-row flex-wrap gap-2">
-      {tool("draft", "AI 起稿…", false)}
-      {tool("polish", "润色正文…", true)}
-      {tool("meta", "起标题和摘要…", true)}
-      {tool("chart", "插入图表…", false)}
-      <Button testID="insert-image" label="插入图片…" size="sm" variant="secondary" loading={imagesBusy()} onPress={() => void insertImages()} />
-    </View>
+    <Toolbar
+      label="正文工具"
+      groups={[
+        {
+          label: "AI",
+          items: (
+            <>
+              {tool("draft", "AI 起稿…", false)}
+              {tool("polish", "润色正文…", true)}
+              {tool("meta", "起标题和摘要…", true)}
+            </>
+          ),
+        },
+        {
+          label: "插入",
+          items: (
+            <>
+              <Button
+                testID="ai-chart"
+                label="插入图表…"
+                icon="chart"
+                size="sm"
+                variant="secondary"
+                loading={aiRunning() === "chart"}
+                onPress={() => void startAi("chart")}
+              />
+              <Button testID="insert-image" label="插入图片…" icon="image" size="sm" variant="secondary" loading={imagesBusy()} onPress={() => void insertImages()} />
+            </>
+          ),
+        },
+      ]}
+    />
   );
 }
 
