@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>通知</title>
+<style>
+/* ===== tokens.css（原样复制） ===== */
+/* 「团队空间」App 的设计变量。浅色、深色各一套。
+   成对的颜色（accent / on-accent，card 上的 text、text-2、danger）对比度都在 4.5:1 以上；
+   accent 当文字用时只能放在 card 上（放在 bg 上只有 4.22:1）。 */
+:root {
+  --color-accent: #b65a3c;      --color-on-accent: #ffffff;
+  --color-bg: #f4f4f1;          --color-card: #ffffff;
+  --color-text: #1c1c1a;        --color-text-2: #5f5e59;
+  --color-line: #e7e6e1;        --color-danger: #b42318;
+  --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-title: 600 18px/1.4 var(--font-sans);
+  --font-body: 400 15px/1.6 var(--font-sans);
+  --font-body-strong: 600 15px/1.6 var(--font-sans);
+  --font-caption: 400 13px/1.5 var(--font-sans);
+  --radius-card: 16px;  --radius-control: 10px;  --radius-pill: 999px;
+  --control-h: 44px;    --control-h-sm: 32px;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px rgb(0 0 0 / 0.06);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-accent: #d97757;    --color-on-accent: #1a1a19;
+    --color-bg: #141413;        --color-card: #1f1e1c;
+    --color-text: #f0efea;      --color-text-2: #a3a199;
+    --color-line: #2f2e2b;      --color-danger: #f97066;
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3);
+  }
+}
+
+/* ===== 页面 ===== */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font: var(--font-body);
+  -webkit-tap-highlight-color: transparent;
+  /* 数据里中英文之间没有空格，支持的浏览器自动补间距，不支持的照常显示 */
+  text-autospace: normal;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  margin: 0;
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --- 顶部导航栏：底色用 card，因为「全部已读」是 accent 文字，只能放在 card 上 --- */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  min-height: calc(var(--control-h) + env(safe-area-inset-top));
+  padding: env(safe-area-inset-top) calc(var(--space-1) + env(safe-area-inset-right)) 0 calc(var(--space-1) + env(safe-area-inset-left));
+  background: var(--color-card);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.navbar__title {
+  margin: 0;
+  font: var(--font-title);
+  white-space: nowrap;
+}
+
+.nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--control-h);
+  height: var(--control-h);
+  border-radius: var(--radius-control);
+}
+
+.nav-btn--back {
+  justify-self: start;
+}
+
+/* 返回箭头用边框画，不引入图标文件 */
+.nav-btn--back::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  margin-left: var(--space-1);
+  border-left: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+}
+
+.nav-btn--text {
+  justify-self: end;
+  padding: 0 var(--space-3);
+  color: var(--color-accent);
+  font: var(--font-body-strong);
+  white-space: nowrap;
+}
+
+.nav-btn--text[aria-disabled="true"] {
+  color: var(--color-text-2);
+  cursor: default;
+}
+
+.nav-btn--text[aria-busy="true"] {
+  cursor: progress;
+}
+
+/* --- 主体 --- */
+.main {
+  padding:
+    var(--space-2)
+    calc(var(--space-4) + env(safe-area-inset-right))
+    /* 给底部固定按钮让位：按钮高 + 上下内边距 + 安全区 + 一档区块间距 */
+    calc(var(--control-h) + var(--space-2) * 2 + env(safe-area-inset-bottom) + var(--space-5))
+    calc(var(--space-4) + env(safe-area-inset-left));
+}
+
+.page-msg {
+  margin: var(--space-2) 0 0;
+  font: var(--font-caption);
+  color: var(--color-danger);
+  background: var(--color-card);
+  border-radius: var(--radius-control);
+  padding: var(--space-2) var(--space-3);
+}
+
+.page-msg:empty {
+  display: none;
+}
+
+.group + .group {
+  margin-top: var(--space-5);
+}
+
+.group__title {
+  margin: var(--space-4) var(--space-1) var(--space-2);
+  font: var(--font-caption);
+  color: var(--color-text-2);
+}
+
+.card {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--color-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+.card > li + li {
+  border-top: 1px solid var(--color-line);
+}
+
+/* 一条通知。未读时是 <button>，已读后换成普通块，结构和尺寸完全一样 */
+.notice {
+  display: grid;
+  grid-template-columns: var(--space-2) minmax(0, 1fr) auto;
+  align-items: baseline;
+  column-gap: var(--space-2);
+  row-gap: var(--space-1);
+  width: 100%;
+  padding: var(--space-4);
+  text-align: left;
+  border-radius: inherit;
+  transition: background-color 120ms ease-out;
+}
+
+.card > li:first-child > .notice {
+  border-top-left-radius: var(--radius-card);
+  border-top-right-radius: var(--radius-card);
+}
+
+.card > li:last-child > .notice {
+  border-bottom-left-radius: var(--radius-card);
+  border-bottom-right-radius: var(--radius-card);
+}
+
+/* 卡片圆角会裁掉外扩的焦点环，这里改成内收 */
+.notice:focus-visible {
+  outline-offset: -2px;
+}
+
+@media (hover: hover) {
+  button.notice:hover {
+    background: var(--color-bg);
+  }
+}
+
+button.notice:active {
+  background: var(--color-bg);
+}
+
+.notice[aria-busy="true"] {
+  cursor: progress;
+}
+
+.notice__dot {
+  grid-column: 1;
+  grid-row: 1;
+  /* 对齐标题第一行的中线：(15px × 1.6 行高 − 8px 圆点) / 2 = 8px */
+  align-self: start;
+  margin-top: var(--space-2);
+  width: var(--space-2);
+  height: var(--space-2);
+  border-radius: var(--radius-pill);
+}
+
+.notice--unread .notice__dot {
+  background: var(--color-accent);
+}
+
+.notice__title {
+  grid-column: 2;
+  grid-row: 1;
+  font: var(--font-body);
+  overflow-wrap: anywhere;
+}
+
+/* 未读不只靠圆点区分：标题同时加粗 */
+.notice--unread .notice__title {
+  font: var(--font-body-strong);
+}
+
+.notice__time {
+  grid-column: 3;
+  grid-row: 1;
+  font: var(--font-caption);
+  color: var(--color-text-2);
+  white-space: nowrap;
+}
+
+.notice__body {
+  grid-column: 2 / 4;
+  grid-row: 2;
+  font: var(--font-body);
+  color: var(--color-text-2);
+  overflow-wrap: anywhere;
+}
+
+.notice__error {
+  grid-column: 2 / 4;
+  grid-row: 3;
+  font: var(--font-caption);
+  color: var(--color-danger);
+}
+
+/* --- 加载 / 空 / 失败 --- */
+.state {
+  margin: var(--space-5) 0 0;
+  padding: var(--space-5) var(--space-4);
+  text-align: center;
+  color: var(--color-text-2);
+  background: var(--color-card);
+  border-radius: var(--radius-card);
+}
+
+.state__text {
+  margin: 0;
+}
+
+.state--error .state__text {
+  color: var(--color-text);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--control-h);
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-control);
+  border: 1px solid var(--color-line);
+  background: var(--color-card);
+  color: var(--color-text);
+  font: var(--font-body-strong);
+  transition: background-color 120ms ease-out;
+}
+
+@media (hover: hover) {
+  .btn:hover {
+    background: var(--color-bg);
+  }
+}
+
+.btn:active {
+  background: var(--color-bg);
+}
+
+.state .btn {
+  margin-top: var(--space-4);
+}
+
+/* --- 底部固定栏 --- */
+.bottombar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  padding:
+    var(--space-2)
+    calc(var(--space-4) + env(safe-area-inset-right))
+    calc(var(--space-2) + env(safe-area-inset-bottom))
+    calc(var(--space-4) + env(safe-area-inset-left));
+  background: var(--color-bg);
+  border-top: 1px solid var(--color-line);
+}
+
+.bottombar .btn {
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notice, .btn {
+    transition: none;
+  }
+}
+</style>
+</head>
+<body>
+
+<header class="navbar">
+  <button type="button" class="nav-btn nav-btn--back" id="back" aria-label="返回" title="返回"></button>
+  <h1 class="navbar__title">通知</h1>
+  <button type="button" class="nav-btn nav-btn--text" id="read-all" aria-disabled="true">全部已读</button>
+</header>
+
+<main class="main">
+  <p class="page-msg" id="page-msg"></p>
+  <div id="list" aria-busy="true">
+    <div class="state"><p class="state__text">正在加载…</p></div>
+  </div>
+</main>
+
+<div class="bottombar">
+  <button type="button" class="btn" id="settings">通知设置</button>
+</div>
+
+<!-- 读屏播报用，必须在内容变化之前就在 DOM 里 -->
+<div class="visually-hidden" id="announcer" aria-live="polite"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  var API = {
+    list: './api/notices.json',
+    read: function (id) { return './api/notices/' + encodeURIComponent(id) + '/read'; },
+    readAll: './api/notices/read-all'
+  };
+  /** 「通知设置」的目的地，需求里没给，按实际路由替换 */
+  var SETTINGS_URL = './settings.html';
+
+  var listEl = document.getElementById('list');
+  var readAllBtn = document.getElementById('read-all');
+  var pageMsg = document.getElementById('page-msg');
+  var announcer = document.getElementById('announcer');
+
+  var notices = [];
+  var pending = new Set();
+  var readAllPending = false;
+
+  function announce(text) {
+    announcer.textContent = '';
+    // 先清空再写，连续两次相同文案也能被播报
+    setTimeout(function () { announcer.textContent = text; }, 50);
+  }
+
+  function el(tag, className, text) {
+    var node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text != null) node.textContent = text;
+    return node;
+  }
+
+  function isValidNotice(n) {
+    return n && (typeof n.id === 'number' || typeof n.id === 'string') &&
+      typeof n.group === 'string' && typeof n.title === 'string';
+  }
+
+  function unreadCount() {
+    return notices.filter(function (n) { return !n.read; }).length;
+  }
+
+  function syncReadAllBtn() {
+    var none = unreadCount() === 0;
+    readAllBtn.setAttribute('aria-disabled', String(none || readAllPending));
+    if (readAllPending) readAllBtn.setAttribute('aria-busy', 'true');
+    else readAllBtn.removeAttribute('aria-busy');
+  }
+
+  /** 生成一条通知的节点：未读用 button（可点），已读用 div（不可点）。 */
+  function renderNotice(n, errorText) {
+    var unread = !n.read;
+    var node = el(unread ? 'button' : 'div', 'notice' + (unread ? ' notice--unread' : ''));
+    node.dataset.id = String(n.id);
+    if (unread) node.type = 'button';
+    else node.tabIndex = -1;
+    if (pending.has(String(n.id))) node.setAttribute('aria-busy', 'true');
+
+    var dot = el('span', 'notice__dot');
+    dot.setAttribute('aria-hidden', 'true');
+    node.appendChild(dot);
+
+    var title = el('span', 'notice__title');
+    if (unread) title.appendChild(el('span', 'visually-hidden', '未读，'));
+    title.appendChild(document.createTextNode(n.title));
+    node.appendChild(title);
+
+    node.appendChild(el('span', 'notice__time', n.time || ''));
+    if (n.body) node.appendChild(el('span', 'notice__body', n.body));
+    if (errorText) node.appendChild(el('span', 'notice__error', errorText));
+    return node;
+  }
+
+  function renderList() {
+    listEl.textContent = '';
+    listEl.removeAttribute('aria-busy');
+
+    if (notices.length === 0) {
+      var empty = el('div', 'state');
+      empty.appendChild(el('p', 'state__text', '没有通知'));
+      listEl.appendChild(empty);
+      syncReadAllBtn();
+      return;
+    }
+
+    // 分组顺序按数据里首次出现的顺序
+    var groups = new Map();
+    notices.forEach(function (n) {
+      if (!groups.has(n.group)) groups.set(n.group, []);
+      groups.get(n.group).push(n);
+    });
+
+    var gi = 0;
+    groups.forEach(function (items, name) {
+      var section = el('section', 'group');
+      var headingId = 'group-' + gi++;
+      section.setAttribute('aria-labelledby', headingId);
+      var h = el('h2', 'group__title', name);
+      h.id = headingId;
+      section.appendChild(h);
+
+      var ul = el('ul', 'card');
+      items.forEach(function (n) {
+        var li = el('li');
+        li.appendChild(renderNotice(n));
+        ul.appendChild(li);
+      });
+      section.appendChild(ul);
+      listEl.appendChild(section);
+    });
+
+    syncReadAllBtn();
+  }
+
+  /** 原地替换一条通知的节点；替换前焦点在它身上的话，焦点跟到新节点。 */
+  function replaceNotice(id, errorText) {
+    var old = listEl.querySelector('.notice[data-id="' + CSS.escape(String(id)) + '"]');
+    var n = notices.find(function (x) { return String(x.id) === String(id); });
+    if (!old || !n) return;
+    var hadFocus = document.activeElement === old;
+    var next = renderNotice(n, errorText);
+    old.replaceWith(next);
+    if (hadFocus) next.focus({ preventScroll: true });
+  }
+
+  function renderLoadError() {
+    listEl.textContent = '';
+    listEl.removeAttribute('aria-busy');
+    var box = el('div', 'state state--error');
+    box.appendChild(el('p', 'state__text', '没能加载通知。请检查网络后重试。'));
+    var retry = el('button', 'btn', '重试');
+    retry.type = 'button';
+    retry.addEventListener('click', function () { load(true); });
+    box.appendChild(retry);
+    listEl.appendChild(box);
+    syncReadAllBtn();
+    announce('没能加载通知');
+  }
+
+  function load(fromRetry) {
+    listEl.setAttribute('aria-busy', 'true');
+    listEl.textContent = '';
+    var loading = el('div', 'state');
+    loading.appendChild(el('p', 'state__text', '正在加载…'));
+    listEl.appendChild(loading);
+
+    fetch(API.list, { headers: { Accept: 'application/json' } })
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        if (!Array.isArray(data)) throw new Error('通知数据不是数组');
+        notices = data.filter(isValidNotice).map(function (n) {
+          return Object.assign({}, n, { read: Boolean(n.read) });
+        });
+        renderList();
+        if (fromRetry) announce('已加载 ' + notices.length + ' 条通知');
+      })
+      .catch(function (err) {
+        console.error('[notices] 加载失败', err);
+        renderLoadError();
+      });
+  }
+
+  function post(url) {
+    return fetch(url, { method: 'POST', headers: { Accept: 'application/json' } })
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status + ' ' + url);
+        return res;
+      });
+  }
+
+  function markRead(id) {
+    var key = String(id);
+    if (pending.has(key) || readAllPending) return;
+    pending.add(key);
+    replaceNotice(id);
+
+    post(API.read(id))
+      .then(function () {
+        pending.delete(key);
+        notices = notices.map(function (n) {
+          return String(n.id) === key ? Object.assign({}, n, { read: true }) : n;
+        });
+        replaceNotice(id);
+        syncReadAllBtn();
+      })
+      .catch(function (err) {
+        console.error('[notices] 标为已读失败', err);
+        pending.delete(key);
+        replaceNotice(id, '没能标为已读，请再点一次');
+        announce('没能标为已读');
+      });
+  }
+
+  function markAllRead() {
+    if (readAllPending || unreadCount() === 0) return;
+    readAllPending = true;
+    pageMsg.textContent = '';
+    syncReadAllBtn();
+
+    post(API.readAll)
+      .then(function () {
+        readAllPending = false;
+        var changed = notices.filter(function (n) { return !n.read; }).map(function (n) { return n.id; });
+        notices = notices.map(function (n) { return n.read ? n : Object.assign({}, n, { read: true }); });
+        changed.forEach(function (id) { replaceNotice(id); });
+        syncReadAllBtn();
+        announce('已全部标为已读');
+      })
+      .catch(function (err) {
+        console.error('[notices] 全部已读失败', err);
+        readAllPending = false;
+        syncReadAllBtn();
+        pageMsg.textContent = '没能全部标为已读。请检查网络后重试。';
+        announce('没能全部标为已读');
+      });
+  }
+
+  listEl.addEventListener('click', function (e) {
+    var target = e.target.closest('button.notice');
+    if (target) markRead(target.dataset.id);
+  });
+
+  readAllBtn.addEventListener('click', markAllRead);
+
+  document.getElementById('back').addEventListener('click', function () {
+    history.back();
+  });
+
+  document.getElementById('settings').addEventListener('click', function () {
+    location.href = SETTINGS_URL;
+  });
+
+  load(false);
+})();
+</script>
+</body>
+</html>

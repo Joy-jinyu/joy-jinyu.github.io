@@ -1,0 +1,297 @@
+{
+ "file": "upgrade-plain-2.html",
+ "scheme": "light",
+ "bag": {
+  "bg": {
+   "#f4f5f7": {
+    "n": 1,
+    "who": [
+     "header.nav「升级套餐」"
+    ]
+   },
+   "#eceef2": {
+    "n": 3,
+    "who": [
+     "div.segmented「月付 年付 省 20%」",
+     "span.badge「当前套餐」",
+     "button.button「正在使用」"
+    ]
+   },
+   "#ffffff": {
+    "n": 5,
+    "who": [
+     "span.segment-label「月付」",
+     "article.plan「免费版 ¥0 永久免费 5G」",
+     "article.plan「Pro 当前套餐 ¥30/月」",
+     "article.plan「团队版 推荐 ¥88/月 按」"
+    ]
+   },
+   "#e3f4ec": {
+    "n": 1,
+    "who": [
+     "span.save-tag「省 20%」"
+    ]
+   },
+   "#2f5bea": {
+    "n": 2,
+    "who": [
+     "span.badge「推荐」",
+     "button.button「升级到团队版」"
+    ]
+   }
+  },
+  "radius": {
+   "10": {
+    "n": 3,
+    "who": [
+     "button.button「切换到免费版」",
+     "button.button「正在使用」",
+     "button.button「升级到团队版」"
+    ]
+   },
+   "14": {
+    "n": 4,
+    "who": [
+     "article.plan「免费版 ¥0 永久免费 5G」",
+     "article.plan「Pro 当前套餐 ¥30/月」",
+     "article.plan「团队版 推荐 ¥88/月 按」",
+     "div.faq-list「升级后怎么计费？ 升级立即生」"
+    ]
+   },
+   "pill": {
+    "n": 7,
+    "who": [
+     "button.icon-button「关闭」",
+     "div.segmented「月付 年付 省 20%」",
+     "span.segment-label「月付」",
+     "span.segment-label「年付 省 20%」"
+    ]
+   }
+  },
+  "controlHeight": {
+   "44": {
+    "n": 4,
+    "who": [
+     "button.icon-button「关闭」",
+     "button.button「切换到免费版」",
+     "button.button「正在使用」",
+     "button.button「升级到团队版」"
+    ]
+   },
+   "52": {
+    "n": 3,
+    "who": [
+     "summary「升级后怎么计费？」",
+     "summary「可以随时取消吗？」",
+     "summary「降级后超出空间的文件会被删除」"
+    ]
+   }
+  },
+  "text": {
+   "#16181d": {
+    "n": 22,
+    "who": [
+     "h1.nav-title「升级套餐」",
+     "span.segment-label「月付」",
+     "h2.plan-name「免费版」",
+     "span.price-amount「¥0」"
+    ]
+   },
+   "#5c6370": {
+    "n": 7,
+    "who": [
+     "span.segment-label「年付 省 20%」",
+     "span.badge「当前套餐」",
+     "span.price-unit「/月」",
+     "span.price-unit「/月」"
+    ]
+   },
+   "#0d7a4a": {
+    "n": 1,
+    "who": [
+     "span.save-tag「省 20%」"
+    ]
+   },
+   "#626975": {
+    "n": 4,
+    "who": [
+     "p.price-note「永久免费」",
+     "p.price-note「按月付费」",
+     "p.price-note「按月付费」",
+     "p.footnote「价格含税，可随时取消」"
+    ]
+   },
+   "#8a909b": {
+    "n": 1,
+    "who": [
+     "button.button「正在使用」"
+    ]
+   },
+   "#ffffff": {
+    "n": 2,
+    "who": [
+     "span.badge「推荐」",
+     "button.button「升级到团队版」"
+    ]
+   }
+  },
+  "fontSize": {
+   "12": {
+    "n": 7,
+    "who": [
+     "span.save-tag「省 20%」",
+     "p.price-note「永久免费」",
+     "span.badge「当前套餐」",
+     "p.price-note「按月付费」"
+    ]
+   },
+   "14": {
+    "n": 19,
+    "who": [
+     "span.segment-label「月付」",
+     "span.segment-label「年付 省 20%」",
+     "li「5GB 空间」",
+     "li「最多 3 人」"
+    ]
+   },
+   "16": {
+    "n": 3,
+    "who": [
+     "button.button「切换到免费版」",
+     "button.button「正在使用」",
+     "button.button「升级到团队版」"
+    ]
+   },
+   "18": {
+    "n": 5,
+    "who": [
+     "h1.nav-title「升级套餐」",
+     "h2.plan-name「免费版」",
+     "h2.plan-name「Pro」",
+     "h2.plan-name「团队版」"
+    ]
+   },
+   "30": {
+    "n": 3,
+    "who": [
+     "span.price-amount「¥0」",
+     "span.price-amount「¥30」",
+     "span.price-amount「¥88」"
+    ]
+   }
+  },
+  "fontWeight": {
+   "400": {
+    "n": 18,
+    "who": [
+     "p.price-note「永久免费」",
+     "li「5GB 空间」",
+     "li「最多 3 人」",
+     "li「网页端与手机端同步」"
+    ]
+   },
+   "500": {
+    "n": 4,
+    "who": [
+     "span.segment-label「年付 省 20%」",
+     "summary「升级后怎么计费？」",
+     "summary「可以随时取消吗？」",
+     "summary「降级后超出空间的文件会被删除」"
+    ]
+   },
+   "600": {
+    "n": 12,
+    "who": [
+     "h1.nav-title「升级套餐」",
+     "span.segment-label「月付」",
+     "span.save-tag「省 20%」",
+     "h2.plan-name「免费版」"
+    ]
+   },
+   "700": {
+    "n": 3,
+    "who": [
+     "span.price-amount「¥0」",
+     "span.price-amount「¥30」",
+     "span.price-amount「¥88」"
+    ]
+   }
+  },
+  "shadow": {
+   "#000000/0.08 0px 1px 2px 0px": {
+    "n": 1,
+    "who": [
+     "span.segment-label「月付」"
+    ]
+   },
+   "#dfe2e8 0px 0px 0px 1px inset": {
+    "n": 1,
+    "who": [
+     "button.button「切换到免费版」"
+    ]
+   },
+   "#2f5bea 0px 0px 0px 2px inset": {
+    "n": 1,
+    "who": [
+     "article.plan「团队版 推荐 ¥88/月 按」"
+    ]
+   }
+  },
+  "border": {
+   "2px #626975": {
+    "n": 6,
+    "who": [
+     "span.chevron",
+     "span.chevron",
+     "span.chevron",
+     "span.chevron"
+    ]
+   },
+   "1px #dfe2e8": {
+    "n": 2,
+    "who": [
+     "details.faq-item「可以随时取消吗？ 可以。取消」",
+     "details.faq-item「降级后超出空间的文件会被删除」"
+    ]
+   }
+  }
+ },
+ "vars": {
+  "--bg": "#f4f5f7",
+  "--surface": "#ffffff",
+  "--surface-muted": "#eceef2",
+  "--text": "#16181d",
+  "--text-secondary": "#5c6370",
+  "--text-tertiary": "#626975",
+  "--border": "#dfe2e8",
+  "--accent": "#2f5bea",
+  "--accent-pressed": "#2449c4",
+  "--accent-soft": "#e9eefe",
+  "--on-accent": "#ffffff",
+  "--positive": "#0d7a4a",
+  "--positive-soft": "#e3f4ec",
+  "--disabled-bg": "#eceef2",
+  "--disabled-text": "#8a909b",
+  "--focus": "#2f5bea",
+  "--space-1": "4px",
+  "--space-2": "8px",
+  "--space-3": "12px",
+  "--space-4": "16px",
+  "--space-6": "24px",
+  "--space-8": "32px",
+  "--radius-sm": "6px",
+  "--radius-md": "10px",
+  "--radius-lg": "14px",
+  "--radius-pill": "999px",
+  "--nav-height": "48px",
+  "--touch": "44px",
+  "--font-xs": "12px",
+  "--font-sm": "14px",
+  "--font-md": "16px",
+  "--font-lg": "18px",
+  "--font-price": "30px"
+ },
+ "darkRule": true,
+ "literalColorsOutsideRoot": 33,
+ "errors": []
+}

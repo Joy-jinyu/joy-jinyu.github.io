@@ -1,0 +1,7 @@
+Chrome 157，2026-11-18。每行：页面、原样/修正、读数（nav、bottom 是安全区以内可见的高度，safe 是安全区高度，sw 是页面宽度）、两栏占比、留给内容的高度
+detail1 raw {"scrollY":333,"nav":45,"bottom":57,"safe":372,"sw":852} 27.4% content 270
+detail1 fix {"scrollY":333,"nav":0,"bottom":57,"safe":372,"sw":852} 15.3% content 315
+detail2 raw {"scrollY":337,"nav":44,"bottom":52,"safe":372,"sw":852} 25.8% content 276
+detail2 fix {"scrollY":337,"nav":0,"bottom":52,"safe":372,"sw":852} 14.0% content 320
+detail3 raw {"scrollY":312,"nav":45,"bottom":57,"safe":372,"sw":852} 27.4% content 270
+detail3 fix {"scrollY":312,"nav":0,"bottom":57,"safe":372,"sw":852} 15.3% content 315

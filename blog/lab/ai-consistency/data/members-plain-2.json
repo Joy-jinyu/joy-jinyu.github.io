@@ -1,0 +1,357 @@
+{
+ "file": "members-plain-2.html",
+ "scheme": "light",
+ "bag": {
+  "bg": {
+   "#f4f5f7": {
+    "n": 1,
+    "who": [
+     "header.nav「团队成员 邀请」"
+    ]
+   },
+   "#e9efff": {
+    "n": 1,
+    "who": [
+     "button.btn「邀请」"
+    ]
+   },
+   "#ffffff": {
+    "n": 5,
+    "who": [
+     "input",
+     "ul.list「林晓林晓所有者刚刚活跃一鸣陈」",
+     "ul.list「@hello.design@」",
+     "button.btn「撤回给 hello.desi」"
+    ]
+   },
+   "#047857": {
+    "n": 1,
+    "who": [
+     "span.avatar「林晓」"
+    ]
+   },
+   "#fff1d6": {
+    "n": 1,
+    "who": [
+     "span.tag「所有者」"
+    ]
+   },
+   "#7c3aed": {
+    "n": 1,
+    "who": [
+     "span.avatar「一鸣」"
+    ]
+   },
+   "#e6edff": {
+    "n": 1,
+    "who": [
+     "span.tag「管理员」"
+    ]
+   },
+   "#575d6a": {
+    "n": 15,
+    "who": [
+     "i",
+     "i",
+     "i",
+     "i"
+    ]
+   },
+   "#be185d": {
+    "n": 1,
+    "who": [
+     "span.avatar「思远」"
+    ]
+   },
+   "#eceef2": {
+    "n": 6,
+    "who": [
+     "span.tag「成员」",
+     "span.tag「成员」",
+     "span.tag「成员」",
+     "span.tag「成员」"
+    ]
+   },
+   "#0e7490": {
+    "n": 1,
+    "who": [
+     "span.avatar「赵敏」"
+    ]
+   },
+   "#c2410c": {
+    "n": 1,
+    "who": [
+     "span.avatar「子涵」"
+    ]
+   },
+   "#1d4ed8": {
+    "n": 1,
+    "who": [
+     "span.avatar「AT」"
+    ]
+   }
+  },
+  "border": {
+   "1px #e3e5ea": {
+    "n": 13,
+    "who": [
+     "header.nav「团队成员 邀请」",
+     "input",
+     "input",
+     "input"
+    ]
+   },
+   "2px #1a1d23": {
+    "n": 2,
+    "who": [
+     "span.chevron-left",
+     "span.chevron-left"
+    ]
+   },
+   "1px null": {
+    "n": 4,
+    "who": [
+     "button.btn「邀请」",
+     "button.btn「邀请」",
+     "button.btn「邀请」",
+     "button.btn「邀请」"
+    ]
+   }
+  },
+  "radius": {
+   "6": {
+    "n": 6,
+    "who": [
+     "span.tag「所有者」",
+     "span.tag「管理员」",
+     "span.tag「成员」",
+     "span.tag「成员」"
+    ]
+   },
+   "10": {
+    "n": 7,
+    "who": [
+     "button.icon-btn「返回」",
+     "input",
+     "button.icon-btn「更多：陈一鸣」",
+     "button.icon-btn「更多：王思远」"
+    ]
+   },
+   "14": {
+    "n": 2,
+    "who": [
+     "ul.list「林晓林晓所有者刚刚活跃一鸣陈」",
+     "ul.list「@hello.design@」"
+    ]
+   },
+   "pill": {
+    "n": 26,
+    "who": [
+     "button.btn「邀请」",
+     "span.avatar「林晓」",
+     "span.avatar「一鸣」",
+     "i"
+    ]
+   }
+  },
+  "controlHeight": {
+   "32": {
+    "n": 3,
+    "who": [
+     "button.btn「邀请」",
+     "button.btn「撤回给 hello.desi」",
+     "button.btn「撤回给 liu.yang.f」"
+    ]
+   },
+   "40": {
+    "n": 1,
+    "who": [
+     "input"
+    ]
+   },
+   "44": {
+    "n": 6,
+    "who": [
+     "button.icon-btn「返回」",
+     "button.icon-btn「更多：陈一鸣」",
+     "button.icon-btn「更多：王思远」",
+     "button.icon-btn「更多：赵敏」"
+    ]
+   }
+  },
+  "text": {
+   "#1a1d23": {
+    "n": 11,
+    "who": [
+     "h1「团队成员」",
+     "span.name「林晓」",
+     "span.name「陈一鸣」",
+     "span.name「王思远」"
+    ]
+   },
+   "#2457e0": {
+    "n": 1,
+    "who": [
+     "button.btn「邀请」"
+    ]
+   },
+   "#575d6a": {
+    "n": 13,
+    "who": [
+     "h2.section-title「成员 · 6」",
+     "div.meta「刚刚活跃」",
+     "div.meta「2 小时前活跃」",
+     "div.meta「昨天活跃」"
+    ]
+   },
+   "#ffffff": {
+    "n": 6,
+    "who": [
+     "span.avatar「林晓」",
+     "span.avatar「一鸣」",
+     "span.avatar「思远」",
+     "span.avatar「赵敏」"
+    ]
+   },
+   "#7a4a00": {
+    "n": 1,
+    "who": [
+     "span.tag「所有者」"
+    ]
+   },
+   "#1d43a8": {
+    "n": 1,
+    "who": [
+     "span.tag「管理员」"
+    ]
+   },
+   "#464c58": {
+    "n": 4,
+    "who": [
+     "span.tag「成员」",
+     "span.tag「成员」",
+     "span.tag「成员」",
+     "span.tag「成员」"
+    ]
+   }
+  },
+  "fontSize": {
+   "12": {
+    "n": 7,
+    "who": [
+     "span.tag「所有者」",
+     "span.tag「管理员」",
+     "span.tag「成员」",
+     "span.tag「成员」"
+    ]
+   },
+   "13": {
+    "n": 10,
+    "who": [
+     "h2.section-title「成员 · 6」",
+     "div.meta「刚刚活跃」",
+     "div.meta「2 小时前活跃」",
+     "div.meta「昨天活跃」"
+    ]
+   },
+   "14": {
+    "n": 3,
+    "who": [
+     "button.btn「邀请」",
+     "button.btn「撤回给 hello.desi」",
+     "button.btn「撤回给 liu.yang.f」"
+    ]
+   },
+   "15": {
+    "n": 10,
+    "who": [
+     "span.avatar「林晓」",
+     "span.avatar「一鸣」",
+     "span.avatar「思远」",
+     "span.avatar「赵敏」"
+    ]
+   },
+   "16": {
+    "n": 6,
+    "who": [
+     "span.name「林晓」",
+     "span.name「陈一鸣」",
+     "span.name「王思远」",
+     "span.name「赵敏」"
+    ]
+   },
+   "17": {
+    "n": 1,
+    "who": [
+     "h1「团队成员」"
+    ]
+   }
+  },
+  "fontWeight": {
+   "400": {
+    "n": 11,
+    "who": [
+     "div.meta「刚刚活跃」",
+     "div.meta「2 小时前活跃」",
+     "div.meta「昨天活跃」",
+     "div.meta「3 天前活跃」"
+    ]
+   },
+   "500": {
+    "n": 19,
+    "who": [
+     "button.btn「邀请」",
+     "h2.section-title「成员 · 6」",
+     "span.name「林晓」",
+     "span.tag「所有者」"
+    ]
+   },
+   "600": {
+    "n": 7,
+    "who": [
+     "h1「团队成员」",
+     "span.avatar「林晓」",
+     "span.avatar「一鸣」",
+     "span.avatar「思远」"
+    ]
+   }
+  }
+ },
+ "vars": {
+  "--bg": "#f4f5f7",
+  "--surface": "#ffffff",
+  "--surface-pressed": "#eceef2",
+  "--text": "#1a1d23",
+  "--text-secondary": "#575d6a",
+  "--hairline": "#e3e5ea",
+  "--accent": "#2457e0",
+  "--accent-soft": "#e9efff",
+  "--accent-on": "#ffffff",
+  "--danger": "#c42b2b",
+  "--danger-on": "#ffffff",
+  "--focus": "#2457e0",
+  "--tag-owner-bg": "#fff1d6",
+  "--tag-owner-text": "#7a4a00",
+  "--tag-admin-bg": "#e6edff",
+  "--tag-admin-text": "#1d43a8",
+  "--tag-member-bg": "#eceef2",
+  "--tag-member-text": "#464c58",
+  "--avatar-text": "#ffffff",
+  "--shadow": "0 8px 24px rgb(16 24 40 / 0.16)",
+  "--backdrop": "rgb(16 24 40 / 0.4)",
+  "--space-1": "4px",
+  "--space-2": "8px",
+  "--space-3": "12px",
+  "--space-4": "16px",
+  "--space-6": "24px",
+  "--space-8": "32px",
+  "--radius-sm": "6px",
+  "--radius-md": "10px",
+  "--radius-lg": "14px",
+  "--hit": "44px",
+  "--nav-h": "52px"
+ },
+ "darkRule": true,
+ "literalColorsOutsideRoot": 0,
+ "errors": []
+}

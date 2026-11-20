@@ -1,0 +1,12 @@
+const host=globalThis.__nsh_browser_realm.modules;
+let e0=host.get("nsh/base")["AlertDialog"];export{e0 as "AlertDialog"};
+let e1=host.get("nsh/base")["Avatar"];export{e1 as "Avatar"};
+let e2=host.get("nsh/base")["Button"];export{e2 as "Button"};
+let e3=host.get("nsh/base")["Collapsible"];export{e3 as "Collapsible"};
+let e4=host.get("nsh/base")["Dialog"];export{e4 as "Dialog"};
+let e5=host.get("nsh/base")["Sheet"];export{e5 as "Sheet"};
+let e6=host.get("nsh/base")["Tab"];export{e6 as "Tab"};
+let e7=host.get("nsh/base")["Tabs"];export{e7 as "Tabs"};
+let e8=host.get("nsh/base")["TextView"];export{e8 as "TextView"};
+let e9=host.get("nsh/base")["Tooltip"];export{e9 as "Tooltip"};
+globalThis.__nsh_browser_realm.watch(()=>{e0=host.get("nsh/base")["AlertDialog"];e1=host.get("nsh/base")["Avatar"];e2=host.get("nsh/base")["Button"];e3=host.get("nsh/base")["Collapsible"];e4=host.get("nsh/base")["Dialog"];e5=host.get("nsh/base")["Sheet"];e6=host.get("nsh/base")["Tab"];e7=host.get("nsh/base")["Tabs"];e8=host.get("nsh/base")["TextView"];e9=host.get("nsh/base")["Tooltip"];});

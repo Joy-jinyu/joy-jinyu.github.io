@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>团队空间</title>
+<style>
+  :root {
+    --color-accent: #b65a3c;      /* 主色 */
+    --color-on-accent: #ffffff;   /* 主色上的文字 */
+    --color-text: #1c1c1a;
+    --color-text-2: #5f5e59;
+    --color-line: #e7e6e1;
+    --color-bg: #f4f4f1;
+    --color-card: #ffffff;
+    --radius-card: 16px;
+    --radius-control: 10px;
+    --font-sm: 13px;
+    --font-md: 15px;
+    --font-lg: 18px;
+    --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body { margin: 0; }
+
+  body {
+    min-height: 100vh;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+    font-size: var(--font-md);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+    padding: var(--space-5) var(--space-4);
+  }
+
+  .card {
+    position: relative;
+    max-width: 480px;
+    margin: 0 auto;
+    background: var(--color-card);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+    padding: var(--space-5) var(--space-4) var(--space-4);
+  }
+
+  .card__head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding-right: 40px;
+  }
+
+  .card__title {
+    margin: 0;
+    font-size: var(--font-lg);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 var(--space-2);
+    height: 20px;
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius-control);
+    color: var(--color-accent);
+    font-size: var(--font-sm);
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .card__desc {
+    margin: var(--space-2) 0 0;
+    color: var(--color-text-2);
+    font-size: var(--font-sm);
+  }
+
+  .stats {
+    margin: var(--space-5) 0 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .stat {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .stat:last-child { border-bottom: 0; padding-bottom: 0; }
+
+  .stat__label {
+    color: var(--color-text-2);
+    font-size: var(--font-sm);
+  }
+
+  .stat__value {
+    font-size: var(--font-md);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat__unit {
+    color: var(--color-text-2);
+    font-size: var(--font-sm);
+    font-weight: 400;
+  }
+
+  .progress {
+    height: 8px;
+    margin-top: var(--space-2);
+    background: var(--color-line);
+    border-radius: var(--radius-control);
+    overflow: hidden;
+  }
+
+  .progress__bar {
+    height: 100%;
+    width: 37.5%;
+    background: var(--color-accent);
+    border-radius: inherit;
+  }
+
+  .actions {
+    display: flex;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+
+  .btn {
+    flex: 1;
+    min-height: 44px;
+    padding: 0 var(--space-4);
+    border-radius: var(--radius-control);
+    font: inherit;
+    font-size: var(--font-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity .15s ease;
+  }
+
+  .btn:active { opacity: .8; }
+
+  .btn:focus-visible,
+  .more:focus-visible,
+  .menu__item:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .btn--primary {
+    background: var(--color-accent);
+    border: 1px solid var(--color-accent);
+    color: var(--color-on-accent);
+  }
+
+  .btn--secondary {
+    background: var(--color-card);
+    border: 1px solid var(--color-line);
+    color: var(--color-text);
+  }
+
+  .more {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-3);
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: var(--radius-control);
+    color: var(--color-text-2);
+    cursor: pointer;
+  }
+
+  .more[aria-expanded="true"],
+  .more:active { background: var(--color-bg); }
+
+  .more__dots {
+    display: flex;
+    gap: 3px;
+  }
+
+  .more__dots span {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .menu {
+    position: absolute;
+    top: 56px;
+    right: var(--space-3);
+    z-index: 10;
+    min-width: 140px;
+    margin: 0;
+    padding: var(--space-1);
+    list-style: none;
+    background: var(--color-card);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-control);
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--color-text) 12%, transparent);
+    opacity: 0;
+    transform: translateY(-4px);
+    pointer-events: none;
+    visibility: hidden;
+    transition: opacity .15s ease, transform .15s ease, visibility 0s linear .15s;
+  }
+
+  .menu.is-open {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    visibility: visible;
+    transition: opacity .15s ease, transform .15s ease;
+  }
+
+  .menu__item {
+    display: block;
+    width: 100%;
+    min-height: 40px;
+    padding: 0 var(--space-3);
+    background: transparent;
+    border: 0;
+    border-radius: var(--radius-control);
+    color: var(--color-text);
+    font: inherit;
+    font-size: var(--font-md);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .menu__item:hover,
+  .menu__item:active { background: var(--color-bg); }
+
+  .menu__item--danger { color: var(--color-accent); }
+
+  .menu__sep {
+    height: 1px;
+    margin: var(--space-1) 0;
+    background: var(--color-line);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .menu, .menu.is-open, .btn { transition: none; }
+  }
+</style>
+</head>
+<body>
+  <main>
+    <section class="card" aria-labelledby="space-title">
+      <header class="card__head">
+        <h1 class="card__title" id="space-title">团队空间</h1>
+        <span class="badge">Pro</span>
+      </header>
+      <p class="card__desc">本周通过 Claude Code 上传了 12GB 文件，还剩 63GB 可用</p>
+
+      <button class="more" id="more-btn" type="button" aria-label="更多" aria-haspopup="menu" aria-expanded="false" aria-controls="more-menu">
+        <span class="more__dots" aria-hidden="true"><span></span><span></span><span></span></span>
+      </button>
+      <ul class="menu" id="more-menu" role="menu" aria-labelledby="more-btn">
+        <li role="none"><button class="menu__item" type="button" role="menuitem">重命名</button></li>
+        <li role="none"><button class="menu__item" type="button" role="menuitem">复制链接</button></li>
+        <li role="none" class="menu__sep"></li>
+        <li role="none"><button class="menu__item menu__item--danger" type="button" role="menuitem">删除</button></li>
+      </ul>
+
+      <ul class="stats">
+        <li class="stat">
+          <span class="stat__label">今日上传文件数</span>
+          <span class="stat__value"><span id="upload-count" aria-live="off">128</span> <span class="stat__unit">个</span></span>
+        </li>
+        <li class="stat" style="display:block">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-3)">
+            <span class="stat__label" id="usage-label">已用空间</span>
+            <span class="stat__value">37.5 <span class="stat__unit">/ 100 GB</span></span>
+          </div>
+          <div class="progress" role="progressbar" aria-labelledby="usage-label" aria-valuemin="0" aria-valuemax="100" aria-valuenow="37.5" aria-valuetext="已用 37.5 GB，共 100 GB">
+            <div class="progress__bar"></div>
+          </div>
+        </li>
+      </ul>
+
+      <div class="actions">
+        <button class="btn btn--primary" type="button">升级套餐</button>
+        <button class="btn btn--secondary" type="button">管理成员</button>
+      </div>
+    </section>
+  </main>
+
+<script>
+  (function () {
+    var countEl = document.getElementById('upload-count');
+    var count = Number(countEl.textContent);
+    setInterval(function () {
+      count += 1 + Math.floor(Math.random() * 3);
+      countEl.textContent = String(count);
+    }, 1000);
+
+    var btn = document.getElementById('more-btn');
+    var menu = document.getElementById('more-menu');
+    var items = menu.querySelectorAll('[role="menuitem"]');
+
+    function setOpen(open, focusFirst) {
+      menu.classList.toggle('is-open', open);
+      btn.setAttribute('aria-expanded', String(open));
+      if (open && focusFirst) items[0].focus();
+    }
+
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      setOpen(btn.getAttribute('aria-expanded') !== 'true', e.detail === 0);
+    });
+
+    menu.addEventListener('click', function (e) {
+      if (e.target.closest('[role="menuitem"]')) {
+        setOpen(false);
+        btn.focus();
+      }
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!menu.contains(e.target)) setOpen(false);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (btn.getAttribute('aria-expanded') !== 'true') return;
+      var list = Array.prototype.slice.call(items);
+      var idx = list.indexOf(document.activeElement);
+      if (e.key === 'Escape') {
+        setOpen(false);
+        btn.focus();
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        list[(idx + 1) % list.length].focus();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        list[(idx - 1 + list.length) % list.length].focus();
+      }
+    });
+  })();
+</script>
+</body>
+</html>

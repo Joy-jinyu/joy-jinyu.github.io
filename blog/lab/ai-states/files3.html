@@ -1,0 +1,972 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>文件</title>
+<style>
+  :root {
+    color-scheme: light dark;
+
+    --color-bg: #ffffff;
+    --color-surface-raised: #ffffff;
+    --color-text: #1c1c1e;
+    --color-text-secondary: #636369;
+    --color-separator: #e3e3e8;
+    --color-fill: #f0f0f3;
+    --color-fill-pressed: #e1e1e6;
+    --color-skeleton: #ececf0;
+    --color-accent: #0a5fd1;
+    --color-accent-pressed: #084ea8;
+    --color-on-accent: #ffffff;
+    --color-on-danger: #ffffff;
+    --color-on-kind: #ffffff;
+    --color-danger: #c81e1e;
+    --color-danger-pressed: #a51717;
+    --color-danger-text: #c01818;
+    --color-focus: #0a5fd1;
+    --color-new-row: #e6effd;
+    --color-offline-bg: #fff3e0;
+    --color-offline-text: #7a4100;
+    --color-scrim: rgb(0 0 0 / 0.4);
+
+    --kind-pdf: #c42b1c;
+    --kind-doc: #1d5fc4;
+    --kind-sheet: #187a3d;
+    --kind-slide: #b04a0a;
+    --kind-image: #7a3db8;
+    --kind-media: #a3266b;
+    --kind-other: #5c6370;
+
+    --space-4: 4px;
+    --space-8: 8px;
+    --space-12: 12px;
+    --space-16: 16px;
+    --space-24: 24px;
+    --space-32: 32px;
+
+    --radius-control: 10px;
+    --radius-badge: 8px;
+    --radius-dialog: 14px;
+
+    --nav-height: 44px;
+    --control-height: 44px;
+    --row-button-height: 32px;
+    --badge-size: 40px;
+    --font: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-bg: #141416;
+      --color-surface-raised: #222226;
+      --color-text: #f2f2f5;
+      --color-text-secondary: #a0a0a8;
+      --color-separator: #2c2c31;
+      --color-fill: #2c2c31;
+      --color-fill-pressed: #38383e;
+      --color-skeleton: #26262b;
+      --color-accent: #2563d6;
+      --color-accent-pressed: #1d50b0;
+      --color-danger: #cf2a2a;
+      --color-danger-pressed: #ad2020;
+      --color-danger-text: #ff7a7a;
+      --color-focus: #7aa7ff;
+      --color-new-row: #18284a;
+      --color-offline-bg: #3a2a10;
+      --color-offline-text: #ffd08a;
+      --color-scrim: rgb(0 0 0 / 0.6);
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  html {
+    background: var(--color-bg);
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0 auto;
+    max-width: 640px;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  p, h1, h2, ul { margin: 0; }
+  ul { padding: 0; list-style: none; }
+  button, input { font: inherit; color: inherit; }
+  [hidden] { display: none !important; }
+
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* 顶部导航 */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    padding-top: env(safe-area-inset-top);
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-separator);
+  }
+
+  .nav__title {
+    height: var(--nav-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+  .main { flex: 1; }
+
+  .offline {
+    padding: var(--space-8) var(--space-16);
+    background: var(--color-offline-bg);
+    color: var(--color-offline-text);
+    font-size: 14px;
+  }
+
+  /* 搜索 */
+  .search {
+    position: relative;
+    padding: var(--space-8) var(--space-16);
+  }
+
+  .search::before,
+  .search::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+  }
+
+  /* CSS 画的放大镜：圆圈 + 斜柄 */
+  .search::before {
+    left: calc(var(--space-16) + var(--space-12));
+    top: 50%;
+    width: 12px;
+    height: 12px;
+    margin-top: -8px;
+    border: 2px solid var(--color-text-secondary);
+    border-radius: 50%;
+  }
+
+  .search::after {
+    left: calc(var(--space-16) + var(--space-12) + 11px);
+    top: 50%;
+    width: 2px;
+    height: 6px;
+    margin-top: 2px;
+    background: var(--color-text-secondary);
+    border-radius: 1px;
+    transform: rotate(-45deg);
+  }
+
+  .search__input {
+    width: 100%;
+    height: var(--control-height);
+    padding: 0 var(--space-12) 0 calc(var(--space-12) + 24px);
+    border: 0;
+    border-radius: var(--radius-control);
+    background: var(--color-fill);
+    font-size: 16px;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .search__input::placeholder { color: var(--color-text-secondary); opacity: 1; }
+  .search__input:focus-visible { outline-offset: 0; }
+
+  /* 文件列表 */
+  .files { outline: none; }
+  .files:focus-visible { outline: 2px solid var(--color-focus); outline-offset: -2px; }
+
+  .row {
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--badge-size) minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-8) var(--space-12);
+    padding: var(--space-12) var(--space-16);
+  }
+
+  /* 极窄视口（如 375 宽放大 200%）：删除按钮换到文件名下方，给文件名留出宽度 */
+  @media (max-width: 280px) {
+    .row { grid-template-columns: var(--badge-size) minmax(0, 1fr); align-items: start; }
+    .row__delete { grid-column: 2; justify-self: start; }
+  }
+
+  .row + .row::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: calc(var(--space-16) + var(--badge-size) + var(--space-12));
+    right: 0;
+    height: 1px;
+    background: var(--color-separator);
+  }
+
+  @media (min-resolution: 2dppx) {
+    .row + .row::before { transform: scaleY(0.5); transform-origin: top; }
+  }
+
+  .row.is-new { animation: row-new 1.6s ease-out; }
+
+  @keyframes row-new {
+    from { background: var(--color-new-row); }
+    to { background: transparent; }
+  }
+
+  .badge {
+    width: var(--badge-size);
+    height: var(--badge-size);
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-badge);
+    background: var(--kind-other);
+    color: var(--color-on-kind);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .badge--pdf { background: var(--kind-pdf); }
+  .badge--doc { background: var(--kind-doc); }
+  .badge--sheet { background: var(--kind-sheet); }
+  .badge--slide { background: var(--kind-slide); }
+  .badge--image { background: var(--kind-image); }
+  .badge--media { background: var(--kind-media); }
+
+  .row__info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .row__name {
+    font-size: 16px;
+    line-height: 1.375;
+    overflow-wrap: anywhere;
+  }
+
+  .row__meta {
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--color-text-secondary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .row__error {
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--color-danger-text);
+  }
+
+  /* 按钮 */
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-8);
+    border: 0;
+    border-radius: var(--radius-control);
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .btn[aria-disabled="true"] { cursor: default; }
+
+  .btn--primary {
+    height: var(--control-height);
+    padding: 0 var(--space-16);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+
+  .btn--primary:active:not([aria-disabled="true"]) { background: var(--color-accent-pressed); }
+
+  .btn--secondary {
+    height: var(--control-height);
+    padding: 0 var(--space-16);
+    background: var(--color-fill);
+  }
+
+  .btn--secondary:active { background: var(--color-fill-pressed); }
+
+  .btn--danger {
+    height: var(--control-height);
+    padding: 0 var(--space-16);
+    background: var(--color-danger);
+    color: var(--color-on-danger);
+  }
+
+  .btn--danger:active { background: var(--color-danger-pressed); }
+
+  .btn--block { width: 100%; }
+
+  .row__delete {
+    height: var(--row-button-height);
+    padding: 0 var(--space-12);
+    background: var(--color-fill);
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  /* 视觉 32px，点击区域外扩到 44px */
+  .row__delete::after {
+    content: "";
+    position: absolute;
+    inset: calc((var(--row-button-height) - var(--control-height)) / 2) calc(var(--space-4) * -1);
+  }
+
+  .row__delete:active:not([aria-disabled="true"]) { background: var(--color-fill-pressed); }
+  .row__delete.is-busy .btn__label { visibility: hidden; }
+  .row__delete.is-busy .spinner { position: absolute; }
+
+  @media (hover: hover) {
+    .btn--primary:hover:not([aria-disabled="true"]) { background: var(--color-accent-pressed); }
+    .btn--secondary:hover,
+    .row__delete:hover:not([aria-disabled="true"]) { background: var(--color-fill-pressed); }
+    .btn--danger:hover { background: var(--color-danger-pressed); }
+  }
+
+  .spinner {
+    display: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  .is-busy .spinner { display: block; }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* 加载骨架 */
+  .skeleton__row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    padding: var(--space-12) var(--space-16);
+  }
+
+  .skeleton__badge,
+  .skeleton__line {
+    background: var(--color-skeleton);
+    animation: pulse 1.2s ease-in-out infinite alternate;
+  }
+
+  .skeleton__badge {
+    flex: none;
+    width: var(--badge-size);
+    height: var(--badge-size);
+    border-radius: var(--radius-badge);
+  }
+
+  .skeleton__text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .skeleton__line { height: 12px; border-radius: 6px; }
+  .skeleton__line--name { width: 62%; }
+  .skeleton__line--meta { width: 34%; }
+
+  @keyframes pulse { to { opacity: 0.45; } }
+
+  /* 空 / 无结果 / 失败 */
+  .state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-8);
+    padding: var(--space-32) var(--space-24);
+    text-align: center;
+  }
+
+  .state__title {
+    font-size: 16px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+
+  .state__desc {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+  }
+
+  .state .btn { margin-top: var(--space-8); }
+
+  /* 底部上传栏 */
+  .bar {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    padding: var(--space-8) var(--space-16) calc(var(--space-8) + env(safe-area-inset-bottom));
+    background: var(--color-bg);
+    border-top: 1px solid var(--color-separator);
+  }
+
+  .bar__message {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+  }
+
+  .bar__message.is-error { color: var(--color-danger-text); }
+
+  /* 删除确认 */
+  .dialog {
+    width: min(320px, calc(100vw - var(--space-32) * 2));
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-dialog);
+    background: var(--color-surface-raised);
+    color: var(--color-text);
+  }
+
+  .dialog::backdrop { background: var(--color-scrim, rgb(0 0 0 / 0.4)); }
+  .dialog[open] { animation: dialog-in 0.16s ease-out; }
+
+  @keyframes dialog-in {
+    from { opacity: 0; transform: scale(0.96); }
+  }
+
+  .dialog__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    padding: var(--space-24) var(--space-16) var(--space-16);
+  }
+
+  .dialog__title {
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+
+  .dialog__desc {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    text-align: center;
+  }
+
+  .dialog__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-8);
+    margin-top: var(--space-16);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .row.is-new,
+    .dialog[open],
+    .skeleton__badge,
+    .skeleton__line { animation: none; }
+    .spinner { animation-duration: 2.4s; }
+  }
+</style>
+</head>
+<body>
+  <header class="nav">
+    <h1 class="nav__title">文件</h1>
+  </header>
+
+  <main class="main">
+    <p class="offline" id="offline" hidden>网络已断开，恢复连接前无法加载、删除或上传文件。</p>
+
+    <form class="search" id="search-form" role="search">
+      <label class="sr-only" for="search">搜索文件</label>
+      <input class="search__input" id="search" type="search" placeholder="搜索文件"
+             autocomplete="off" spellcheck="false" enterkeyhint="search">
+    </form>
+
+    <section class="files" id="files" aria-labelledby="files-heading" tabindex="-1">
+      <h2 class="sr-only" id="files-heading">文件列表</h2>
+
+      <ul class="skeleton" id="skeleton" aria-hidden="true">
+        <li class="skeleton__row"><span class="skeleton__badge"></span><span class="skeleton__text"><span class="skeleton__line skeleton__line--name"></span><span class="skeleton__line skeleton__line--meta"></span></span></li>
+        <li class="skeleton__row"><span class="skeleton__badge"></span><span class="skeleton__text"><span class="skeleton__line skeleton__line--name"></span><span class="skeleton__line skeleton__line--meta"></span></span></li>
+        <li class="skeleton__row"><span class="skeleton__badge"></span><span class="skeleton__text"><span class="skeleton__line skeleton__line--name"></span><span class="skeleton__line skeleton__line--meta"></span></span></li>
+        <li class="skeleton__row"><span class="skeleton__badge"></span><span class="skeleton__text"><span class="skeleton__line skeleton__line--name"></span><span class="skeleton__line skeleton__line--meta"></span></span></li>
+      </ul>
+
+      <ul class="list" id="list" hidden></ul>
+
+      <div class="state" id="state-empty" hidden>
+        <p class="state__title">还没有文件</p>
+        <p class="state__desc">上传的文件会显示在这里。</p>
+      </div>
+
+      <div class="state" id="state-no-match" hidden>
+        <p class="state__title" id="no-match-text"></p>
+        <button class="btn btn--secondary" id="clear-search" type="button">清除搜索</button>
+      </div>
+
+      <div class="state" id="state-error" hidden>
+        <p class="state__title">没能加载文件列表</p>
+        <p class="state__desc" id="load-error-text"></p>
+        <button class="btn btn--secondary" id="retry" type="button">重试</button>
+      </div>
+    </section>
+  </main>
+
+  <div class="bar">
+    <p class="bar__message" id="upload-message" hidden></p>
+    <button class="btn btn--primary btn--block" id="upload" type="button">
+      <span class="spinner" aria-hidden="true"></span>
+      <span class="btn__label">上传文件</span>
+    </button>
+  </div>
+
+  <div class="sr-only" id="sr-status" role="status" aria-live="polite"></div>
+  <div class="sr-only" id="sr-alert" role="alert" aria-live="assertive"></div>
+
+  <dialog class="dialog" id="confirm" role="alertdialog" aria-labelledby="confirm-title" aria-describedby="confirm-desc">
+    <form class="dialog__body" method="dialog">
+      <h2 class="dialog__title" id="confirm-title"></h2>
+      <p class="dialog__desc" id="confirm-desc">删除后无法恢复。</p>
+      <div class="dialog__actions">
+        <button class="btn btn--secondary" value="cancel" autofocus>取消</button>
+        <button class="btn btn--danger" value="confirm">删除</button>
+      </div>
+    </form>
+  </dialog>
+
+<script>
+(() => {
+  'use strict';
+
+  const API = {
+    list: './api/files.json',
+    remove: (id) => `./api/files/${encodeURIComponent(id)}`,
+    upload: './api/upload',
+  };
+  /** 超过这个时间就给出可重试的错误，而不是一直转圈 */
+  const REQUEST_TIMEOUT_MS = 15000;
+  const NOTICE_HIDE_MS = 5000;
+  const SEARCH_ANNOUNCE_DELAY_MS = 600;
+  /** 先清空再写入，读屏才会重复播报同一句 */
+  const ANNOUNCE_DELAY_MS = 100;
+
+  const EXT_KIND = {
+    pdf: 'pdf',
+    doc: 'doc', docx: 'doc', txt: 'doc', md: 'doc', pages: 'doc', rtf: 'doc',
+    xls: 'sheet', xlsx: 'sheet', csv: 'sheet', numbers: 'sheet',
+    ppt: 'slide', pptx: 'slide', key: 'slide',
+    jpg: 'image', jpeg: 'image', png: 'image', gif: 'image', webp: 'image', heic: 'image', svg: 'image',
+    mp3: 'media', wav: 'media', m4a: 'media', mp4: 'media', mov: 'media',
+  };
+
+  const $ = (id) => document.getElementById(id);
+  const dom = {
+    files: $('files'), skeleton: $('skeleton'), list: $('list'),
+    empty: $('state-empty'), noMatch: $('state-no-match'), noMatchText: $('no-match-text'),
+    error: $('state-error'), errorText: $('load-error-text'), retry: $('retry'),
+    search: $('search'), searchForm: $('search-form'), clearSearch: $('clear-search'),
+    offline: $('offline'), upload: $('upload'), uploadLabel: $('upload').querySelector('.btn__label'),
+    uploadMessage: $('upload-message'),
+    srStatus: $('sr-status'), srAlert: $('sr-alert'),
+    dialog: $('confirm'), dialogTitle: $('confirm-title'),
+  };
+
+  const state = { status: 'loading', files: [], query: '', uploading: false };
+  /** id → 行元素；被搜索过滤掉的行留在这里，不在 DOM 里 */
+  const rows = new Map();
+  let rowSeq = 0;
+  let pendingDelete = null;
+  let listRequestInFlight = false;
+  let noticeTimer = 0;
+  let searchAnnounceTimer = 0;
+
+  class RequestError extends Error {
+    constructor(kind, status = 0) {
+      super(kind);
+      this.kind = kind;
+      this.status = status;
+    }
+  }
+
+  const keyOf = (id) => String(id);
+  const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  async function request(url, options = {}) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+    try {
+      const res = await fetch(url, { ...options, signal: controller.signal, headers: { Accept: 'application/json' } });
+      if (!res.ok) throw new RequestError('http', res.status);
+      return res;
+    } catch (err) {
+      if (err instanceof RequestError) throw err;
+      throw new RequestError(err.name === 'AbortError' ? 'timeout' : 'network');
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  async function readJson(res) {
+    try {
+      return await res.json();
+    } catch {
+      throw new RequestError('format');
+    }
+  }
+
+  function describeError(err, action) {
+    if (!(err instanceof RequestError)) {
+      console.error(err);
+      return '出了点问题，请稍后重试。';
+    }
+    if (err.kind === 'network') {
+      return navigator.onLine ? '连不上服务器，请稍后重试。' : '网络已断开，请检查网络后重试。';
+    }
+    if (err.kind === 'timeout') return '请求超时，请稍后重试。';
+    if (err.kind === 'format') return '服务器返回的数据无法识别，请稍后重试。';
+    if (err.status === 401 || err.status === 403) return `你没有${action}权限。`;
+    if (err.status === 404 && action === '删除') return '服务器上找不到这个文件，它可能已被删除。';
+    return `服务暂时不可用（${err.status}），请稍后重试。`;
+  }
+
+  /** 接口数据在这里校验，缺 id 或文件名的条目不渲染 */
+  function normalizeFile(raw) {
+    if (!raw || typeof raw !== 'object') return null;
+    const { id, name, size, updatedAt } = raw;
+    const validId = (typeof id === 'number' && Number.isFinite(id)) || (typeof id === 'string' && id !== '');
+    if (!validId || typeof name !== 'string' || !name.trim()) return null;
+    return {
+      id,
+      name,
+      size: typeof size === 'string' ? size : '',
+      updatedAt: typeof updatedAt === 'string' ? updatedAt : '',
+    };
+  }
+
+  function announce(text, urgent = false) {
+    const region = urgent ? dom.srAlert : dom.srStatus;
+    region.textContent = '';
+    setTimeout(() => { region.textContent = text; }, ANNOUNCE_DELAY_MS);
+  }
+
+  function badgeFor(name) {
+    const dot = name.lastIndexOf('.');
+    const ext = dot > 0 ? name.slice(dot + 1).toLowerCase() : '';
+    const kind = EXT_KIND[ext] || 'other';
+    return { kind, label: ext ? ext.slice(0, 4).toUpperCase() : '文件' };
+  }
+
+  function createRow(file) {
+    const li = document.createElement('li');
+    li.className = 'row';
+    li.dataset.id = keyOf(file.id);
+
+    const { kind, label } = badgeFor(file.name);
+    const badge = document.createElement('span');
+    badge.className = `badge badge--${kind}`;
+    badge.setAttribute('aria-hidden', 'true');
+    badge.textContent = label;
+
+    const info = document.createElement('div');
+    info.className = 'row__info';
+    const name = document.createElement('p');
+    name.className = 'row__name';
+    name.id = `file-name-${++rowSeq}`;
+    name.textContent = file.name;
+    const meta = document.createElement('p');
+    meta.className = 'row__meta';
+    meta.textContent = [file.size, file.updatedAt].filter(Boolean).join(' · ');
+    const error = document.createElement('p');
+    error.className = 'row__error';
+    error.hidden = true;
+    info.append(name, meta, error);
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'btn row__delete';
+    button.setAttribute('aria-describedby', name.id);
+    button.innerHTML = '<span class="spinner" aria-hidden="true"></span><span class="btn__label">删除</span>';
+
+    li.append(badge, info, button);
+    return li;
+  }
+
+  function rowFor(file) {
+    const key = keyOf(file.id);
+    if (!rows.has(key)) rows.set(key, createRow(file));
+    return rows.get(key);
+  }
+
+  const matches = (file, query) => !query || file.name.toLocaleLowerCase().includes(query);
+
+  /** 按 state 同步列表 DOM：只增删挪动必要的行，不整表重建，避免打断焦点 */
+  function renderList() {
+    const query = state.query.trim().toLocaleLowerCase();
+    const visible = state.files.filter((file) => matches(file, query)).map(rowFor);
+    visible.forEach((row, index) => {
+      if (dom.list.children[index] !== row) dom.list.insertBefore(row, dom.list.children[index] || null);
+    });
+    while (dom.list.children.length > visible.length) dom.list.lastElementChild.remove();
+
+    const ready = state.status === 'ready';
+    dom.list.hidden = !ready || visible.length === 0;
+    dom.empty.hidden = !(ready && state.files.length === 0);
+    dom.noMatch.hidden = !(ready && state.files.length > 0 && visible.length === 0);
+    if (!dom.noMatch.hidden) dom.noMatchText.textContent = `没有找到包含「${state.query.trim()}」的文件`;
+    return visible.length;
+  }
+
+  function setStatus(status, message = '') {
+    state.status = status;
+    dom.skeleton.hidden = status !== 'loading';
+    dom.error.hidden = status !== 'error';
+    dom.errorText.textContent = message;
+    if (status === 'loading') dom.files.setAttribute('aria-busy', 'true');
+    else dom.files.removeAttribute('aria-busy');
+    renderList();
+  }
+
+  async function fetchFileList() {
+    const data = await readJson(await request(API.list));
+    if (!Array.isArray(data)) throw new RequestError('format');
+    const files = data.map(normalizeFile).filter(Boolean);
+    if (files.length < data.length) console.warn(`文件列表里有 ${data.length - files.length} 条数据缺少 id 或文件名，已跳过`);
+    return files;
+  }
+
+  async function loadFiles() {
+    if (listRequestInFlight) return;
+    listRequestInFlight = true;
+    const focusWasOnRetry = document.activeElement === dom.retry;
+    setStatus('loading');
+    if (focusWasOnRetry) dom.files.focus();
+    announce('正在加载文件');
+    let files;
+    try {
+      files = await fetchFileList();
+    } catch (err) {
+      const message = describeError(err, '加载');
+      setStatus('error', message);
+      announce(`没能加载文件列表。${message}`, true);
+      return;
+    } finally {
+      listRequestInFlight = false;
+    }
+    rows.clear();
+    dom.list.replaceChildren();
+    state.files = files;
+    setStatus('ready');
+    announce(files.length ? `共 ${files.length} 个文件` : '还没有文件');
+  }
+
+  function setRowBusy(row, busy) {
+    const button = row.querySelector('.row__delete');
+    button.classList.toggle('is-busy', busy);
+    if (busy) {
+      button.setAttribute('aria-disabled', 'true');
+      button.setAttribute('aria-label', '删除中');
+      row.setAttribute('aria-busy', 'true');
+    } else {
+      button.removeAttribute('aria-disabled');
+      button.removeAttribute('aria-label');
+      row.removeAttribute('aria-busy');
+    }
+  }
+
+  function setRowError(row, message) {
+    const error = row.querySelector('.row__error');
+    error.textContent = message;
+    error.hidden = !message;
+  }
+
+  /** 被删的行里有焦点时，把焦点交给相邻行，没有相邻行就交给搜索框 */
+  function focusAfterRemoval(row) {
+    const neighbor = row.nextElementSibling || row.previousElementSibling;
+    return neighbor ? neighbor.querySelector('.row__delete') : dom.search;
+  }
+
+  function askDelete(row) {
+    const file = state.files.find((f) => keyOf(f.id) === row.dataset.id);
+    if (!file) return;
+    pendingDelete = { file, row };
+    dom.dialogTitle.textContent = `删除「${file.name}」？`;
+    dom.dialog.returnValue = '';
+    dom.dialog.showModal();
+  }
+
+  async function deleteFile({ file, row }) {
+    const button = row.querySelector('.row__delete');
+    setRowError(row, '');
+    setRowBusy(row, true);
+    button.focus();
+    announce(`正在删除「${file.name}」`);
+    try {
+      await request(API.remove(file.id), { method: 'DELETE' });
+    } catch (err) {
+      const message = `没能删除：${describeError(err, '删除')}`;
+      setRowBusy(row, false);
+      setRowError(row, message);
+      announce(`「${file.name}」${message}`, true);
+      return;
+    }
+    const nextFocus = row.contains(document.activeElement) ? focusAfterRemoval(row) : null;
+    state.files = state.files.filter((f) => keyOf(f.id) !== keyOf(file.id));
+    rows.delete(keyOf(file.id));
+    renderList();
+    if (nextFocus && nextFocus.isConnected) nextFocus.focus();
+    announce(`已删除「${file.name}」`);
+  }
+
+  function showUploadMessage(text, isError = false) {
+    clearTimeout(noticeTimer);
+    dom.uploadMessage.textContent = text;
+    dom.uploadMessage.classList.toggle('is-error', isError);
+    dom.uploadMessage.hidden = !text;
+    if (text && !isError) noticeTimer = setTimeout(() => { dom.uploadMessage.hidden = true; }, NOTICE_HIDE_MS);
+  }
+
+  function setUploading(uploading) {
+    state.uploading = uploading;
+    dom.upload.classList.toggle('is-busy', uploading);
+    dom.uploadLabel.textContent = uploading ? '上传中' : '上传文件';
+    if (uploading) dom.upload.setAttribute('aria-disabled', 'true');
+    else dom.upload.removeAttribute('aria-disabled');
+  }
+
+  /** 新文件放到最上面；结果在屏幕上看不到时才补一条文字提示 */
+  function addUploadedFile(file) {
+    if (state.status !== 'ready') {
+      showUploadMessage(`已上传「${file.name}」，文件列表加载后可见。`);
+      announce(`已上传「${file.name}」`);
+      return;
+    }
+    const key = keyOf(file.id);
+    rows.get(key)?.remove();
+    rows.delete(key);
+    state.files = [file, ...state.files.filter((f) => keyOf(f.id) !== key)];
+    renderList();
+    const row = rows.get(key);
+    if (!row) {
+      showUploadMessage(`已上传「${file.name}」，不在当前搜索结果里。`);
+      announce(`已上传「${file.name}」，不在当前搜索结果里`);
+      return;
+    }
+    row.classList.add('is-new');
+    row.addEventListener('animationend', () => row.classList.remove('is-new'), { once: true });
+    const navBottom = document.querySelector('.nav').getBoundingClientRect().bottom;
+    if (row.getBoundingClientRect().top < navBottom) {
+      window.scrollTo({ top: 0, behavior: reduceMotion() ? 'auto' : 'smooth' });
+    }
+    announce(`已上传「${file.name}」`);
+  }
+
+  async function uploadFile() {
+    if (state.uploading) return;
+    showUploadMessage('');
+    setUploading(true);
+    let file;
+    try {
+      file = normalizeFile(await readJson(await request(API.upload, { method: 'POST' })));
+      if (!file) throw new RequestError('format');
+    } catch (err) {
+      const message = `没能上传：${describeError(err, '上传')}`;
+      showUploadMessage(message, true);
+      announce(message, true);
+      return;
+    } finally {
+      setUploading(false);
+    }
+    addUploadedFile(file);
+  }
+
+  function onSearchInput() {
+    state.query = dom.search.value;
+    const count = renderList();
+    clearTimeout(searchAnnounceTimer);
+    if (state.status !== 'ready' || !state.query.trim()) return;
+    searchAnnounceTimer = setTimeout(() => {
+      announce(count ? `找到 ${count} 个文件` : '没有找到相关文件');
+    }, SEARCH_ANNOUNCE_DELAY_MS);
+  }
+
+  function syncOnline() {
+    dom.offline.hidden = navigator.onLine;
+  }
+
+  dom.search.addEventListener('input', onSearchInput);
+  dom.searchForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    dom.search.blur();
+  });
+  dom.clearSearch.addEventListener('click', () => {
+    dom.search.value = '';
+    onSearchInput();
+    dom.search.focus();
+  });
+  dom.retry.addEventListener('click', loadFiles);
+  dom.upload.addEventListener('click', uploadFile);
+
+  dom.list.addEventListener('click', (event) => {
+    const button = event.target.closest('.row__delete');
+    if (!button || button.getAttribute('aria-disabled') === 'true') return;
+    askDelete(button.closest('.row'));
+  });
+
+  dom.dialog.addEventListener('click', (event) => {
+    if (event.target === dom.dialog) dom.dialog.close('cancel');
+  });
+  dom.dialog.addEventListener('close', () => {
+    const pending = pendingDelete;
+    pendingDelete = null;
+    if (!pending) return;
+    if (dom.dialog.returnValue === 'confirm') deleteFile(pending);
+    else pending.row.querySelector('.row__delete').focus();
+  });
+
+  window.addEventListener('online', () => {
+    syncOnline();
+    if (state.status === 'error') loadFiles();
+  });
+  window.addEventListener('offline', syncOnline);
+
+  syncOnline();
+  loadFiles();
+})();
+</script>
+</body>
+</html>

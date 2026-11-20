@@ -1,0 +1,54 @@
+三个 subagent 交付时的汇报摘录（2026-10-31，Claude Code，原文照录，只截取和加载的 skill、读过的文件、排版决定、自查方式有关的句子）
+
+== release3.html ==
+**Skills loaded**
+- `ui-conventions`, plus all four of its reference docs (`copy.md`, `spatial.md`, `interaction.md`, `a11y-web.md`).
+- `frontend-design`. I deliberately did not follow its advice to pick a distinctive typeface: Chinese web fonts run to several MB, and an in-app page should load instantly and look like the system, so the page uses system fonts.
+**Files read**
+- `blog/public/lab/ai-typography/prompt.txt`. It is the same brief as yours, except the output file is named `release1.html`.
+- The six posts in `blog/src/content/posts/*.mdx`, searched with `rg` rather than read in full, to see how the blog spaces Chinese against English and digits. There were 0 cases of Chinese written directly against Latin letters or digits, and dates appear as "2026 年 8 月".
+- **Wording is unchanged; only spacing was added.**
+  - I put a space between Chinese and English or digits, following the blog's own convention, e.g. "用 Claude Code 上传" and "2026 年 10 月 28 日".
+  - I also put a space between numbers and units ("2 GB", "86.4 MB"). The blog gives no guidance on this; it's my choice, based on the national standard and common Chinese copy-style guides, and easy to revert.
+- **Quotes and dashes.** Measured in Chrome on macOS, PingFang's default “” are only 0.54em wide (half-width). I added a font rule that sends only these punctuation characters to a Chinese font with the full-width glyph switched on. The quotes now measure 1em, and the two dashes in "——" join into one line. Where two quotes sit next to each other (“1 天”“7 天”), I narrowed the first one (0.44em) so the pair doesn't leave a two-character gap.
+- **Things kept from breaking across lines.** "iOS 18", "iOS 15", "2 GB" and "86.4 MB" use non-breaking spaces; "Wi-Fi" and 《报告-2026Q3》 are wrapped so they don't split.
+**Checks before delivery** (Chrome driven by `playwright-core`; the scripts are in the session scratchpad)
+- **Not checked: iOS / Safari.** There is no WebKit browser in this environment. Three iOS simulators were running, but other sessions may be using them, so I left them alone. If Safari ignores the punctuation font rule, the quotes just fall back to the default half-width glyphs, so nothing breaks.
+
+== release1.html ==
+**Skills loaded**
+- `ui-conventions`, plus all four of its reference files: `copy.md`, `spatial.md`, `interaction.md`, `a11y-web.md`.
+- `frontend-design`.
+**Files read**
+- `blog/public/lab/ai-typography/prompt.txt`. Its content is the same as this task.
+- The first 30 lines of `blog/public/lab/ai-spacing/xray.mjs`, only to see how the lab scripts start Playwright and Chrome.
+- I did not read any of the other lab pages (`run*.html`, `settings*.html`), so earlier results would not influence this one.
+**Typography changes to your copy.** Apart from these, the text is exactly as given.
+- **Spaces between Chinese and English or digits:** "用 Claude Code 上传", "提升 35%", "iOS 18 上", "关闭 App" and so on.
+- **Numbers and units:** "2 GB" and "86.4 MB" now have a space. Number–unit pairs ("1 天", "1 分钟") use non-breaking spaces so they never split across lines.
+- **Date left alone:** "2026年10月28日" has no spaces, because that is the standard Chinese date format.
+- **Kept on one line:** "Wi-Fi" and 《报告-2026Q3》, so they don't break at the hyphen.
+- **Quotes and the "——" dash use a Chinese font.** With the system Latin font first, “ ” rendered at 0.36em and the two dashes didn't join. Now quotes render at 0.54em and "——" is one solid line. Measured in Chrome.
+- **Last lines:** `text-wrap: pretty` stops a single character sitting alone on the last line. It fixed a "本。" orphan in the notice at 320px.
+**How I checked before delivery** (Chrome, scripts and screenshots in the scratchpad `release1/` folder)
+**Fixed after the first check**
+- Section titles went from 18 to 20px so they stand out more from item titles.
+**Not checked**
+- Safari/WebKit and real iOS: there's no WebKit installed here. So the Chinese-font trick for quotes, `text-wrap: pretty`, the blurred bar background and safe-area spacing on iPhones are untested.
+
+== release2.html ==
+## 加载了哪些 skill
+- **`ui-conventions`**：主要按它做。走「新界面」这一档：开工前先答六问，读了它的 references，最后按六个维度验收。
+- **`frontend-design`**：加载了，但它的两条建议没采用：
+## 读了哪些文件
+- 目标目录下的 `prompt.txt`：内容和你的需求一样，只是写入目标是 release1.html。
+- `ui-conventions` 的 `SKILL.md`，以及 references 里的 `copy.md`、`spatial.md`、`interaction.md`、`a11y-web.md`。
+- `frontend-design` 的 `SKILL.md`。
+- 为了找 Playwright 的用法，看了 `ai-spacing/xray.mjs` 的前 20 行（只看 import 那几行）。
+- 只列了目录、没打开的：`ai-spacing`、`ai-ui-taste` 和项目的 `.claude/skills`。没读兄弟实验的产出、`blog/blog/` 草稿或任何博文。
+## 排版上做了什么（交付时改动了你给的文案写法）
+- **中文和英文、数字之间加了空格**，比如「用 Claude Code 上传」「超过 2 GB」「2026 年 10 月 28 日 · 86.4 MB」。「35%」不加；挨着全角标点的地方也不加。依据是你提示词里自己的写法（「App 图标」「用 HTML + CSS」）和 autocorrect hook。
+- **引号和破折号保留你的写法**（“” 和 ——），但用 `unicode-range` 把这几个字符指定给苹方。实测在 15px 下，引号从 6.7px 变成 8.1px，破折号从 13px 变成 15px。不这样做的话，SF 会把引号画成像英寸符号一样的细斜线。
+  - 中途我删过一次这段字体设置，因为一个单独搭的测试页里看不出区别。换到真实页面里对比后发现确实有用，又加了回来。
+- 行高 1.6～1.7，加了 `text-wrap: pretty`。
+**没验证到**：iOS WebKit / 真机（本机 Playwright 只有 Chromium），包括苹方字体指定在 iOS 上是否生效；读屏软件的实际播报；Android 和 Windows 的字体效果。

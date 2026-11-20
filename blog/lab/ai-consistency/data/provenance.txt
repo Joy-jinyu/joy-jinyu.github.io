@@ -1,0 +1,99 @@
+六个 subagent 交付时的汇报摘录（2026-10-31，Claude Code，原文照录，只截取和加载的 skill、读过的文件、风格取舍、自查方式有关的句子）
+
+== upgrade-ref.html ==
+The page is done and passes every browser check I ran. One problem is left that I didn't fix: on the 「升级到团队版」 button, white text on the orange accent has a contrast of 3.9:1 in light mode, below the 4.5:1 minimum for normal text. It's the same colour pair as 「升级套餐」 in the reference card, so changing it would break the match with the existing App. That's a call for whoever owns the App's style.
+## Skills loaded
+- **`ui-conventions`**, the only one. I used it for the six questions to answer before building a new screen, its four reference docs, and its six acceptance checks.
+- I looked at two others and didn't use them:
+  - `frontend-design`: it aims for a distinctive look, which works against "match the existing card".
+  - `building-post-demos`: I read only its header. It covers `blog/src/components`, not `public/lab`.
+## Files read
+- `blog/public/lab/ai-ui-taste/run1.html`, the reference, in full.
+- I did **not** read the `prompt-*.txt` files in `ai-consistency/`, or `probe.mjs`, `axe.mjs` and `hover.mjs` in `ai-ui-taste/`. I left them alone so I wasn't building towards the experiment's scoring scripts.
+## How it matches the reference
+- **Colours:** a script compared the colour variables in both files, light and dark. All 13 shared ones have identical values.
+  - I added one variable, `--thumb`, for the selected half of the 月付/年付 switch. In dark mode the card colour is darker than the switch track, so reusing it would make the selected half look sunken.
+- **Shapes and behaviour copied from the reference:** card (16px radius, 20px padding, same shadow), tag pill, buttons (44px tall, 10px radius, primary and secondary styles), 40px icon button, focus ring, toast, and reduced-motion handling.
+- **Where I followed the reference over `ui-conventions`:**
+  - The skill's spacing scale leaves out 20px, but the reference uses 20px for card padding, so I kept 20px.
+  - The skill wants a tooltip on icon buttons. The reference's icon button has only a label for screen readers, so the close button does the same.
+## Checks before delivery
+I ran a Playwright script in headless Chromium; the script and screenshots are in the session scratchpad.
+**Not checked:** a real iOS Safari or in-app WebView, VoiceOver, and enlarging only the text size (fonts are in px, as in the reference).
+
+== upgrade-token.html ==
+**加载的 skill**
+- `ui-conventions`：读了它的主文件和四份参考（间距、交互、文案、无障碍），按「新界面」那一档的六个检查维度来做。
+- 项目里的 `building-post-demos`：只读了说明，没有正式加载。它针对的是 `blog/src/components/` 下的演示组件，不管 `public/lab` 的单文件，所以只借了它清单里几条做法：数字不跳宽、手机端隐藏了点击高亮就必须有按下态、数字和单位之间用不换行空格。
+**读过的文件**
+- 只列了 `ai-consistency/` 目录的文件名，没有打开里面的 `prompt-*.txt`，也没看其他 lab 目录里的页面。
+**交付前的检查**
+- **设计变量（已验证，脚本输出）**：
+  - 文件里扫描：给定的 `:root` 块之外没有任何颜色值，所有字号和圆角都引用变量，没有内联 SVG。
+  - 浏览器里扫描：页面上所有元素（含伪元素）实际算出来的颜色，全部落在那 7 个颜色变量里。唯一例外是两个视觉隐藏的单选框，浏览器默认给黑色，但尺寸 1×1 且被裁掉，不会画出来。
+- **对比度（已验证，按实际渲染的颜色计算）**：18 组文字都 ≥ 4.5:1，最低的是主色底白字，为 4.65。另外，主色文字放在 `--color-bg` 底上只有 4.22，不够小字的 4.5，所以页面里没有这样用。
+- **明暗主题（不适用）**：给的变量只有浅色一套，加深色就得自己选颜色，所以固定为浅色。
+**变量之外加的几个值**：
+- 触控尺寸 `--size-touch: 44px`（单独写在一个 `:root` 里，附了出处注释）。
+- 页面最大宽度 480px，只是为了在桌面上预览时不被拉宽。
+- 切换器内层的圆角写成 `calc(var(--radius-control) - var(--space-1))`，也就是 6px，是从两个变量算出来的，不是另选的值。
+- 主按钮按下时透明度降到 0.85。
+- 线宽、焦点框、图标尺寸用了 1px、2px 这类写死的数值。
+
+== upgrade-plain.html ==
+## 加载的 skill
+- **ui-conventions**：这是新页面，按要求读完了 4 个 references，也就是 spatial / interaction / copy / a11y-web。
+- **frontend-design**：只采用了其中「minimal 也是合法方向」这一条。它主张避开系统字体、追求醒目的视觉，我没照做。原因是这是 App 里的升级页，UI 规范更贴合；而且中文 web 字体太重，所以用的是系统中文字体栈。
+- **webapp-testing**：用来做 Playwright 验证。
+## 读过的文件
+- `blog/public/lab/` 和 `ai-consistency/` 两个目录的文件列表。目录里的 `prompt-*.txt` 我**故意没打开**，那是别的实验条件的提示词，读了会影响 plain 这组。
+- 仓库里 3 个项目 skill 的 SKILL.md，只读了开头的 front matter。
+- `~/.claude/skills/ui-conventions/references/` 下的 4 个文件。
+## 和全局规则的冲突（已处理）
+- **颜色只能用 `@pkgs/theme` token**：这里同样没有这个包。所有颜色按用途定义成 `:root` 里的 CSS 变量，深色模式只改这一层。rg 检查过，hex 和 rgb 写法只出现在这两个 `:root` 块里。
+## 交付前的检查
+全部在 headless Chromium 里跑，分辨率 375 宽、2 倍像素密度。
+- **明暗两套配色**：都截图看过。正文和次要文字的对比度在 5.14 到 17.93 之间；描边和对勾这类图形 ≥3:1。中途改过两处：禁用按钮文字原来是 4.21，调到 4.67；描边按钮的边框原来是 1.68，调到 3.17。
+
+== members-token.html ==（这个 subagent 写完页面后因为 API 限额中断，恢复后继续做了自查）
+**Skills loaded**
+- `ui-conventions` (the user-level UI rules), including all four of its reference files.
+- I only read the opening lines of the project's `building-post-demos` skill and did not load it, because it covers demo components in `blog/src/components/`, not files under `public/lab`.
+**Files read**
+- `ai-consistency/prompt-members-token.txt`, which matches the task text.
+- The first 30 lines of `ai-typography/type-probe.mjs`, to see how the earlier experiment drove the browser.
+- I did not open the other `prompt-*` files or earlier results in `ai-consistency`.
+**How I checked before handing back**
+1. **Text scan of the CSS (verified, command output):**
+   - Outside the given variable block there are no hex, rgb or hsl colors.
+   - Font sizes are only the three font variables; radii are only the two radius variables plus 50% for the round icon parts.
+2. **Real Chrome at 375px:**
+   - Every computed color is one of the 7 variable values; text sizes are only 13/15/18px; radii are only 0/10/16px and 50%.
+   - Lowest text contrast is 4.65:1.
+**Gaps and decisions for you**
+- **Not testable:** the search box uses the 15px font size. On iOS Safari, an input under 16px makes the page zoom in when tapped. This comes from iOS behaviour I know about; I couldn't test it here. I didn't add a 16px size or block page zoom; whether to add a 16px size to the variables is your call.
+- **No dark mode:** the variables only have light values, so I set the page to light-only. Inventing dark colors would have meant picking colors you didn't give.
+- **Two derived see-through colors:** the menu shadow and the dim layer behind the dialog are the main text color at 12% and 40% opacity. They add no new color value, but they are not literally one of the variables.
+
+== members-ref.html ==（这个 subagent 写页面时因为 API 限额中断，恢复后接着写完并自查）
+`members-ref.html` 已写好（774 行），在真实浏览器里跑了交互检查：浅色模式有 1 条对比度不达标，是从「团队空间」卡片原样继承来的，需要你定怎么改；其余检查都通过。
+**加载的 skill**
+- 只加载了 `ui-conventions`，并读了它的 4 份 references：spatial、interaction、copy、a11y-web。
+- 没加载 `frontend-design`。它的目标是做出新的视觉风格，和"跟已有卡片保持一致"相冲突。
+**读了哪些文件**
+- 参考卡片 `blog/public/lab/ai-ui-taste/run1.html`，整份读完。
+- 刻意没打开这些文件，免得污染实验条件：`ai-consistency/prompt-*.txt`，以及 `ai-ui-taste/` 下的 `probe.mjs`、`axe.mjs`、`hover.mjs`、`run2/run3.html`、`token*.html`。
+**和参考卡片的一致性**
+- 原样沿用：
+  - 整套颜色变量（浅色 + 深色）、字体栈、字号 18/15/14/13/12、字重 400/600。
+  - 卡片（圆角 16、阴影、内边距 20）、行分隔线、`.tag`、主/次按钮（高 44、圆角 10）。
+- 新加的部分全部用已有的颜色变量拼出来，没加新颜色。唯一新写的颜色值是弹窗背后的遮罩。
+2. **明暗主题**（已验证，截图加 axe）
+   - 浅色模式 1 条严重级对比度问题：「邀请」按钮白字配 `#c96442`，对比度 3.9:1，低于 4.5。参考卡片的「升级套餐」用的是同一对颜色，问题一样。这是两边共用的配色，所以我没改，需要你决定：
+
+== members-plain.html ==（这个 subagent 写完页面后因为 API 限额中断，恢复后继续做了自查）
+**Skills loaded:** only `ui-conventions`, since the task is writing a new page. I followed its new-page steps: answer its six questions before writing, then check six areas before delivering (listed under checks below). I loaded no other skills (e.g. frontend-design).
+**Files read:**
+- `~/.claude/skills/ui-conventions/SKILL.md` and its four reference files: `spatial.md`, `interaction.md`, `copy.md`, `a11y-web.md`.
+- I listed the `ai-consistency/` folder and saw `prompt-members-{plain,ref,token}.txt` and others. I did not open any of them, nor the other lab pages, so this "plain" version isn't influenced by the other variants.
+- **Light and dark:** both screenshotted. Text contrast is at least 5.4:1 in light and 5.9:1 in dark.

@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>升级套餐</title>
+<style>
+  :root {
+    --color-accent: #b65a3c;      /* 主色 */
+    --color-on-accent: #ffffff;   /* 主色上的文字 */
+    --color-text: #1c1c1a;
+    --color-text-2: #5f5e59;
+    --color-line: #e7e6e1;
+    --color-bg: #f4f4f1;
+    --color-card: #ffffff;
+    --radius-card: 16px;
+    --radius-control: 10px;
+    --font-sm: 13px;
+    --font-md: 15px;
+    --font-lg: 18px;
+    --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px;
+  }
+
+  * { box-sizing: border-box; }
+
+  /* 关掉移动端默认点按高亮：它是浏览器自带的蓝色，不在设计变量里；按下反馈由各控件的 :active 负责 */
+  html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    font-size: var(--font-md);
+    line-height: 1.5;
+  }
+
+  h1, h2, h3, p, ul { margin: 0; }
+  ul { padding: 0; list-style: none; }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  /* ---------- 顶部导航 ---------- */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-line);
+    padding-top: env(safe-area-inset-top);
+  }
+  .nav-inner {
+    position: relative;
+    max-width: 480px;
+    margin: 0 auto;
+    /* 44px：iOS 导航栏标准高度，同时满足移动端触摸目标建议值 */
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav-title {
+    font-size: var(--font-lg);
+    font-weight: 600;
+  }
+  .icon-btn {
+    position: absolute;
+    left: var(--space-1);
+    top: 0;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: var(--radius-control);
+    background: transparent;
+    color: var(--color-text);
+    font-size: var(--font-lg);
+    cursor: pointer;
+  }
+  .icon-btn:hover { background: var(--color-line); }
+  .icon-btn:focus-visible { outline-offset: -2px; }
+
+  /* ---------- 主体 ---------- */
+  main {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: var(--space-4) var(--space-4) calc(var(--space-5) + env(safe-area-inset-bottom));
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  /* ---------- 月付 / 年付 ---------- */
+  .billing-toggle {
+    margin: 0;
+    padding: var(--space-1);
+    border: 0;
+    border-radius: var(--radius-control);
+    background: var(--color-line);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-1);
+  }
+  .billing-toggle input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .billing-toggle label {
+    /* 40px + 轨道上下各 4px = 48px，触摸目标不低于 44px */
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: 0 var(--space-3);
+    border-radius: var(--radius-control);
+    color: var(--color-text-2);
+    font-size: var(--font-md);
+    cursor: pointer;
+  }
+  .billing-toggle input:checked + label {
+    background: var(--color-card);
+    color: var(--color-text);
+    font-weight: 600;
+  }
+  .billing-toggle input:focus-visible + label {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+  .save-tag {
+    padding: 0 var(--space-2);
+    border-radius: var(--radius-control);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    font-size: var(--font-sm);
+    font-weight: 600;
+    line-height: 1.6;
+  }
+
+  /* ---------- 套餐卡片 ---------- */
+  .plans {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .plan {
+    padding: var(--space-4);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+    background: var(--color-card);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+  .plan.is-recommended { border-color: var(--color-accent); }
+
+  .plan-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  .plan-title-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .plan-name {
+    font-size: var(--font-md);
+    font-weight: 600;
+  }
+  .badge {
+    padding: 0 var(--space-2);
+    border-radius: var(--radius-control);
+    font-size: var(--font-sm);
+    line-height: 1.6;
+    white-space: nowrap;
+  }
+  .badge-current {
+    border: 1px solid var(--color-line);
+    color: var(--color-text-2);
+  }
+  .badge-recommended {
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    font-weight: 600;
+  }
+  .price {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-1);
+  }
+  .price-amount {
+    font-size: var(--font-lg);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .price-unit,
+  .billing-note {
+    color: var(--color-text-2);
+    font-size: var(--font-sm);
+  }
+
+  .perks {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    font-size: var(--font-sm);
+  }
+  .perks li {
+    display: flex;
+    gap: var(--space-2);
+  }
+  .perks li::before {
+    content: "✓";
+    flex: none;
+    width: var(--space-4);
+    color: var(--color-accent);
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .btn {
+    /* 44px：移动端触摸目标建议值（WCAG 2.5.5 / Apple HIG） */
+    min-height: 44px;
+    width: 100%;
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-control);
+    background: var(--color-card);
+    color: var(--color-text);
+    font: inherit;
+    font-size: var(--font-md);
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .btn:hover { background: var(--color-bg); }
+  .btn:active { background: var(--color-line); }
+
+  .btn-primary {
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+  /* 主按钮 hover 不变色：调透明度会把白字对比度压到 4.5:1 以下 */
+  .btn-primary:hover { background: var(--color-accent); }
+  .btn-primary:active { background: var(--color-accent); opacity: 0.85; }
+
+  .btn:disabled,
+  .btn:disabled:hover,
+  .btn:disabled:active {
+    border-color: var(--color-line);
+    background: var(--color-bg);
+    color: var(--color-text-2);
+    opacity: 1;
+    cursor: not-allowed;
+  }
+
+  /* ---------- 常见问题 ---------- */
+  .faq {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .section-title {
+    font-size: var(--font-md);
+    font-weight: 600;
+  }
+  .faq-list {
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+    background: var(--color-card);
+    overflow: hidden;
+  }
+  .faq-item + .faq-item { border-top: 1px solid var(--color-line); }
+  .faq-item summary {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--font-md);
+    cursor: pointer;
+    list-style: none;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after {
+    content: "";
+    flex: none;
+    width: var(--space-2);
+    height: var(--space-2);
+    border-right: 2px solid var(--color-text-2);
+    border-bottom: 2px solid var(--color-text-2);
+    transform: translateY(-25%) rotate(45deg);
+    transition: transform 0.2s ease;
+  }
+  .faq-item[open] summary::after { transform: translateY(25%) rotate(-135deg); }
+  /* summary 在 overflow:hidden 的容器里，焦点环往里收，免得被裁掉 */
+  .faq-item summary:focus-visible { outline-offset: -2px; }
+  .faq-answer {
+    padding: 0 var(--space-4) var(--space-4);
+    color: var(--color-text-2);
+    font-size: var(--font-sm);
+  }
+
+  .footnote {
+    color: var(--color-text-2);
+    font-size: var(--font-sm);
+    text-align: center;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq-item summary::after { transition: none; }
+  }
+</style>
+</head>
+<body>
+  <header class="nav">
+    <div class="nav-inner">
+      <button type="button" class="icon-btn" id="close-btn" aria-label="关闭" title="关闭">
+        <span aria-hidden="true">✕</span>
+      </button>
+      <h1 class="nav-title">升级套餐</h1>
+    </div>
+  </header>
+
+  <main>
+    <fieldset class="billing-toggle">
+      <legend class="visually-hidden">付费周期</legend>
+      <input type="radio" name="cycle" id="cycle-month" value="month" checked>
+      <label for="cycle-month">月付</label>
+      <input type="radio" name="cycle" id="cycle-year" value="year">
+      <label for="cycle-year">年付<span class="save-tag">省 20%</span></label>
+    </fieldset>
+
+    <section class="plans" aria-label="套餐">
+      <article class="plan" aria-labelledby="plan-free">
+        <div class="plan-head">
+          <div class="plan-title-row">
+            <h2 class="plan-name" id="plan-free">免费版</h2>
+          </div>
+          <p class="price">
+            <span class="price-amount">¥0</span>
+          </p>
+          <p class="billing-note">永久免费</p>
+        </div>
+        <ul class="perks">
+          <li>5GB 存储空间</li>
+          <li>最多 3 人协作</li>
+          <li>基础文件共享</li>
+        </ul>
+        <button type="button" class="btn">切换到免费版</button>
+      </article>
+
+      <article class="plan" aria-labelledby="plan-pro" data-month="30" data-year="24">
+        <div class="plan-head">
+          <div class="plan-title-row">
+            <h2 class="plan-name" id="plan-pro">Pro</h2>
+            <span class="badge badge-current">当前套餐</span>
+          </div>
+          <p class="price">
+            <span class="price-amount">¥30</span><span class="price-unit">/月</span>
+          </p>
+          <p class="billing-note">按月付费</p>
+        </div>
+        <ul class="perks">
+          <li>100GB 存储空间</li>
+          <li>最多 10 人协作</li>
+          <li>30 天历史版本</li>
+        </ul>
+        <button type="button" class="btn" disabled>当前套餐</button>
+      </article>
+
+      <article class="plan is-recommended" aria-labelledby="plan-team" data-month="88" data-year="70.4">
+        <div class="plan-head">
+          <div class="plan-title-row">
+            <h2 class="plan-name" id="plan-team">团队版</h2>
+            <span class="badge badge-recommended">推荐</span>
+          </div>
+          <p class="price">
+            <span class="price-amount">¥88</span><span class="price-unit">/月</span>
+          </p>
+          <p class="billing-note">按月付费</p>
+        </div>
+        <ul class="perks">
+          <li>1TB 存储空间</li>
+          <li>不限协作人数</li>
+          <li>成员权限管理</li>
+        </ul>
+        <button type="button" class="btn btn-primary">升级到团队版</button>
+      </article>
+    </section>
+
+    <section class="faq" aria-labelledby="faq-title">
+      <h2 class="section-title" id="faq-title">常见问题</h2>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>升级后什么时候生效？</summary>
+          <p class="faq-answer">付款成功后立即生效。当前周期内未用完的 Pro 费用会按天折算，抵扣到新套餐里。</p>
+        </details>
+        <details class="faq-item">
+          <summary>可以随时取消吗？</summary>
+          <p class="faq-answer">可以。取消后当前周期结束前仍可使用全部权益，到期后自动转为免费版，不会再扣费。</p>
+        </details>
+        <details class="faq-item">
+          <summary>降级后超出空间的文件会怎样？</summary>
+          <p class="faq-answer">文件不会被删除，但在用量降到套餐上限以内之前，不能再上传新文件。</p>
+        </details>
+      </div>
+    </section>
+
+    <p class="footnote">价格含税，可随时取消</p>
+  </main>
+
+  <script>
+    (function () {
+      var paidPlans = document.querySelectorAll('.plan[data-month]');
+
+      function formatYuan(n) {
+        return '¥' + (Math.round(n * 10) / 10);
+      }
+
+      function render(cycle) {
+        paidPlans.forEach(function (plan) {
+          var month = Number(plan.dataset.month);
+          var year = Number(plan.dataset.year);
+          var amount = plan.querySelector('.price-amount');
+          var note = plan.querySelector('.billing-note');
+          if (cycle === 'year') {
+            amount.textContent = formatYuan(year);
+            note.textContent = '按年付 ' + formatYuan(year * 12) + '，比月付省 ' + formatYuan((month - year) * 12);
+          } else {
+            amount.textContent = formatYuan(month);
+            note.textContent = '按月付费';
+          }
+        });
+      }
+
+      document.querySelectorAll('input[name="cycle"]').forEach(function (input) {
+        input.addEventListener('change', function () {
+          if (input.checked) render(input.value);
+        });
+      });
+
+      document.getElementById('close-btn').addEventListener('click', function () {
+        if (history.length > 1) history.back();
+        else window.close();
+      });
+    })();
+  </script>
+</body>
+</html>

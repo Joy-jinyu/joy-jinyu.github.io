@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>通知</title>
+<style>
+/* ===== 团队设计变量：原样复制自 tokens.css ===== */
+/* 「团队空间」App 的设计变量。浅色、深色各一套。
+   成对的颜色（accent / on-accent，card 上的 text、text-2、danger）对比度都在 4.5:1 以上；
+   accent 当文字用时只能放在 card 上（放在 bg 上只有 4.22:1）。 */
+:root {
+  --color-accent: #b65a3c;      --color-on-accent: #ffffff;
+  --color-bg: #f4f4f1;          --color-card: #ffffff;
+  --color-text: #1c1c1a;        --color-text-2: #5f5e59;
+  --color-line: #e7e6e1;        --color-danger: #b42318;
+  --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-title: 600 18px/1.4 var(--font-sans);
+  --font-body: 400 15px/1.6 var(--font-sans);
+  --font-body-strong: 600 15px/1.6 var(--font-sans);
+  --font-caption: 400 13px/1.5 var(--font-sans);
+  --radius-card: 16px;  --radius-control: 10px;  --radius-pill: 999px;
+  --control-h: 44px;    --control-h-sm: 32px;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px rgb(0 0 0 / 0.06);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-accent: #d97757;    --color-on-accent: #1a1a19;
+    --color-bg: #141413;        --color-card: #1f1e1c;
+    --color-text: #f0efea;      --color-text-2: #a3a199;
+    --color-line: #2f2e2b;      --color-danger: #f97066;
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3);
+  }
+}
+/* ===== 变量文件结束 ===== */
+
+/**
+ * 页面级派生量，只由上面的变量和安全区组合而成，不引入新值。
+ * 导航栏、正文、底栏、提示条四层都用同一对 --pad-l / --pad-r 算左右边，保证边线重合。
+ */
+:root {
+  color-scheme: light dark;
+  --pad-l: calc(var(--space-4) + env(safe-area-inset-left));
+  --pad-r: calc(var(--space-4) + env(safe-area-inset-right));
+  --footer-h: calc(var(--control-h) + 2 * var(--space-3) + 1px + env(safe-area-inset-bottom));
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+html {
+  scrollbar-gutter: stable;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font: var(--font-body);
+  text-autospace: normal;
+}
+
+h1, h2, p, ul { margin: 0; padding: 0; }
+ul { list-style: none; }
+
+button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+button[aria-disabled="true"] { cursor: default; }
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+[tabindex="-1"]:focus { outline: none; }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ===== 顶部导航栏 ===== */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding-top: env(safe-area-inset-top);
+  padding-left: var(--pad-l);
+  padding-right: var(--pad-r);
+  background: var(--color-card);
+  border-bottom: 1px solid var(--color-line);
+}
+.navbar-inner {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: var(--control-h);
+}
+.nav-back {
+  justify-self: start;
+  display: flex;
+  align-items: center;
+  width: var(--control-h);
+  height: var(--control-h);
+  color: var(--color-text);
+}
+.chevron {
+  width: var(--space-3);
+  height: var(--space-3);
+  margin-inline-start: var(--space-1);
+  border-left: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+}
+.nav-title {
+  font: var(--font-title);
+  color: var(--color-text);
+  white-space: nowrap;
+}
+.nav-action {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  min-width: var(--control-h);
+  height: var(--control-h);
+  justify-content: flex-end;
+  font: var(--font-body);
+  color: var(--color-accent);
+  white-space: nowrap;
+}
+.nav-action[aria-disabled="true"] { color: var(--color-text-2); }
+
+/* ===== 正文 ===== */
+.page {
+  display: block;
+  padding-top: var(--space-5);
+  padding-left: var(--pad-l);
+  padding-right: var(--pad-r);
+  padding-bottom: calc(var(--footer-h) + var(--space-5) + var(--banner-room, 0px));
+}
+
+.state-msg {
+  font: var(--font-body);
+  color: var(--color-text-2);
+  text-align: center;
+}
+.state-card {
+  padding: var(--space-4);
+  background: var(--color-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+.state-card .btn { margin-top: var(--space-3); }
+
+.group + .group { margin-top: calc(2 * var(--space-4)); }
+.group-title {
+  margin-bottom: var(--space-2);
+  font: var(--font-caption);
+  color: var(--color-text-2);
+}
+.notice-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.notice {
+  display: block;
+  width: 100%;
+  padding: var(--space-4);
+  background: var(--color-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  color: var(--color-text);
+}
+.notice:active { background: var(--color-bg); }
+.notice-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: var(--space-2);
+  align-items: baseline;
+}
+.notice-title {
+  display: block;
+  font: var(--font-body-strong);
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+/* 未读圆点挂进卡片左内边距，已读和未读的标题左边保持对齐。
+   0.38em 是汉字字面中心离基线的高度（表意字框中心约在基线上 0.38em），圆点中心对到这里。 */
+.notice[data-read="false"] .notice-title::before {
+  content: "";
+  display: inline-block;
+  width: var(--space-2);
+  height: var(--space-2);
+  margin-inline: calc(-1 * (var(--space-2) + var(--space-1))) var(--space-1);
+  vertical-align: calc(0.38em - var(--space-1));
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+}
+.notice-time {
+  display: block;
+  font: var(--font-caption);
+  color: var(--color-text-2);
+  white-space: nowrap;
+}
+.notice-body {
+  display: block;
+  font: var(--font-body);
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+
+/* ===== 按钮 ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--control-h);
+  padding-inline: var(--space-4);
+  border-radius: var(--radius-control);
+  font: var(--font-body-strong);
+  white-space: nowrap;
+}
+.btn-primary {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+.btn-block { display: flex; width: 100%; }
+.btn-text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--control-h);
+  padding-inline: var(--space-3);
+  font: var(--font-body-strong);
+  color: var(--color-accent);
+  white-space: nowrap;
+}
+.btn-text.is-secondary {
+  font: var(--font-body);
+  color: var(--color-text-2);
+}
+
+/* ===== 失败提示条 ===== */
+.banner-wrap {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--footer-h) + var(--space-3));
+  z-index: 3;
+  padding-left: var(--pad-l);
+  padding-right: var(--pad-r);
+}
+.banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-left: var(--space-4);
+  padding-right: var(--space-1);
+  background: var(--color-card);
+  color: var(--color-text);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-control);
+  box-shadow: var(--shadow-card);
+}
+.banner-msg {
+  flex: 1;
+  min-width: 0;
+  padding-block: var(--space-3);
+  font: var(--font-body);
+  color: var(--color-text);
+}
+.banner-actions { display: flex; flex-shrink: 0; }
+
+/* ===== 底部固定栏 ===== */
+.footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  padding-top: var(--space-3);
+  padding-bottom: calc(var(--space-3) + env(safe-area-inset-bottom));
+  padding-left: var(--pad-l);
+  padding-right: var(--pad-r);
+  background: var(--color-card);
+  border-top: 1px solid var(--color-line);
+}
+
+/* ===== 按字形量间距：裁掉行盒上下空白，再把汉字冒出 cap 的部分补回来 ===== */
+@supports (text-box: trim-both cap alphabetic) {
+  .trim {
+    text-box: trim-both cap alphabetic;
+    padding-block: 0.16em 0.12em;
+  }
+  .group-title { margin-bottom: var(--space-3); }
+  .notice-body { margin-top: var(--space-2); }
+  .banner-msg.trim { padding-block: calc(var(--space-3) + 0.16em) calc(var(--space-3) + 0.12em); }
+}
+</style>
+</head>
+<body>
+<header class="navbar">
+  <div class="navbar-inner">
+    <button type="button" class="nav-back" id="back-btn" aria-label="返回">
+      <span class="chevron" aria-hidden="true"></span>
+    </button>
+    <h1 class="nav-title trim">通知</h1>
+    <button type="button" class="nav-action" id="read-all-btn" aria-disabled="true">
+      <span class="trim" id="read-all-label">全部已读</span>
+    </button>
+  </div>
+</header>
+
+<main class="page" id="main" tabindex="-1">
+  <p class="state-msg trim" id="state-loading" tabindex="-1">正在加载通知…</p>
+  <div class="state-card" id="state-error" hidden>
+    <p class="trim" id="state-error-msg"></p>
+    <button type="button" class="btn btn-primary" id="load-retry-btn"><span class="trim">重新加载</span></button>
+  </div>
+  <p class="state-msg trim" id="state-empty" hidden>暂时没有通知</p>
+  <div id="notice-groups"></div>
+</main>
+
+<div class="banner-wrap" id="banner" hidden>
+  <div class="banner">
+    <p class="banner-msg trim" id="banner-msg"></p>
+    <div class="banner-actions">
+      <button type="button" class="btn-text" id="banner-retry-btn"><span class="trim">重试</span></button>
+      <button type="button" class="btn-text is-secondary" id="banner-close-btn"><span class="trim">关闭</span></button>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <button type="button" class="btn btn-primary btn-block" id="settings-btn"><span class="trim">通知设置</span></button>
+</footer>
+
+<p class="sr-only" id="live-polite" aria-live="polite"></p>
+<p class="sr-only" id="live-alert" role="alert"></p>
+
+<script>
+(() => {
+  'use strict';
+
+  /** 每个请求的超时时间；fetch 自身没有默认超时。 */
+  const REQUEST_TIMEOUT_MS = 15000;
+
+  const $ = (id) => document.getElementById(id);
+  const els = {
+    main: $('main'),
+    back: $('back-btn'),
+    readAll: $('read-all-btn'),
+    readAllLabel: $('read-all-label'),
+    loading: $('state-loading'),
+    error: $('state-error'),
+    errorMsg: $('state-error-msg'),
+    loadRetry: $('load-retry-btn'),
+    empty: $('state-empty'),
+    groups: $('notice-groups'),
+    banner: $('banner'),
+    bannerMsg: $('banner-msg'),
+    bannerRetry: $('banner-retry-btn'),
+    bannerClose: $('banner-close-btn'),
+    livePolite: $('live-polite'),
+    liveAlert: $('live-alert'),
+  };
+
+  let notices = [];
+  let loaded = false;
+  let readAllBusy = false;
+  const pendingIds = new Set();
+  let bannerState = null;
+
+  function timeoutSignal(ms) {
+    if (typeof AbortSignal !== 'undefined' && typeof AbortSignal.timeout === 'function') {
+      return AbortSignal.timeout(ms);
+    }
+    const controller = new AbortController();
+    setTimeout(() => controller.abort(), ms);
+    return controller.signal;
+  }
+
+  async function request(url, options = {}) {
+    const res = await fetch(url, {
+      ...options,
+      headers: { Accept: 'application/json' },
+      signal: timeoutSignal(REQUEST_TIMEOUT_MS),
+    });
+    if (!res.ok) {
+      const err = new Error(`HTTP ${res.status}`);
+      err.name = 'HttpError';
+      throw err;
+    }
+    return res;
+  }
+
+  function reasonText(err) {
+    const name = err && err.name;
+    if (name === 'TimeoutError' || name === 'AbortError') return '网络太慢，请求超时了';
+    if (name === 'HttpError') return '服务器暂时出了问题';
+    if (name === 'FormatError') return '返回的数据格式不对';
+    return '网络连接失败';
+  }
+
+  function isValidNotice(n) {
+    return n !== null && typeof n === 'object'
+      && (typeof n.id === 'number' || typeof n.id === 'string')
+      && typeof n.group === 'string'
+      && typeof n.title === 'string'
+      && typeof n.body === 'string'
+      && typeof n.time === 'string'
+      && typeof n.read === 'boolean';
+  }
+
+  function parseNotices(data) {
+    if (!Array.isArray(data)) {
+      const err = new Error('notices is not an array');
+      err.name = 'FormatError';
+      throw err;
+    }
+    const valid = data.filter(isValidNotice);
+    if (valid.length !== data.length) {
+      console.warn(`[notices] 丢弃了 ${data.length - valid.length} 条字段不全的通知`, data);
+    }
+    return valid.map((n) => ({ id: n.id, group: n.group, title: n.title, body: n.body, time: n.time, read: n.read }));
+  }
+
+  const unreadCount = () => notices.filter((n) => !n.read).length;
+  const findNotice = (id) => notices.find((n) => String(n.id) === String(id));
+  const itemButton = (id) => els.groups.querySelector(`.notice[data-id="${CSS.escape(String(id))}"]`);
+
+  function announce(text, urgent = false) {
+    const region = urgent ? els.liveAlert : els.livePolite;
+    region.textContent = '';
+    requestAnimationFrame(() => { region.textContent = text; });
+  }
+
+  function updateReadAllButton() {
+    els.readAllLabel.textContent = readAllBusy ? '处理中…' : '全部已读';
+    const disabled = readAllBusy || !loaded || unreadCount() === 0;
+    els.readAll.setAttribute('aria-disabled', String(disabled));
+  }
+
+  /** 切换加载 / 失败 / 空 / 列表四种状态；要被藏起来的区域如果有焦点，先显示新状态、把焦点交给 focusTarget，再藏旧状态。 */
+  function showState(next, focusTarget) {
+    const entries = Object.entries({ loading: els.loading, error: els.error, empty: els.empty, list: els.groups });
+    const active = document.activeElement;
+    const losingFocus = entries.some(([key, el]) => key !== next && el.contains(active));
+    entries.forEach(([key, el]) => { if (key === next) el.hidden = false; });
+    if (losingFocus && focusTarget) focusTarget.focus();
+    entries.forEach(([key, el]) => { if (key !== next) el.hidden = true; });
+  }
+
+  function createNoticeItem(n) {
+    const li = document.createElement('li');
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'notice';
+    btn.dataset.id = String(n.id);
+    btn.dataset.read = String(n.read);
+
+    const head = document.createElement('span');
+    head.className = 'notice-head';
+
+    const title = document.createElement('span');
+    title.className = 'notice-title trim';
+    const unreadTag = document.createElement('span');
+    unreadTag.className = 'sr-only notice-unread-tag';
+    unreadTag.textContent = '未读，';
+    unreadTag.hidden = n.read;
+    title.append(unreadTag, document.createTextNode(n.title));
+
+    const time = document.createElement('span');
+    time.className = 'notice-time trim';
+    time.textContent = n.time;
+
+    const body = document.createElement('span');
+    body.className = 'notice-body trim';
+    body.textContent = n.body;
+
+    head.append(title, time);
+    btn.append(head, body);
+    li.append(btn);
+    return li;
+  }
+
+  function render() {
+    const groups = new Map();
+    notices.forEach((n) => {
+      groups.set(n.group, [...(groups.get(n.group) || []), n]);
+    });
+
+    const fragment = document.createDocumentFragment();
+    let index = 0;
+    groups.forEach((items, name) => {
+      const section = document.createElement('section');
+      section.className = 'group';
+      const headingId = `group-title-${index}`;
+      section.setAttribute('aria-labelledby', headingId);
+
+      const h2 = document.createElement('h2');
+      h2.className = 'group-title trim';
+      h2.id = headingId;
+      h2.textContent = name;
+
+      const ul = document.createElement('ul');
+      ul.className = 'notice-list';
+      items.forEach((n) => ul.append(createNoticeItem(n)));
+
+      section.append(h2, ul);
+      fragment.append(section);
+      index += 1;
+    });
+    els.groups.replaceChildren(fragment);
+  }
+
+  function syncItem(id) {
+    const n = findNotice(id);
+    const btn = itemButton(id);
+    if (!n || !btn) return;
+    btn.dataset.read = String(n.read);
+    btn.querySelector('.notice-unread-tag').hidden = n.read;
+  }
+
+  function setItemBusy(id, busy) {
+    const btn = itemButton(id);
+    if (!btn) return;
+    if (busy) btn.setAttribute('aria-busy', 'true');
+    else btn.removeAttribute('aria-busy');
+  }
+
+  function showBanner(message, { key, retry, focusTarget }) {
+    bannerState = { key, retry, focusTarget };
+    els.bannerMsg.textContent = message;
+    els.banner.hidden = false;
+    els.main.style.setProperty('--banner-room', `calc(${els.banner.firstElementChild.offsetHeight}px + var(--space-3))`);
+    announce(message, true);
+  }
+
+  function hideBanner() {
+    if (!bannerState) return;
+    if (els.banner.contains(document.activeElement)) {
+      const target = bannerState.focusTarget();
+      if (target) target.focus();
+    }
+    els.banner.hidden = true;
+    els.main.style.removeProperty('--banner-room');
+    bannerState = null;
+  }
+
+  function hideBannerFor(key) {
+    if (bannerState && bannerState.key === key) hideBanner();
+  }
+
+  async function load() {
+    loaded = false;
+    updateReadAllButton();
+    showState('loading', els.loading);
+    try {
+      const res = await request('./api/notices.json');
+      notices = parseNotices(await res.json());
+      loaded = true;
+      render();
+      showState(notices.length ? 'list' : 'empty', els.main);
+    } catch (err) {
+      console.error('[notices] 加载失败', err);
+      els.errorMsg.textContent = `通知没有加载出来：${reasonText(err)}。`;
+      showState('error', els.loadRetry);
+      announce(els.errorMsg.textContent, true);
+    } finally {
+      updateReadAllButton();
+    }
+  }
+
+  async function markRead(id) {
+    const n = findNotice(id);
+    if (!n || n.read || pendingIds.has(String(id))) return;
+    pendingIds.add(String(id));
+    setItemBusy(id, true);
+    try {
+      await request(`./api/notices/${encodeURIComponent(String(id))}/read`, { method: 'POST' });
+      notices = notices.map((item) => (String(item.id) === String(id) ? { ...item, read: true } : item));
+      syncItem(id);
+      hideBannerFor(`item:${id}`);
+      announce('已标为已读');
+    } catch (err) {
+      console.error('[notices] 标记已读失败', id, err);
+      showBanner(`这条通知没有标为已读：${reasonText(err)}。`, {
+        key: `item:${id}`,
+        retry: () => markRead(id),
+        focusTarget: () => itemButton(id) || els.main,
+      });
+    } finally {
+      pendingIds.delete(String(id));
+      setItemBusy(id, false);
+      updateReadAllButton();
+    }
+  }
+
+  async function markAllRead() {
+    if (readAllBusy || !loaded || unreadCount() === 0) return;
+    readAllBusy = true;
+    updateReadAllButton();
+    try {
+      await request('./api/notices/read-all', { method: 'POST' });
+      notices = notices.map((item) => (item.read ? item : { ...item, read: true }));
+      notices.forEach((item) => syncItem(item.id));
+      hideBannerFor('all');
+      announce('已全部标为已读');
+    } catch (err) {
+      console.error('[notices] 全部已读失败', err);
+      showBanner(`没能全部标为已读：${reasonText(err)}。`, {
+        key: 'all',
+        retry: markAllRead,
+        focusTarget: () => els.readAll,
+      });
+    } finally {
+      readAllBusy = false;
+      updateReadAllButton();
+    }
+  }
+
+  els.back.addEventListener('click', () => { history.back(); });
+  els.readAll.addEventListener('click', markAllRead);
+  els.loadRetry.addEventListener('click', load);
+  els.groups.addEventListener('click', (event) => {
+    const btn = event.target.closest('.notice');
+    if (btn) markRead(btn.dataset.id);
+  });
+  els.bannerRetry.addEventListener('click', () => {
+    if (!bannerState) return;
+    const { retry } = bannerState;
+    hideBanner();
+    retry();
+  });
+  els.bannerClose.addEventListener('click', hideBanner);
+
+  load();
+})();
+</script>
+</body>
+</html>

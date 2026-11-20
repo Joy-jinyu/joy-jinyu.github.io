@@ -1,0 +1,30 @@
+用 HTML + CSS + 少量原生 JS 写一个单文件页面：移动端 H5 的「升级套餐」页。
+
+内容从上到下：
+- 顶部导航栏：左边关闭按钮，中间标题「升级套餐」
+- 月付 / 年付切换，年付旁边一个「省 20%」标签
+- 三张套餐卡片：免费版（¥0，5GB 空间，最多 3 人）、Pro（¥30/月，100GB 空间，最多 10 人，标「当前套餐」）、团队版（¥88/月，1TB 空间，不限人数，标「推荐」）；每张卡片列 3 条权益，底部一个按钮，当前套餐的按钮不可点
+- 「常见问题」三条，点开展开答案
+- 底部一行小字：价格含税，可随时取消
+
+必须使用下面这组设计变量，不要自己另选颜色、圆角和字号：
+
+```css
+:root {
+  --color-accent: #b65a3c;      /* 主色 */
+  --color-on-accent: #ffffff;   /* 主色上的文字 */
+  --color-text: #1c1c1a;
+  --color-text-2: #5f5e59;
+  --color-line: #e7e6e1;
+  --color-bg: #f4f4f1;
+  --color-card: #ffffff;
+  --radius-card: 16px;
+  --radius-control: 10px;
+  --font-sm: 13px;
+  --font-md: 15px;
+  --font-lg: 18px;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px;
+}
+```
+
+把完整代码写到这个文件：……/upgrade-token.html

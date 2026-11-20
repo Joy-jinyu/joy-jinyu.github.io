@@ -1,0 +1,44 @@
+「只给规则」的三份（2026-11-18，Claude Code，全新 subagent；规则文件是实验版 AGENTS.md 去掉末尾「交付前的检查」一节，47 行）交付汇报摘录，原文照录，只截取和加载的 skill、读过的文件、自查方式有关的句子。
+注意：这一组开始时，lab/ai-constraints/ 下已经有第一轮的 prompt.txt（含「带规则的一组加这一句」的说明）和其他组的页面。
+
+== notices-rulesonly-2.html ==
+**加载的 skill：没有加载。** 这一组叫 rulesonly，我理解为只靠那份规则文件，所以没加载 ui-conventions、frontend-design，避免别的规范混进来。
+**读过的文件：**
+- `scratchpad/ui-rules-b/AGENTS.md`（UI 规则）
+- `ai-constraints/tokens.css`（原样复制进了 `<style>`）
+- `ai-constraints/api/notices.json`（测试数据）
+- `ai-constraints/prompt.txt`
+我没打开同目录下别的组的页面（`notices-plain-*`、`notices-rules-*`），也没打开评测脚本（`rules-probe.mjs`、`ui-lint.mjs`），免得影响这一组的结果。
+**交付前怎么检查的：** 先用 python 算了变量文件没标出来的颜色组合，再用 Chrome 157 加 playwright-core 跑了一个脚本。
+| 安全区：用 CDP `Emulation.setSafeAreaInsetsOverride` 模拟竖屏 393×852（上 59、下 34）和横屏 852×393（左右 59、下 21），页面顶部和底部各查一次 | 所有可点元素都在安全区里面 |
+| 单条请求一直不返回 | 约 15.4s 后按超时处理：提示「请求超时」，时间文字和 aria-busy 恢复 |
+| 首次加载失败后点重试 | 焦点先移到「加载中」，加载完再移到列表 |
+| 截图 | 浅色、深色、提示条、加载失败；外加把所有文字改成 15px 的一张，上下两级仍分得开 |
+
+== notices-rulesonly-3.html ==
+## 加载的 skill
+没有加载。只按你给的 AGENTS.md 和 tokens.css 写，没有引入其他规范。
+## 读了哪些文件
+- `scratchpad/ui-rules-b/AGENTS.md`（UI 规则）
+- `ai-constraints/tokens.css`（原样复制进 `<style>`）
+- `ai-constraints/api/notices.json`（只用来对字段格式，也当测试数据）
+- 只用 `ls` 看过目录。同目录的 `notices-plain-*`、`notices-rules-*`、`ui-lint.mjs`、`rules-probe.mjs`、目录里那份 `AGENTS.md`、`prompt.txt` 都没打开。
+## 交付前怎么检查的
+1. **对比度**：用脚本算了 tokens 里所有颜色组合的对比度。……accent 放在 bg 上只有 4.22，所以 accent 色的文字只放在 card 上。
+2. **浏览器检查**：用 `Emulation.setSafeAreaInsetsOverride` 模拟安全区，竖屏 393×852（上 59、下 34）和横屏 852×393（左右 59、下 21）各查了浅色、深色
+   - 列表加载失败后点重试，焦点移到列表容器
+   - 让「全部已读」的请求一直不返回：15 秒后提示「超时」，按钮的「处理中…」文字和禁用状态都恢复了。
+3. **把所有文字改成同一字号截图**：分组标题和条目标题靠颜色区分（600 字重，text-2 对 text）。
+
+== notices-rulesonly-1.html ==
+**加载的 skill：一个都没加载。** 文件名是 `rulesonly`，所以我把你给的规则文件当作唯一的规则来源。按触发词本来会用到 `ui-conventions` 和 `frontend-design`，我故意没用，免得别的规则混进来。
+**读的文件：**
+- `tokens.css`：原样复制进了页面的 `<style>`。
+- `ui-rules-b/AGENTS.md`：就是那份 UI 规则。
+- `api/notices.json`：只看了数据格式，用来做测试。
+- 同目录下其他版本的页面和打分脚本都没打开，包括 `notices-plain-*`、`notices-rules-*`、`rules-probe.mjs`、`ui-lint.mjs` 和那个目录里的 `AGENTS.md`。
+**交付前的检查**（本机没装 Playwright，我写了个直接走 Chrome 调试接口的脚本；保存请求用拦截来模拟成功、500 和不返回三种情况）：
+| 竖屏 393×852（上 59、下 34）、横屏 852×393（左右 59、下 21），首屏和滚到底各查一次，看可点区域有没有落进安全区 | 都没有 |
+| 所有文字改成 15px 后看层级 | 分组标题和通知标题、通知标题和正文、正文和时间，都至少还有字重或颜色一项不同 |
+| 「全部已读」超时 | 请求中按钮显示「处理中…」并标为不可用；约 14.9 秒后（设定的是 15 秒）超时，文字和可用状态都恢复 |
+| 列表加载失败 | 显示失败卡片和「重新加载」；点了之后焦点先移到加载提示上，再藏起失败卡片 |

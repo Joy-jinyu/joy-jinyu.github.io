@@ -1,0 +1,17 @@
+Chrome 156.0.8078.79，40px，空隙按墨迹逐像素量，单位 em
+
+== 字体栈：英文字体在前（-apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif）
+不加空格：「用」到「C」0.15，「e」到「上」0.088；空格本身宽 0.215
+手敲空格：「用」到「C」0.363，「e」到「上」0.3；空格本身宽 0.214
+不加空格 + text-autospace: normal：「用」到「C」0.275，「e」到「上」0.213；空格本身宽 0.215
+手敲空格 + text-autospace: normal：「用」到「C」0.363，「e」到「上」0.3；空格本身宽 0.214
+标点宽度（默认）：“0.37 ”0.37 “0.37 ”0.37 “0.37 ”0.37 ，1 （1 ）0.5 。1；整句 20.65 em
+标点宽度（text-spacing-trim: space-all）：“0.37 ”0.37 “0.37 ”0.37 “0.37 ”0.37 ，1 （1 ）1 。1；整句 21.15 em
+
+== 字体栈：苹方在前（"PingFang SC", -apple-system, BlinkMacSystemFont, sans-serif）
+不加空格：「用」到「C」0.15，「e」到「上」0.075；空格本身宽 0.334
+手敲空格：「用」到「C」0.488，「e」到「上」0.413；空格本身宽 0.333
+不加空格 + text-autospace: normal：「用」到「C」0.275，「e」到「上」0.2；空格本身宽 0.334
+手敲空格 + text-autospace: normal：「用」到「C」0.488，「e」到「上」0.413；空格本身宽 0.333
+标点宽度（默认）：“0.54 ”0.54 “0.54 ”0.54 “0.54 ”0.54 ，1 （1 ）0.5 。1；整句 21.7 em
+标点宽度（text-spacing-trim: space-all）：“0.54 ”0.54 “0.54 ”0.54 “0.54 ”0.54 ，1 （1 ）1 。1；整句 22.2 em

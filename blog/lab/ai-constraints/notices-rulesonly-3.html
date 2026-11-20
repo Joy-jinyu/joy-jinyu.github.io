@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>通知</title>
+<style>
+/* ===== 团队设计变量：原样复制自 tokens.css ===== */
+/* 「团队空间」App 的设计变量。浅色、深色各一套。
+   成对的颜色（accent / on-accent，card 上的 text、text-2、danger）对比度都在 4.5:1 以上；
+   accent 当文字用时只能放在 card 上（放在 bg 上只有 4.22:1）。 */
+:root {
+  --color-accent: #b65a3c;      --color-on-accent: #ffffff;
+  --color-bg: #f4f4f1;          --color-card: #ffffff;
+  --color-text: #1c1c1a;        --color-text-2: #5f5e59;
+  --color-line: #e7e6e1;        --color-danger: #b42318;
+  --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-title: 600 18px/1.4 var(--font-sans);
+  --font-body: 400 15px/1.6 var(--font-sans);
+  --font-body-strong: 600 15px/1.6 var(--font-sans);
+  --font-caption: 400 13px/1.5 var(--font-sans);
+  --radius-card: 16px;  --radius-control: 10px;  --radius-pill: 999px;
+  --control-h: 44px;    --control-h-sm: 32px;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px rgb(0 0 0 / 0.06);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-accent: #d97757;    --color-on-accent: #1a1a19;
+    --color-bg: #141413;        --color-card: #1f1e1c;
+    --color-text: #f0efea;      --color-text-2: #a3a199;
+    --color-line: #2f2e2b;      --color-danger: #f97066;
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3);
+  }
+}
+/* ===== 变量文件结束 ===== */
+
+/**
+ * 页面级派生量，全部由上面的变量和安全区组合而成。
+ * --gutter：左右留白含安全区；顶栏、正文、底栏、提示条都用 .col 同一个宽度公式，外层不再加左右留白。
+ * --group-gap：组间距 = space-5 + space-3，保证组内看到的最大间距（条目之间 24px）不超过组间距的一半。
+ */
+:root {
+  --gutter: calc(var(--space-4) + max(env(safe-area-inset-left), env(safe-area-inset-right)));
+  --footer-h: calc(var(--space-3) * 2 + var(--control-h) + 1px);
+  --group-gap: calc(var(--space-5) + var(--space-3));
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+html {
+  scrollbar-gutter: stable;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font: var(--font-body);
+  text-autospace: normal;
+  -webkit-tap-highlight-color: transparent;
+}
+h1, h2, p, ul { margin: 0; padding: 0; }
+ul { list-style: none; }
+button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+button[aria-disabled="true"] { cursor: default; }
+:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+[tabindex="-1"]:focus { outline: none; }
+
+.col {
+  width: calc(100% - 2 * var(--gutter));
+  margin-inline: auto;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+@supports (text-box: trim-both cap alphabetic) {
+  .trim {
+    text-box: trim-both cap alphabetic;
+    padding-block: 0.16em 0.12em;
+  }
+}
+
+/* ---------- 顶部导航栏 ---------- */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding-top: env(safe-area-inset-top);
+  background: var(--color-card);
+  border-bottom: 1px solid var(--color-line);
+}
+.topbar-inner {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  min-height: var(--control-h);
+}
+.topbar-title {
+  font: var(--font-title);
+  color: var(--color-text);
+}
+.back {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  min-width: var(--control-h);
+  min-height: var(--control-h);
+  color: var(--color-text);
+}
+.back::before {
+  content: "";
+  width: var(--space-3);
+  height: var(--space-3);
+  margin-left: var(--space-1);
+  border: solid currentColor;
+  border-width: 0 0 2px 2px;
+  transform: rotate(45deg);
+}
+.text-btn {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: var(--control-h);
+  min-height: var(--control-h);
+  font: var(--font-body);
+  color: var(--color-accent);
+}
+.text-btn[aria-disabled="true"] { color: var(--color-text-2); }
+
+/* ---------- 列表 ---------- */
+main {
+  padding-top: var(--space-4);
+  padding-bottom: calc(var(--footer-h) + env(safe-area-inset-bottom) + var(--space-5));
+}
+.group + .group { margin-top: var(--group-gap); }
+.group-title {
+  margin-bottom: var(--space-2);
+  padding-inline: var(--space-4);
+  font: var(--font-caption);
+  font-weight: 600;
+  color: var(--color-text-2);
+}
+.card {
+  overflow: hidden;
+  background: var(--color-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+.card > li + li { border-top: 1px solid var(--color-line); }
+
+.notice {
+  display: grid;
+  grid-template-columns: var(--space-4) minmax(0, 1fr) auto;
+  align-items: first baseline;
+  width: 100%;
+  padding: var(--space-3) var(--space-4) var(--space-3) 0;
+}
+.notice:focus-visible { outline-offset: -2px; border-radius: var(--radius-card); }
+.notice:active { background: var(--color-bg); }
+@media (hover: hover) {
+  .notice:hover { background: var(--color-bg); }
+}
+.notice[aria-busy="true"] { cursor: progress; }
+
+.dot {
+  justify-self: center;
+  width: var(--space-2);
+  height: var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  visibility: hidden;
+  /* 圆点底边对齐基线后再上移 0.1em，让圆心落在汉字字面中线附近（实测截图调出） */
+  transform: translateY(-0.1em);
+}
+.notice.is-unread .dot { visibility: visible; }
+
+.notice-title {
+  font: var(--font-body-strong);
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+.notice-time {
+  margin-left: var(--space-3);
+  font: var(--font-caption);
+  color: var(--color-text-2);
+  white-space: nowrap;
+}
+.notice-body {
+  grid-column: 2 / -1;
+  margin-top: var(--space-2);
+  font: var(--font-body);
+  color: var(--color-text-2);
+  overflow-wrap: anywhere;
+}
+
+/* ---------- 加载 / 空 / 失败 ---------- */
+.state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-4);
+  background: var(--color-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  text-align: center;
+}
+.state-text {
+  font: var(--font-body);
+  color: var(--color-text-2);
+}
+.state.is-error .state-text { color: var(--color-text); }
+.outline-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--control-h);
+  padding-inline: var(--space-5);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-control);
+  background: var(--color-card);
+  color: var(--color-text);
+  font: var(--font-body-strong);
+}
+
+/* ---------- 操作失败提示条 ---------- */
+.toast-region {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--footer-h) + env(safe-area-inset-bottom) + var(--space-3));
+  z-index: 3;
+  pointer-events: none;
+}
+.toast {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-1) var(--space-1) var(--space-4);
+  background: var(--color-card);
+  border-radius: var(--radius-control);
+  box-shadow: var(--shadow-card);
+  pointer-events: auto;
+}
+.toast-text {
+  flex: 1;
+  min-width: 0;
+  font: var(--font-caption);
+  color: var(--color-text);
+}
+.toast .text-btn { padding-inline: var(--space-2); }
+.toast .toast-close { color: var(--color-text-2); }
+
+/* ---------- 底部固定按钮 ---------- */
+.footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  padding-top: var(--space-3);
+  padding-bottom: calc(var(--space-3) + env(safe-area-inset-bottom));
+  background: var(--color-card);
+  border-top: 1px solid var(--color-line);
+}
+.primary-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--control-h);
+  border-radius: var(--radius-control);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font: var(--font-body-strong);
+  text-decoration: none;
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner col">
+    <button type="button" class="back" id="back" aria-label="返回"></button>
+    <h1 class="topbar-title trim">通知</h1>
+    <button type="button" class="text-btn" id="read-all" aria-disabled="true"><span class="trim" id="read-all-label">全部已读</span></button>
+  </div>
+</header>
+
+<main>
+  <div class="col" id="list" tabindex="-1" aria-label="通知列表"></div>
+</main>
+
+<div class="toast-region" aria-live="assertive">
+  <div class="col" id="toast-slot"></div>
+</div>
+
+<footer class="footer">
+  <div class="col">
+    <a class="primary-btn" href="./settings.html"><span class="trim">通知设置</span></a>
+  </div>
+</footer>
+
+<script>
+(() => {
+  'use strict';
+
+  const TIMEOUT_MS = 15000;
+  const API = {
+    list: './api/notices.json',
+    read: (id) => `./api/notices/${encodeURIComponent(id)}/read`,
+    readAll: './api/notices/read-all',
+  };
+
+  const listEl = document.getElementById('list');
+  const readAllBtn = document.getElementById('read-all');
+  const readAllLabel = document.getElementById('read-all-label');
+  const toastSlot = document.getElementById('toast-slot');
+
+  let notices = [];
+  let loaded = false;
+  let readAllBusy = false;
+  const pendingIds = new Set();
+  let toast = null;
+
+  class RequestError extends Error {
+    constructor(kind, cause) {
+      super(kind);
+      this.kind = kind;
+      this.cause = cause;
+    }
+  }
+
+  /** AbortSignal.timeout 在较老的 WebView 里没有，退回 AbortController + 定时器。 */
+  function timeoutSignal(ms) {
+    if (typeof AbortSignal !== 'undefined' && typeof AbortSignal.timeout === 'function') {
+      return AbortSignal.timeout(ms);
+    }
+    const controller = new AbortController();
+    setTimeout(() => controller.abort(), ms);
+    return controller.signal;
+  }
+
+  async function request(url, options = {}) {
+    let res;
+    try {
+      res = await fetch(url, {
+        ...options,
+        headers: { Accept: 'application/json', ...options.headers },
+        signal: timeoutSignal(TIMEOUT_MS),
+      });
+    } catch (err) {
+      const timedOut = err && (err.name === 'TimeoutError' || err.name === 'AbortError');
+      throw new RequestError(timedOut ? 'timeout' : 'network', err);
+    }
+    if (!res.ok) throw new RequestError('http', res.status);
+    return res;
+  }
+
+  function errorText(err, action) {
+    const kind = err instanceof RequestError ? err.kind : 'unknown';
+    if (kind === 'timeout') return `${action}超时，请检查网络后重试`;
+    if (kind === 'network') return `网络连接失败，${action}没有完成`;
+    return `${action}失败，请稍后重试`;
+  }
+
+  function isValidNotice(n) {
+    return n !== null && typeof n === 'object'
+      && (typeof n.id === 'number' || typeof n.id === 'string')
+      && typeof n.group === 'string' && n.group !== ''
+      && typeof n.title === 'string';
+  }
+
+  function parseNotices(data) {
+    if (!Array.isArray(data)) throw new RequestError('format', data);
+    const valid = data.filter(isValidNotice);
+    if (valid.length !== data.length) {
+      console.warn(`[notices] 丢弃了 ${data.length - valid.length} 条格式不对的通知`);
+    }
+    return valid.map((n) => ({
+      id: n.id,
+      group: n.group,
+      title: n.title,
+      body: typeof n.body === 'string' ? n.body : '',
+      time: typeof n.time === 'string' ? n.time : '',
+      read: n.read === true,
+    }));
+  }
+
+  function el(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
+
+  const keyOf = (id) => String(id);
+  const findNotice = (key) => notices.find((n) => keyOf(n.id) === key);
+  const itemButton = (key) => listEl.querySelector(`.notice[data-id="${CSS.escape(key)}"]`);
+  const hasUnread = () => notices.some((n) => !n.read);
+
+  /* ---------- 渲染 ---------- */
+
+  function renderNotice(n) {
+    const btn = el('button', 'notice');
+    btn.type = 'button';
+    btn.dataset.id = keyOf(n.id);
+
+    const dot = el('span', 'dot');
+    dot.setAttribute('aria-hidden', 'true');
+
+    const title = el('span', 'notice-title trim');
+    const unreadLabel = el('span', 'sr-only unread-label', '未读，');
+    title.append(unreadLabel, document.createTextNode(n.title));
+
+    const time = el('span', 'notice-time trim', n.time);
+    const body = el('span', 'notice-body trim', n.body);
+    body.hidden = n.body === '';
+
+    btn.append(dot, title, time, body);
+    applyReadState(btn, n.read);
+    return btn;
+  }
+
+  function applyReadState(btn, read) {
+    btn.classList.toggle('is-unread', !read);
+    btn.querySelector('.unread-label').hidden = read;
+  }
+
+  function renderList() {
+    if (notices.length === 0) {
+      renderState('empty', '暂时没有通知');
+      return;
+    }
+    const groups = new Map();
+    for (const n of notices) {
+      if (!groups.has(n.group)) groups.set(n.group, []);
+      groups.get(n.group).push(n);
+    }
+    const sections = [...groups].map(([name, items], i) => {
+      const section = el('section', 'group');
+      const heading = el('h2', 'group-title trim', name);
+      heading.id = `group-${i}`;
+      section.setAttribute('aria-labelledby', heading.id);
+      const ul = el('ul', 'card');
+      ul.append(...items.map((n) => {
+        const li = el('li');
+        li.append(renderNotice(n));
+        return li;
+      }));
+      section.append(heading, ul);
+      return section;
+    });
+    listEl.replaceChildren(...sections);
+  }
+
+  function renderState(kind, message) {
+    const box = el('div', `state is-${kind}`);
+    const text = el('p', 'state-text trim', message);
+    box.append(text);
+    if (kind === 'error') {
+      box.setAttribute('role', 'alert');
+      const retry = el('button', 'outline-btn');
+      retry.type = 'button';
+      retry.append(el('span', 'trim', '重试'));
+      retry.addEventListener('click', () => {
+        listEl.focus();
+        loadNotices();
+      });
+      box.append(retry);
+    }
+    listEl.replaceChildren(box);
+  }
+
+  function syncItems() {
+    for (const n of notices) {
+      const btn = itemButton(keyOf(n.id));
+      if (btn) applyReadState(btn, n.read);
+    }
+    updateReadAllButton();
+  }
+
+  function updateReadAllButton() {
+    const enabled = loaded && !readAllBusy && hasUnread();
+    readAllBtn.setAttribute('aria-disabled', String(!enabled));
+  }
+
+  /* ---------- 操作失败提示条 ---------- */
+
+  function dismissToast() {
+    if (!toast) return;
+    if (toast.node.contains(document.activeElement)) {
+      const target = toast.returnFocus();
+      (target && target.isConnected ? target : listEl).focus();
+    }
+    toast.node.remove();
+    toast = null;
+  }
+
+  function showToast(message, { retry, returnFocus }) {
+    dismissToast();
+    const node = el('div', 'toast');
+    node.setAttribute('role', 'alert');
+    const text = el('p', 'toast-text trim', message);
+
+    const retryBtn = el('button', 'text-btn');
+    retryBtn.type = 'button';
+    retryBtn.append(el('span', 'trim', '重试'));
+    retryBtn.addEventListener('click', () => {
+      dismissToast();
+      retry();
+    });
+
+    const closeBtn = el('button', 'text-btn toast-close');
+    closeBtn.type = 'button';
+    closeBtn.append(el('span', 'trim', '关闭'));
+    closeBtn.addEventListener('click', dismissToast);
+
+    node.append(text, retryBtn, closeBtn);
+    toast = { node, returnFocus };
+    toastSlot.append(node);
+  }
+
+  /* ---------- 请求 ---------- */
+
+  async function loadNotices() {
+    loaded = false;
+    updateReadAllButton();
+    listEl.setAttribute('aria-busy', 'true');
+    renderState('loading', '正在加载通知…');
+    try {
+      const res = await request(API.list);
+      let data;
+      try {
+        data = await res.json();
+      } catch (err) {
+        throw err && err.name && /Abort|Timeout/.test(err.name)
+          ? new RequestError('timeout', err)
+          : new RequestError('format', err);
+      }
+      notices = parseNotices(data);
+      loaded = true;
+      renderList();
+    } catch (err) {
+      console.error('[notices] 加载通知失败', err);
+      notices = [];
+      renderState('error', errorText(err, '加载通知'));
+    } finally {
+      listEl.removeAttribute('aria-busy');
+      updateReadAllButton();
+    }
+  }
+
+  async function markRead(id) {
+    const key = keyOf(id);
+    const current = findNotice(key);
+    if (!current || current.read || pendingIds.has(key)) return;
+    dismissToast();
+    pendingIds.add(key);
+    itemButton(key)?.setAttribute('aria-busy', 'true');
+    try {
+      await request(API.read(id), { method: 'POST' });
+      notices = notices.map((n) => (keyOf(n.id) === key ? { ...n, read: true } : n));
+      syncItems();
+    } catch (err) {
+      console.error('[notices] 标记已读失败', key, err);
+      showToast(errorText(err, '标记已读'), {
+        retry: () => markRead(id),
+        returnFocus: () => itemButton(key),
+      });
+    } finally {
+      pendingIds.delete(key);
+      itemButton(key)?.removeAttribute('aria-busy');
+    }
+  }
+
+  async function markAllRead() {
+    if (!loaded || readAllBusy || !hasUnread()) return;
+    dismissToast();
+    readAllBusy = true;
+    readAllLabel.textContent = '处理中…';
+    readAllBtn.setAttribute('aria-busy', 'true');
+    updateReadAllButton();
+    try {
+      await request(API.readAll, { method: 'POST' });
+      notices = notices.map((n) => (n.read ? n : { ...n, read: true }));
+    } catch (err) {
+      console.error('[notices] 全部标为已读失败', err);
+      showToast(errorText(err, '全部标为已读'), {
+        retry: markAllRead,
+        returnFocus: () => readAllBtn,
+      });
+    } finally {
+      readAllBusy = false;
+      readAllLabel.textContent = '全部已读';
+      readAllBtn.removeAttribute('aria-busy');
+      syncItems();
+    }
+  }
+
+  /* ---------- 事件 ---------- */
+
+  listEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('.notice');
+    if (!btn || !listEl.contains(btn)) return;
+    const n = findNotice(btn.dataset.id);
+    if (n) markRead(n.id);
+  });
+  readAllBtn.addEventListener('click', markAllRead);
+  document.getElementById('back').addEventListener('click', () => history.back());
+
+  loadNotices();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "id": "site.pairwise.editor",
+  "name": "Pairwise 投稿",
+  "short_name": "Pairwise 投稿",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": []
+}

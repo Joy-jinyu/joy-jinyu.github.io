@@ -1,0 +1,318 @@
+{
+ "file": "upgrade-plain.html",
+ "scheme": "light",
+ "bag": {
+  "bg": {
+   "#ffffff": {
+    "n": 6,
+    "who": [
+     "header.nav「升级套餐」",
+     "span.cycle__face「月付」",
+     "li.plan「免费版 ¥0 永久免费 5G」",
+     "li.plan「Pro 当前套餐 ¥30/月」"
+    ]
+   },
+   "#eceef2": {
+    "n": 3,
+    "who": [
+     "fieldset.cycle「计费周期 月付 年付省 20」",
+     "span.badge「当前套餐」",
+     "button.button「使用中」"
+    ]
+   },
+   "#fdeee5": {
+    "n": 1,
+    "who": [
+     "span.badge「省 20%」"
+    ]
+   },
+   "#0b6e5c": {
+    "n": 2,
+    "who": [
+     "span.badge「推荐」",
+     "button.button「升级到团队版」"
+    ]
+   }
+  },
+  "border": {
+   "1px #e3e6eb": {
+    "n": 15,
+    "who": [
+     "header.nav「升级套餐」",
+     "li.plan「免费版 ¥0 永久免费 5G」",
+     "li.plan「免费版 ¥0 永久免费 5G」",
+     "li.plan「免费版 ¥0 永久免费 5G」"
+    ]
+   },
+   "1px #8a919d": {
+    "n": 4,
+    "who": [
+     "button.button「降级到免费版」",
+     "button.button「降级到免费版」",
+     "button.button「降级到免费版」",
+     "button.button「降级到免费版」"
+    ]
+   },
+   "1px null": {
+    "n": 8,
+    "who": [
+     "button.button「使用中」",
+     "button.button「使用中」",
+     "button.button「使用中」",
+     "button.button「使用中」"
+    ]
+   },
+   "1px #0b6e5c": {
+    "n": 4,
+    "who": [
+     "li.plan「团队版 推荐 ¥88/月 按」",
+     "li.plan「团队版 推荐 ¥88/月 按」",
+     "li.plan「团队版 推荐 ¥88/月 按」",
+     "li.plan「团队版 推荐 ¥88/月 按」"
+    ]
+   },
+   "2px #596070": {
+    "n": 6,
+    "who": [
+     "span.chevron",
+     "span.chevron",
+     "span.chevron",
+     "span.chevron"
+    ]
+   }
+  },
+  "radius": {
+   "6": {
+    "n": 3,
+    "who": [
+     "span.badge「省 20%」",
+     "span.badge「当前套餐」",
+     "span.badge「推荐」"
+    ]
+   },
+   "10": {
+    "n": 4,
+    "who": [
+     "button.icon-button「关闭」",
+     "button.button「降级到免费版」",
+     "button.button「使用中」",
+     "button.button「升级到团队版」"
+    ]
+   },
+   "14": {
+    "n": 4,
+    "who": [
+     "li.plan「免费版 ¥0 永久免费 5G」",
+     "li.plan「Pro 当前套餐 ¥30/月」",
+     "li.plan「团队版 推荐 ¥88/月 按」",
+     "div.faq__list「升级后怎么计费？ 升级立即生」"
+    ]
+   },
+   "pill": {
+    "n": 3,
+    "who": [
+     "fieldset.cycle「计费周期 月付 年付省 20」",
+     "span.cycle__face「月付」",
+     "span.cycle__face「年付省 20%」"
+    ]
+   }
+  },
+  "controlHeight": {
+   "44": {
+    "n": 4,
+    "who": [
+     "button.icon-button「关闭」",
+     "button.button「降级到免费版」",
+     "button.button「使用中」",
+     "button.button「升级到团队版」"
+    ]
+   },
+   "47": {
+    "n": 3,
+    "who": [
+     "summary.faq__q「升级后怎么计费？」",
+     "summary.faq__q「降级后，超出空间的文件会怎样」",
+     "summary.faq__q「取消订阅后还能用多久？」"
+    ]
+   }
+  },
+  "text": {
+   "#15171c": {
+    "n": 25,
+    "who": [
+     "h1.nav__title「升级套餐」",
+     "span.cycle__face「月付」",
+     "h2.plan__name「免费版」",
+     "span.plan__currency「¥」"
+    ]
+   },
+   "#596070": {
+    "n": 11,
+    "who": [
+     "span.cycle__face「年付省 20%」",
+     "p.plan__note「永久免费」",
+     "span.badge「当前套餐」",
+     "span.plan__unit「/月」"
+    ]
+   },
+   "#b23f0c": {
+    "n": 1,
+    "who": [
+     "span.badge「省 20%」"
+    ]
+   },
+   "#646a78": {
+    "n": 1,
+    "who": [
+     "button.button「使用中」"
+    ]
+   },
+   "#ffffff": {
+    "n": 2,
+    "who": [
+     "span.badge「推荐」",
+     "button.button「升级到团队版」"
+    ]
+   }
+  },
+  "fontSize": {
+   "12": {
+    "n": 4,
+    "who": [
+     "span.badge「省 20%」",
+     "span.badge「当前套餐」",
+     "span.badge「推荐」",
+     "p.footnote「价格含税，可随时取消」"
+    ]
+   },
+   "13": {
+    "n": 5,
+    "who": [
+     "p.plan__note「永久免费」",
+     "span.plan__unit「/月」",
+     "p.plan__note「按月付费」",
+     "span.plan__unit「/月」"
+    ]
+   },
+   "15": {
+    "n": 20,
+    "who": [
+     "span.cycle__face「月付」",
+     "span.cycle__face「年付省 20%」",
+     "li.feature「5GB 空间」",
+     "li.feature「最多 3 人」"
+    ]
+   },
+   "17": {
+    "n": 8,
+    "who": [
+     "h1.nav__title「升级套餐」",
+     "h2.plan__name「免费版」",
+     "span.plan__currency「¥」",
+     "h2.plan__name「Pro」"
+    ]
+   },
+   "28": {
+    "n": 3,
+    "who": [
+     "span.plan__amount「0」",
+     "span.plan__amount「30」",
+     "span.plan__amount「88」"
+    ]
+   }
+  },
+  "fontWeight": {
+   "400": {
+    "n": 18,
+    "who": [
+     "p.plan__note「永久免费」",
+     "li.feature「5GB 空间」",
+     "li.feature「最多 3 人」",
+     "li.feature「7 天历史版本」"
+    ]
+   },
+   "500": {
+    "n": 3,
+    "who": [
+     "span「升级后怎么计费？」",
+     "span「降级后，超出空间的文件会怎样」",
+     "span「取消订阅后还能用多久？」"
+    ]
+   },
+   "600": {
+    "n": 16,
+    "who": [
+     "h1.nav__title「升级套餐」",
+     "span.cycle__face「月付」",
+     "span.cycle__face「年付省 20%」",
+     "span.badge「省 20%」"
+    ]
+   },
+   "700": {
+    "n": 3,
+    "who": [
+     "span.plan__amount「0」",
+     "span.plan__amount「30」",
+     "span.plan__amount「88」"
+    ]
+   }
+  },
+  "shadow": {
+   "#101828/0.1 0px 1px 2px 0px, #101828/0.06 0px 1px 3px 0px": {
+    "n": 1,
+    "who": [
+     "span.cycle__face「月付」"
+    ]
+   },
+   "#0b6e5c 0px 0px 0px 1px inset": {
+    "n": 1,
+    "who": [
+     "li.plan「团队版 推荐 ¥88/月 按」"
+    ]
+   }
+  }
+ },
+ "vars": {
+  "--color-bg": "#f4f5f7",
+  "--color-surface": "#ffffff",
+  "--color-fill": "#eceef2",
+  "--color-segment-selected": "#ffffff",
+  "--color-border": "#e3e6eb",
+  "--color-border-strong": "#8a919d",
+  "--color-text": "#15171c",
+  "--color-text-secondary": "#596070",
+  "--color-accent": "#0b6e5c",
+  "--color-accent-hover": "#095f4f",
+  "--color-accent-pressed": "#074f42",
+  "--color-on-accent": "#ffffff",
+  "--color-promo": "#b23f0c",
+  "--color-promo-bg": "#fdeee5",
+  "--color-disabled-bg": "#eceef2",
+  "--color-disabled-text": "#646a78",
+  "--color-focus": "#0b6e5c",
+  "--shadow-raised": "0 1px 2px rgb(16 24 40 / 0.1), 0 1px 3px rgb(16 24 40 / 0.06)",
+  "--space-1": "2px",
+  "--space-2": "4px",
+  "--space-3": "8px",
+  "--space-4": "12px",
+  "--space-5": "16px",
+  "--space-6": "24px",
+  "--space-7": "32px",
+  "--radius-s": "6px",
+  "--radius-m": "10px",
+  "--radius-l": "14px",
+  "--radius-pill": "999px",
+  "--font-xs": "0.75rem",
+  "--font-s": "0.8125rem",
+  "--font-m": "0.9375rem",
+  "--font-l": "1.0625rem",
+  "--font-price": "1.75rem",
+  "--nav-height": "44px",
+  "--hit-min": "44px",
+  "--control-compact": "32px",
+  "--duration": "160ms"
+ },
+ "darkRule": true,
+ "literalColorsOutsideRoot": 0,
+ "errors": []
+}

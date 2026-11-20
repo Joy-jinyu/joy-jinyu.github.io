@@ -1,0 +1,27 @@
+/* 「团队空间」App 的设计变量。浅色、深色各一套。
+   成对的颜色（accent / on-accent，card 上的 text、text-2、danger）对比度都在 4.5:1 以上；
+   accent 当文字用时只能放在 card 上（放在 bg 上只有 4.22:1）。 */
+:root {
+  --color-accent: #b65a3c;      --color-on-accent: #ffffff;
+  --color-bg: #f4f4f1;          --color-card: #ffffff;
+  --color-text: #1c1c1a;        --color-text-2: #5f5e59;
+  --color-line: #e7e6e1;        --color-danger: #b42318;
+  --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-title: 600 18px/1.4 var(--font-sans);
+  --font-body: 400 15px/1.6 var(--font-sans);
+  --font-body-strong: 600 15px/1.6 var(--font-sans);
+  --font-caption: 400 13px/1.5 var(--font-sans);
+  --radius-card: 16px;  --radius-control: 10px;  --radius-pill: 999px;
+  --control-h: 44px;    --control-h-sm: 32px;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px rgb(0 0 0 / 0.06);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-accent: #d97757;    --color-on-accent: #1a1a19;
+    --color-bg: #141413;        --color-card: #1f1e1c;
+    --color-text: #f0efea;      --color-text-2: #a3a199;
+    --color-line: #2f2e2b;      --color-danger: #f97066;
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3);
+  }
+}

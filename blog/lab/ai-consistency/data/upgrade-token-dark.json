@@ -1,0 +1,245 @@
+{
+ "file": "upgrade-token.html",
+ "scheme": "dark",
+ "bag": {
+  "bg": {
+   "#ffffff": {
+    "n": 6,
+    "who": [
+     "header.nav「升级套餐」",
+     "label「月付」",
+     "article.plan「免费版 ¥0 永久免费 5G」",
+     "button.btn「降级到免费版」"
+    ]
+   },
+   "#e7e6e1": {
+    "n": 1,
+    "who": [
+     "div.billing-track「月付 年付省 20%」"
+    ]
+   },
+   "#b65a3c": {
+    "n": 3,
+    "who": [
+     "span.badge「省 20%」",
+     "span.badge「推荐」",
+     "button.btn「升级到团队版」"
+    ]
+   },
+   "#f4f4f1": {
+    "n": 2,
+    "who": [
+     "span.badge「当前套餐」",
+     "button.btn「正在使用」"
+    ]
+   }
+  },
+  "border": {
+   "1px #e7e6e1": {
+    "n": 17,
+    "who": [
+     "header.nav「升级套餐」",
+     "article.plan「免费版 ¥0 永久免费 5G」",
+     "article.plan「免费版 ¥0 永久免费 5G」",
+     "article.plan「免费版 ¥0 永久免费 5G」"
+    ]
+   },
+   "1px #f4f4f1": {
+    "n": 4,
+    "who": [
+     "button.btn「正在使用」",
+     "button.btn「正在使用」",
+     "button.btn「正在使用」",
+     "button.btn「正在使用」"
+    ]
+   },
+   "1px #b65a3c": {
+    "n": 8,
+    "who": [
+     "article.plan「团队版 推荐 ¥88/月 改」",
+     "article.plan「团队版 推荐 ¥88/月 改」",
+     "article.plan「团队版 推荐 ¥88/月 改」",
+     "article.plan「团队版 推荐 ¥88/月 改」"
+    ]
+   }
+  },
+  "radius": {
+   "6": {
+    "n": 2,
+    "who": [
+     "label「月付」",
+     "label「年付省 20%」"
+    ]
+   },
+   "10": {
+    "n": 8,
+    "who": [
+     "button.nav-close「关闭」",
+     "div.billing-track「月付 年付省 20%」",
+     "button.btn「降级到免费版」",
+     "button.btn「正在使用」"
+    ]
+   },
+   "16": {
+    "n": 3,
+    "who": [
+     "article.plan「免费版 ¥0 永久免费 5G」",
+     "article.plan「Pro 当前套餐 ¥30/月」",
+     "article.plan「团队版 推荐 ¥88/月 改」"
+    ]
+   },
+   "pill": {
+    "n": 3,
+    "who": [
+     "span.badge「省 20%」",
+     "span.badge「当前套餐」",
+     "span.badge「推荐」"
+    ]
+   }
+  },
+  "controlHeight": {
+   "44": {
+    "n": 4,
+    "who": [
+     "button.nav-close「关闭」",
+     "button.btn「降级到免费版」",
+     "button.btn「正在使用」",
+     "button.btn「升级到团队版」"
+    ]
+   },
+   "47": {
+    "n": 3,
+    "who": [
+     "summary「升级后多久生效？」",
+     "summary「可以随时取消吗？」",
+     "summary「降级后超出额度的文件会怎样？」"
+    ]
+   }
+  },
+  "text": {
+   "#1c1c1a": {
+    "n": 22,
+    "who": [
+     "h1.nav-title「升级套餐」",
+     "label「月付」",
+     "h3.plan-name「免费版」",
+     "span.price-amount「¥0」"
+    ]
+   },
+   "#5f5e59": {
+    "n": 12,
+    "who": [
+     "label「年付省 20%」",
+     "p.price-note「永久免费」",
+     "span.badge「当前套餐」",
+     "span.price-unit「/月」"
+    ]
+   },
+   "#ffffff": {
+    "n": 3,
+    "who": [
+     "span.badge「省 20%」",
+     "span.badge「推荐」",
+     "button.btn「升级到团队版」"
+    ]
+   }
+  },
+  "fontSize": {
+   "13": {
+    "n": 12,
+    "who": [
+     "span.badge「省 20%」",
+     "p.price-note「永久免费」",
+     "span.badge「当前套餐」",
+     "span.price-unit「/月」"
+    ]
+   },
+   "15": {
+    "n": 20,
+    "who": [
+     "label「月付」",
+     "label「年付省 20%」",
+     "h3.plan-name「免费版」",
+     "li「5GB 空间」"
+    ]
+   },
+   "18": {
+    "n": 5,
+    "who": [
+     "h1.nav-title「升级套餐」",
+     "span.price-amount「¥0」",
+     "span.price-amount「¥30」",
+     "span.price-amount「¥88」"
+    ]
+   }
+  },
+  "fontWeight": {
+   "400": {
+    "n": 18,
+    "who": [
+     "p.price-note「永久免费」",
+     "li「5GB 空间」",
+     "li「最多 3 人」",
+     "li「版本历史保留 7 天」"
+    ]
+   },
+   "500": {
+    "n": 5,
+    "who": [
+     "label「月付」",
+     "label「年付省 20%」",
+     "span「升级后多久生效？」",
+     "span「可以随时取消吗？」"
+    ]
+   },
+   "600": {
+    "n": 11,
+    "who": [
+     "h1.nav-title「升级套餐」",
+     "span.badge「省 20%」",
+     "h3.plan-name「免费版」",
+     "button.btn「降级到免费版」"
+    ]
+   },
+   "700": {
+    "n": 3,
+    "who": [
+     "span.price-amount「¥0」",
+     "span.price-amount「¥30」",
+     "span.price-amount「¥88」"
+    ]
+   }
+  },
+  "shadow": {
+   "#b65a3c 0px 0px 0px 1px inset": {
+    "n": 1,
+    "who": [
+     "article.plan「团队版 推荐 ¥88/月 改」"
+    ]
+   }
+  }
+ },
+ "vars": {
+  "--color-accent": "#b65a3c",
+  "--color-on-accent": "#ffffff",
+  "--color-text": "#1c1c1a",
+  "--color-text-2": "#5f5e59",
+  "--color-line": "#e7e6e1",
+  "--color-bg": "#f4f4f1",
+  "--color-card": "#ffffff",
+  "--radius-card": "16px",
+  "--radius-control": "10px",
+  "--font-sm": "13px",
+  "--font-md": "15px",
+  "--font-lg": "18px",
+  "--space-1": "4px",
+  "--space-2": "8px",
+  "--space-3": "12px",
+  "--space-4": "16px",
+  "--space-5": "24px",
+  "--size-touch": "44px"
+ },
+ "darkRule": false,
+ "literalColorsOutsideRoot": 0,
+ "errors": []
+}

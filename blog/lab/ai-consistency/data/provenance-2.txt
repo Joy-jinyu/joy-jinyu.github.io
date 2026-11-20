@@ -1,0 +1,73 @@
+第二轮：同样六份 prompt 各补跑一次（2026-11-18，Claude Code，全新 subagent），文件名带 -2。汇报原文照录，只截取和加载的 skill、读过的文件、风格取舍、自查方式有关的句子。
+
+== upgrade-token-2.html ==
+**Skills loaded**
+- `ui-conventions` only. I skipped `frontend-design` because it pushes for a distinctive custom look, which would conflict with a fixed set of design variables.
+**Files read**
+- The skill's `SKILL.md` and its four references: `spatial.md`, `interaction.md`, `a11y-web.md` and `copy.md`.
+- I listed the `ai-consistency/` folder but did not open the other `upgrade-*.html` / `members-*.html` pages or the `prompt-*.txt` files, so they wouldn't bias this run.
+- While looking for a Playwright install I printed the first 20 lines of `style-probe.mjs`, which is your measuring script. I didn't run it. I wrote my own check script in the scratchpad instead.
+- **Not done:**
+  - There is no dark mode, because no dark variables were given. The page declares `color-scheme: light`.
+| Contrast | White on the main color is 4.65:1, secondary text on white is 6.50:1, and secondary text on the background is 5.90:1. All pass 4.5:1. |
+| Hover on the main button | I removed the hover fade I first wrote, because the lighter background would have dropped the white text below 4.5:1. |
+
+== upgrade-ref-2.html ==
+**加载了哪些 skill**
+- 只加载了 `ui-conventions`（团队 UI 规范）。按它的分档，这是新页面，所以读了它的 `interaction.md`、`copy.md`、`a11y-web.md`、`spatial.md` 四份细则。
+- 刻意没加载 `frontend-design`：它鼓励做差异化的视觉，和"跟团队空间卡片保持一致"这个目标相反。
+**读了哪些文件**
+- `/Users/joy/workspace/spare/joy-jinyu.github.io/blog/public/lab/ai-ui-taste/run1.html`：唯一的视觉参考，全文读了。
+- `ai-consistency/` 下的 `style-probe.mjs` 和 `tools/snippet-run.mjs`：只看了文件头，想知道这里的页面平时怎么跑浏览器检查。
+- 同目录已有的 `upgrade-ref.html`、`prompt-*.txt` 和 `ai-ui-taste/` 下其他文件都没打开，以免受上一轮结果影响。
+**和参考卡片保持一致的做法**
+- 浅色、深色两套颜色变量逐字照抄，没有新增颜色。
+- 只新加了一个字号：价格数字用 28px，参考页里没有大数字。
+
+== upgrade-plain-2.html ==
+**Skills loaded:** one, `ui-conventions`, the team UI rules: spacing scale, interaction states, button wording, accessibility, and the 375px layout limits.
+**Files read:**
+- The `ui-conventions` skill file and its four references: `interaction.md`, `a11y-web.md`, `spatial.md`, `copy.md`.
+- In the `ai-consistency/` directory I only listed the file names. I deliberately didn't open the other pages or prompts (`upgrade-plain.html`, `upgrade-ref.html`, `prompt-*.txt` and so on), so this version isn't influenced by them.
+- The first 30 lines of `style-probe.mjs`, only to find where the Playwright library and Chrome live. The page itself didn't use it.
+| Text contrast | All text at least 4.5:1 in light and dark. The footnote was 4.19 on the first run, so I darkened that grey and it now measures 5.07. The disabled button is 2.76, which is allowed for disabled controls |
+
+== members-ref-2.html ==
+**加载的 skill**
+- `ui-conventions`：写的是新页面，按它要求的六维验收和速查清单做。
+- 没有加载 `frontend-design`。它追求做出独特的视觉，和这次「跟已有卡片保持一致」的目标相反。
+**读过的文件**
+- 参考卡片 `ai-ui-taste/run1.html`，整份读完，配色和组件写法都从这里取。
+- `ui-conventions` 的 `SKILL.md`、`references/interaction.md`、`references/copy.md`。
+- `ai-ui-taste/probe.mjs` 只看了开头，为了知道 Playwright 和 Chrome 怎么接。
+- 故意没读同目录的 `members-ref.html`、`prompt-*.txt` 和 `data/`，免得之前那轮的结果影响这次实验。
+**和参考卡片怎么保持一致**
+- 浅色、深色两套颜色值原样照搬。字号、字重、圆角、阴影都沿用参考的那几档。
+- 角色标签：所有者用参考里 Pro 标签那种强调色，管理员用灰底，成员只有描边。
+**有意和参考不同的四处**
+2. 搜索框字号用 16px，不是全页的 15px。iOS 上小于 16px 的输入框一聚焦就会放大页面。
+3. 新增了两个颜色变量：`--danger-ink`（危险按钮上的文字色）和 `--scrim`（弹窗背后的遮罩）。参考里没有对应的值。
+
+== members-plain-2.html ==
+**加载的 skill**
+- `ui-conventions`：只加载了这一个。按里面「新界面」档的要求，把四份 references 都读了。
+- 没加载 `frontend-design` 或其他设计类 skill。
+**读过的文件**
+- `~/.claude/skills/ui-conventions/references/` 下的 `spatial.md`、`interaction.md`、`copy.md`、`a11y-web.md`。
+- `ai-consistency/style-probe.mjs` 的前 30 行，只是为了看它怎么调起本机 Chrome。
+- 用 `ls` 看过一次目录。同目录的 `members-plain.html`、`members-ref.html`、`members-token.html` 和各个 `prompt-*.txt` 都没打开。
+- **和你的全局规则冲突的地方**：
+  - 颜色定义成 `:root` 上的 CSS 变量，深色模式另有一套。
+
+== members-token-2.html ==
+**加载的 skill**
+- `ui-conventions`，我读了它的 `references/interaction.md` 和 `references/a11y-web.md`。
+**读过的文件**
+- 上面这个 skill 的 SKILL.md 和两个 references。
+- `style-probe.mjs` 的前 20 行，只是为了确认本机怎么启动 Playwright 和 Chrome。
+- 同目录下的 `members-token.html`、`members-ref.html` 等其他页面和 prompt 我都没打开，免得影响这轮实验，只列了一下目录。
+**几处取舍**
+- 导航栏底色用了 card（白），没用 bg：主色文字在 bg 上对比度只有 4.22:1，不到 4.5；在白底上是 4.65:1。
+- 44px 点击区、40px 头像这类尺寸，变量里没有对应值，是我自己定的。
+**没查的**
+- 深色模式：变量只有浅色一套，我也不该自己另选深色值。

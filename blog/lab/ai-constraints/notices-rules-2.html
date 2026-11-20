@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>通知</title>
+<style>
+/* ===== 团队设计变量：原样复制自 tokens.css ===== */
+/* 「团队空间」App 的设计变量。浅色、深色各一套。
+   成对的颜色（accent / on-accent，card 上的 text、text-2、danger）对比度都在 4.5:1 以上；
+   accent 当文字用时只能放在 card 上（放在 bg 上只有 4.22:1）。 */
+:root {
+  --color-accent: #b65a3c;      --color-on-accent: #ffffff;
+  --color-bg: #f4f4f1;          --color-card: #ffffff;
+  --color-text: #1c1c1a;        --color-text-2: #5f5e59;
+  --color-line: #e7e6e1;        --color-danger: #b42318;
+  --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-title: 600 18px/1.4 var(--font-sans);
+  --font-body: 400 15px/1.6 var(--font-sans);
+  --font-body-strong: 600 15px/1.6 var(--font-sans);
+  --font-caption: 400 13px/1.5 var(--font-sans);
+  --radius-card: 16px;  --radius-control: 10px;  --radius-pill: 999px;
+  --control-h: 44px;    --control-h-sm: 32px;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px rgb(0 0 0 / 0.06);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-accent: #d97757;    --color-on-accent: #1a1a19;
+    --color-bg: #141413;        --color-card: #1f1e1c;
+    --color-text: #f0efea;      --color-text-2: #a3a199;
+    --color-line: #2f2e2b;      --color-danger: #f97066;
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3);
+  }
+}
+/* ===== 变量文件结束 ===== */
+
+/* 页面内的派生量：只由上面的变量和安全区组合，不新定值。顶栏、正文、底栏、提示条共用同一套左右留白 */
+:root {
+  --pad-l: calc(var(--space-4) + env(safe-area-inset-left, 0px));
+  --pad-r: calc(var(--space-4) + env(safe-area-inset-right, 0px));
+  --bar-pad-b: max(var(--space-3), env(safe-area-inset-bottom, 0px));
+  --bar-h: calc(1px + var(--space-3) + var(--control-h) + var(--bar-pad-b));
+}
+
+* { box-sizing: border-box; }
+html {
+  color-scheme: light dark;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  text-autospace: normal;
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font: var(--font-body);
+}
+button {
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* 单行或段落的上下边裁到字形，再把汉字冒出 cap 的部分补回来 */
+@supports (text-box: trim-both cap alphabetic) {
+  .trim { text-box: trim-both cap alphabetic; padding-block: 0.16em 0.12em; }
+}
+
+/* ---------- 顶部导航栏 ---------- */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: env(safe-area-inset-top, 0px) var(--pad-r) 0 var(--pad-l);
+  background: var(--color-card);
+  border-bottom: 1px solid var(--color-line);
+}
+.nav h1 { margin: 0; font: var(--font-title); white-space: nowrap; }
+.nav-btn {
+  min-width: var(--control-h);
+  min-height: var(--control-h);
+  padding: 0 var(--space-3);
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  font: var(--font-body);
+  white-space: nowrap;
+}
+/* 点击区往外扩到留白里，文字仍和正文左右边对齐 */
+.nav-back { justify-self: start; margin-inline-start: calc(-1 * var(--space-3)); color: var(--color-text); }
+.nav-readall { justify-self: end; margin-inline-end: calc(-1 * var(--space-3)); color: var(--color-accent); }
+.nav-readall[aria-disabled="true"] { color: var(--color-text-2); cursor: default; }
+.nav-back:active { background: var(--color-bg); }
+/* accent 放在 bg 上不到 4.5:1，按下时文字换成 text */
+.nav-readall:not([aria-disabled="true"]):active { background: var(--color-bg); color: var(--color-text); }
+
+/* ---------- 列表 ---------- */
+main {
+  padding: var(--space-4) var(--pad-r) calc(var(--bar-h) + var(--space-5)) var(--pad-l);
+}
+#list:focus, #state:focus { outline: none; }
+.group + .group { margin-top: var(--space-5); }
+.group h2 {
+  margin: 0 0 var(--space-2);
+  padding-inline: var(--space-4);
+  font: var(--font-caption);
+  color: var(--color-text-2);
+}
+.card {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--color-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+.card li + li { border-top: 1px solid var(--color-line); }
+.card li:first-child .item { border-top-left-radius: var(--radius-card); border-top-right-radius: var(--radius-card); }
+.card li:last-child .item { border-bottom-left-radius: var(--radius-card); border-bottom-right-radius: var(--radius-card); }
+
+.item {
+  display: grid;
+  grid-template-columns: var(--space-2) minmax(0, 1fr) auto;
+  grid-template-areas: "dot title time" ". body body";
+  column-gap: var(--space-2);
+  row-gap: var(--space-2);
+  align-items: first baseline;
+  width: 100%;
+  padding: var(--space-4);
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  font: var(--font-body);
+  text-align: start;
+}
+.item:focus-visible { outline-offset: -2px; }
+button.item:active { background: var(--color-bg); }
+.item[aria-busy="true"] { cursor: progress; }
+.dot {
+  grid-area: dot;
+  align-self: start;
+  width: var(--space-2);
+  height: var(--space-2);
+  /* 圆点竖直居中在标题第一行：1.6em 是 --font-body-strong 的行高 */
+  margin-top: calc((1.6em - var(--space-2)) / 2);
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+}
+@supports (text-box: trim-both cap alphabetic) {
+  /* 标题被裁到 cap 顶、上面补了 0.16em，圆点对齐 cap 高度的中线 */
+  .dot { margin-top: calc(0.16em + (1cap - var(--space-2)) / 2); }
+}
+.title { grid-area: title; font: var(--font-body-strong); overflow-wrap: anywhere; }
+.time {
+  grid-area: time;
+  padding-inline-start: var(--space-2);
+  font: var(--font-caption);
+  color: var(--color-text-2);
+  white-space: nowrap;
+}
+.body { grid-area: body; overflow-wrap: anywhere; }
+
+@media (hover: hover) {
+  button.item:hover, .nav-back:hover, .btn:hover { background: var(--color-bg); }
+  .nav-readall:not([aria-disabled="true"]):hover { background: var(--color-bg); color: var(--color-text); }
+}
+
+/* ---------- 加载 / 空 / 出错 ---------- */
+#state { text-align: center; color: var(--color-text-2); }
+#state:not(:empty) { padding-block: var(--space-5); }
+#state p { margin: 0 0 var(--space-4); }
+#state p:last-child { margin-bottom: 0; }
+
+/* ---------- 按钮（底部设置、重试） ---------- */
+.btn {
+  min-height: var(--control-h);
+  padding: 0 var(--space-5);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-control);
+  background: var(--color-card);
+  color: var(--color-text);
+  font: var(--font-body-strong);
+}
+.btn:active { background: var(--color-bg); }
+
+/* ---------- 底部固定栏 ---------- */
+.bottom-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  padding: var(--space-3) var(--pad-r) var(--bar-pad-b) var(--pad-l);
+  background: var(--color-card);
+  border-top: 1px solid var(--color-line);
+}
+.bottom-bar .btn { display: block; width: 100%; }
+
+/* ---------- 出错提示条（只给眼睛看，读屏走 #live） ---------- */
+.toast {
+  position: fixed;
+  left: var(--pad-l);
+  right: var(--pad-r);
+  bottom: calc(var(--bar-h) + var(--space-3));
+  z-index: 2;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-control);
+  background: var(--color-card);
+  box-shadow: var(--shadow-card);
+  color: var(--color-danger);
+  font: var(--font-body);
+  pointer-events: none;
+  visibility: hidden;
+}
+.toast.show { visibility: visible; }
+</style>
+</head>
+<body>
+<header class="nav">
+  <button type="button" class="nav-btn nav-back" id="back">返回</button>
+  <h1 class="trim">通知</h1>
+  <button type="button" class="nav-btn nav-readall" id="read-all" aria-disabled="true">全部已读</button>
+</header>
+
+<main>
+  <div id="state" role="status" tabindex="-1"></div>
+  <div id="list" tabindex="-1" aria-label="通知列表"></div>
+</main>
+
+<div class="bottom-bar">
+  <button type="button" class="btn" id="settings">通知设置</button>
+</div>
+
+<div class="toast trim" id="toast" aria-hidden="true"></div>
+<div class="sr-only" id="live" aria-live="polite"></div>
+
+<script>
+(() => {
+  const API = {
+    list: './api/notices.json',
+    read: (id) => `./api/notices/${encodeURIComponent(id)}/read`,
+    readAll: './api/notices/read-all',
+  }
+  /** fetch 没有默认超时，所有请求统一 15 秒 */
+  const TIMEOUT_MS = 15000
+  const TOAST_MS = 4000
+  const SETTINGS_URL = './settings.html'
+
+  const $ = (id) => document.getElementById(id)
+  const stateEl = $('state')
+  const listEl = $('list')
+  const readAllBtn = $('read-all')
+  const toastEl = $('toast')
+  const liveEl = $('live')
+
+  let notices = []
+  let loaded = false
+  let readAllBusy = false
+  const pending = new Set()
+
+  class HttpError extends Error {
+    constructor(status) { super(`HTTP ${status}`); this.name = 'HttpError'; this.status = status }
+  }
+  class DataError extends Error {
+    constructor() { super('bad payload'); this.name = 'DataError' }
+  }
+
+  // AbortSignal.timeout 在 iOS 16 以下的 WebView 里没有，退回手动 abort
+  function timeoutSignal(ms) {
+    if (typeof AbortSignal.timeout === 'function') return AbortSignal.timeout(ms)
+    const c = new AbortController()
+    setTimeout(() => c.abort(new DOMException('timeout', 'TimeoutError')), ms)
+    return c.signal
+  }
+
+  async function request(url, init = {}) {
+    const res = await fetch(url, { ...init, headers: { Accept: 'application/json' }, signal: timeoutSignal(TIMEOUT_MS) })
+    if (!res.ok) throw new HttpError(res.status)
+    return res
+  }
+
+  function describe(err) {
+    if (err && (err.name === 'TimeoutError' || err.name === 'AbortError')) return '等了 15 秒还没有响应'
+    if (err instanceof HttpError) return '服务暂时出了问题'
+    if (err instanceof DataError || err instanceof SyntaxError) return '返回的数据有问题'
+    if (!navigator.onLine || err instanceof TypeError) return '网络连接不上'
+    return '出了点问题'
+  }
+
+  function announce(text) {
+    liveEl.textContent = ''
+    setTimeout(() => { liveEl.textContent = text }, 50)
+  }
+
+  let toastTimer = 0
+  function toast(text) {
+    toastEl.textContent = text
+    toastEl.classList.add('show')
+    clearTimeout(toastTimer)
+    toastTimer = setTimeout(() => toastEl.classList.remove('show'), TOAST_MS)
+    announce(text)
+  }
+
+  function parse(data) {
+    if (!Array.isArray(data)) throw new DataError()
+    return data
+      .filter((n) => n && (typeof n.id === 'number' || typeof n.id === 'string') && typeof n.title === 'string')
+      .map((n) => ({
+        id: n.id,
+        group: typeof n.group === 'string' && n.group ? n.group : '更早',
+        title: n.title,
+        body: typeof n.body === 'string' ? n.body : '',
+        time: typeof n.time === 'string' ? n.time : '',
+        read: n.read === true,
+      }))
+  }
+
+  function span(cls, text) {
+    const el = document.createElement('span')
+    el.className = cls
+    if (text != null) el.textContent = text
+    return el
+  }
+
+  /** 未读是按钮，已读是普通块：已读的点了没有动作，不该出现在 Tab 序列里 */
+  function itemEl(n) {
+    const el = document.createElement(n.read ? 'div' : 'button')
+    el.className = 'item'
+    if (!n.read) {
+      el.type = 'button'
+      el.dataset.id = String(n.id)
+      const dot = span('dot')
+      dot.setAttribute('aria-hidden', 'true')
+      el.append(dot)
+    }
+    const title = span('title trim')
+    if (!n.read) title.append(span('sr-only', '未读，'))
+    title.append(n.title)
+    el.append(title, span('time trim', n.time), span('body trim', n.body))
+    return el
+  }
+
+  function renderList() {
+    const groups = new Map()
+    for (const n of notices) groups.set(n.group, [...(groups.get(n.group) || []), n])
+    const frag = document.createDocumentFragment()
+    let i = 0
+    for (const [name, items] of groups) {
+      const section = document.createElement('section')
+      section.className = 'group'
+      const h2 = document.createElement('h2')
+      h2.className = 'trim'
+      h2.id = `group-${i++}`
+      h2.textContent = name
+      section.setAttribute('aria-labelledby', h2.id)
+      const ul = document.createElement('ul')
+      ul.className = 'card'
+      for (const n of items) {
+        const li = document.createElement('li')
+        li.dataset.id = String(n.id)
+        li.append(itemEl(n))
+        ul.append(li)
+      }
+      section.append(h2, ul)
+      frag.append(section)
+    }
+    listEl.replaceChildren(frag)
+  }
+
+  function syncReadAll() {
+    const off = !loaded || readAllBusy || !notices.some((n) => !n.read)
+    readAllBtn.setAttribute('aria-disabled', String(off))
+    readAllBtn.textContent = readAllBusy ? '标记中…' : '全部已读'
+  }
+
+  function applyRead(ids) {
+    const set = new Set(ids.map(String))
+    notices = notices.map((n) => (set.has(String(n.id)) ? { ...n, read: true } : n))
+    for (const n of notices) {
+      if (!set.has(String(n.id))) continue
+      const li = listEl.querySelector(`li[data-id="${CSS.escape(String(n.id))}"]`)
+      const old = li && li.firstElementChild
+      if (!old || old.tagName !== 'BUTTON') continue
+      const next = itemEl(n)
+      li.append(next)
+      // 按钮要被换掉：焦点先落到同一位置的新节点上，再移除旧节点
+      if (old.contains(document.activeElement)) {
+        next.tabIndex = -1
+        next.focus({ preventScroll: true })
+      }
+      old.remove()
+    }
+    syncReadAll()
+  }
+
+  async function markRead(btn) {
+    const id = btn.dataset.id
+    if (pending.has(id)) return
+    pending.add(id)
+    const timeEl = btn.querySelector('.time')
+    const timeText = timeEl.textContent
+    btn.setAttribute('aria-busy', 'true')
+    timeEl.textContent = '标记中…'
+    try {
+      await request(API.read(id), { method: 'POST' })
+      applyRead([id])
+      announce('已标为已读')
+    } catch (err) {
+      timeEl.textContent = timeText
+      toast(`没有标为已读：${describe(err)}，请再点一次`)
+    } finally {
+      btn.removeAttribute('aria-busy')
+      pending.delete(id)
+    }
+  }
+
+  async function markAllRead() {
+    if (readAllBtn.getAttribute('aria-disabled') === 'true') return
+    readAllBusy = true
+    syncReadAll()
+    try {
+      await request(API.readAll, { method: 'POST' })
+      readAllBusy = false
+      applyRead(notices.filter((n) => !n.read).map((n) => n.id))
+      announce('全部通知已标为已读')
+    } catch (err) {
+      toast(`没有全部标为已读：${describe(err)}，请再试一次`)
+    } finally {
+      readAllBusy = false
+      syncReadAll()
+    }
+  }
+
+  function showState(kind, detail) {
+    if (kind === 'loading') {
+      const p = document.createElement('p')
+      p.className = 'trim'
+      p.textContent = '正在加载通知…'
+      stateEl.replaceChildren(p)
+      return
+    }
+    if (kind === 'empty') {
+      const p = document.createElement('p')
+      p.className = 'trim'
+      p.textContent = '暂时没有通知'
+      stateEl.replaceChildren(p)
+      return
+    }
+    if (kind === 'error') {
+      const p = document.createElement('p')
+      p.className = 'trim'
+      p.textContent = `通知没有加载出来：${detail}`
+      const retry = document.createElement('button')
+      retry.type = 'button'
+      retry.className = 'btn'
+      retry.textContent = '重试'
+      retry.addEventListener('click', () => {
+        // 重试按钮马上会被换成「加载中」，焦点先移到状态区
+        stateEl.focus({ preventScroll: true })
+        load()
+      })
+      stateEl.replaceChildren(p, retry)
+      return
+    }
+    stateEl.replaceChildren()
+  }
+
+  async function load() {
+    loaded = false
+    syncReadAll()
+    listEl.replaceChildren()
+    showState('loading')
+    try {
+      const res = await request(API.list)
+      notices = parse(await res.json())
+      loaded = true
+      renderList()
+      if (notices.length === 0) {
+        showState('empty')
+      } else {
+        const focusWasOnState = document.activeElement === stateEl
+        showState('none')
+        if (focusWasOnState) listEl.focus({ preventScroll: true })
+        const unread = notices.filter((n) => !n.read).length
+        announce(`共 ${notices.length} 条通知，${unread} 条未读`)
+      }
+    } catch (err) {
+      showState('error', describe(err))
+    } finally {
+      syncReadAll()
+    }
+  }
+
+  listEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('button.item')
+    if (btn) markRead(btn)
+  })
+  readAllBtn.addEventListener('click', markAllRead)
+  $('back').addEventListener('click', () => history.back())
+  $('settings').addEventListener('click', () => { location.href = SETTINGS_URL })
+  // iOS Safari 只有注册过 touchstart 才会触发 :active
+  document.addEventListener('touchstart', () => {}, { passive: true })
+
+  load()
+})()
+</script>
+</body>
+</html>
