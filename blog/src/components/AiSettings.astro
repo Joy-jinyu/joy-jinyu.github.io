@@ -268,17 +268,26 @@
   .field > span:first-child, .field > label { color: var(--strong); font: 500 13px/1.2 var(--sans); }
   .model-row { display: flex; gap: 8px; }
   .model-row > :is(select, input) { flex: 1; min-width: 0; }
+  /* 去掉系统下拉样式：系统箭头粗黑、贴边，还会多出几像素左内边距，和上面的输入框对不齐；
+   * 箭头改成两道渐变拼出的小三角，颜色和「显示」按钮一样用 --muted */
   .field select {
+    appearance: none;
     min-height: 38px;
-    padding: 8px 12px;
+    padding: 8px 36px 8px 12px;
     border: 1px solid var(--line-hi);
     border-radius: 12px;
-    background: rgba(var(--ink-rgb), 0.03);
+    background:
+      linear-gradient(45deg, transparent 50%, var(--muted) 50%) calc(100% - 20px) 50% / 5px 5px no-repeat,
+      linear-gradient(135deg, var(--muted) 50%, transparent 50%) calc(100% - 15px) 50% / 5px 5px no-repeat,
+      rgba(var(--ink-rgb), 0.03);
     color: var(--strong);
     font: 400 14px/1.4 var(--mono);
+    cursor: var(--cursor-pointer);
+    transition: border-color 0.18s var(--ease), box-shadow 0.18s var(--ease);
   }
+  .field select:hover:not(:disabled) { border-color: color-mix(in srgb, var(--strong) 24%, transparent); }
   .field select:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px var(--brand-glow); }
-  .field select:disabled { color: var(--muted); }
+  .field select:disabled { color: var(--muted); cursor: default; }
   .hint { min-height: 1.2em; margin: 0; color: var(--muted); font-size: 12px; }
   .test-result { margin: 0; color: var(--brand-ink); font-size: 13px; }
   .test-result.bad { color: var(--danger); }
