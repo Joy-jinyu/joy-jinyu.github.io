@@ -294,17 +294,21 @@
 
   /*
    * 鼠标悬停时纸面 3D 倾斜 + 跟随指针的柔光。角度由下方脚本按指针位置写进 transform 和 --gx / --gy / --glare；
-   * 只在有鼠标的设备上生效，触屏、减少动效、打印都不受影响
+   * 只在有鼠标的设备上生效，触屏、减少动效、打印都不受影响。
+   * 柔光垫在内容下面（isolation 让 z-index: -1 停在纸面背景之上、内容之下），只照亮纸面和半透明的卡片底；
+   * 盖在文字上面会把指针附近的字冲淡（浅色主题实测最深的字从亮度 44 冲到 125）
    */
   @media screen and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .page { isolation: isolate; }
     .page.tilting { will-change: transform; }
     .page::after {
-      content: ""; position: absolute; inset: 0; z-index: 5; pointer-events: none; border-radius: inherit;
+      content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; border-radius: inherit;
       background: radial-gradient(600px circle at var(--gx, 50%) var(--gy, 30%), rgba(94, 234, 212, 0.09), rgba(255, 255, 255, 0.025) 40%, transparent 70%);
       opacity: var(--glare, 0);
     }
+    /* 浅色纸面本来就接近白，白光垫在下面看不出来，改用淡青色 */
     :root[data-theme="light"] .page::after {
-      background: radial-gradient(600px circle at var(--gx, 50%) var(--gy, 30%), rgba(255, 255, 255, 0.55), rgba(0, 184, 184, 0.04) 40%, transparent 70%);
+      background: radial-gradient(600px circle at var(--gx, 50%) var(--gy, 30%), rgba(0, 184, 184, 0.08), rgba(0, 184, 184, 0.025) 40%, transparent 70%);
     }
   }
   @media print { .page { transform: none !important; } .page::after { display: none !important; } }
