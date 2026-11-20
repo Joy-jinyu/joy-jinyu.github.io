@@ -6,7 +6,7 @@ import sidebar from './sidebar.mjs'
 export default defineConfig({
   // 正式域名（site/CNAME）：canonical、sitemap 都用它；github.io 会 301 跳过来
   site: 'https://www.pairwise.site',
-  // 笔记站挂在 /notes/ 子路径下，根路径留给简历页（site/index.html）
+  // 笔记站挂在 /notes/ 子路径下，根路径是首页（site/index.html），简历在 /resume/
   base: '/notes',
   // 输出 xxx.html，保持和原 VuePress 一样的文章 URL
   build: { format: 'file' },
@@ -27,7 +27,7 @@ export default defineConfig({
       favicon: '/favicon.png',
       // 「← 简历」放在自定义侧边栏顶部那一行（src/components/Sidebar.astro）
       sidebar,
-      // 视觉规范对齐简历页 site/index.html：同一套字体、配色、底纹
+      // 视觉规范对齐简历页 site/resume/index.html：同一套字体、配色、底纹
       customCss: ['./src/styles/theme.css'],
       components: {
         ThemeSelect: './src/components/ThemeSwitch.astro',
