@@ -20,7 +20,7 @@ export default defineConfig({
       },
     }),
     starlight({
-      title: 'Joy 的技术笔记',
+      title: 'Pairwise 技术笔记',
       description: '前端工程师的技术笔记：JavaScript、框架、工程化、性能、浏览器与常用工具',
       locales: { root: { label: '简体中文', lang: 'zh-CN' } },
       // 站点图标：简历页里的 Joy 签名头像（同一份图也放在 site/ 给简历页用）

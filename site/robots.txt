@@ -1,5 +1,12 @@
 User-agent: *
 Allow: /
 Disallow: /og.html
+# 博客文章引用的 AI 原样产出（实验证据），标题重复、没有正文价值，不进搜索
+Disallow: /blog/lab/
+# 文章正文直接嵌的截图和 iframe 要放行，否则抓取渲染出来的文章缺图（规则按最长匹配生效）
+Allow: /blog/lab/*/img/
+Allow: /blog/lab/ai-typography/release2.html
+# 投稿编辑器的打包产物，只在 /blog/editor/ 的 iframe 里用
+Disallow: /blog/editor-app/
 
 Sitemap: https://www.pairwise.site/sitemap.xml
