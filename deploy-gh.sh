@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # 构建并发布到 GitHub Pages（Pages 读取 gh-page 分支根目录）
-#   /        -> site/        简历页（静态 HTML，原样拷贝）
+#   /        -> site/        首页 + /resume/ 简历页（静态 HTML，原样拷贝）
 #   /notes/  -> notes/       Astro Starlight 技术笔记（base: '/notes'）
 #   /blog/   -> blog/        Astro + MDX 博客（base: '/blog'）
 set -euo pipefail

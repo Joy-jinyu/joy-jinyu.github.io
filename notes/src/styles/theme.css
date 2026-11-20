@@ -1,9 +1,9 @@
 /**
- * 笔记站主题：对齐简历页 site/index.html 的视觉规范
+ * 笔记站主题：对齐简历页 site/resume/index.html 的视觉规范
  * 深色底 + 青色品牌色（#00b8b8 / #5eead4）、Geist / Geist Mono 字体、网格底纹、胶囊按钮、mono 小标签
  */
 
-/* ---------- 设计 token：值取自 site/index.html 的 :root ---------- */
+/* ---------- 设计 token：值取自 site/resume/index.html 的 :root ---------- */
 :root {
   --bg: #07090f;
   --ink-rgb: 255, 255, 255;
@@ -48,7 +48,7 @@
   --sl-line-height: 1.8;
 }
 
-/* 亮色：取 site/index.html 的 [data-theme="light"]，青色文字加深保证白底对比度 */
+/* 亮色：取 site/resume/index.html 的 [data-theme="light"]，青色文字加深保证白底对比度 */
 :root[data-theme="light"] {
   --bg: #ffffff;
   --ink-rgb: 10, 14, 25;

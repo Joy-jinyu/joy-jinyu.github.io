@@ -4,7 +4,8 @@
 
 | 路径 | 来源 | 说明 |
 | --- | --- | --- |
-| `/` | `site/index.html` | 简历页，静态 HTML 原样发布（`?theme=light` 切亮色） |
+| `/` | `site/index.html` | 首页：Pairwise 粒子字标，交互后才出现博客 / 笔记 / 简历入口 |
+| `/resume/` | `site/resume/index.html` | 简历页，静态 HTML 原样发布（`?theme=light` 切亮色） |
 | `/notes/` | `notes/` | 技术笔记，Astro Starlight 构建，`base: '/notes'`，文章在 `notes/src/content/docs/`，侧边栏在 `notes/sidebar.mjs` |
 | `/blog/` | `blog/` | 博客，Astro + MDX 构建，`base: '/blog'`，文章在 `blog/src/content/posts/`（文件名即 URL），可在 MDX 里用 `blog/src/components/` 的组件 |
 

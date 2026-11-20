@@ -33,7 +33,7 @@ const lastmod = postLastmod()
 export default defineConfig({
   // 正式域名（site/CNAME）：canonical、sitemap 都用它；github.io 会 301 跳过来
   site: SITE,
-  // 博客挂在 /blog/ 子路径下，根路径是简历页（site/index.html），/notes/ 是笔记站
+  // 博客挂在 /blog/ 子路径下，根路径是首页（site/index.html），简历在 /resume/，/notes/ 是笔记站
   base: '/blog',
   trailingSlash: 'always',
   // mdx 默认沿用这里的处理器（extendMarkdownConfig），所以插件只需挂一处

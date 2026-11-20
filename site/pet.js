@@ -23,7 +23,7 @@
  * 数据和引擎分开：台词、配色、尺寸、姿势、行为节奏都在同目录的 pet.json（字段说明见下面的 PetConfig），
  * 这个文件只管怎么捏形体、怎么动。加台词、调性格、换配色、加一种静态姿势只改 pet.json；
  * 新动作（比如舔爪）或新物种要改这里。pet.json、pet-ai.js 跟着 pet.js 的 ?v= 一起刷新缓存，
- * 改了要给 site/index.html 和 blog/src/layouts/Base.astro 里的版本号一起加一。
+ * 改了要给 site/resume/index.html 和 blog/src/layouts/Base.astro 里的版本号一起加一。
  */
 const THREE_URL = 'https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js'
 const STORAGE_KEY = 'joy-pet-hidden'
@@ -34,7 +34,7 @@ const CONFIG_URL = sibling('pet.json')
  * pet.json 的结构。区间 [a, b] 表示每次在 a~b 之间随机取；时间单位都是秒。
  * @typedef {object} PetConfig
  * @property {{ canvas: string, close: string, open: string, openButton: string, chat?: string, chatTitle?: string }} text 画布和按钮的读屏名称、收起后的按钮文字；
- *   open / openButton 只在页面没有预留 #pet-launcher 时用（简历页 index.html 里预留了，那里的文字写在 HTML 里）；chat / chatTitle 是对话按钮和面板标题（有 ai 时必填）
+ *   open / openButton 只在页面没有预留 #pet-launcher 时用（简历页 resume/index.html 里预留了，那里的文字写在 HTML 里）；chat / chatTitle 是对话按钮和面板标题（有 ai 时必填）
  * @property {{ greet: string, back: string, poke: string, random: string[], ai?: { start: string, writing: string, done: string, failed: string, noKey: string } }} lines
  *   进场招呼、叫回来、被摸时（按 behavior.poke.lineChance）、随机说的话；
  *   ai（有 ai 时必填）：编辑器里 AI 开工 / 开始出正文 / 写完，AI 出错，没配置 AI 时说的话。
