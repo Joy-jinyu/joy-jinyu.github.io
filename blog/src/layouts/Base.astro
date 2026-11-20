@@ -13,8 +13,10 @@ interface Props {
   article?: { published: Date; updated?: Date; tags?: string[] }
   /** 投稿编辑器这类占满一屏的工具页传 false：不要页脚 */
   footer?: boolean
+  /** schema.org 结构化数据，原样序列化进 head */
+  jsonLd?: object
 }
-const { title, description, bgIntensity = 0.55, article, footer = true } = Astro.props
+const { title, description, bgIntensity = 0.55, article, footer = true, jsonLd } = Astro.props
 const base = import.meta.env.BASE_URL
 const canonical = new URL(Astro.url.pathname, Astro.site)
 // 分享卡片的图片：site/og.png，部署后在站点根目录
@@ -30,6 +32,8 @@ const ogImage = new URL('/og.png', Astro.site)
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="sitemap" href={`${base}sitemap-index.xml`} />
+    <link rel="alternate" type="application/rss+xml" title="Pairwise 博客" href={`${base}rss.xml`} />
+    <meta name="robots" content="max-image-preview:large" />
     <meta name="author" content="Joy" />
     <meta property="og:site_name" content="Pairwise" />
     <meta property="og:locale" content="zh_CN" />
@@ -47,6 +51,8 @@ const ogImage = new URL('/og.png', Astro.site)
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+    {/* 投稿的标题、描述来自读者，转义 < 防止里面的 </script> 提前结束这段脚本 */}
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd).replace(/</g, '\\u003c')} />}
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     {/* 首帧前恢复主题，避免闪烁；和笔记站共用 starlight-theme 这个 key，两边切换互相同步 */}

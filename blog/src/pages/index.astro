@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro'
 import { listPosts, readingMinutes, formatDate, titleTransition } from '../lib/posts'
 import { COLUMNS } from '../lib/columns'
+import { BLOG_ID, JOY, WEBSITE_ID } from '../lib/seo'
 
 const posts = await listPosts()
 const base = import.meta.env.BASE_URL
@@ -30,9 +31,29 @@ function fan(k: number, n: number) {
     `--k:${k}`,
   ].join(';')
 }
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  '@id': BLOG_ID,
+  name: 'Pairwise 博客',
+  url: new URL(base, Astro.site).href,
+  inLanguage: 'zh-CN',
+  author: JOY,
+  publisher: JOY,
+  isPartOf: { '@id': WEBSITE_ID },
+  blogPost: posts.map((p) => {
+    const url = new URL(`${base}${p.id}/`, Astro.site).href
+    return { '@type': 'BlogPosting', '@id': `${url}#article`, headline: p.data.title, url, datePublished: p.data.date.toISOString() }
+  }),
+}
 ---
 
-<Base title="Pairwise · Joy 的博客" description="Joy 的博客：工具、工程化与 AI 应用开发的实践记录。">
+<Base
+  title="Pairwise 博客 · Joy 的 AI 应用与前端工程实践"
+  description="Pairwise 博客：Joy 写的 AI 应用开发、AI 写界面的审美与约束、前端工程化和终端工具实践。"
+  jsonLd={jsonLd}
+>
   <section class="hero">
     <div class="eyebrow">Blog · {posts.length} 篇 · {groups.length} 个专栏</div>
     <h1>写给未来的自己</h1>
