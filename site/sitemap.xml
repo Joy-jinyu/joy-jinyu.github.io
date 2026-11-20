@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 全站 sitemap 入口：简历首页 + 博客、笔记站各自由 @astrojs/sitemap 生成的 sitemap -->
+<!-- 全站 sitemap 入口：直接列出各站的 sitemap 文件，不能指向博客、笔记自己的 sitemap-index.xml——
+     sitemap 索引里再套索引，Google 不认（2026-11-15 提交后「已发现的网页」一直是 0）。
+     @astrojs/sitemap 每 45000 条才拆出 sitemap-1.xml，所以这里写死 sitemap-0.xml -->
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap><loc>https://www.pairwise.site/sitemap-home.xml</loc></sitemap>
-  <sitemap><loc>https://www.pairwise.site/blog/sitemap-index.xml</loc></sitemap>
-  <sitemap><loc>https://www.pairwise.site/notes/sitemap-index.xml</loc></sitemap>
+  <sitemap><loc>https://www.pairwise.site/blog/sitemap-0.xml</loc></sitemap>
+  <sitemap><loc>https://www.pairwise.site/notes/sitemap-0.xml</loc></sitemap>
 </sitemapindex>
