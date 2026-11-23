@@ -3,6 +3,14 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<script>
+  // 主题：?theme= 参数优先，其次是与简历、博客、笔记站共用的 starlight-theme 记忆，默认深色（同 resume/index.html）
+  (function () {
+    var q = new URLSearchParams(location.search).get("theme"), s = "";
+    try { s = localStorage.getItem("starlight-theme") || ""; } catch (e) {}
+    document.documentElement.dataset.theme = q === "light" || q === "dark" ? q : s === "light" ? "light" : "dark";
+  })();
+</script>
 <title>Pairwise · Joy｜AI 时代的设计与前端</title>
 <!-- SEO：描述、规范网址、分享卡片（og.png 由 og.html 渲染而来）、结构化数据 -->
 <meta name="description" content="Pairwise 是 Joy 的个人站：AI 时代的设计与前端。这里有 AI 应用开发博客、前端技术笔记和简历。" />
@@ -64,11 +72,22 @@
     --bg: #050608; --ink: #eef0f3; --ink-rgb: 238, 240, 243;
     --soft: rgba(var(--ink-rgb), 0.52); --ghost: rgba(var(--ink-rgb), 0.24); --line: rgba(var(--ink-rgb), 0.12);
     --ai: #3ee6d2; --ai-ink: #00231f;
+    --you: #f4f4ef; --you-ink: #0b0c0e; --chip: rgba(255, 255, 255, 0.03); --panel: rgba(10, 12, 14, 0.85); --shadow: rgba(0, 0, 0, 0.55);
     --sans: "Geist", "PingFang SC", -apple-system, sans-serif;
     --serif: "Instrument Serif", serif;
     --mono: "Geist Mono", "SF Mono", Menlo, monospace;
     --ease: cubic-bezier(0.22, 1, 0.36, 1);
   }
+  /* 浅色：米白纸面 + 墨色粒子。--ai 比画布 PAL.light.ai 更深，是为了文字 / 链接在米白底上达到 4.5:1；画布上的青色只用于图形 */
+  :root[data-theme="light"] {
+    --bg: #f6f6f3; --ink: #0d0e11; --ink-rgb: 13, 14, 17;
+    --soft: rgba(var(--ink-rgb), 0.62); --ghost: rgba(var(--ink-rgb), 0.26); --line: rgba(var(--ink-rgb), 0.12);
+    --ai: #08776d; --ai-ink: #ffffff;
+    --you: #0d0e11; --you-ink: #f6f6f3; --chip: rgba(255, 255, 255, 0.6); --panel: rgba(255, 255, 255, 0.92); --shadow: rgba(0, 0, 0, 0.18);
+  }
+  /* 明暗切换的圆形扩散：关掉默认的交叉淡入，新画面由脚本用 clip-path 从点击处展开 */
+  .theme-reveal::view-transition-old(root),
+  .theme-reveal::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { min-height: 100svh; overflow: hidden; background: var(--bg); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
   @media (pointer: fine) { html.own-cursor, html.own-cursor * { cursor: none !important; } }
@@ -95,8 +114,12 @@
   .tag .tc { display: inline-block; width: 2px; height: 0.9em; margin: 0 1px 0 2px; vertical-align: -0.1em; border-radius: 1px; background: var(--ai); }
   .tag .tc.blink { animation: blink 1.05s steps(1) infinite; }
   .tag .tc.gone { opacity: 0; transition: opacity 0.3s; animation: none; }
-  .gh { position: fixed; right: clamp(20px, 4vw, 56px); bottom: clamp(24px, 4vw, 52px); display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid var(--line); border-radius: 50%; color: var(--soft); transition: color 0.25s var(--ease), border-color 0.25s var(--ease), background 0.25s var(--ease); }
-  .gh:hover, .gh:focus-visible { color: var(--ink); border-color: rgba(var(--ink-rgb), 0.3); background: rgba(var(--ink-rgb), 0.04); outline: none; }
+  .gh, .theme { position: fixed; right: clamp(20px, 4vw, 56px); bottom: clamp(24px, 4vw, 52px); display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid var(--line); border-radius: 50%; color: var(--soft); transition: color 0.25s var(--ease), border-color 0.25s var(--ease), background 0.25s var(--ease); }
+  .theme { top: clamp(20px, 3.2vw, 40px); bottom: auto; background: none; cursor: pointer; font: inherit; }
+  .theme svg { width: 17px; height: 17px; }
+  .theme .moon, :root[data-theme="light"] .theme .sun { display: none; }
+  :root[data-theme="light"] .theme .moon { display: block; }
+  .gh:hover, .gh:focus-visible, .theme:hover, .theme:focus-visible { color: var(--ink); border-color: rgba(var(--ink-rgb), 0.3); background: rgba(var(--ink-rgb), 0.04); outline: none; }
   .gh svg { width: 18px; height: 18px; }
   nav a {
     position: relative; padding: 2px 0; color: transparent;
@@ -114,7 +137,7 @@
   .suggest.done nav a:focus-visible { outline: none; }
   .hint {
     display: inline-flex; align-items: center; gap: 8px; padding: 5px 6px 5px 10px; border: 1px solid var(--line); border-radius: 999px;
-    font: 400 11px/1 var(--mono); letter-spacing: 0.02em; color: var(--soft); background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(8px);
+    font: 400 11px/1 var(--mono); letter-spacing: 0.02em; color: var(--soft); background: var(--chip); backdrop-filter: blur(8px);
     opacity: 0; transform: translateX(-4px); transition: opacity 0.4s var(--ease) 0.3s, transform 0.4s var(--ease) 0.3s; pointer-events: none;
   }
   .hint kbd { padding: 3px 6px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; color: var(--ink); font: 500 10px/1 var(--mono); }
@@ -125,13 +148,17 @@
   /* 两个光标：Joy 是访客的指针，AI 跟着它结对 */
   .cursor { position: fixed; left: 0; top: 0; z-index: 10; pointer-events: none; will-change: transform; opacity: 0; transition: opacity 0.3s var(--ease); }
   .cursor.on { opacity: 1; }
-  .cursor svg { display: block; width: 17px; height: 17px; overflow: visible; filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.55)); transform-origin: 2px 2px; transition: transform 0.2s var(--ease); }
+  /* 访客一动 AI 就要立刻不见：只淡入，不淡出 */
+  .cursor.ai:not(.on) { transition: none; }
+  .cursor svg { display: block; width: 17px; height: 17px; overflow: visible; filter: drop-shadow(0 3px 8px var(--shadow)); transform-origin: 2px 2px; transition: transform 0.2s var(--ease); }
   .cursor b { position: absolute; left: 13px; top: 15px; padding: 4px 8px 5px; border-radius: 3px 999px 999px 999px; font: 500 11px/1 var(--sans); letter-spacing: 0.01em; white-space: nowrap; transition: transform 0.25s var(--ease); transform-origin: 0 0; }
-  .cursor.you b { background: #f4f4ef; color: #0b0c0e; }
+  .cursor.you b { background: var(--you); color: var(--you-ink); }
+  .cursor.you path { fill: var(--you); stroke: var(--you-ink); }
+  .cursor.ai path { fill: var(--ai); stroke: var(--ai-ink); }
   .cursor.ai b { background: var(--ai); color: var(--ai-ink); }
   .cursor.you.press svg { transform: scale(0.86); }
   .cursor.you.link b { transform: scale(1.08); }
-  .cursor .say { position: absolute; left: 44px; top: 14px; padding: 5px 8px; border-radius: 6px; border: 1px solid var(--line); background: rgba(10, 12, 14, 0.85); color: var(--soft); font: 400 10.5px/1 var(--mono); white-space: nowrap; opacity: 0; transform: translateX(-4px); transition: opacity 0.3s var(--ease), transform 0.3s var(--ease); }
+  .cursor .say { position: absolute; left: 44px; top: 14px; padding: 5px 8px; border-radius: 6px; border: 1px solid var(--line); background: var(--panel); color: var(--soft); font: 400 10.5px/1 var(--mono); white-space: nowrap; opacity: 0; transform: translateX(-4px); transition: opacity 0.3s var(--ease), transform 0.3s var(--ease); }
   .cursor .say.on { opacity: 1; transform: none; }
   @media (max-width: 640px) { .sign { right: 76px; } .suggest { flex-wrap: wrap; } }
 </style>
@@ -152,6 +179,7 @@
     <span class="hint" id="hint"><span>accept</span><kbd>Tab</kbd></span>
   </div>
 </div>
+<button class="theme" id="theme" type="button" aria-label="切换明暗"><svg class="sun" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg><svg class="moon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4a8.2 8.2 0 1 0 10.6 10.6z"/></svg></button>
 <a class="gh" href="https://github.com/Joy-jinyu" aria-label="GitHub" rel="me"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg></a>
 <div class="cursor you" id="you"><svg viewBox="0 0 17 17"><path d="M2 1.6 15 7.8 8.9 9.4 6.6 15.4z" fill="#f4f4ef" stroke="#0b0c0e" stroke-width="1.1" stroke-linejoin="round"/></svg><b>Joy</b></div>
 <div class="cursor ai" id="ai"><svg viewBox="0 0 17 17"><path d="M2 1.6 15 7.8 8.9 9.4 6.6 15.4z" fill="#3ee6d2" stroke="#00231f" stroke-width="1.1" stroke-linejoin="round"/></svg><b>AI</b><span class="say" id="say"></span></div>
@@ -163,6 +191,116 @@
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
   const fine = matchMedia('(pointer: fine)').matches
   let W, H, dpr, P = [], step, t0, wordBox = { x: 0, y: 0, w: 0, h: 0 }
+  // 画布颜色，和 CSS 的 :root / [data-theme="light"] 对应；浅色下粒子用深墨色、高不透明度，否则在米白底上发灰
+  const PAL = {
+    dark: { bg: '#050608', dot: '238,240,243', dotA: 0.9, ai: '62,230,210', you: '244,244,239', glow: '215,235,240', cool: '120,200,255' },
+    light: { bg: '#f6f6f3', dot: '13,14,17', dotA: 0.88, ai: '10,156,144', you: '13,14,17', glow: '255,255,255', cool: '20,110,150' },
+  }
+  const pal = () => PAL[document.documentElement.dataset.theme === 'light' ? 'light' : 'dark']
+
+  // 平滑值噪声，给风吹散的湍流用
+  const PERM = Array.from({ length: 512 }, (_, i) => i % 256).sort(() => Math.random() - 0.5)
+  const rnd = (x, y) => PERM[(PERM[x & 255] + y) & 511] / 255
+  function noise(x, y) {
+    const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi, u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf)
+    const a = rnd(xi, yi), b = rnd(xi + 1, yi), c = rnd(xi, yi + 1), d = rnd(xi + 1, yi + 1)
+    return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v
+  }
+  const fbm = (x, y, t) => noise(x + t, y - t * 0.7) * 0.65 + noise(x * 2.1 - t * 0.5, y * 2.1 + t) * 0.35
+
+  /*
+   * 相机：字在 z=0 的竖直平面上（z 朝屏幕里为正），镜头绕字中心极慢地小幅环绕，鼠标带一点视差。
+   * 粒子物理都在字的平面里算，画的时候投影到屏幕；鼠标 / AI 光标的位置反投影回平面再参与交互
+   */
+  const camS = { yaw: 0, pitch: 0, F: 650, ox: 0, oy: 0, m: null }
+  function updateCam(t, dt) {
+    const k = reduce ? 0 : t
+    let ty = Math.sin(k * 0.00011) * 0.42, tp = -0.18 + Math.sin(k * 0.00007) * 0.16
+    if (you.live && !reduce) { ty += (you.x / W - 0.5) * 0.08; tp += (you.y / H - 0.5) * 0.06 }
+    const e = reduce || !camS.m ? 1 : 1 - Math.pow(0.04, dt)
+    camS.yaw += (ty - camS.yaw) * e; camS.pitch += (tp - camS.pitch) * e
+    const cy = Math.cos(camS.yaw), sy = Math.sin(camS.yaw), cp = Math.cos(camS.pitch), sp = Math.sin(camS.pitch)
+    camS.m = [cy, 0, sy, sp * sy, cp, -sp * cy, -cp * sy, sp, cp * cy]
+    camS.ox = wordBox.x + wordBox.w / 2; camS.oy = wordBox.y + wordBox.h / 2
+  }
+  function toS(x, y, z = 0) {
+    const m = camS.m, X = x - camS.ox, Y = y - camS.oy
+    const cx = m[0] * X + m[1] * Y + m[2] * z, cyy = m[3] * X + m[4] * Y + m[5] * z, cz = m[6] * X + m[7] * Y + m[8] * z
+    const s = camS.F / Math.max(80, camS.F + cz)
+    return { x: camS.ox + cx * s, y: camS.oy + cyy * s, s, z: cz }
+  }
+  function toP(sx, sy) {
+    const m = camS.m, a = sx - camS.ox, b = sy - camS.oy, F = camS.F
+    const A1 = a * m[6] - F * m[0], B1 = a * m[7] - F * m[1], A2 = b * m[6] - F * m[3], B2 = b * m[7] - F * m[4], det = A1 * B2 - A2 * B1
+    if (Math.abs(det) < 1e-6) return null
+    const u = (-a * F * B2 + b * F * B1) / det, v = (-b * F * A1 + a * F * A2) / det
+    // 超宽屏上屏幕点可能在地平线之外，反投影会落到相机背后，这时这个点不参与交互
+    if (camS.F + m[6] * u + m[7] * v <= 0) return null
+    return { x: camS.ox + u, y: camS.oy + v }
+  }
+
+  // 三点布光（主光左上、冷色补光右侧、背光在字后），以字中心为原点；粒子按到各光源的距离取亮度
+  function lights(C0) {
+    const w = wordBox.w, h = wordBox.h
+    return [
+      { x: -w * 0.45, y: -h * 1.0, z: -300, r: w * 0.5, c: C0.glow, glow: 0.12, gr: 0.4 },
+      { x: w * 0.6, y: -h * 0.2, z: -380, r: w * 0.45, c: C0.cool, glow: 0.05, gr: 0.3 },
+      { x: 0, y: -h * 0.4, z: 320, r: w * 0.35, c: C0.glow, glow: 0.12, gr: 0.45 },
+    ]
+  }
+  function lit(p, LT) {
+    let sum = 0
+    const X = p.x - camS.ox, Y = p.y - camS.oy
+    for (const L of LT) sum += 1 / (1 + ((X - L.x) ** 2 + (Y - L.y) ** 2 + L.z ** 2 * 0.35) / (L.r * L.r))
+    // 1.05 / 0.5 来自实测：三盏灯在字上的叠加值落在 1.10~1.55，映射到 0~1 才有明暗，直接截断会全部饱和成一样亮
+    return Math.max(0, Math.min(1, (sum - 1.05) / 0.5))
+  }
+  function drawLightGlow(LT, C0) {
+    const light = C0 === PAL.light
+    // 深色下光晕用加色混合才像在发光；浅色下用白色高光，再压一圈极淡的暗角托出层次
+    ctx.globalCompositeOperation = light ? 'source-over' : 'lighter'
+    for (const L of LT) {
+      const c = toS(camS.ox + L.x, camS.oy + L.y, L.z), r = wordBox.w * L.gr * c.s
+      const g = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, r)
+      g.addColorStop(0, `rgba(${L.c},${light ? L.glow * 4 : L.glow})`); g.addColorStop(1, `rgba(${L.c},0)`)
+      ctx.fillStyle = g; ctx.fillRect(c.x - r, c.y - r, r * 2, r * 2)
+    }
+    ctx.globalCompositeOperation = 'source-over'
+    if (light) {
+      const v = ctx.createRadialGradient(W / 2, H * 0.45, Math.min(W, H) * 0.3, W / 2, H * 0.45, Math.max(W, H) * 0.75)
+      v.addColorStop(0, 'rgba(13,14,17,0)'); v.addColorStop(1, 'rgba(13,14,17,0.05)')
+      ctx.fillStyle = v; ctx.fillRect(0, 0, W, H)
+    }
+  }
+
+  /*
+   * 空间：字前后不同深度的浮尘，加上离镜头最近的一层虚化光斑（前景虚焦），镜头一动就有纵深。
+   * 都是低对比度的装饰，不能比字显眼
+   */
+  let dust = [], bokeh = []
+  function initSpace() {
+    dust = Array.from({ length: 150 }, () => ({ x: (Math.random() - 0.5) * W * 2.2, y: (Math.random() - 0.5) * H * 1.6, z: -450 + Math.random() * 1900, ph: Math.random() * 6.28 }))
+    bokeh = Array.from({ length: 14 }, () => ({ x: (Math.random() - 0.5) * W * 1.4, y: (Math.random() - 0.5) * H * 1.2, z: -420 - Math.random() * 120, r: 10 + Math.random() * 26, ph: Math.random() * 6.28 }))
+  }
+  function drawSpace(t, C0, front) {
+    const light = C0 === PAL.light, k = reduce ? 0 : t / 1000
+    for (const d of dust) {
+      if ((d.z < 0) !== front) continue
+      const p = toS(camS.ox + d.x + Math.sin(k * 0.1 + d.ph) * 20, camS.oy + d.y + Math.cos(k * 0.08 + d.ph) * 14, d.z)
+      if (p.z < -camS.F + 100) continue
+      const s = 1.4 * p.s, a = (d.z < 0 ? 0.2 : 0.3) * Math.min(1, p.s) * (0.6 + 0.4 * Math.sin(k + d.ph)) * (light ? 1.4 : 1)
+      ctx.fillStyle = `rgba(${C0.dot},${a})`; ctx.fillRect(p.x - s / 2, p.y - s / 2, s, s)
+    }
+    if (!front) return
+    for (const b of bokeh) {
+      const p = toS(camS.ox + b.x + Math.sin(k * 0.07 + b.ph) * 30, camS.oy + b.y + Math.cos(k * 0.05 + b.ph) * 20, b.z)
+      if (p.z < -camS.F + 100) continue
+      const r = b.r * p.s, a = (light ? 0.05 : 0.045) * (0.7 + 0.3 * Math.sin(k * 0.4 + b.ph))
+      const g = ctx.createRadialGradient(p.x, p.y, r * 0.2, p.x, p.y, r)
+      g.addColorStop(0, `rgba(${b.ph > 4.5 ? C0.ai : C0.dot},${a})`); g.addColorStop(1, `rgba(${C0.dot},0)`)
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, 6.283); ctx.fill()
+    }
+  }
 
   /* ---------- 粒子：「Pairwise」由 token 组成 ---------- */
   function sample() {
@@ -201,27 +339,36 @@
     })
     t0 = performance.now()
     if (reduce) P.forEach((p) => { p.x = p.hx; p.y = p.hy })
+    initSpace()
   }
-
   /* ---------- 光标 ---------- */
-  const you = { x: -100, y: -100, live: false, last: -1e9, vx: 0, vy: 0 }
-  const ai = { x: innerWidth * 0.5, y: innerHeight + 60, vx: 0, vy: 0, tx: 0, ty: 0, mode: 'wander', hold: 0 }
+  const you = { x: -100, y: -100, live: false, last: -1e9 }
+  const ai = { x: innerWidth * 0.5, y: innerHeight + 60, vx: 0, vy: 0, tx: 0, ty: 0, mode: 'wander', show: true, a: 1 }
 
   addEventListener('pointermove', (e) => {
-    const now = performance.now(), dt = Math.max(8, now - you.last)
-    if (you.live) { you.vx = (e.clientX - you.x) / dt * 16; you.vy = (e.clientY - you.y) / dt * 16 }
+    const now = performance.now()
     you.x = e.clientX; you.y = e.clientY; you.last = now
     if (e.pointerType === 'mouse') { you.live = true; youEl.classList.add('on'); document.documentElement.classList.add('own-cursor') }
     youEl.style.transform = `translate3d(${you.x - 2}px, ${you.y - 2}px, 0)`
-    youEl.classList.toggle('link', !!e.target.closest('a, .hint'))
+    youEl.classList.toggle('link', !!e.target.closest('a, .hint, button'))
     wake()
   })
   addEventListener('pointerdown', (e) => {
     youEl.classList.add('press'); wake()
     if (e.pointerType !== 'mouse') { you.x = e.clientX; you.y = e.clientY; you.last = performance.now() }
-    // 点空白处：粒子炸开再聚回来；点链接、Tab 提示、GitHub 时不炸
-    if (!e.target.closest('a, .hint')) for (const p of P) { p.vx += (Math.random() - 0.5) * 30; p.vy += (Math.random() - 0.5) * 30 }
+    // 点空白处：像一阵风从点击处吹过，粒子顺着湍流飘散，再从左到右一个字母一个字母地落回；点链接、按钮时不吹
+    if (!e.target.closest('a, .hint, button') && !reduce) burst(e.clientX, e.clientY)
   })
+  function burst(sx, sy) {
+    const c = camS.m && toP(sx, sy)
+    if (!c) return
+    const now = performance.now()
+    for (const p of P) {
+      const ex = p.x - c.x, ey = p.y - c.y, e = Math.hypot(ex, ey) || 1, m = 10 + 18 * Math.exp(-e / 380)
+      p.vx += (ex / e) * m * (0.6 + Math.random() * 0.8); p.vy += (ey / e) * m * 0.6 * (0.6 + Math.random() * 0.8) - 2
+      p.back = now + 900 + ((p.hx - wordBox.x) / wordBox.w) * 1500
+    }
+  }
   addEventListener('pointerup', () => youEl.classList.remove('press'))
   document.documentElement.addEventListener('pointerleave', () => { you.live = false; youEl.classList.remove('on') })
 
@@ -235,8 +382,8 @@
     await typed
     await sleep(reduce ? 0 : 450)
     ai.mode = 'suggest'
-    // 先飞到补全的位置再开始写，最多等 1.4 秒
-    for (let t = 0; t < 1400 && !reduce; t += 50) { const c = caretPoint(); if (Math.hypot(ai.x - c.x, ai.y - c.y) < 36) break; await sleep(50) }
+    // AI 光标在场时先飞到补全的位置再开始写，最多等 1.4 秒；访客正在动鼠标时 AI 不出现，直接写
+    for (let t = 0; t < 1400 && !reduce && ai.show; t += 50) { const c = caretPoint(); if (Math.hypot(ai.x - c.x, ai.y - c.y) < 36) break; await sleep(50) }
     say.textContent = 'suggesting…'; say.classList.add('on')
     suggest.classList.add('typing')
     await sleep(reduce ? 0 : 700)
@@ -244,7 +391,7 @@
     say.textContent = fine ? 'Tab to accept' : 'tap to accept'
     await sleep(1300)
     say.classList.remove('on')
-    if (ai.mode === 'suggest') ai.mode = 'follow'
+    if (ai.mode === 'suggest') ai.mode = 'wander'
   }
   function accept(go) {
     if (accepted || !suggest.classList.contains('ready')) return
@@ -268,41 +415,95 @@
   hint.addEventListener('click', () => accept())
   links.forEach((a) => a.addEventListener('click', (e) => { if (!accepted) { e.preventDefault(); accept(a.href) } }))
 
+  /* ---------- 明暗切换：新主题从点击处圆形扩散铺满全屏（同 resume/index.html） ---------- */
+  const themeBtn = document.getElementById('theme')
+  function applyTheme(next) {
+    document.documentElement.dataset.theme = next
+    syncChrome()
+    try { localStorage.setItem('starlight-theme', next) } catch (e) {}
+    const u = new URL(location.href)
+    if (u.searchParams.has('theme')) { u.searchParams.delete('theme'); history.replaceState(history.state, '', u) }
+  }
+  // 地址栏颜色和按钮的读屏文案跟着当前主题走
+  function syncChrome() {
+    const light = document.documentElement.dataset.theme === 'light'
+    document.querySelector('meta[name="theme-color"]').content = light ? '#f6f6f3' : '#050608'
+    themeBtn.setAttribute('aria-label', light ? '切换到深色' : '切换到浅色')
+  }
+  syncChrome()
+  themeBtn.addEventListener('click', (e) => {
+    const root = document.documentElement, next = root.dataset.theme === 'light' ? 'dark' : 'light'
+    if (!document.startViewTransition || reduce) return applyTheme(next)
+    const r = themeBtn.getBoundingClientRect()
+    const x = e.detail ? e.clientX : r.left + r.width / 2, y = e.detail ? e.clientY : r.top + r.height / 2
+    const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y))
+    root.classList.add('theme-reveal')
+    const t = document.startViewTransition(() => applyTheme(next))
+    t.ready.then(() => root.animate({ clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+      { duration: 500, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', pseudoElement: '::view-transition-new(root)' })).catch(() => {})
+    t.finished.finally(() => root.classList.remove('theme-reveal'))
+  })
+
+  // 静止粒子最多，颜色串每帧现拼会产生几千个临时字符串；亮度量化成 21 档后复用
+  const colorCache = new Map()
+  function restColor(C0, a) {
+    const key = C0.dot + Math.round(a * 20)
+    let c = colorCache.get(key)
+    if (!c) colorCache.set(key, (c = `rgba(${C0.dot},${Math.round(a * 20) / 20})`))
+    return c
+  }
+
   /* ---------- 每帧 ---------- */
   let prev = performance.now()
   function frame(t) {
     const dt = Math.min(0.05, (t - prev) / 1000); prev = t
     const el = t - t0
-    const idle = !you.live || t - you.last > 2200
+    // AI 光标只在访客静止约 2 秒后出现（从访客光标旁边淡入，再去字上巡游），访客一动就立刻消失（光圈、虚线一起，不留淡出）
+    const idle = t - you.last > 2200
+    if (idle && !ai.show) {
+      ai.show = true; ai.since = t; aiEl.classList.add('on')
+      if (you.live) { ai.x = you.x + 42; ai.y = you.y + 30; ai.vx = ai.vy = 0 }
+    } else if (!idle && ai.show) { ai.show = false; ai.a = 0; aiEl.classList.remove('on') }
+    ai.a += ((ai.show ? 1 : 0) - ai.a) * Math.min(1, dt * 6)
 
-    // AI 的目标：跟随时停在 Joy 右下方并略微预判；闲下来就在字上巡游；写补全时停在补全的光标处
-    // 停在补全行首的左下方，标签和气泡往下展开，不挡补全文字
-    if (ai.mode === 'suggest') { const c = caretPoint(); ai.tx = c.x - 4; ai.ty = c.y + 16 }
-    else if (!idle) { ai.mode = 'follow'; ai.tx = you.x + 42 + you.vx * 3; ai.ty = you.y + 30 + you.vy * 3 }
+    // AI 的目标：写补全时停在补全行首的左下方（标签和气泡往下展开，不挡补全文字）；刚出现时先在访客旁边停一下；其余时间在字上巡游
+    const fresh = you.live ? t - (ai.since || -1e9) : 1e9
+    if (ai.mode === 'suggest' && ai.show) { const c = caretPoint(); ai.tx = c.x - 4; ai.ty = c.y + 16 }
+    else if (fresh < 900) { ai.tx = you.x + 42; ai.ty = you.y + 30 }
     else {
-      ai.mode = 'wander'
-      const k = el / 1000
-      ai.tx = wordBox.x + wordBox.w * (0.5 + Math.sin(k * 0.37) * 0.46)
-      ai.ty = wordBox.y + wordBox.h * (0.5 + Math.sin(k * 0.83 + 1) * 0.42)
+      if (ai.mode !== 'suggest') ai.mode = 'wander'
+      const k = reduce ? 0 : el / 1000
+      const wt = camS.m ? toS(wordBox.x + wordBox.w * (0.5 + Math.sin(k * 0.37) * 0.46), wordBox.y + wordBox.h * (0.5 + Math.sin(k * 0.83 + 1) * 0.42)) : { x: W / 2, y: H / 2 }
+      ai.tx = wt.x; ai.ty = wt.y
     }
     // 略欠阻尼的弹簧：有一点惯性和过冲，像另一个人在操作
-    const K = ai.mode === 'wander' ? 34 : 70, C = 2 * Math.sqrt(K) * 0.82
+    // 刚离开访客时弹簧放软，慢慢飘向字，不要一下冲过去
+    const K = ai.mode === 'suggest' ? 70 : fresh < 2500 ? 10 : 34, C = 2 * Math.sqrt(K) * 0.82
     ai.vx += ((ai.tx - ai.x) * K - ai.vx * C) * dt
     ai.vy += ((ai.ty - ai.y) * K - ai.vy * C) * dt
     ai.x += ai.vx * dt; ai.y += ai.vy * dt
     const tilt = Math.max(-14, Math.min(14, ai.vx * 0.02))
     aiEl.style.transform = `translate3d(${ai.x - 2}px, ${ai.y - 2}px, 0)`
     aiEl.firstElementChild.style.transform = `rotate(${tilt}deg)`
-    you.vx *= 0.9; you.vy *= 0.9
 
-    ctx.fillStyle = '#050608'; ctx.fillRect(0, 0, W, H)
-    const Q = [{ x: ai.x, y: ai.y, c: '62,230,210', R: Math.min(190, W * 0.22) }]
-    if (you.live || (!fine && t - you.last < 1500)) Q.push({ x: you.x, y: you.y, c: '244,244,239', R: Math.min(170, W * 0.2) })
+    const C0 = pal()
+    updateCam(t, dt)
+    ctx.fillStyle = C0.bg; ctx.fillRect(0, 0, W, H)
+    const LT = lights(C0)
+    drawLightGlow(LT, C0)
+    drawSpace(t, C0, false)
+    // 交互点反投影到字的平面：物理在平面里算，连线从屏幕上的光标画出去
+    const Q = [], qa = toP(ai.x, ai.y)
+    if (qa && ai.a > 0.02) Q.push({ x: qa.x, y: qa.y, sx: ai.x, sy: ai.y, c: C0.ai, R: Math.min(190, W * 0.22) * ai.a })
+    if (you.live || (!fine && t - you.last < 1500)) { const qy = toP(you.x, you.y); if (qy) Q.push({ x: qy.x, y: qy.y, sx: you.x, sy: you.y, c: C0.you, R: Math.min(170, W * 0.2) }) }
 
     for (const p of P) {
       if (el > p.delay || reduce) {
-        const jx = Math.sin(el * 0.0011 + p.ph) * 0.9, jy = Math.cos(el * 0.0013 + p.ph) * 0.9
-        let ax = (p.hx + jx - p.x) * 0.06, ay = (p.hy + jy - p.y) * 0.06
+        const jx = reduce ? 0 : Math.sin(el * 0.0011 + p.ph) * 0.9, jy = reduce ? 0 : Math.cos(el * 0.0013 + p.ph) * 0.9
+        const free = p.back > t
+        const kS = free ? 0 : 0.06, damp = free ? 0.95 : 0.82
+        let ax = (p.hx + jx - p.x) * kS, ay = (p.hy + jy - p.y) * kS
+        if (free) { const a = fbm(p.x * 0.004, p.y * 0.004, t * 0.0004) * Math.PI * 4; ax += Math.cos(a) * 0.55 + 0.25; ay += Math.sin(a) * 0.55 - 0.08 }
         p.q = -1; p.heat = 0
         for (let qi = 0; qi < Q.length; qi++) {
           const q = Q[qi], dx = p.x - q.x, dy = p.y - q.y, d2 = dx * dx + dy * dy
@@ -312,10 +513,12 @@
             if (1 - d / q.R > p.heat) { p.heat = 1 - d / q.R; p.q = qi; p.d = d }
           }
         }
-        p.vx = (p.vx + ax) * 0.82; p.vy = (p.vy + ay) * 0.82
+        p.vx = (p.vx + ax) * damp; p.vy = (p.vy + ay) * damp
         p.x += p.vx; p.y += p.vy
       } else p.x += 6
     }
+
+    for (const p of P) { const pr = toS(p.x, p.y); p.px = pr.x; p.py = pr.y; p.ps = pr.s }
 
     // 成对连线 + 注意力线
     const settled = (p) => Math.abs(p.x - p.hx) + Math.abs(p.y - p.hy) < step * 6
@@ -324,25 +527,32 @@
     for (const p of P) if (p.q >= 0 && settled(p)) {
       byQ[p.q].push(p)
       const n = P[p.nb]
-      if (n && settled(n)) { ctx.strokeStyle = `rgba(${Q[p.q].c},${p.heat * 0.5})`; ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(n.x, n.y); ctx.stroke() }
+      if (n && settled(n)) { ctx.strokeStyle = `rgba(${Q[p.q].c},${p.heat * 0.5})`; ctx.beginPath(); ctx.moveTo(p.px, p.py); ctx.lineTo(n.px, n.py); ctx.stroke() }
     }
     ctx.lineWidth = 0.5
     byQ.forEach((arr, qi) => {
       arr.sort((a, b) => a.d - b.d)
-      for (const p of arr.slice(0, 24)) { ctx.strokeStyle = `rgba(${Q[qi].c},${p.heat ** 1.5 * 0.32})`; ctx.beginPath(); ctx.moveTo(Q[qi].x, Q[qi].y); ctx.lineTo(p.x, p.y); ctx.stroke() }
+      for (const p of arr.slice(0, 24)) { ctx.strokeStyle = `rgba(${Q[qi].c},${p.heat ** 1.5 * 0.32})`; ctx.beginPath(); ctx.moveTo(Q[qi].sx, Q[qi].sy); ctx.lineTo(p.px, p.py); ctx.stroke() }
     })
     // 两个光标之间的那一根线：Pairwise 的「一对」
-    if (Q.length > 1) {
-      const g = ctx.createLinearGradient(Q[1].x, Q[1].y, Q[0].x, Q[0].y)
-      g.addColorStop(0, 'rgba(244,244,239,0.35)'); g.addColorStop(1, 'rgba(62,230,210,0.5)')
+    if (Q.length > 1 && Q[0].c === C0.ai) {
+      const g = ctx.createLinearGradient(Q[1].sx, Q[1].sy, Q[0].sx, Q[0].sy)
+      g.addColorStop(0, `rgba(${C0.you},0.35)`); g.addColorStop(1, `rgba(${C0.ai},0.5)`)
       ctx.strokeStyle = g; ctx.lineWidth = 0.8; ctx.setLineDash([2, 4])
-      ctx.beginPath(); ctx.moveTo(Q[1].x, Q[1].y); ctx.lineTo(Q[0].x, Q[0].y); ctx.stroke(); ctx.setLineDash([])
+      ctx.beginPath(); ctx.moveTo(Q[1].sx, Q[1].sy); ctx.lineTo(Q[0].sx, Q[0].sy); ctx.stroke(); ctx.setLineDash([])
     }
+    // 粒子：投影到屏幕，亮度看受光（最暗也留一半多，字要始终是焦点）；被风吹着的粒子带一点青色。
+    // 尺寸下限 1px：镜头转开时远侧粒子会缩到亚像素、被抗锯齿冲淡；浅色底上同理，整体放大 1.25 倍
+    const light = C0 === PAL.light
     for (const p of P) {
-      const s = p.r + p.heat * 1.2
-      ctx.fillStyle = p.heat > 0.04 ? `rgba(${Q[p.q].c},${0.45 + p.heat * 0.55})` : 'rgba(238,240,243,0.72)'
-      ctx.fillRect(p.x - s / 2, p.y - s / 2, s, s)
+      const flying = p.back > t ? Math.min(1, (p.back - t) / 600) : 0
+      const la = light ? 0.6 + lit(p, LT) * 0.45 : 0.55 + lit(p, LT) * 0.5, s = Math.max(1, (p.r + p.heat * 1.2) * p.ps * (light ? 1.25 : 1))
+      ctx.fillStyle = p.heat > 0.04 ? `rgba(${Q[p.q].c},${0.45 + p.heat * 0.55})`
+        : flying > 0.05 ? `rgba(${C0.ai},${(0.35 + flying * 0.45) * Math.max(0.5, la)})`
+        : restColor(C0, Math.min(1, C0.dotA * la))
+      ctx.fillRect(p.px - s / 2, p.py - s / 2, s, s)
     }
+    drawSpace(t, C0, true)
     requestAnimationFrame(frame)
   }
 
