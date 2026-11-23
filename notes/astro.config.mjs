@@ -49,6 +49,15 @@ export default defineConfig({
             "try{for(const p of ['sidebar','toc'])if(localStorage.getItem('joy-'+p)==='collapsed')document.documentElement.dataset[p]='collapsed'}catch{}",
         },
         { tag: 'link', attrs: { rel: 'apple-touch-icon', href: '/notes/apple-touch-icon.png' } },
+        // Cloudflare Web Analytics 访问统计，说明见 site/index.html 同名注释
+        {
+          tag: 'script',
+          attrs: {
+            defer: true,
+            src: 'https://static.cloudflareinsights.com/beacon.min.js',
+            'data-cf-beacon': '{"token": "cfd1847ac0c347a4a677b092214a258d"}',
+          },
+        },
         // 分享卡片的图片（site/og.png，部署后在站点根目录）
         { tag: 'meta', attrs: { property: 'og:image', content: 'https://www.pairwise.site/og.png' } },
         { tag: 'meta', attrs: { property: 'og:image:width', content: '1200' } },
