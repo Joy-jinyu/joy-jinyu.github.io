@@ -1,0 +1,191 @@
+---
+title: 关掉 iTerm，tmux 还在不在
+description: 两个终端软件 attach 同一个 tmux，关掉其中一个，另一个会不会跟着断。在我的机器上实测：正常退出不影响，强制退出会连 server 一起带走。讲怎么看 server 是谁生的、怎么从系统日志里查出那次退出到底是哪一种，以及用 launchd 起 server 的做法和它还没验完的部分。
+date: 2026-11-24
+tags: [tmux, iTerm2, launchd, 终端]
+column: tools
+meta: 一次排查记录
+---
+
+import Callout from '../../components/Callout.astro'
+
+[tmux 那篇](../tmux-guide/)里我写过一句：关掉终端软件，server 和里面的程序照常运行。这句话今天被我自己撞了一次：iTerm 关掉以后，另一边 Terminal 里的 attach 也断了，十几个窗口里跑着的程序全没了。
+
+排查下来，结论分两半：
+
+| 怎么关 iTerm | tmux server | Terminal 里的 attach |
+| --- | --- | --- |
+| 正常退出 | 活着 | 不受影响 |
+| 「强制退出」窗口里退出 | 死了 | 跟着断 |
+
+两行都是在我的机器上各观察到一次的结果（macOS，Darwin 25.6；tmux 3.6；iTerm2 3.5.14），不是通用结论。下面是怎么查出来的。
+
+## 先看清三个进程
+
+我的用法是 iTerm 和系统自带的 Terminal 各开一个窗口，attach 到同一个 tmux。这里面有三种进程：
+
+| 进程 | 父进程 | 谁关掉它 |
+| --- | --- | --- |
+| tmux server | 1（launchd） | 所有会话都关了，或者 `tmux kill-server` |
+| iTerm 里的 tmux client | iTerm 里的 shell | iTerm 退出 |
+| Terminal 里的 tmux client | Terminal 里的 shell | Terminal 退出 |
+
+用一条命令能看全：
+
+```bash
+ps -axo pid,ppid,pgid,lstart,command | grep '[t]mux'
+```
+
+我机器上当时的输出（节选）：
+
+```text
+ 7241     1  7241 Mon Nov  9 09:09:16 2026     tmux
+ 7239  2006  7239 Mon Nov  9 09:09:16 2026     tmux
+47593 40992 47593 Tue Nov 24 14:37:25 2026     tmux
+```
+
+第一行是 server：父进程是 1，进程组是它自己。它已经从启动它的那个 shell 脱离出去了，所以 iTerm 退出时发给自己子进程的挂断信号到不了它。后两行是两个 client，各自挂在所属终端的 shell 下面。
+
+照这个结构，iTerm 退出只会带走它自己的 client，server 和 Terminal 那边都不该有事。配置里也没有会连带退出的选项：
+
+```bash
+tmux show-options -g | grep -E 'destroy-unattached|detach-on-destroy'
+tmux show-options -s | grep -E 'exit-unattached|exit-empty'
+```
+
+我这里 `exit-unattached` 和 `destroy-unattached` 都是 `off`。
+
+## 实测：两种退出，两个结果
+
+当天我关了两次 iTerm，系统日志里留下了两条不一样的记录。
+
+第一次是从「强制退出」窗口（<kbd>⌥⌘Esc</kbd>）里退出的：
+
+```text
+15:07:16.863 loginwindow   iTerm2 [923] force quit (caller responsible for termination)
+15:07:16.947 runningboardd [...iterm2...:923] termination reported by launchd (2, 15, 15)
+```
+
+这次之后 server 没了，Terminal 里的 attach 也断了。重新打开 iTerm 敲 `tmux`，起来的是一个新 server，会话是 `tmux-continuum` 按存档恢复出来的：窗口布局回来了，里面原先跑着的程序没有回来。
+
+第二次是正常退出：
+
+```text
+15:09:55.737 runningboardd [...iterm2...:22764] termination reported by launchd (0, 0, 0)
+```
+
+这次 server 活着，Terminal 里的 attach 一直连着，新开的 iTerm 再 attach 回去，一切照旧。
+
+<Callout type="warn">
+  括号里三个数的含义我没有查到官方说明。`(2, 15, 15)` 那次同时有 `force quit` 记录，15 对得上终止信号的编号；`(0, 0, 0)` 那次没有 `force quit` 记录。我是据此把它们分别认作「被信号结束」和「正常退出」的，这一步是推断。
+</Callout>
+
+查这两条记录用的命令：
+
+```bash
+/usr/bin/log show --start "2026-11-24 15:05:00" --style compact --predicate \
+  '(process == "loginwindow" AND eventMessage CONTAINS[c] "force quit")
+   OR (process == "runningboardd"
+       AND eventMessage CONTAINS "termination reported by launchd"
+       AND eventMessage CONTAINS "iterm2")'
+```
+
+<Callout type="pit">
+  在 zsh 里要写全路径 `/usr/bin/log`。zsh 自己有一个叫 `log` 的内建命令，直接敲 `log show ...` 走的是它：我第一次查的时候什么都没输出，差点得出「日志里没有记录」的结论。
+</Callout>
+
+## 为什么强制退出会带走 server
+
+没查清楚。
+
+能确认的只有现象：server 的父进程是 1、进程组独立，按信号传递的规则它不该收到任何东西，但它确实在强制退出的那一刻没了。
+
+我的猜测是系统在强制退出一个应用时，会把「算在这个应用名下」的进程一起清掉，而从 iTerm 的 shell 里敲 `tmux` 起来的 server 仍然算在 iTerm 名下。能支持这个猜测的只有一条旁证，server 的环境里一直带着启动它的应用的标识：
+
+```bash
+tmux show-environment -g | grep -E 'CFBundle|TERM_PROGRAM=|XPC_SERVICE_NAME'
+```
+
+```text
+TERM_PROGRAM=iTerm.app
+XPC_SERVICE_NAME=0
+__CFBundleIdentifier=com.googlecode.iterm2
+```
+
+环境变量只说明它是在 iTerm 里出生的，证明不了系统按这个来清理进程。这一节整段都是待验证的。
+
+## 让 server 不在终端里出生
+
+顺着上面的猜测，做法是让 server 由 launchd 在登录时启动，iTerm 和 Terminal 都只做 `tmux attach`。
+
+新建 `~/Library/LaunchAgents/local.tmux-server.plist`：
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>local.tmux-server</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/opt/homebrew/bin/tmux</string>
+    <string>new-session</string>
+    <string>-d</string>
+  </array>
+  <key>RunAtLoad</key><true/>
+  <key>AbandonProcessGroup</key><true/>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>LANG</key><string>en_US.UTF-8</string>
+  </dict>
+</dict>
+</plist>
+```
+
+三处要说明：
+
+- **tmux 的路径**写绝对路径，用 `which tmux` 确认。launchd 起的进程没有你 shell 里的 `PATH`。
+- **`AbandonProcessGroup`**：`tmux new-session -d` 这条命令本身一瞬间就退出了，留下的是后台的 server。按 launchd 文档的说法，任务结束时它会清掉同一进程组里剩下的进程，这个键是让它别管。server 自己另起了进程组，不加可能也没事，我没有做去掉它的对照。
+- **`LANG`**：launchd 的环境里没有它，不设的话 pane 里的程序可能认不出 UTF-8。
+
+文件放好后下次登录自动生效。想马上试，用一个独立的 socket，不碰正在用的 server：把上面 `ProgramArguments` 改成 `tmux -L probe -f /dev/null new-session -d`，另存一份，然后
+
+```bash
+launchctl bootstrap gui/$(id -u) /path/to/probe.plist
+tmux -L probe ls
+tmux -L probe show-environment -g | grep -E 'CFBundle|XPC_SERVICE_NAME'
+```
+
+我这样试的结果：
+
+```text
+0: 1 windows (created Tue Nov 24 14:55:33 2026)
+XPC_SERVICE_NAME=local.tmux-probe
+```
+
+server 在启动命令退出后还在，父进程是 1，环境里没有任何 iTerm 的痕迹。
+
+<Callout type="todo">
+  到这一步只证明了「server 可以不在 iTerm 里出生」。launchd 起的 server 能不能扛住强制退出 iTerm，我还没有测：测一次要赔上当前 server 里所有在跑的程序。等下次需要强制退出时，我会先起好探针再退，把结果补在这里。
+</Callout>
+
+## 顺手记下的三件事
+
+**在第二个终端里敲 `tmux` 不等于 attach。** 已经有 server 时，光敲 `tmux` 会新建一个会话，我就这样多出来一个只有一个空窗口的会话。要连到已有的会话，用 `tmux attach`，或者 `tmux attach -t 会话名`。
+
+**server 中途没了，别在 iTerm 里把它敲回来。** 用了上面的 launchd 做法之后，如果哪天 `kill-server` 了，或者把会话全关了，这时在 iTerm 里敲 `tmux`，新 server 又是在 iTerm 里出生的。改用：
+
+```bash
+launchctl kickstart gui/$(id -u)/local.tmux-server
+tmux attach
+```
+
+**continuum 恢复的是布局。** server 死掉后重开，会话名、窗口、目录都回来了，但里面的程序是重新起的 shell。对我来说最疼的是十几个 claude 会话，要逐个 `claude --resume` 找回来，正在跑的任务已经断了。存档再全，也替代不了 server 别死。
+
+## 小结
+
+- 正常退出 iTerm，tmux server 和别的终端里的 attach 都不受影响，这一点和 tmux 的设计一致，实测也是。
+- 从「强制退出」窗口退出 iTerm，我观察到一次 server 被一起带走，原因没查清。
+- 想知道 server 是在哪个应用里出生的，看 `tmux show-environment -g` 里的 `__CFBundleIdentifier`。
+- 想知道某次退出到底是哪一种，查 `/usr/bin/log`，别凭印象。
+- 用 launchd 起 server 可以让它不挂在任何终端应用名下，能否因此躲过强制退出，待验证。
