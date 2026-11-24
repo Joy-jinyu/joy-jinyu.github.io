@@ -84,8 +84,8 @@ const ogImage = new URL('/og.png', Astro.site)
     <header class="top">
       <div class="top-in">
         <a class="brand" href={base}>
-          {/* 和简历页共用同一张 Joy 签名图（site/favicon.png，部署后在站点根目录） */}
-          <img class="mark" src="/favicon.png" alt="" width="30" height="30" />
+          {/* 和简历页共用同一张带底色的 Joy 签名图（site/joy-mark.png，部署后在站点根目录）；浏览器标签页图标另用透明底的 favicon.png */}
+          <img class="mark" src="/joy-mark.png" alt="" width="30" height="30" />
           <span>Pairwise</span>
         </a>
         <nav aria-label="站点导航">
