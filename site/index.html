@@ -207,24 +207,20 @@
   let W, H, dpr, P = [], step, t0, wordBox = { x: 0, y: 0, w: 0, h: 0 }
   // 画布颜色，和 CSS 的 :root / [data-theme="light"] 对应；浅色下粒子用深墨色、高不透明度，否则在米白底上发灰
   const PAL = {
-    dark: { bg: '#050608', dot: '238,240,243', dotA: 0.9, ai: '62,230,210', you: '244,244,239', glow: '215,235,240', cool: '120,200,255' },
-    light: { bg: '#f6f6f3', dot: '13,14,17', dotA: 0.88, ai: '10,156,144', you: '13,14,17', glow: '255,255,255', cool: '20,110,150' },
+    dark: { bg: '#050608', dot: '238,240,243', dotA: 0.9, ai: '62,230,210', you: '244,244,239', glow: '215,235,240', cool: '120,200,255',
+      lilac: '185,158,255', aqua: '116,225,219',
+      nebula: ['55,89,190', '104,76,205', '178,82,160', '73,143,185', '207,117,106'],
+    },
+    light: { bg: '#f6f6f3', dot: '13,14,17', dotA: 0.88, ai: '10,156,144', you: '13,14,17', glow: '255,255,255', cool: '20,110,150',
+      lilac: '99,63,155', aqua: '20,116,111',
+      nebula: ['121,143,212', '155,121,212', '212,139,183', '104,172,197', '225,159,126'],
+    },
   }
   const pal = () => PAL[document.documentElement.dataset.theme === 'light' ? 'light' : 'dark']
 
-  // 平滑值噪声，给风吹散的湍流用
-  const PERM = Array.from({ length: 512 }, (_, i) => i % 256).sort(() => Math.random() - 0.5)
-  const rnd = (x, y) => PERM[(PERM[x & 255] + y) & 511] / 255
-  function noise(x, y) {
-    const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi, u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf)
-    const a = rnd(xi, yi), b = rnd(xi + 1, yi), c = rnd(xi, yi + 1), d = rnd(xi + 1, yi + 1)
-    return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v
-  }
-  const fbm = (x, y, t) => noise(x + t, y - t * 0.7) * 0.65 + noise(x * 2.1 - t * 0.5, y * 2.1 + t) * 0.35
-
   /*
    * 相机：字在 z=0 的竖直平面上（z 朝屏幕里为正），镜头绕字中心极慢地小幅环绕，鼠标带一点视差。
-   * 粒子物理都在字的平面里算，画的时候投影到屏幕；鼠标 / AI 光标的位置反投影回平面再参与交互
+   * 平时粒子留在字标平面上，散开时沿深度轴翻卷；光标仍反投影到字标平面
    */
   const camS = { yaw: 0, pitch: 0, F: 650, ox: 0, oy: 0, m: null }
   function updateCam(t, dt) {
@@ -265,7 +261,7 @@
   function lit(p, LT) {
     let sum = 0
     const X = p.x - camS.ox, Y = p.y - camS.oy
-    for (const L of LT) sum += 1 / (1 + ((X - L.x) ** 2 + (Y - L.y) ** 2 + L.z ** 2 * 0.35) / (L.r * L.r))
+    for (const L of LT) sum += 1 / (1 + ((X - L.x) ** 2 + (Y - L.y) ** 2 + (p.z - L.z) ** 2 * 0.35) / (L.r * L.r))
     // 1.05 / 0.5 来自实测：三盏灯在字上的叠加值落在 1.10~1.55，映射到 0~1 才有明暗，直接截断会全部饱和成一样亮
     return Math.max(0, Math.min(1, (sum - 1.05) / 0.5))
   }
@@ -276,7 +272,7 @@
     for (const L of LT) {
       const c = toS(camS.ox + L.x, camS.oy + L.y, L.z), r = wordBox.w * L.gr * c.s
       const g = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, r)
-      g.addColorStop(0, `rgba(${L.c},${light ? L.glow * 4 : L.glow})`); g.addColorStop(1, `rgba(${L.c},0)`)
+      g.addColorStop(0, `rgba(${L.c},${light ? L.glow * 1.7 : L.glow})`); g.addColorStop(1, `rgba(${L.c},0)`)
       ctx.fillStyle = g; ctx.fillRect(c.x - r, c.y - r, r * 2, r * 2)
     }
     ctx.globalCompositeOperation = 'source-over'
@@ -285,6 +281,72 @@
       v.addColorStop(0, 'rgba(13,14,17,0)'); v.addColorStop(1, 'rgba(13,14,17,0.05)')
       ctx.fillStyle = v; ctx.fillRect(0, 0, W, H)
     }
+  }
+
+  // 雾带和远处微星按视口与主题缓存，只逐帧绘制前方的动效。
+  const galaxyLayers = new Map()
+  function makeGalaxy(C0) {
+    const light = C0 === PAL.light
+    const layer = document.createElement('canvas')
+    const w = layer.width = Math.max(1, Math.ceil(W / 2))
+    const h = layer.height = Math.max(1, Math.ceil(H / 2))
+    const g = layer.getContext('2d')
+    const span = Math.min(w, h)
+    const axis = x => h * (0.74 - x * 0.54 + Math.sin(x * 6.2 - 0.7) * 0.085)
+    let seed = 67291
+    const random = () => {
+      seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0
+      return seed / 4294967296
+    }
+    const nebula = C0.nebula
+
+    function mist(x, y, rx, ry, angle, color, alpha) {
+      g.save()
+      g.translate(x, y)
+      g.rotate(angle)
+      g.scale(rx, ry)
+      const fill = g.createRadialGradient(0, 0, 0, 0, 0, 1)
+      fill.addColorStop(0, `rgba(${color},${alpha})`)
+      fill.addColorStop(0.46, `rgba(${color},${alpha * 0.43})`)
+      fill.addColorStop(1, `rgba(${color},0)`)
+      g.fillStyle = fill
+      g.fillRect(-1, -1, 2, 2)
+      g.restore()
+    }
+
+    mist(w * 0.23, h * 0.31, w * 0.66, h * 0.66, -0.24, nebula[0], light ? 0.45 : 0.39)
+    mist(w * 0.76, h * 0.62, w * 0.61, h * 0.6, -0.31, nebula[2], light ? 0.32 : 0.27)
+    mist(w * 0.81, h * 0.16, w * 0.55, h * 0.48, -0.4, nebula[3], light ? 0.33 : 0.27)
+
+    const angle = Math.atan2(-h * 0.54, w)
+    for (let i = 0; i < 55; i++) {
+      const u = i / 54 * 1.34 - 0.17
+      const cross = (random() + random() - 1) * span * 0.5
+      const rx = span * (0.12 + random() * 0.4)
+      const ry = span * (0.04 + random() * 0.18)
+      const color = nebula[Math.floor(random() * nebula.length)]
+      mist(u * w, axis(u) + cross, rx, ry, angle + (random() - 0.5) * 0.7, color,
+        (light ? 0.17 : 0.23) * (0.4 + random() * 0.6))
+    }
+
+    // 在雾带内积一层不闪烁的微光，密度从中轴向两边逐渐消退。
+    const ink = [C0.cool, C0.lilac, C0.aqua, nebula[4], C0.dot]
+    const count = Math.max(780, Math.min(3000, Math.round(w * h / 135)))
+    for (let i = 0; i < count; i++) {
+      const u = random()
+      const cross = random() + random() + random() - 1.5
+      const x = u * w, y = axis(u) + cross * span * 0.27
+      const size = 0.24 + random() ** 3 * 0.78
+      const alpha = (light ? 0.27 : 0.34) * (0.75 - Math.min(0.67, Math.abs(cross) * 0.51))
+      g.fillStyle = particleColor(ink[i % ink.length], alpha)
+      g.fillRect(x, y, size, size)
+    }
+    return layer
+  }
+
+  function drawGalaxy(C0) {
+    if (!galaxyLayers.has(C0)) galaxyLayers.set(C0, makeGalaxy(C0))
+    ctx.drawImage(galaxyLayers.get(C0), 0, 0, W, H)
   }
 
   /*
@@ -296,6 +358,55 @@
     dust = Array.from({ length: 150 }, () => ({ x: (Math.random() - 0.5) * W * 2.2, y: (Math.random() - 0.5) * H * 1.6, z: -450 + Math.random() * 1900, ph: Math.random() * 6.28 }))
     bokeh = Array.from({ length: 14 }, () => ({ x: (Math.random() - 0.5) * W * 1.4, y: (Math.random() - 0.5) * H * 1.2, z: -420 - Math.random() * 120, r: 10 + Math.random() * 26, ph: Math.random() * 6.28 }))
   }
+  // 远处星光留在字标后面。每颗星有独立的亮度和呼吸周期。
+  const stars = Array.from({ length: 104 }, (_, i) => ({
+    x: Math.random(),
+    y: Math.random(),
+    phase: Math.random() * Math.PI * 2,
+    period: 3.6 + Math.random() * 4.4,
+    size: 0.45 + Math.random() * 0.65,
+    flare: i % 9 === 0,
+    reticle: i % 27 === 0,
+    tint: i % 4,
+  }))
+
+  function drawStars(t, C0) {
+    const light = C0 === PAL.light
+    const count = Math.min(stars.length, 2 * Math.max(24, Math.round(W * H / 24000)))
+    for (let i = 0; i < count; i++) {
+      const star = stars[i]
+      const x = 12 + star.x * (W - 24), y = 12 + star.y * (H - 24)
+      const phase = star.phase + (reduce ? 0 : t * Math.PI * 2 / (star.period * 1000))
+      const pulse = ((1 + Math.sin(phase)) / 2) ** 2
+      const alpha = light ? 0.12 + pulse * 0.26 : 0.19 + pulse * 0.46
+      const color = star.tint === 0 ? C0.ai : star.flare || star.tint === 1 ? C0.cool : C0.dot
+
+      if (star.flare) {
+        const reach = 2.5 + pulse * 2.5
+        ctx.strokeStyle = `rgba(${color},${alpha * 0.58})`
+        ctx.lineWidth = 0.7
+        ctx.beginPath()
+        ctx.moveTo(x - reach, y); ctx.lineTo(x - 1.4, y)
+        ctx.moveTo(x + 1.4, y); ctx.lineTo(x + reach, y)
+        ctx.moveTo(x, y - reach); ctx.lineTo(x, y - 1.4)
+        ctx.moveTo(x, y + 1.4); ctx.lineTo(x, y + reach)
+        ctx.stroke()
+
+        if (star.reticle) {
+          const ring = reach + 2.6, angle = star.phase
+          ctx.strokeStyle = `rgba(${color},${alpha * 0.3})`
+          ctx.beginPath(); ctx.arc(x, y, ring, angle, angle + Math.PI * 0.4); ctx.stroke()
+          ctx.beginPath(); ctx.arc(x, y, ring, angle + Math.PI, angle + Math.PI * 1.4); ctx.stroke()
+        }
+      }
+
+      ctx.fillStyle = `rgba(${color},${alpha})`
+      ctx.beginPath()
+      ctx.arc(x, y, star.size + pulse * 0.25, 0, Math.PI * 2)
+      ctx.fill()
+    }
+  }
+
   function drawSpace(t, C0, front) {
     const light = C0 === PAL.light, k = reduce ? 0 : t / 1000
     for (const d of dust) {
@@ -320,6 +431,7 @@
   function sample() {
     dpr = Math.min(2, devicePixelRatio || 1)
     W = innerWidth; H = innerHeight
+    galaxyLayers.clear()
     cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
     const size = Math.min(W * (W < 640 ? 0.235 : 0.17), H * 0.34, 260), cy = H * (W < 640 ? 0.4 : 0.44)
     const off = document.createElement('canvas'), o = off.getContext('2d')
@@ -330,16 +442,22 @@
     const tw = o.measureText('Pairwise').width
     wordBox = { x: W / 2 - tw / 2, y: cy - size * 0.4, w: tw, h: size * 0.8 }
     const data = o.getImageData(0, 0, W, H).data
-    step = Math.max(3, Math.round(size / 46))
+    step = Math.max(2, Math.round(size / 58))
     const pts = []
     for (let y = 0; y < H; y += step) for (let x = 0; x < W; x += step) {
-      if (data[(y * W + x) * 4 + 3] > 128) pts.push([x + (Math.random() - 0.5) * step * 0.6, y + (Math.random() - 0.5) * step * 0.6])
+      const ink = data[(y * W + x) * 4 + 3] / 255
+      if (ink > 0.28) pts.push([x + (Math.random() - 0.5) * step * 0.82, y + (Math.random() - 0.5) * step * 0.82, ink])
     }
-    P = pts.map(([hx, hy]) => ({
-      hx, hy, x: -Math.random() * W * 0.4, y: hy + (Math.random() - 0.5) * 80, vx: 0, vy: 0,
-      r: Math.random() < 0.12 ? 1.6 : 0.6 + Math.random() * 0.8, ph: Math.random() * 6.28,
-      delay: (hx / W) * 900 + Math.random() * 500, nb: -1, q: -1, heat: 0, d: 0,
-    }))
+    P = pts.map(([hx, hy, ink]) => {
+      const grain = Math.random(), tint = Math.random()
+      const across = (hx - wordBox.x) / wordBox.w
+      const tone = tint < 0.47 ? 0 : tint < 0.75 ? 1 : across < 0.46 ? 2 : 3
+      return {
+        hx, hy, x: -Math.random() * W * 0.4, y: hy + (Math.random() - 0.5) * 80, z: 0, vx: 0, vy: 0, cloud: 0,
+        r: grain > 0.94 ? 1.6 : 0.48 + grain * 0.91, ink: (0.65 + 0.35 * ink) * (0.8 + grain * 0.2), tone,
+        ph: Math.random() * Math.PI * 2, delay: (hx / W) * 900 + Math.random() * 500, nb: -1, q: -1, heat: 0, d: 0,
+      }
+    })
     // 每个粒子记一个最近邻，查询点经过时把这些成对关系画出来
     const cell = step * 3, grid = new Map(), key = (x, y) => `${Math.floor(x / cell)},${Math.floor(y / cell)}`
     P.forEach((p, i) => { const k = key(p.hx, p.hy); (grid.get(k) || grid.set(k, []).get(k)).push(i) })
@@ -370,18 +488,61 @@
   addEventListener('pointerdown', (e) => {
     youEl.classList.add('press'); wake()
     if (e.pointerType !== 'mouse') { you.x = e.clientX; you.y = e.clientY; you.last = performance.now() }
-    // 点空白处：像一阵风从点击处吹过，粒子顺着湍流飘散，再从左到右一个字母一个字母地落回；点链接、按钮时不吹
+    // 点空白处让字标散成粒子云，再从左到右聚回字形
     if (!e.target.closest('a, .hint, button') && !reduce) burst(e.clientX, e.clientY)
   })
+  const smoothstep = (n) => {
+    const x = Math.max(0, Math.min(1, n))
+    return x * x * (3 - 2 * x)
+  }
+
   function burst(sx, sy) {
     const c = camS.m && toP(sx, sy)
-    if (!c) return
+    if (!c || !P.length) return
     const now = performance.now()
+    const radius = Math.min(wordBox.w * 0.48, W * 0.30, H * 0.29, 290)
+    const centerX = camS.ox + Math.max(-radius, Math.min(radius, c.x - camS.ox)) * 0.18
+    const centerY = camS.oy + Math.max(-radius, Math.min(radius, c.y - camS.oy)) * 0.13
+
     for (const p of P) {
-      const ex = p.x - c.x, ey = p.y - c.y, e = Math.hypot(ex, ey) || 1, m = 10 + 18 * Math.exp(-e / 380)
-      p.vx += (ex / e) * m * (0.6 + Math.random() * 0.8); p.vy += (ey / e) * m * 0.6 * (0.6 + Math.random() * 0.8) - 2
-      p.back = now + 900 + ((p.hx - wordBox.x) / wordBox.w) * 1500
+      const band = Math.random() < 0.37
+      const latitude = Math.random() * 2 - 1
+      const spread = Math.random()
+      const shell = band ? radius * (0.99 + spread * 0.24) : radius * (0.38 + 0.62 * Math.cbrt(spread))
+      p.flight = {
+        x: p.x, y: p.y, z: p.z,
+        centerX, centerY,
+        around: band ? shell : Math.sqrt(1 - latitude * latitude) * shell,
+        height: band ? latitude * radius * 0.19 : latitude * shell,
+        tilt: band ? (p.ph < Math.PI ? -0.43 : 0.55) : 0.18,
+        angle: Math.random() * Math.PI * 2,
+        start: now + Math.min(240, Math.hypot(p.hx - c.x, p.hy - c.y) * 0.34),
+        returnAt: 1160 + ((p.hx - wordBox.x) / wordBox.w) * 540 + Math.random() * 110,
+      }
+      p.vx = p.vy = 0
+      p.q = -1
+      p.heat = 0
     }
+  }
+
+  function moveThroughCloud(p, t) {
+    const f = p.flight, age = t - f.start
+    if (age < 0) return
+    const rise = smoothstep(age / 640)
+    const settle = smoothstep((age - f.returnAt) / 620)
+    const angle = f.angle + age * 0.0012 + Math.sin(age * 0.0023 + p.ph) * 0.32
+    const across = Math.cos(angle) * f.around, forward = Math.sin(angle) * f.around
+    const roll = forward * f.tilt
+    const x = f.centerX + across * 1.15
+    const y = f.centerY + f.height + roll + Math.sin(angle * 2 + p.ph) * f.around * 0.11
+    const z = forward * 0.77 - f.height * f.tilt
+    const fromX = f.x + (x - f.x) * rise
+    const fromY = f.y + (y - f.y) * rise
+    p.x = fromX + (p.hx - fromX) * settle
+    p.y = fromY + (p.hy - fromY) * settle
+    p.z = (f.z + (z - f.z) * rise) * (1 - settle)
+    p.cloud = rise * (1 - settle)
+    if (settle === 1) p.flight = null
   }
   addEventListener('pointerup', () => youEl.classList.remove('press'))
   document.documentElement.addEventListener('pointerleave', () => { you.live = false; youEl.classList.remove('on') })
@@ -458,12 +619,12 @@
     t.finished.finally(() => root.classList.remove('theme-reveal'))
   })
 
-  // 静止粒子最多，颜色串每帧现拼会产生几千个临时字符串；亮度量化成 21 档后复用
+  // 亮度量化成 21 档，避免每帧为每颗粒子拼接颜色字符串
   const colorCache = new Map()
-  function restColor(C0, a) {
-    const key = C0.dot + Math.round(a * 20)
+  function particleColor(rgb, a) {
+    const key = rgb + Math.round(a * 20)
     let c = colorCache.get(key)
-    if (!c) colorCache.set(key, (c = `rgba(${C0.dot},${Math.round(a * 20) / 20})`))
+    if (!c) colorCache.set(key, (c = `rgba(${rgb},${Math.round(a * 20) / 20})`))
     return c
   }
 
@@ -503,8 +664,10 @@
     const C0 = pal()
     updateCam(t, dt)
     ctx.fillStyle = C0.bg; ctx.fillRect(0, 0, W, H)
+    drawGalaxy(C0)
     const LT = lights(C0)
     drawLightGlow(LT, C0)
+    drawStars(t, C0)
     drawSpace(t, C0, false)
     // 交互点反投影到字的平面：物理在平面里算，连线从屏幕上的光标画出去
     const Q = [], qa = toP(ai.x, ai.y)
@@ -512,12 +675,11 @@
     if (you.live || (!fine && t - you.last < 1500)) { const qy = toP(you.x, you.y); if (qy) Q.push({ x: qy.x, y: qy.y, sx: you.x, sy: you.y, c: C0.you, R: Math.min(170, W * 0.2) }) }
 
     for (const p of P) {
-      if (el > p.delay || reduce) {
+      if (p.flight) {
+        moveThroughCloud(p, t)
+      } else if (el > p.delay || reduce) {
         const jx = reduce ? 0 : Math.sin(el * 0.0011 + p.ph) * 0.9, jy = reduce ? 0 : Math.cos(el * 0.0013 + p.ph) * 0.9
-        const free = p.back > t
-        const kS = free ? 0 : 0.06, damp = free ? 0.95 : 0.82
-        let ax = (p.hx + jx - p.x) * kS, ay = (p.hy + jy - p.y) * kS
-        if (free) { const a = fbm(p.x * 0.004, p.y * 0.004, t * 0.0004) * Math.PI * 4; ax += Math.cos(a) * 0.55 + 0.25; ay += Math.sin(a) * 0.55 - 0.08 }
+        let ax = (p.hx + jx - p.x) * 0.06, ay = (p.hy + jy - p.y) * 0.06
         p.q = -1; p.heat = 0
         for (let qi = 0; qi < Q.length; qi++) {
           const q = Q[qi], dx = p.x - q.x, dy = p.y - q.y, d2 = dx * dx + dy * dy
@@ -527,12 +689,12 @@
             if (1 - d / q.R > p.heat) { p.heat = 1 - d / q.R; p.q = qi; p.d = d }
           }
         }
-        p.vx = (p.vx + ax) * damp; p.vy = (p.vy + ay) * damp
+        p.vx = (p.vx + ax) * 0.82; p.vy = (p.vy + ay) * 0.82
         p.x += p.vx; p.y += p.vy
       } else p.x += 6
     }
 
-    for (const p of P) { const pr = toS(p.x, p.y); p.px = pr.x; p.py = pr.y; p.ps = pr.s }
+    for (const p of P) { const pr = toS(p.x, p.y, p.z); p.px = pr.x; p.py = pr.y; p.ps = pr.s }
 
     // 成对连线 + 注意力线
     const settled = (p) => Math.abs(p.x - p.hx) + Math.abs(p.y - p.hy) < step * 6
@@ -555,16 +717,41 @@
       ctx.strokeStyle = g; ctx.lineWidth = 0.8; ctx.setLineDash([2, 4])
       ctx.beginPath(); ctx.moveTo(Q[1].sx, Q[1].sy); ctx.lineTo(Q[0].sx, Q[0].sy); ctx.stroke(); ctx.setLineDash([])
     }
-    // 粒子：投影到屏幕，亮度看受光（最暗也留一半多，字要始终是焦点）；被风吹着的粒子带一点青色。
-    // 尺寸下限 1px：镜头转开时远侧粒子会缩到亚像素、被抗锯齿冲淡；浅色底上同理，整体放大 1.25 倍
+    // 云里的前景亮而大，背面的粒子更细，隐约透过前景。
     const light = C0 === PAL.light
+    const inks = [C0.dot, C0.cool, C0.lilac, C0.aqua]
     for (const p of P) {
-      const flying = p.back > t ? Math.min(1, (p.back - t) / 600) : 0
-      const la = light ? 0.6 + lit(p, LT) * 0.45 : 0.55 + lit(p, LT) * 0.5, s = Math.max(1, (p.r + p.heat * 1.2) * p.ps * (light ? 1.25 : 1))
-      ctx.fillStyle = p.heat > 0.04 ? `rgba(${Q[p.q].c},${0.45 + p.heat * 0.55})`
-        : flying > 0.05 ? `rgba(${C0.ai},${(0.35 + flying * 0.45) * Math.max(0.5, la)})`
-        : restColor(C0, Math.min(1, C0.dotA * la))
-      ctx.fillRect(p.px - s / 2, p.py - s / 2, s, s)
+      const la = light ? 0.6 + lit(p, LT) * 0.45 : 0.55 + lit(p, LT) * 0.5
+      const s = Math.max(0.58, (p.r + p.heat * 1.2) * p.ps * (light ? 1.22 : 1.12))
+      const tint = inks[p.tone]
+      if (p.cloud > 0.02) {
+        const depth = Math.max(0, Math.min(1, (p.ps - 0.7) / 0.68))
+        const alpha = (0.34 + depth * 0.57) * (0.76 + la * 0.24)
+        const radius = s * (0.55 + p.cloud * depth * 0.45)
+        if (p.cloud > 0.45) {
+          const scatter = (4 + depth * 8) * p.cloud
+          const offsetX = Math.cos(p.ph) * scatter, offsetY = Math.sin(p.ph) * scatter
+          const fleck = Math.max(0.65, radius * 0.62)
+          ctx.fillStyle = particleColor(tint, alpha * p.cloud * 0.42)
+          ctx.fillRect(p.px + offsetX, p.py + offsetY, fleck, fleck)
+          ctx.fillRect(p.px - offsetY, p.py + offsetX * 0.6, fleck * 0.8, fleck * 0.8)
+        }
+        if (p.r >= 1.6 && depth > 0.52) {
+          ctx.fillStyle = particleColor(tint, alpha * p.cloud * 0.16)
+          ctx.beginPath(); ctx.arc(p.px, p.py, radius * 2.8, 0, Math.PI * 2); ctx.fill()
+        }
+        ctx.fillStyle = particleColor(tint, alpha)
+        ctx.beginPath(); ctx.arc(p.px, p.py, radius, 0, Math.PI * 2); ctx.fill()
+      } else {
+        const alpha = Math.min(1, C0.dotA * (light ? la : la + 0.18) * p.ink)
+        ctx.fillStyle = p.heat > 0.04 ? `rgba(${Q[p.q].c},${0.45 + p.heat * 0.55})`
+          : particleColor(tint, alpha)
+        if (p.r >= 1.6) {
+          ctx.beginPath(); ctx.arc(p.px, p.py, s * 0.57, 0, Math.PI * 2); ctx.fill()
+        } else {
+          ctx.fillRect(p.px - s / 2, p.py - s / 2, s, s)
+        }
+      }
     }
     drawSpace(t, C0, true)
     requestAnimationFrame(frame)
