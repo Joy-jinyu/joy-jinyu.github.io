@@ -1,0 +1,241 @@
+---
+/**
+ * 专栏弹层：首页点专栏卡片后弹出。列表页按阅读顺序列出文章，点一篇推入它的预览页（摘要、上一篇 / 下一篇、阅读全文）。
+ * 打开、切换由 pages/index.astro 的脚本控制；当前显示哪一页只看各 .view 的 hidden，返回按钮和顶栏标题跟着 CSS 走。
+ */
+import { formatDate, readingMinutes, titleTransition, type ColumnGroup } from '../lib/posts'
+
+interface Props {
+  group: ColumnGroup
+}
+const { group: g } = Astro.props
+const base = import.meta.env.BASE_URL
+const n = g.posts.length
+const latest = g.posts.at(-1)!.data.date
+const pad = (k: number) => String(k).padStart(2, '0')
+---
+
+<dialog class="sheet" id={`sheet-${g.id}`} data-col={g.id} aria-labelledby={`sheet-${g.id}-title`} style={`--tint:${g.tint}`}>
+  <div class="panel">
+    <div class="bar">
+      <button type="button" class="icon-btn back" data-act="list" aria-label="返回专栏">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+      </button>
+      <span class="bar-title" aria-hidden="true">{g.title}</span>
+      <button type="button" class="icon-btn" data-act="close" aria-label="关闭">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+      </button>
+    </div>
+
+    <div class="scroll">
+      <section class="view list" data-view="list">
+        <div class="intro">
+          <span class="tile big" aria-hidden="true">{g.glyph}</span>
+          <div>
+            <h2 id={`sheet-${g.id}-title`}>{g.title}</h2>
+            <p class="sub">专栏 · {n} 篇 · 更新于 <time datetime={latest.toISOString()}>{formatDate(latest)}</time></p>
+          </div>
+        </div>
+        <p class="blurb">{g.blurb}</p>
+        <button type="button" class="pill" data-act="post" data-n="0">从第 1 篇开始读</button>
+        <h3 class="label" id={`sheet-${g.id}-order`}>按阅读顺序</h3>
+        <ol class="rows" aria-labelledby={`sheet-${g.id}-order`}>
+          {g.posts.map((p, k) => (
+            <li style={`--k:${k}`}>
+              <button type="button" class="row" data-act="post" data-n={k}>
+                <span class="num">{pad(k + 1)}</span>
+                <span class="row-t">{p.data.title}</span>
+                <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+              </button>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {g.posts.map((p, k) => (
+        <article class="view post" data-view={k} aria-labelledby={`sheet-${g.id}-${k}`} hidden>
+          <p class="crumb">
+            <span class="tile small" aria-hidden="true">{g.glyph}</span>
+            <span>{g.title} · 第 {k + 1} / {n} 篇</span>
+          </p>
+          <h3 id={`sheet-${g.id}-${k}`} tabindex="-1" style={`view-transition-name:${titleTransition(p.id)}`}>{p.data.title}</h3>
+          <p class="meta">
+            <time datetime={p.data.date.toISOString()}>{formatDate(p.data.date)}</time>
+            <span class="sep" aria-hidden="true"></span>
+            <span>{p.data.meta ?? `约 ${readingMinutes(p.body)} 分钟`}</span>
+          </p>
+          <p class="excerpt">{p.data.description}</p>
+          {p.data.tags.length > 0 && <div class="tags">{p.data.tags.map((t) => <span class="chip">{t}</span>)}</div>}
+          <div class="post-nav">
+            <button type="button" class="icon-btn" data-act="post" data-n={k - 1} aria-label="上一篇" disabled={k === 0}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+            </button>
+            <button type="button" class="icon-btn" data-act="post" data-n={k + 1} aria-label="下一篇" disabled={k === n - 1}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+            </button>
+            <span class="spacer"></span>
+            <a class="pill" href={`${base}${p.id}/`}>阅读全文</a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</dialog>
+
+<style>
+  /* dialog 自身铺满视口当容器，真正的面板是 .panel；点到面板外（dialog 自身）就关闭 */
+  .sheet {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    padding: 32px 24px;
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    overscroll-behavior: contain;
+  }
+  .sheet[open] { display: flex; align-items: center; justify-content: center; }
+  .sheet::backdrop {
+    background: rgba(0, 0, 0, 0.4);
+    -webkit-backdrop-filter: blur(10px) saturate(1.2);
+    backdrop-filter: blur(10px) saturate(1.2);
+  }
+  :global([data-theme="light"]) .sheet::backdrop { background: rgba(10, 14, 25, 0.24); }
+  .panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 680px;
+    max-height: 100%;
+    overflow: hidden;
+    border: 1px solid var(--line-hi);
+    border-radius: 28px;
+    background: var(--solid);
+    box-shadow: 0 50px 100px -30px rgba(0, 0, 0, 0.6);
+  }
+
+  .bar { display: flex; flex: none; align-items: center; gap: 10px; padding: 14px 16px; }
+  .bar-title { flex: 1; min-width: 0; color: var(--strong); font: 600 14px/1.4 var(--sans); text-align: center; visibility: hidden; }
+  /* 列表页：没有返回键、顶栏不写标题（标题在正文里）；预览页两者都出现 */
+  .back { visibility: hidden; }
+  .sheet:has(.post:not([hidden])) :is(.back, .bar-title) { visibility: visible; }
+
+  .icon-btn {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(var(--ink-rgb), 0.06);
+    color: var(--strong);
+    transition: background 0.18s var(--ease), transform 0.18s var(--ease);
+  }
+  .icon-btn:hover:not(:disabled) { background: rgba(var(--ink-rgb), 0.12); }
+  .icon-btn:active:not(:disabled) { transform: scale(0.9); }
+  .icon-btn:disabled { opacity: 0.3; cursor: default; }
+
+  .scroll { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+  .view[hidden] { display: none; }
+  .list { padding: 8px 28px 28px; }
+  .post { padding: 8px 32px 28px; }
+
+  .tile {
+    display: grid;
+    flex: none;
+    place-items: center;
+    border-radius: 22%;
+    background: var(--tint);
+    color: #fff;
+    font-weight: 700;
+    box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 6px 14px -6px rgba(0, 0, 0, 0.45);
+  }
+  .tile.big { width: 72px; height: 72px; font-size: 26px; }
+  .tile.small { width: 26px; height: 26px; font-size: 11px; }
+
+  .intro { display: flex; align-items: center; gap: 18px; }
+  h2 { margin: 0; color: var(--strong); font: 700 32px/1.2 var(--sans); letter-spacing: -0.01em; }
+  .sub { margin: 6px 0 0; color: var(--muted); font: 400 12px/1.5 var(--mono); }
+  .blurb { margin: 16px 0 0; color: var(--muted); font-size: 15px; line-height: 1.75; }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    height: 36px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--strong);
+    color: var(--bg);
+    font: 600 13px/1 var(--sans);
+    transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.4), opacity 0.18s var(--ease);
+  }
+  .pill:hover { transform: translateY(-1px); opacity: 0.9; text-decoration: none; }
+  .pill:active { transform: scale(0.95); }
+  .list .pill { margin-top: 18px; }
+
+  .label { margin: 24px 0 0; padding: 0 14px 6px; color: var(--muted); font: 600 12px/1.5 var(--sans); }
+  .rows { display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; list-style: none; }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    min-height: 56px;
+    padding: 10px 14px;
+    border: 0;
+    border-radius: 14px;
+    background: transparent;
+    color: var(--strong);
+    text-align: left;
+    transition: background 0.18s var(--ease), transform 0.18s var(--ease);
+  }
+  .row:hover { background: rgba(var(--ink-rgb), 0.045); }
+  .row:active { transform: scale(0.985); background: color-mix(in srgb, var(--brand) 14%, transparent); }
+  .num { width: 28px; flex: none; color: var(--muted); font: 400 13px/1 var(--mono); }
+  .row-t { flex: 1; min-width: 0; font: 500 15px/1.5 var(--sans); }
+  .chev { flex: none; opacity: 0.35; transition: opacity 0.3s var(--ease), transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.4); }
+  .row:hover .chev { opacity: 1; transform: translateX(3px); }
+
+  .crumb { display: flex; align-items: center; gap: 10px; margin: 0; color: var(--muted); font: 400 12px/1.5 var(--mono); }
+  .post h3 { margin: 16px 0 0; color: var(--strong); font: 700 30px/1.3 var(--sans); letter-spacing: -0.01em; outline: none; }
+  .meta { display: flex; align-items: center; gap: 10px; margin: 12px 0 0; color: var(--muted); font: 400 12px/1.5 var(--mono); }
+  .sep { width: 3px; height: 3px; border-radius: 50%; background: var(--faint); }
+  .excerpt { margin: 20px 0 0; color: var(--text); font-size: 17px; line-height: 1.85; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px; }
+  .post-nav { display: flex; align-items: center; gap: 10px; margin-top: 28px; }
+  .spacer { flex: 1; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .sheet[open] .panel { animation: sheet-in 0.55s cubic-bezier(0.2, 0.9, 0.25, 1) both; }
+    .sheet[open]::backdrop { animation: sheet-fade 0.3s ease both; }
+    .rows li { animation: sheet-row-rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both; animation-delay: calc(0.15s + var(--k) * 40ms); }
+    .view.push { animation: sheet-push 0.42s cubic-bezier(0.2, 0.9, 0.25, 1) both; }
+    .view.pop { animation: sheet-pop 0.42s cubic-bezier(0.2, 0.9, 0.25, 1) both; }
+    /* 列表页从预览页退回来时整页滑入，行不再逐条升起 */
+    .view.pop li { animation: none; }
+  }
+  @keyframes sheet-in { 0% { opacity: 0; transform: translateY(48px) scale(0.94); } 60% { opacity: 1; } 100% { opacity: 1; transform: none; } }
+  @keyframes sheet-fade { from { opacity: 0; } }
+  @keyframes sheet-row-rise { from { opacity: 0; transform: translateY(14px); } }
+  @keyframes sheet-push { from { opacity: 0; transform: translateX(36px); } }
+  @keyframes sheet-pop { from { opacity: 0; transform: translateX(-36px); } }
+
+  /* 手机上改成贴底的半屏 sheet */
+  @media (max-width: 640px) {
+    .sheet { padding: 0; }
+    .sheet[open] { align-items: flex-end; }
+    .panel { max-width: none; max-height: 90%; border-bottom: 0; border-radius: 24px 24px 0 0; }
+    .list { padding: 4px 18px 24px; }
+    .post { padding: 4px 20px 24px; }
+    .tile.big { width: 56px; height: 56px; font-size: 20px; }
+    h2 { font-size: 26px; }
+    .post h3 { font-size: 24px; }
+    .excerpt { font-size: 16px; }
+  }
+</style>

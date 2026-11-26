@@ -3,6 +3,7 @@
 import '../styles/global.css'
 import ThemeToggle from '../components/ThemeToggle.astro'
 import AiSettings from '../components/AiSettings.astro'
+import SiteSearch from '../components/SiteSearch.astro'
 
 interface Props {
   title: string
@@ -83,7 +84,7 @@ const ogImage = new URL('/og.png', Astro.site)
     <a class="skip" href="#main">跳到正文</a>
     <header class="top">
       <div class="top-in">
-        <a class="brand" href={base}>
+        <a class="brand" href="/">
           {/* 和简历页共用同一张带底色的 Joy 签名图（site/joy-mark.png，部署后在站点根目录）；浏览器标签页图标另用透明底的 favicon.png */}
           <img class="mark" src="/joy-mark.png" alt="" width="30" height="30" />
           <span>Pairwise</span>
@@ -93,6 +94,7 @@ const ogImage = new URL('/og.png', Astro.site)
           <a href={`${base}editor/`} aria-current={Astro.url.pathname === `${base}editor/` ? 'page' : undefined}>投稿</a>
           <a href="/notes/">Notes</a>
           <a href="/resume/">简历</a>
+          <SiteSearch />
           <AiSettings />
           <ThemeToggle />
         </nav>
@@ -194,6 +196,8 @@ const ogImage = new URL('/og.png', Astro.site)
   }
   /* 手机上导航放不下站名：文字只对读屏保留，避免导航被挤成竖排 */
   @media (max-width: 420px) {
+    .top-in { gap: 8px; }
+    nav a { padding: 8px 5px; }
     .brand span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   }
 </style>
