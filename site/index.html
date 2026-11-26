@@ -58,6 +58,17 @@
   "alumniOf": { "@type": "CollegeOrUniversity", "name": "成都东软学院" },
   "knowsAbout": ["React", "TypeScript", "Next.js", "Vue", "AI Agent", "LLM 应用前端", "前端工程化", "性能优化"],
   "sameAs": ["https://t.me/joy_jinyu", "https://github.com/Joy-jinyu"]
+  },
+  {
+  "@type": "WebApplication",
+  "@id": "https://markdown.pairwise.site/#app",
+  "name": "Pairdown",
+  "url": "https://markdown.pairwise.site/",
+  "description": "Joy 做的所见即所得 Markdown 编辑器：文档保持纯 .md 文件，支持表格、公式、Mermaid 图，可选 GitHub 同步。",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": { "@id": "https://www.pairwise.site/#joy" }
   }
   ]
 }
@@ -177,6 +188,7 @@
       <a href="/blog/" style="--i: 0" tabindex="-1">blog</a>
       <a href="/notes/" style="--i: 1" tabindex="-1">notes</a>
       <a href="/resume/" style="--i: 2" tabindex="-1">resume</a>
+      <a href="https://markdown.pairwise.site/lp/" style="--i: 3" tabindex="-1">pairdown</a>
     </nav>
     <span class="hint" id="hint"><span>accept</span><kbd>Tab</kbd></span>
   </div>
@@ -401,7 +413,7 @@
     const t1 = performance.now(), dur = reduce ? 1 : 520
     const tick = (t) => {
       const k = Math.min(1, (t - t1) / dur)
-      links.forEach((a, i) => a.style.setProperty('--p', Math.max(0, Math.min(1, k * 1.6 - i * 0.3)) * 100 + '%'))
+      links.forEach((a, i) => a.style.setProperty('--p', Math.max(0, Math.min(1, k * (1 + 0.3 * (links.length - 1)) - i * 0.3)) * 100 + '%'))
       if (k < 1) return requestAnimationFrame(tick)
       suggest.classList.replace('ready', 'done')
       links.forEach((a) => { a.style.background = 'none'; a.style.color = 'var(--ai)'; a.removeAttribute('tabindex') })
