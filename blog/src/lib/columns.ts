@@ -12,6 +12,13 @@ export const COLUMNS = [
     tint: '#5a74ff',
   },
   {
+    id: 'macos',
+    title: 'macOS 设计规范',
+    blurb: '把 Apple 的人机界面指南拆成能检查的规则：每篇一个界面部件，原文加 macOS 26 原生控件的实测数值。',
+    glyph: '⌘',
+    tint: '#636366',
+  },
+  {
     id: 'tools',
     title: '工具与环境',
     blurb: '每天在用的终端工具和配置，踩过的坑和做过的取舍。',

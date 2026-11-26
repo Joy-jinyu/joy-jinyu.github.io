@@ -1,0 +1,65 @@
+{
+  "source": "blog/public/lab/macos/macos-feedback/raw/progress-light.png",
+  "method": "pixels <png> scan x <列> 140 530，2x 截图，1pt=2px；x=260 穿过条形 40% 的蓝色填充，x=440 穿过轨道",
+  "barFillColumnX260": [
+    {
+      "fromPx": 170,
+      "toPx": 182,
+      "pt": 6.0
+    },
+    {
+      "fromPx": 230,
+      "toPx": 242,
+      "pt": 6.0
+    },
+    {
+      "fromPx": 304,
+      "toPx": 320,
+      "pt": 8.0
+    },
+    {
+      "fromPx": 396,
+      "toPx": 412,
+      "pt": 8.0
+    },
+    {
+      "fromPx": 488,
+      "toPx": 504,
+      "pt": 8.0
+    }
+  ],
+  "barTrackColumnX440": [
+    {
+      "fromPx": 170,
+      "toPx": 182,
+      "pt": 6.0
+    },
+    {
+      "fromPx": 230,
+      "toPx": 242,
+      "pt": 6.0
+    },
+    {
+      "fromPx": 304,
+      "toPx": 320,
+      "pt": 8.0
+    },
+    {
+      "fromPx": 396,
+      "toPx": 412,
+      "pt": 8.0
+    },
+    {
+      "fromPx": 488,
+      "toPx": 504,
+      "pt": 8.0
+    }
+  ],
+  "barDrawnThicknessPt": {
+    "mini": 6.0,
+    "small": 6.0,
+    "regular": 8.0,
+    "large": 8.0,
+    "extraLarge": 8.0
+  }
+}

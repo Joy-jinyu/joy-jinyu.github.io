@@ -1,0 +1,450 @@
+{
+  "menuAtPoint" : {
+    "frame" : {
+      "h" : 296,
+      "w" : 205,
+      "x" : 240,
+      "y" : 130
+    },
+    "items" : [
+      {
+        "enabled" : true,
+        "frame" : {
+          "h" : 24,
+          "w" : 205,
+          "x" : 240,
+          "y" : 135
+        },
+        "role" : "AXMenuItem",
+        "shortcut" : "⌘N",
+        "title" : "New Document"
+      },
+      {
+        "enabled" : true,
+        "frame" : {
+          "h" : 24,
+          "w" : 205,
+          "x" : 240,
+          "y" : 159
+        },
+        "role" : "AXMenuItem",
+        "shortcut" : "⌘O",
+        "title" : "Open…"
+      },
+      {
+        "childRoles" : [
+          "AXMenu"
+        ],
+        "enabled" : true,
+        "frame" : {
+          "h" : 24,
+          "w" : 205,
+          "x" : 240,
+          "y" : 183
+        },
+        "role" : "AXMenuItem",
+        "title" : "Open Recent"
+      },
+      {
+        "enabled" : false,
+        "frame" : {
+          "h" : 11,
+          "w" : 205,
+          "x" : 240,
+          "y" : 207
+        },
+        "role" : "AXMenuItem",
+        "separatorLike" : true,
+        "title" : ""
+      },
+      {
+        "enabled" : true,
+        "frame" : {
+          "h" : 24,
+          "w" : 205,
+          "x" : 240,
+          "y" : 218
+        },
+        "role" : "AXMenuItem",
+        "shortcut" : "⌘W",
+        "title" : "Close"
+      },
+      {
+        "enabled" : true,
+        "frame" : {
+          "h" : 24,
+          "w" : 205,
+          "x" : 240,
+          "y" : 218
+        },
+        "role" : "AXMenuItem",
+        "shortcut" : "⌥⌘W",
+        "title" : "Close All"
+      },
+      {
+        "enabled" : false,
+        "frame" : {
+          "h" : 24,
+          "w" : 205,
+          "x" : 240,
+          "y" : 242
+        },
+        "role" : "AXMenuItem",
+        "shortcut" : "⌘S",
+        "title" : "Save"
+      },
+      {
+        "enabled" : false,
+        "frame" : {
+          "h" : 24,
+          "w" : 205,
+          "x" : 240,
+          "y" : 266
+        },
+        "role" : "AXMenuItem",
+        "shortcut" : "⇧⌘S",
+        "title" : "Duplicate"
+      },
+      {
+        "enabled" : false,
+        "frame" : {
+          "h" : 24,
+          "w" : 205,
+          "x" : 240,
+          "y" : 290
+        },
+        "role" : "AXMenuItem",
+        "title" : "Rename…"
+      },
+      {
+        "enabled" : false,
+        "frame" : {
+          "h" : 24,
+          "w" : 205,
+          "x" : 240,
+          "y" : 314
+        },
+        "role" : "AXMenuItem",
+        "title" : "Move To…"
+      },
+      {
+        "enabled" : false,
+        "frame" : {
+          "h" : 24,
+          "w" : 205,
+          "x" : 240,
+          "y" : 338
+        },
+        "role" : "AXMenuItem",
+        "title" : "Export As…"
+      },
+      {
+        "enabled" : false,
+        "frame" : {
+          "h" : 11,
+          "w" : 205,
+          "x" : 240,
+          "y" : 362
+        },
+        "role" : "AXMenuItem",
+        "separatorLike" : true,
+        "title" : ""
+      },
+      {
+        "enabled" : true,
+        "frame" : {
+          "h" : 24,
+          "w" : 205,
+          "x" : 240,
+          "y" : 373
+        },
+        "role" : "AXMenuItem",
+        "shortcut" : "⇧⌘P",
+        "title" : "Page Setup…"
+      },
+      {
+        "enabled" : true,
+        "frame" : {
+          "h" : 24,
+          "w" : 205,
+          "x" : 240,
+          "y" : 397
+        },
+        "role" : "AXMenuItem",
+        "shortcut" : "⌘P",
+        "title" : "Print…"
+      }
+    ]
+  },
+  "menuBar" : {
+    "frame" : {
+      "h" : 33,
+      "w" : 1512,
+      "x" : 0,
+      "y" : 0
+    },
+    "items" : [
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 34,
+          "x" : 10,
+          "y" : 0
+        },
+        "title" : "Apple"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 94,
+          "x" : 44,
+          "y" : 0
+        },
+        "title" : "MenuProbe"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 42,
+          "x" : 138,
+          "y" : 0
+        },
+        "title" : "File"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 44,
+          "x" : 180,
+          "y" : 0
+        },
+        "title" : "Edit"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 63,
+          "x" : 224,
+          "y" : 0
+        },
+        "title" : "Format"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 50,
+          "x" : 287,
+          "y" : 0
+        },
+        "title" : "View"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 49,
+          "x" : 337,
+          "y" : 0
+        },
+        "title" : "Keys"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 69,
+          "x" : 386,
+          "y" : 0
+        },
+        "title" : "Window"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 48,
+          "x" : 455,
+          "y" : 0
+        },
+        "title" : "Help"
+      }
+    ]
+  },
+  "openMenuBarMenu" : {
+    "menu" : {
+      "frame" : {
+        "h" : 296,
+        "w" : 205,
+        "x" : 240,
+        "y" : 130
+      },
+      "items" : [
+        {
+          "enabled" : true,
+          "frame" : {
+            "h" : 24,
+            "w" : 205,
+            "x" : 240,
+            "y" : 135
+          },
+          "role" : "AXMenuItem",
+          "shortcut" : "⌘N",
+          "title" : "New Document"
+        },
+        {
+          "enabled" : true,
+          "frame" : {
+            "h" : 24,
+            "w" : 205,
+            "x" : 240,
+            "y" : 159
+          },
+          "role" : "AXMenuItem",
+          "shortcut" : "⌘O",
+          "title" : "Open…"
+        },
+        {
+          "childRoles" : [
+            "AXMenu"
+          ],
+          "enabled" : true,
+          "frame" : {
+            "h" : 24,
+            "w" : 205,
+            "x" : 240,
+            "y" : 183
+          },
+          "role" : "AXMenuItem",
+          "title" : "Open Recent"
+        },
+        {
+          "enabled" : false,
+          "frame" : {
+            "h" : 11,
+            "w" : 205,
+            "x" : 240,
+            "y" : 207
+          },
+          "role" : "AXMenuItem",
+          "separatorLike" : true,
+          "title" : ""
+        },
+        {
+          "enabled" : true,
+          "frame" : {
+            "h" : 24,
+            "w" : 205,
+            "x" : 240,
+            "y" : 218
+          },
+          "role" : "AXMenuItem",
+          "shortcut" : "⌘W",
+          "title" : "Close"
+        },
+        {
+          "enabled" : true,
+          "frame" : {
+            "h" : 24,
+            "w" : 205,
+            "x" : 240,
+            "y" : 218
+          },
+          "role" : "AXMenuItem",
+          "shortcut" : "⌥⌘W",
+          "title" : "Close All"
+        },
+        {
+          "enabled" : false,
+          "frame" : {
+            "h" : 24,
+            "w" : 205,
+            "x" : 240,
+            "y" : 242
+          },
+          "role" : "AXMenuItem",
+          "shortcut" : "⌘S",
+          "title" : "Save"
+        },
+        {
+          "enabled" : false,
+          "frame" : {
+            "h" : 24,
+            "w" : 205,
+            "x" : 240,
+            "y" : 266
+          },
+          "role" : "AXMenuItem",
+          "shortcut" : "⇧⌘S",
+          "title" : "Duplicate"
+        },
+        {
+          "enabled" : false,
+          "frame" : {
+            "h" : 24,
+            "w" : 205,
+            "x" : 240,
+            "y" : 290
+          },
+          "role" : "AXMenuItem",
+          "title" : "Rename…"
+        },
+        {
+          "enabled" : false,
+          "frame" : {
+            "h" : 24,
+            "w" : 205,
+            "x" : 240,
+            "y" : 314
+          },
+          "role" : "AXMenuItem",
+          "title" : "Move To…"
+        },
+        {
+          "enabled" : false,
+          "frame" : {
+            "h" : 24,
+            "w" : 205,
+            "x" : 240,
+            "y" : 338
+          },
+          "role" : "AXMenuItem",
+          "title" : "Export As…"
+        },
+        {
+          "enabled" : false,
+          "frame" : {
+            "h" : 11,
+            "w" : 205,
+            "x" : 240,
+            "y" : 362
+          },
+          "role" : "AXMenuItem",
+          "separatorLike" : true,
+          "title" : ""
+        },
+        {
+          "enabled" : true,
+          "frame" : {
+            "h" : 24,
+            "w" : 205,
+            "x" : 240,
+            "y" : 373
+          },
+          "role" : "AXMenuItem",
+          "shortcut" : "⇧⌘P",
+          "title" : "Page Setup…"
+        },
+        {
+          "enabled" : true,
+          "frame" : {
+            "h" : 24,
+            "w" : 205,
+            "x" : 240,
+            "y" : 397
+          },
+          "role" : "AXMenuItem",
+          "shortcut" : "⌘P",
+          "title" : "Print…"
+        }
+      ]
+    },
+    "title" : "File"
+  }
+}

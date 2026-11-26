@@ -1,0 +1,62 @@
+{
+  "default-dark": {
+    "appActive": true,
+    "controlAccentColor": "#007AFF",
+    "isKey": true,
+    "AppleAccentColor": null
+  },
+  "default-light": {
+    "appActive": true,
+    "controlAccentColor": "#007AFF",
+    "isKey": true,
+    "AppleAccentColor": null
+  },
+  "graphite-light": {
+    "appActive": true,
+    "controlAccentColor": "#989898",
+    "isKey": true,
+    "AppleAccentColor": " -1"
+  },
+  "green-light": {
+    "appActive": true,
+    "controlAccentColor": "#62BA46",
+    "isKey": true,
+    "AppleAccentColor": "3"
+  },
+  "orange-light": {
+    "appActive": true,
+    "controlAccentColor": "#F7821B",
+    "isKey": true,
+    "AppleAccentColor": "1"
+  },
+  "pink-light": {
+    "appActive": true,
+    "controlAccentColor": "#F74F9E",
+    "isKey": true,
+    "AppleAccentColor": "6"
+  },
+  "purple-dark": {
+    "appActive": true,
+    "controlAccentColor": "#953D96",
+    "isKey": true,
+    "AppleAccentColor": "5"
+  },
+  "purple-light": {
+    "appActive": true,
+    "controlAccentColor": "#953D96",
+    "isKey": true,
+    "AppleAccentColor": "5"
+  },
+  "red-light": {
+    "appActive": true,
+    "controlAccentColor": "#E0383E",
+    "isKey": true,
+    "AppleAccentColor": "0"
+  },
+  "yellow-light": {
+    "appActive": true,
+    "controlAccentColor": "#FFC726",
+    "isKey": true,
+    "AppleAccentColor": "2"
+  }
+}

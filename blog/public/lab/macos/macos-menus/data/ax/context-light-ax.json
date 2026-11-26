@@ -1,0 +1,204 @@
+{
+  "menuAtPoint" : {
+    "frame" : {
+      "h" : 200,
+      "w" : 118,
+      "x" : 420,
+      "y" : 220
+    },
+    "items" : [
+      {
+        "enabled" : true,
+        "frame" : {
+          "h" : 24,
+          "w" : 118,
+          "x" : 420,
+          "y" : 225
+        },
+        "role" : "AXMenuItem",
+        "title" : "Open"
+      },
+      {
+        "enabled" : true,
+        "frame" : {
+          "h" : 24,
+          "w" : 118,
+          "x" : 420,
+          "y" : 249
+        },
+        "role" : "AXMenuItem",
+        "title" : "Get Info"
+      },
+      {
+        "enabled" : true,
+        "frame" : {
+          "h" : 24,
+          "w" : 118,
+          "x" : 420,
+          "y" : 273
+        },
+        "role" : "AXMenuItem",
+        "title" : "Rename"
+      },
+      {
+        "enabled" : true,
+        "frame" : {
+          "h" : 24,
+          "w" : 118,
+          "x" : 420,
+          "y" : 297
+        },
+        "role" : "AXMenuItem",
+        "title" : "Duplicate"
+      },
+      {
+        "enabled" : false,
+        "frame" : {
+          "h" : 11,
+          "w" : 118,
+          "x" : 420,
+          "y" : 321
+        },
+        "role" : "AXMenuItem",
+        "separatorLike" : true,
+        "title" : ""
+      },
+      {
+        "enabled" : true,
+        "frame" : {
+          "h" : 24,
+          "w" : 118,
+          "x" : 420,
+          "y" : 332
+        },
+        "role" : "AXMenuItem",
+        "title" : "Copy"
+      },
+      {
+        "enabled" : true,
+        "frame" : {
+          "h" : 24,
+          "w" : 118,
+          "x" : 420,
+          "y" : 356
+        },
+        "role" : "AXMenuItem",
+        "title" : "Share…"
+      },
+      {
+        "enabled" : false,
+        "frame" : {
+          "h" : 11,
+          "w" : 118,
+          "x" : 420,
+          "y" : 380
+        },
+        "role" : "AXMenuItem",
+        "separatorLike" : true,
+        "title" : ""
+      },
+      {
+        "enabled" : true,
+        "frame" : {
+          "h" : 24,
+          "w" : 118,
+          "x" : 420,
+          "y" : 391
+        },
+        "role" : "AXMenuItem",
+        "title" : "Move to Trash"
+      }
+    ]
+  },
+  "menuBar" : {
+    "frame" : {
+      "h" : 33,
+      "w" : 1512,
+      "x" : 0,
+      "y" : 0
+    },
+    "items" : [
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 34,
+          "x" : 10,
+          "y" : 0
+        },
+        "title" : "Apple"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 94,
+          "x" : 44,
+          "y" : 0
+        },
+        "title" : "MenuProbe"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 42,
+          "x" : 138,
+          "y" : 0
+        },
+        "title" : "File"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 44,
+          "x" : 180,
+          "y" : 0
+        },
+        "title" : "Edit"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 63,
+          "x" : 224,
+          "y" : 0
+        },
+        "title" : "Format"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 50,
+          "x" : 287,
+          "y" : 0
+        },
+        "title" : "View"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 49,
+          "x" : 337,
+          "y" : 0
+        },
+        "title" : "Keys"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 69,
+          "x" : 386,
+          "y" : 0
+        },
+        "title" : "Window"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 48,
+          "x" : 455,
+          "y" : 0
+        },
+        "title" : "Help"
+      }
+    ]
+  }
+}

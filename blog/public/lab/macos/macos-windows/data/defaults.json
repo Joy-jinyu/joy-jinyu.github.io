@@ -1,0 +1,5 @@
+{
+  "command": "defaults read -g AppleActionOnDoubleClick",
+  "readAt": "2026-11-26",
+  "AppleActionOnDoubleClick": "Maximize"
+}

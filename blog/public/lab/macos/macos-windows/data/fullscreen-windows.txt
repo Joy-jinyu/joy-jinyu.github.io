@@ -1,0 +1,17 @@
+193646 layer=0 onscreen=false x=0.0 y=33.0 w=1512.0 h=52.0 alpha=1
+193645 layer=0 onscreen=false x=0.0 y=0.0 w=1512.0 h=982.0 alpha=1
+193644 layer=0 onscreen=false x=0.0 y=33.0 w=1512.0 h=949.0 alpha=1
+193643 layer=0 onscreen=false x=160.0 y=222.0 w=420.0 h=292.0 alpha=1
+193641 layer=0 onscreen=false x=120.0 y=122.0 w=560.0 h=220.0 alpha=1
+193640 layer=0 onscreen=false x=120.0 y=122.0 w=560.0 h=220.0 alpha=1
+193637 layer=0 onscreen=false x=120.0 y=122.0 w=560.0 h=252.0 alpha=1
+193636 layer=0 onscreen=false x=120.0 y=122.0 w=560.0 h=252.0 alpha=1
+193634 layer=0 onscreen=false x=120.0 y=381.0 w=1.0 h=1.0 alpha=1
+193632 layer=0 onscreen=false x=120.0 y=381.0 w=1.0 h=1.0 alpha=1
+193611 layer=0 onscreen=false x=0.0 y=0.0 w=1512.0 h=33.0 alpha=1
+193615 layer=0 onscreen=false x=120.0 y=381.0 w=1.0 h=1.0 alpha=1
+193614 layer=0 onscreen=false x=0.0 y=0.0 w=1512.0 h=33.0 alpha=1
+193613 layer=0 onscreen=false x=0.0 y=0.0 w=1512.0 h=33.0 alpha=1
+193612 layer=0 onscreen=false x=0.0 y=0.0 w=1512.0 h=33.0 alpha=1
+193642 layer=0 onscreen=false x=200.0 y=182.0 w=480.0 h=300.0 alpha=1
+193633 layer=0 onscreen=false x=120.0 y=381.0 w=1.0 h=1.0 alpha=1

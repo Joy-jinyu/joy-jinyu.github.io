@@ -1,0 +1,552 @@
+{
+  "alertAppModal" : {
+    "appModalWindowIsThis" : true,
+    "buttonKeys" : [
+      {
+        "key" : "Return",
+        "title" : "删除"
+      },
+      {
+        "key" : "",
+        "title" : "取消"
+      }
+    ],
+    "buttons" : {
+
+    },
+    "class" : "_NSAlertPanel",
+    "contentLayoutRect" : {
+      "h" : 170,
+      "w" : 260,
+      "x" : 0,
+      "y" : 0
+    },
+    "defaultButtonCell" : "删除",
+    "frame" : {
+      "h" : 202,
+      "w" : 260,
+      "x" : 626,
+      "y" : 578
+    },
+    "isKey" : true,
+    "isMain" : false,
+    "level" : 8,
+    "number" : 195605,
+    "runModalReturn" : -1001,
+    "titlebar" : 32,
+    "titleFont" : {
+      "fontName" : ".AppleSystemUIFaceHeadline",
+      "h" : 16,
+      "size" : 13,
+      "top" : 8,
+      "weight" : 0.40000000000000002
+    },
+    "views" : [
+      {
+        "class" : "_NSAlertImageView",
+        "h" : 64,
+        "left" : 98,
+        "top" : 20,
+        "w" : 64
+      },
+      {
+        "align" : 4,
+        "class" : "NSTextField",
+        "editable" : false,
+        "fontName" : ".SFNS-Bold",
+        "h" : 16,
+        "left" : 20,
+        "size" : 13,
+        "text" : "要永久删除“旧版草稿”吗？",
+        "top" : 100,
+        "w" : 220,
+        "weight" : 0.40000000000000002
+      },
+      {
+        "align" : 4,
+        "class" : "NSTextField",
+        "editable" : false,
+        "fontName" : ".SFNS-Regular",
+        "h" : 16,
+        "left" : 20,
+        "size" : 13,
+        "text" : "此操作无法撤销。",
+        "top" : 126,
+        "w" : 220,
+        "weight" : 0
+      },
+      {
+        "bezel" : 1,
+        "class" : "_NSAlertButton",
+        "controlSize" : 3,
+        "destructive" : false,
+        "font" : 13,
+        "h" : 28,
+        "key" : "",
+        "left" : 16,
+        "title" : "取消",
+        "top" : 158,
+        "w" : 110
+      },
+      {
+        "bezel" : 1,
+        "class" : "_NSAlertButton",
+        "controlSize" : 3,
+        "destructive" : false,
+        "font" : 13,
+        "h" : 28,
+        "key" : "Return",
+        "left" : 134,
+        "title" : "删除",
+        "top" : 158,
+        "w" : 110
+      }
+    ]
+  },
+  "alertSheet" : {
+    "appModalWindow" : "nil",
+    "buttonKeys" : [
+      {
+        "key" : "Return",
+        "title" : "存储"
+      },
+      {
+        "key" : "",
+        "title" : "取消"
+      },
+      {
+        "key" : "",
+        "title" : "不存储"
+      }
+    ],
+    "buttons" : {
+
+    },
+    "class" : "_NSAlertPanel",
+    "contentLayoutRect" : {
+      "h" : 190,
+      "w" : 260,
+      "x" : 0,
+      "y" : 0
+    },
+    "defaultButtonCell" : "存储",
+    "frame" : {
+      "h" : 190,
+      "w" : 260,
+      "x" : 270,
+      "y" : 615
+    },
+    "isKey" : true,
+    "isMain" : false,
+    "level" : 0,
+    "number" : 195604,
+    "parentAttachedSheetIsThis" : true,
+    "parentButtonsDuringSheet" : {
+      "close" : {
+        "enabled" : false,
+        "h" : 14,
+        "hidden" : false,
+        "left" : 19,
+        "top" : 19,
+        "w" : 14
+      },
+      "miniaturize" : {
+        "enabled" : true,
+        "h" : 14,
+        "hidden" : false,
+        "left" : 42,
+        "top" : 19,
+        "w" : 14
+      },
+      "zoom" : {
+        "enabled" : true,
+        "h" : 14,
+        "hidden" : false,
+        "left" : 65,
+        "top" : 19,
+        "w" : 14
+      }
+    },
+    "titlebar" : 0,
+    "views" : [
+      {
+        "align" : 4,
+        "class" : "NSTextField",
+        "editable" : false,
+        "fontName" : ".SFNS-Bold",
+        "h" : 16,
+        "left" : 20,
+        "size" : 13,
+        "text" : "要存储对“季度报告”所做的更改吗？",
+        "top" : 20,
+        "w" : 220,
+        "weight" : 0.40000000000000002
+      },
+      {
+        "align" : 4,
+        "class" : "NSTextField",
+        "editable" : false,
+        "fontName" : ".SFNS-Regular",
+        "h" : 16,
+        "left" : 20,
+        "size" : 13,
+        "text" : "如果不存储，你的更改将会丢失。",
+        "top" : 46,
+        "w" : 220,
+        "weight" : 0
+      },
+      {
+        "bezel" : 1,
+        "class" : "_NSAlertButton",
+        "controlSize" : 3,
+        "destructive" : false,
+        "font" : 13,
+        "h" : 28,
+        "key" : "Return",
+        "left" : 16,
+        "title" : "存储",
+        "top" : 78,
+        "w" : 228
+      },
+      {
+        "bezel" : 1,
+        "class" : "_NSAlertButton",
+        "controlSize" : 3,
+        "destructive" : false,
+        "font" : 13,
+        "h" : 28,
+        "key" : "",
+        "left" : 16,
+        "title" : "取消",
+        "top" : 112,
+        "w" : 228
+      },
+      {
+        "bezel" : 1,
+        "class" : "_NSAlertButton",
+        "controlSize" : 3,
+        "destructive" : true,
+        "font" : 13,
+        "h" : 28,
+        "key" : "",
+        "left" : 16,
+        "title" : "不存储",
+        "top" : 146,
+        "w" : 228
+      }
+    ]
+  },
+  "cancelKeys" : {
+    "chinese" : [
+      {
+        "key" : "Return",
+        "mods" : 0,
+        "title" : "删除"
+      },
+      {
+        "key" : "",
+        "mods" : 0,
+        "title" : "取消"
+      }
+    ],
+    "english" : [
+      {
+        "key" : "Return",
+        "mods" : 0,
+        "title" : "Delete"
+      },
+      {
+        "key" : "Esc",
+        "mods" : 0,
+        "title" : "Cancel"
+      },
+      {
+        "key" : "d",
+        "mods" : 1048576,
+        "title" : "Don’t Save"
+      }
+    ]
+  },
+  "mode" : "dark",
+  "os" : "Version 26.6.2 (Build 25G83)",
+  "panels" : {
+    "appActive" : true,
+    "hud" : {
+      "buttons" : {
+        "close" : {
+          "enabled" : true,
+          "h" : 14,
+          "hidden" : false,
+          "left" : 8,
+          "top" : 7,
+          "w" : 14
+        }
+      },
+      "class" : "NSPanel",
+      "contentLayoutRect" : {
+        "h" : 115,
+        "w" : 220,
+        "x" : 0,
+        "y" : 0
+      },
+      "frame" : {
+        "h" : 139,
+        "w" : 220,
+        "x" : 720,
+        "y" : 561
+      },
+      "isKey" : false,
+      "isMain" : false,
+      "level" : 3,
+      "number" : 195614,
+      "titlebar" : 24,
+      "titleFont" : {
+        "fontName" : ".AppleSystemUIFont",
+        "h" : 14,
+        "size" : 11,
+        "top" : 6,
+        "weight" : 0
+      }
+    },
+    "hudDefaults" : {
+      "becomesKeyOnlyIfNeeded" : false,
+      "canBecomeKey" : true,
+      "canBecomeMain" : false,
+      "hidesOnDeactivate" : true,
+      "isFloatingPanel" : true,
+      "level" : 3,
+      "styleMask" : 8211,
+      "worksWhenModal" : false
+    },
+    "keyAfterSliderClick" : "季度报告",
+    "keyAfterTextFieldClick" : "检查器",
+    "keyBefore" : "季度报告",
+    "mainAfterTextFieldClick" : "季度报告",
+    "utility" : {
+      "buttons" : {
+        "close" : {
+          "enabled" : true,
+          "h" : 10,
+          "hidden" : false,
+          "left" : 8,
+          "top" : 8,
+          "w" : 10
+        },
+        "miniaturize" : {
+          "enabled" : false,
+          "h" : 10,
+          "hidden" : false,
+          "left" : 25,
+          "top" : 8,
+          "w" : 10
+        },
+        "zoom" : {
+          "enabled" : false,
+          "h" : 10,
+          "hidden" : false,
+          "left" : 42,
+          "top" : 8,
+          "w" : 10
+        }
+      },
+      "class" : "NSPanel",
+      "contentLayoutRect" : {
+        "h" : 120,
+        "w" : 220,
+        "x" : 0,
+        "y" : 0
+      },
+      "frame" : {
+        "h" : 144,
+        "w" : 220,
+        "x" : 720,
+        "y" : 736
+      },
+      "isKey" : false,
+      "isMain" : false,
+      "level" : 3,
+      "number" : 195613,
+      "titlebar" : 24,
+      "titleFont" : {
+        "fontName" : ".AppleSystemUIFont",
+        "h" : 14,
+        "size" : 11,
+        "top" : 5,
+        "weight" : 0
+      }
+    },
+    "utilityDefaults" : {
+      "becomesKeyOnlyIfNeeded" : false,
+      "canBecomeKey" : true,
+      "canBecomeMain" : false,
+      "hidesOnDeactivate" : true,
+      "isFloatingPanel" : true,
+      "level" : 3,
+      "styleMask" : 19,
+      "worksWhenModal" : false
+    }
+  },
+  "parent" : {
+    "buttons" : {
+      "close" : {
+        "enabled" : true,
+        "h" : 14,
+        "hidden" : false,
+        "left" : 19,
+        "top" : 19,
+        "w" : 14
+      },
+      "miniaturize" : {
+        "enabled" : true,
+        "h" : 14,
+        "hidden" : false,
+        "left" : 42,
+        "top" : 19,
+        "w" : 14
+      },
+      "zoom" : {
+        "enabled" : true,
+        "h" : 14,
+        "hidden" : false,
+        "left" : 65,
+        "top" : 19,
+        "w" : 14
+      }
+    },
+    "class" : "NSWindow",
+    "contentLayoutRect" : {
+      "h" : 288,
+      "w" : 560,
+      "x" : 0,
+      "y" : 0
+    },
+    "frame" : {
+      "h" : 340,
+      "w" : 560,
+      "x" : 120,
+      "y" : 540
+    },
+    "isKey" : true,
+    "isMain" : true,
+    "level" : 0,
+    "number" : 195601,
+    "titlebar" : 52,
+    "titleFont" : {
+      "fontName" : ".SFNS-Semibold",
+      "h" : 19,
+      "size" : 15,
+      "top" : 16.5,
+      "weight" : 0.40000000000000002
+    }
+  },
+  "popover" : {
+    "anchorScreen" : {
+      "h" : 24,
+      "w" : 76,
+      "x" : 420,
+      "y" : 784
+    },
+    "contentInWindow" : {
+      "h" : 96,
+      "left" : 13,
+      "top" : 13,
+      "w" : 240
+    },
+    "contentSize" : {
+      "h" : 96,
+      "w" : 240
+    },
+    "window" : {
+      "buttons" : {
+        "close" : {
+          "enabled" : true,
+          "h" : 0,
+          "hidden" : false,
+          "left" : 0,
+          "top" : 122,
+          "w" : 0
+        }
+      },
+      "class" : "_NSPopoverWindow",
+      "contentLayoutRect" : {
+        "h" : 96,
+        "w" : 240,
+        "x" : 13,
+        "y" : 13
+      },
+      "frame" : {
+        "h" : 122,
+        "w" : 266,
+        "x" : 325,
+        "y" : 662
+      },
+      "isKey" : true,
+      "isMain" : true,
+      "level" : 0,
+      "number" : 195612,
+      "titlebar" : 26
+    }
+  },
+  "screen" : {
+    "backingScale" : 2,
+    "frame" : {
+      "h" : 982,
+      "w" : 1512,
+      "x" : 0,
+      "y" : 0
+    },
+    "visibleFrame" : {
+      "h" : 876,
+      "w" : 1512,
+      "x" : 0,
+      "y" : 73
+    }
+  },
+  "shots" : [
+    {
+      "appActive" : true,
+      "file" : "alertsheet-dark",
+      "keyWindow" : "",
+      "window" : 195604
+    },
+    {
+      "appActive" : true,
+      "file" : "sheet-dark",
+      "keyWindow" : "",
+      "window" : 195606
+    },
+    {
+      "appActive" : true,
+      "file" : "popover-dark",
+      "keyWindow" : "季度报告",
+      "window" : 195612
+    }
+  ],
+  "windowSheet" : {
+    "buttons" : {
+
+    },
+    "class" : "NSWindow",
+    "contentLayoutRect" : {
+      "h" : 150,
+      "w" : 400,
+      "x" : 0,
+      "y" : 0
+    },
+    "frame" : {
+      "h" : 150,
+      "w" : 400,
+      "x" : 200,
+      "y" : 635
+    },
+    "isKey" : true,
+    "isMain" : false,
+    "level" : 0,
+    "number" : 195606,
+    "requestedContent" : {
+      "h" : 150,
+      "w" : 400
+    },
+    "titlebar" : 0
+  }
+}

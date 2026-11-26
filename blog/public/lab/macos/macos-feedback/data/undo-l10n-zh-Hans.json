@@ -1,0 +1,37 @@
+{
+  "actionNameBold" : {
+    "redoMenuItemTitle" : "重做",
+    "undoActionName" : "Bold",
+    "undoMenuItemTitle" : "撤销Bold"
+  },
+  "defaults" : {
+    "groupsByEvent" : true,
+    "levelsOfUndo" : 0
+  },
+  "emptyTitles" : {
+    "redo" : "重做",
+    "undo" : "撤销"
+  },
+  "mainBundleLocalizations" : [
+    "en",
+    "zh-Hans"
+  ],
+  "nonTypingThreeChanges" : {
+    "undoSteps" : 3
+  },
+  "preferredLanguages" : [
+    "zh-Hans"
+  ],
+  "textViewTyping" : {
+    "after3Inserts" : "abc",
+    "afterOneUndo" : "",
+    "redoMenuItemTitle" : "重做键入",
+    "undoActionName" : "键入",
+    "undoMenuItemTitle" : "撤销键入"
+  },
+  "titleFor" : {
+    "redo(加粗)" : "重做加粗",
+    "undo(加粗)" : "撤销加粗",
+    "undo(空)" : "撤销"
+  }
+}

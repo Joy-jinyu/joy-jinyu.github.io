@@ -1,0 +1,73 @@
+{
+  "note": "截图像素（Display P3 截图按 sRGB 读，受壁纸着色影响，只作「看起来」的佐证）。坐标 px，2x，原点在窗口左上角。",
+  "selectionRow": {
+    "point": "x=200px y=470px（选中行 Drafts 的空白处）",
+    "light.tableFocused": {
+      "file": "raw/light-sel-tableFocused.png",
+      "hex": "#0064E1"
+    },
+    "light.fieldFocused": {
+      "file": "raw/light-sel-fieldFocused.png",
+      "hex": "#DCDCDC"
+    },
+    "light.mainNotKey": {
+      "file": "raw/light-sel-mainNotKey.png",
+      "hex": "#DCDCDC"
+    },
+    "light.otherWindowMain": {
+      "file": "raw/light-sel-otherWindowMain.png",
+      "hex": "#DCDCDC"
+    },
+    "dark.tableFocused": {
+      "file": "raw/dark-sel-tableFocused.png",
+      "hex": "#0058D0"
+    },
+    "dark.fieldFocused": {
+      "file": "raw/dark-sel-fieldFocused.png",
+      "hex": "#464646"
+    },
+    "dark.mainNotKey": {
+      "file": "raw/dark-sel-mainNotKey.png",
+      "hex": "#464646"
+    },
+    "dark.otherWindowMain": {
+      "file": "raw/dark-sel-otherWindowMain.png",
+      "hex": "#464646"
+    }
+  },
+  "closeButton": {
+    "point": "x=52px y=52px（关闭按钮圆心）",
+    "light.tableFocused": {
+      "file": "raw/light-sel-tableFocused.png",
+      "hex": "#FF5C60"
+    },
+    "light.fieldFocused": {
+      "file": "raw/light-sel-fieldFocused.png",
+      "hex": "#FF5C60"
+    },
+    "light.mainNotKey": {
+      "file": "raw/light-sel-mainNotKey.png",
+      "hex": "#FF5C60"
+    },
+    "light.otherWindowMain": {
+      "file": "raw/light-sel-otherWindowMain.png",
+      "hex": "#DCDCDC"
+    },
+    "dark.tableFocused": {
+      "file": "raw/dark-sel-tableFocused.png",
+      "hex": "#FF5C60"
+    },
+    "dark.fieldFocused": {
+      "file": "raw/dark-sel-fieldFocused.png",
+      "hex": "#FF5C60"
+    },
+    "dark.mainNotKey": {
+      "file": "raw/dark-sel-mainNotKey.png",
+      "hex": "#FF5C60"
+    },
+    "dark.otherWindowMain": {
+      "file": "raw/dark-sel-otherWindowMain.png",
+      "hex": "#454B4B"
+    }
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "about": "从 raw/ 里的截图（sidebar.swift 第三次运行，2x，1 pt = 2 px）读的像素；复算：../read-pixels.sh，输出 pixels-readings.txt。颜色是截图上的 sRGB 读数，受壁纸着色和 P3 转换影响，只作「看起来」的佐证；系统颜色值以 lab:macos/data/metrics.json 为准。",
+  "env": {
+    "os": "macOS 26.6.2 (25G83)",
+    "accent": "系统默认（多色）",
+    "sidebarIconSize": "系统默认（NSTableViewDefaultSizeMode 未设置）"
+  },
+  "sidebarGlass": {
+    "shot": "raw/main-light-key.png",
+    "leftEdgePt": 8,
+    "topEdgePt": 8,
+    "cornerEqRadiusPt": 18.8,
+    "cmd": [
+      "edge raw/main-light-key.png find 0 10 120 90 '#FFFFFF' 1",
+      "pixels raw/main-light-key.png scan y 400 0 40",
+      "pixels raw/main-light-key.png scan x 200 0 40"
+    ],
+    "note": "浅色玻璃边上有一圈 1 pt 的白色描边（#FFFFFF），按描边逐行找起点；深色截图 scan 也在 16 px（8 pt）处换色"
+  },
+  "selectionPill": {
+    "shot": "raw/main-light-key.png",
+    "rowSizeStyle": "medium",
+    "xPt": 18,
+    "wPt": 120,
+    "topPt": 103,
+    "hPt": 32,
+    "insetFromGlassPt": 10,
+    "cornerEqRadiusPt": 6.8,
+    "cmd": [
+      "edge raw/main-light-key.png 30 200 200 240 40",
+      "pixels raw/main-light-key.png scan x 150 195 280",
+      "pixels raw/main-light-key.png scan y 220 20 300"
+    ]
+  },
+  "sidebarSelectionColors": {
+    "cmd": "edge raw/<shot> at 250 212（选中块）；edge raw/<shot> at 103 238（选中行图标 / 文字）",
+    "light": {
+      "keyFocused": {
+        "shot": "raw/main-light-key.png",
+        "pill": "#007AFF",
+        "fg": "#FFFFFF"
+      },
+      "focusElsewhere": {
+        "shot": "raw/main-light-tablefocus.png",
+        "pill": "#EFEFEF",
+        "fg": "#007AFF"
+      },
+      "windowInactive": {
+        "shot": "raw/main-light-inactive.png",
+        "pill": "#F2F2F2",
+        "fg": "#007AFF"
+      }
+    },
+    "dark": {
+      "keyFocused": {
+        "shot": "raw/main-dark-key.png",
+        "pill": "#008EFF",
+        "fg": "#FFFFFF"
+      },
+      "focusElsewhere": {
+        "shot": "raw/main-dark-tablefocus.png",
+        "pill": "#2C3134",
+        "fg": "#007AFF"
+      },
+      "windowInactive": {
+        "shot": "raw/main-dark-inactive.png",
+        "pill": "#2F3336",
+        "fg": "#007AFF"
+      }
+    }
+  },
+  "sidebarIconUnselected": {
+    "shots": [
+      "raw/main-light-key.png",
+      "raw/main-dark-key.png"
+    ],
+    "cmd": "pixels raw/<shot> scan y 174 100 150（Inbox 行的图标）",
+    "light": "#000000",
+    "dark": "#FFFFFF",
+    "note": "默认 tint 配置、系统强调色为默认（多色）时，没选中的侧边栏图标是黑 / 白单色，不是强调色"
+  },
+  "tableColors": {
+    "cmd": "edge raw/tables-<light|dark>-key.png at <x> <y>：fullWidth 300,165 / 300,212 / 300,260；inset 930,270",
+    "light": {
+      "row1": "#FFFFFF",
+      "row2": "#F4F5F5",
+      "selectedFocused": "#0064E1",
+      "selectedUnfocused": "#DBDCDC"
+    },
+    "dark": {
+      "row1": "#242A2E",
+      "row2": "#2E3439",
+      "selectedFocused": "#0058D0",
+      "selectedUnfocused": "#454646"
+    },
+    "insetSelectionXPt": [
+      325,
+      630
+    ],
+    "note": "inset 样式的选中块从表格左边一直铺到右边（scan y 260 从 650 px 开始），方角"
+  }
+}

@@ -1,0 +1,1738 @@
+{
+  "buttons": {
+    "label": {
+      "fitting": {
+        "h": 16,
+        "w": 33.5
+      },
+      "frameInWindow": {
+        "h": 16,
+        "w": 33.5,
+        "x": 22,
+        "y": 496
+      }
+    },
+    "popUp": {
+      "fitting": {
+        "h": 24,
+        "w": 105
+      },
+      "frameInWindow": {
+        "h": 24,
+        "w": 105,
+        "x": 61.5,
+        "y": 492
+      }
+    },
+    "pullDown": {
+      "fitting": {
+        "h": 24,
+        "w": 72
+      },
+      "frameInWindow": {
+        "h": 24,
+        "w": 72,
+        "x": 214.5,
+        "y": 492
+      }
+    }
+  },
+  "captures": {
+    "bar:View": {
+      "mainFrame": {
+        "h": 572,
+        "w": 720,
+        "x": 0,
+        "y": 377
+      },
+      "mainWindow": 195870,
+      "mouse": {
+        "x": 36.14,
+        "y": 330.76
+      },
+      "t": 5.48,
+      "windows": []
+    },
+    "bar:Window": {
+      "mainFrame": {
+        "h": 572,
+        "w": 720,
+        "x": 0,
+        "y": 377
+      },
+      "mainWindow": 195870,
+      "mouse": {
+        "x": 47.09,
+        "y": 332.93
+      },
+      "t": 6.15,
+      "windows": []
+    },
+    "context": {
+      "mainFrame": {
+        "h": 572,
+        "w": 720,
+        "x": 0,
+        "y": 377
+      },
+      "mainWindow": 195870,
+      "mouse": {
+        "x": 932.74,
+        "y": 848.67
+      },
+      "t": 3.68,
+      "windows": [
+        {
+          "bounds": {
+            "h": 186,
+            "w": 110,
+            "x": 710,
+            "y": 541
+          },
+          "file": "context-dark-w195902.png",
+          "layer": 101,
+          "number": 195902
+        },
+        {
+          "bounds": {
+            "h": 528,
+            "w": 664,
+            "x": 323,
+            "y": 369
+          },
+          "file": "context-dark-w195870.png",
+          "layer": 0,
+          "number": 195870
+        }
+      ]
+    },
+    "pop:File": {
+      "mainFrame": {
+        "h": 572,
+        "w": 720,
+        "x": 0,
+        "y": 377
+      },
+      "mainWindow": 195870,
+      "mouse": {
+        "x": 491.76,
+        "y": 591.69
+      },
+      "t": 4.71,
+      "windows": [
+        {
+          "bounds": {
+            "h": 296,
+            "w": 205,
+            "x": 240,
+            "y": 130
+          },
+          "file": "pop:File-dark-w195910.png",
+          "layer": 101,
+          "number": 195910
+        },
+        {
+          "bounds": {
+            "h": 528,
+            "w": 664,
+            "x": 323,
+            "y": 369
+          },
+          "file": "pop:File-dark-w195870.png",
+          "layer": 0,
+          "number": 195870
+        }
+      ]
+    },
+    "popup": {
+      "mainFrame": {
+        "h": 572,
+        "w": 720,
+        "x": 0,
+        "y": 377
+      },
+      "mainWindow": 195870,
+      "mouse": {
+        "x": 1239.23,
+        "y": 427.67
+      },
+      "t": 1.8,
+      "windows": [
+        {
+          "bounds": {
+            "h": 106,
+            "w": 105,
+            "x": 49,
+            "y": 60
+          },
+          "file": "popup-dark-w195892.png",
+          "layer": 101,
+          "number": 195892
+        },
+        {
+          "bounds": {
+            "h": 572,
+            "w": 720,
+            "x": 0,
+            "y": 33
+          },
+          "file": "popup-dark-w195870.png",
+          "layer": 0,
+          "number": 195870
+        }
+      ]
+    },
+    "pulldown": {
+      "mainFrame": {
+        "h": 572,
+        "w": 720,
+        "x": 0,
+        "y": 377
+      },
+      "mainWindow": 195870,
+      "mouse": {
+        "x": 1280.03,
+        "y": 445.2
+      },
+      "t": 2.73,
+      "windows": [
+        {
+          "bounds": {
+            "h": 82,
+            "w": 71,
+            "x": -1274,
+            "y": 116
+          },
+          "file": "pulldown-dark-w195897.png",
+          "layer": 101,
+          "number": 195897
+        },
+        {
+          "bounds": {
+            "h": 572,
+            "w": 720,
+            "x": -1483,
+            "y": 33
+          },
+          "file": "pulldown-dark-w195870.png",
+          "layer": 0,
+          "number": 195870
+        }
+      ]
+    },
+    "window": {
+      "mainFrame": {
+        "h": 572,
+        "w": 720,
+        "x": 0,
+        "y": 377
+      },
+      "mainWindow": 195870,
+      "mouse": {
+        "x": 1239.23,
+        "y": 427.67
+      },
+      "t": 1.26,
+      "windows": [
+        {
+          "bounds": {
+            "h": 572,
+            "w": 720,
+            "x": 0,
+            "y": 33
+          },
+          "file": "window-dark-w195870.png",
+          "layer": 0,
+          "number": 195870
+        }
+      ]
+    }
+  },
+  "fonts": {
+    "menuBarFont": {
+      "name": ".AppleSystemUIFont",
+      "size": 13
+    },
+    "menuFont": {
+      "name": ".AppleSystemUIFont",
+      "size": 13
+    }
+  },
+  "mainFrame": {
+    "h": 572,
+    "w": 720,
+    "x": 0,
+    "y": 377
+  },
+  "mainMenuAfter": [
+    {
+      "enabled": true,
+      "submenu": [
+        {
+          "enabled": true,
+          "title": "About MenuProbe"
+        },
+        {
+          "separator": true
+        },
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": ",",
+          "shortcut": "⌘,",
+          "title": "Settings…"
+        },
+        {
+          "separator": true
+        },
+        {
+          "enabled": true,
+          "submenu": [],
+          "submenuItemCount": 0,
+          "submenuOmitted": "服务菜单的内容是本机装的软件，不记录",
+          "submenuSize": {
+            "h": 10,
+            "w": 16
+          },
+          "title": "Services"
+        },
+        {
+          "separator": true
+        },
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": "h",
+          "shortcut": "⌘H",
+          "title": "Hide MenuProbe"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": "h",
+          "shortcut": "⌥⌘H",
+          "title": "Hide Others"
+        },
+        {
+          "enabled": false,
+          "title": "Show All"
+        },
+        {
+          "separator": true
+        },
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": "q",
+          "shortcut": "⌘Q",
+          "title": "Quit MenuProbe"
+        }
+      ],
+      "submenuSize": {
+        "h": 222,
+        "w": 224
+      },
+      "title": "MenuProbe"
+    },
+    {
+      "enabled": true,
+      "submenu": [
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": "n",
+          "shortcut": "⌘N",
+          "title": "New Document"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": "o",
+          "shortcut": "⌘O",
+          "title": "Open…"
+        },
+        {
+          "enabled": true,
+          "submenu": [
+            {
+              "enabled": false,
+              "title": "Clear Menu"
+            }
+          ],
+          "submenuSize": {
+            "h": 34,
+            "w": 101
+          },
+          "title": "Open Recent"
+        },
+        {
+          "separator": true
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "w",
+          "shortcut": "⌘W",
+          "title": "Close"
+        },
+        {
+          "alternate": true,
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": "w",
+          "shortcut": "⌥⌘W",
+          "title": "Close All"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "s",
+          "shortcut": "⌘S",
+          "title": "Save"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "s",
+          "shortcut": "⇧⌘S",
+          "title": "Duplicate"
+        },
+        {
+          "enabled": false,
+          "title": "Rename…"
+        },
+        {
+          "enabled": false,
+          "title": "Move To…"
+        },
+        {
+          "enabled": false,
+          "title": "Export As…"
+        },
+        {
+          "separator": true
+        },
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": "p",
+          "shortcut": "⇧⌘P",
+          "title": "Page Setup…"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "p",
+          "shortcut": "⌘P",
+          "title": "Print…"
+        }
+      ],
+      "submenuSize": {
+        "h": 320,
+        "w": 209
+      },
+      "title": "File"
+    },
+    {
+      "enabled": true,
+      "submenu": [
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "z",
+          "shortcut": "⌘Z",
+          "title": "Undo"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "z",
+          "shortcut": "⇧⌘Z",
+          "title": "Redo"
+        },
+        {
+          "separator": true
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "x",
+          "shortcut": "⌘X",
+          "title": "Cut"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "c",
+          "shortcut": "⌘C",
+          "title": "Copy"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "v",
+          "shortcut": "⌘V",
+          "title": "Paste"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "v",
+          "shortcut": "⌥⇧⌘V",
+          "title": "Paste and Match Style"
+        },
+        {
+          "enabled": false,
+          "title": "Delete"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "a",
+          "shortcut": "⌘A",
+          "title": "Select All"
+        },
+        {
+          "separator": true
+        },
+        {
+          "enabled": true,
+          "submenu": [
+            {
+              "autoLocalize": true,
+              "enabled": true,
+              "keyEquivalent": "f",
+              "shortcut": "⌘F",
+              "title": "Find…"
+            },
+            {
+              "autoLocalize": true,
+              "enabled": true,
+              "keyEquivalent": "g",
+              "shortcut": "⌘G",
+              "title": "Find Next"
+            },
+            {
+              "autoLocalize": true,
+              "enabled": true,
+              "keyEquivalent": "g",
+              "shortcut": "⇧⌘G",
+              "title": "Find Previous"
+            },
+            {
+              "autoLocalize": true,
+              "enabled": true,
+              "keyEquivalent": "e",
+              "shortcut": "⌘E",
+              "title": "Use Selection for Find"
+            },
+            {
+              "autoLocalize": true,
+              "enabled": true,
+              "keyEquivalent": "j",
+              "shortcut": "⌘J",
+              "title": "Jump to Selection"
+            }
+          ],
+          "submenuSize": {
+            "h": 130,
+            "w": 226
+          },
+          "title": "Find"
+        },
+        {
+          "enabled": true,
+          "submenu": [
+            {
+              "autoLocalize": true,
+              "enabled": true,
+              "keyEquivalent": ":",
+              "shortcut": "⌘:",
+              "title": "Show Spelling and Grammar"
+            },
+            {
+              "autoLocalize": true,
+              "enabled": true,
+              "keyEquivalent": ";",
+              "shortcut": "⌘;",
+              "title": "Check Document Now"
+            }
+          ],
+          "submenuSize": {
+            "h": 58,
+            "w": 243
+          },
+          "title": "Spelling and Grammar"
+        },
+        {
+          "enabled": true,
+          "submenu": [
+            {
+              "enabled": true,
+              "title": "Smart Quotes"
+            }
+          ],
+          "submenuSize": {
+            "h": 34,
+            "w": 116
+          },
+          "title": "Substitutions"
+        },
+        {
+          "enabled": true,
+          "submenu": [
+            {
+              "enabled": true,
+              "title": "Make Uppercase"
+            }
+          ],
+          "submenuSize": {
+            "h": 34,
+            "w": 134
+          },
+          "title": "Transformations"
+        },
+        {
+          "enabled": true,
+          "submenu": [
+            {
+              "enabled": true,
+              "title": "Start Speaking"
+            }
+          ],
+          "submenuSize": {
+            "h": 34,
+            "w": 122
+          },
+          "title": "Speech"
+        },
+        {
+          "separator": true
+        },
+        {
+          "enabled": true,
+          "submenu": [
+            {
+              "enabled": false,
+              "title": "Contact…"
+            },
+            {
+              "enabled": false,
+              "title": "Passwords…"
+            },
+            {
+              "enabled": false,
+              "title": "Credit Card…"
+            }
+          ],
+          "submenuSize": {
+            "h": 82,
+            "w": 133
+          },
+          "title": "AutoFill"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "🎤",
+          "shortcut": "🎤",
+          "title": "Start Dictation"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "hidden": true,
+          "keyEquivalent": "d",
+          "shortcut": "D",
+          "title": "Start Dictation"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": " ",
+          "shortcut": "⌘ ",
+          "title": "Emoji & Symbols"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "hidden": true,
+          "keyEquivalent": " ",
+          "shortcut": "⌃⌘ ",
+          "title": "Emoji & Symbols"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "hidden": true,
+          "keyEquivalent": "e",
+          "shortcut": "E",
+          "title": "Emoji & Symbols"
+        }
+      ],
+      "submenuSize": {
+        "h": 427,
+        "w": 268
+      },
+      "title": "Edit"
+    },
+    {
+      "enabled": true,
+      "submenu": [
+        {
+          "enabled": true,
+          "submenu": [
+            {
+              "autoLocalize": true,
+              "enabled": true,
+              "keyEquivalent": "t",
+              "shortcut": "⌘T",
+              "title": "Show Fonts"
+            },
+            {
+              "autoLocalize": true,
+              "enabled": true,
+              "keyEquivalent": "b",
+              "shortcut": "⌘B",
+              "title": "Bold"
+            },
+            {
+              "autoLocalize": true,
+              "enabled": true,
+              "keyEquivalent": "i",
+              "shortcut": "⌘I",
+              "title": "Italic"
+            },
+            {
+              "autoLocalize": true,
+              "enabled": true,
+              "keyEquivalent": "u",
+              "shortcut": "⌘U",
+              "title": "Underline"
+            }
+          ],
+          "submenuSize": {
+            "h": 106,
+            "w": 149
+          },
+          "title": "Font"
+        },
+        {
+          "enabled": true,
+          "submenu": [
+            {
+              "autoLocalize": true,
+              "enabled": true,
+              "keyEquivalent": "{",
+              "shortcut": "⌘{",
+              "title": "Align Left"
+            },
+            {
+              "autoLocalize": true,
+              "enabled": true,
+              "keyEquivalent": "|",
+              "shortcut": "⌘|",
+              "title": "Center"
+            },
+            {
+              "autoLocalize": true,
+              "enabled": true,
+              "keyEquivalent": "}",
+              "shortcut": "⌘}",
+              "title": "Align Right"
+            }
+          ],
+          "submenuSize": {
+            "h": 82,
+            "w": 140
+          },
+          "title": "Text"
+        }
+      ],
+      "submenuSize": {
+        "h": 58,
+        "w": 91
+      },
+      "title": "Format"
+    },
+    {
+      "enabled": true,
+      "submenu": [
+        {
+          "enabled": false,
+          "title": "Show Tab Bar"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "\\",
+          "shortcut": "⇧⌘\\",
+          "title": "Show All Tabs"
+        },
+        {
+          "separator": true
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "t",
+          "shortcut": "⌥⌘T",
+          "title": "Show Toolbar"
+        },
+        {
+          "enabled": false,
+          "title": "Customize Toolbar…"
+        },
+        {
+          "separator": true
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "s",
+          "shortcut": "⌃⌘S",
+          "title": "Show Sidebar"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "f",
+          "shortcut": "F",
+          "title": "Enter Full Screen"
+        }
+      ],
+      "submenuSize": {
+        "h": 176,
+        "w": 235
+      },
+      "title": "View"
+    },
+    {
+      "enabled": true,
+      "submenu": [
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": "k",
+          "shortcut": "⌘K",
+          "title": "Command Only"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": "k",
+          "shortcut": "⇧⌘K",
+          "title": "Add Shift"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": "k",
+          "shortcut": "⌃⌥⇧⌘K",
+          "title": "All Four Modifiers"
+        },
+        {
+          "separator": true
+        },
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": "?",
+          "shortcut": "⌘?",
+          "title": "Help (Command-?)"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": "/",
+          "shortcut": "⇧⌘/",
+          "title": "Shift-Command-Slash"
+        },
+        {
+          "autoLocalize": false,
+          "enabled": true,
+          "keyEquivalent": "?",
+          "shortcut": "⌘?",
+          "title": "Command-? Not Localized"
+        },
+        {
+          "autoLocalize": false,
+          "enabled": true,
+          "keyEquivalent": "/",
+          "shortcut": "⇧⌘/",
+          "title": "Shift-Command-/ Not Localized"
+        },
+        {
+          "separator": true
+        },
+        {
+          "enabled": false,
+          "title": "Unavailable Item"
+        }
+      ],
+      "submenuSize": {
+        "h": 224,
+        "w": 310
+      },
+      "title": "Keys"
+    },
+    {
+      "enabled": true,
+      "submenu": [
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "m",
+          "shortcut": "⌘M",
+          "title": "Minimize"
+        },
+        {
+          "alternate": true,
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "m",
+          "shortcut": "⌥⌘M",
+          "title": "Minimize All"
+        },
+        {
+          "enabled": false,
+          "title": "Zoom"
+        },
+        {
+          "alternate": true,
+          "enabled": false,
+          "title": "Zoom All"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "f",
+          "shortcut": "⌃F",
+          "title": "Fill"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "c",
+          "shortcut": "⌃C",
+          "title": "Center"
+        },
+        {
+          "separator": true
+        },
+        {
+          "enabled": true,
+          "submenu": [
+            {
+              "enabled": false,
+              "title": "Halves"
+            },
+            {
+              "enabled": false,
+              "title": "Left"
+            },
+            {
+              "enabled": false,
+              "title": "Right"
+            },
+            {
+              "enabled": false,
+              "title": "Top"
+            },
+            {
+              "enabled": false,
+              "title": "Bottom"
+            },
+            {
+              "separator": true
+            },
+            {
+              "enabled": false,
+              "title": "Quarters"
+            },
+            {
+              "enabled": false,
+              "title": "Top Left"
+            },
+            {
+              "enabled": false,
+              "title": "Top Right"
+            },
+            {
+              "enabled": false,
+              "title": "Bottom Left"
+            },
+            {
+              "enabled": false,
+              "title": "Bottom Right"
+            },
+            {
+              "separator": true
+            },
+            {
+              "enabled": false,
+              "title": "Arrange"
+            },
+            {
+              "enabled": false,
+              "title": "Left & Right"
+            },
+            {
+              "alternate": true,
+              "enabled": false,
+              "title": "Left & Quarters"
+            },
+            {
+              "enabled": false,
+              "title": "Right & Left"
+            },
+            {
+              "alternate": true,
+              "enabled": false,
+              "title": "Right & Quarters"
+            },
+            {
+              "enabled": false,
+              "title": "Top & Bottom"
+            },
+            {
+              "alternate": true,
+              "enabled": false,
+              "title": "Top & Quarters"
+            },
+            {
+              "enabled": false,
+              "title": "Bottom & Top"
+            },
+            {
+              "alternate": true,
+              "enabled": false,
+              "title": "Bottom & Quarters"
+            },
+            {
+              "enabled": false,
+              "title": "Quarters"
+            },
+            {
+              "separator": true
+            },
+            {
+              "autoLocalize": true,
+              "enabled": false,
+              "keyEquivalent": "r",
+              "shortcut": "⌃R",
+              "title": "Return to Previous Size"
+            }
+          ],
+          "submenuSize": {
+            "h": 547,
+            "w": 282
+          },
+          "title": "Move & Resize"
+        },
+        {
+          "enabled": false,
+          "title": "Full Screen Tile"
+        },
+        {
+          "separator": true
+        },
+        {
+          "enabled": false,
+          "title": "Remove Window from Set"
+        },
+        {
+          "separator": true
+        },
+        {
+          "enabled": true,
+          "title": "Bring All to Front"
+        },
+        {
+          "alternate": true,
+          "enabled": true,
+          "title": "Arrange in Front"
+        },
+        {
+          "separator": true
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "\t",
+          "shortcut": "⌃⇧\t",
+          "title": "Show Previous Tab"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "\t",
+          "shortcut": "⌃\t",
+          "title": "Show Next Tab"
+        },
+        {
+          "enabled": false,
+          "title": "Move Tab to New Window"
+        },
+        {
+          "enabled": false,
+          "title": "Merge All Windows"
+        },
+        {
+          "separator": true
+        },
+        {
+          "separator": true
+        },
+        {
+          "enabled": true,
+          "title": "MenuProbe"
+        }
+      ],
+      "submenuSize": {
+        "h": 449,
+        "w": 275
+      },
+      "title": "Window"
+    },
+    {
+      "enabled": true,
+      "submenu": [
+        {
+          "enabled": true,
+          "title": "MenuProbe Help"
+        }
+      ],
+      "submenuSize": {
+        "h": 34,
+        "w": 152
+      },
+      "title": "Help"
+    }
+  ],
+  "mainMenuAtLaunch": [
+    {
+      "enabled": true,
+      "submenu": [
+        {
+          "enabled": true,
+          "title": "About MenuProbe"
+        },
+        {
+          "separator": true
+        },
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": ",",
+          "shortcut": "⌘,",
+          "title": "Settings…"
+        },
+        {
+          "separator": true
+        },
+        {
+          "enabled": true,
+          "submenu": [],
+          "submenuItemCount": 0,
+          "submenuOmitted": "服务菜单的内容是本机装的软件，不记录",
+          "submenuSize": {
+            "h": 10,
+            "w": 16
+          },
+          "title": "Services"
+        },
+        {
+          "separator": true
+        },
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": "h",
+          "shortcut": "⌘H",
+          "title": "Hide MenuProbe"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": "h",
+          "shortcut": "⌥⌘H",
+          "title": "Hide Others"
+        },
+        {
+          "enabled": false,
+          "title": "Show All"
+        },
+        {
+          "separator": true
+        },
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": "q",
+          "shortcut": "⌘Q",
+          "title": "Quit MenuProbe"
+        }
+      ],
+      "submenuSize": {
+        "h": 222,
+        "w": 224
+      },
+      "title": "MenuProbe"
+    },
+    {
+      "enabled": true,
+      "submenu": [
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": "n",
+          "shortcut": "⌘N",
+          "title": "New Document"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": "o",
+          "shortcut": "⌘O",
+          "title": "Open…"
+        },
+        {
+          "enabled": true,
+          "submenu": [
+            {
+              "count": 1
+            }
+          ],
+          "submenuSize": {
+            "h": 34,
+            "w": 101
+          },
+          "title": "Open Recent"
+        },
+        {
+          "separator": true
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "w",
+          "shortcut": "⌘W",
+          "title": "Close"
+        },
+        {
+          "alternate": true,
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": "w",
+          "shortcut": "⌥⌘W",
+          "title": "Close All"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "s",
+          "shortcut": "⌘S",
+          "title": "Save"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "s",
+          "shortcut": "⇧⌘S",
+          "title": "Duplicate"
+        },
+        {
+          "enabled": false,
+          "title": "Rename…"
+        },
+        {
+          "enabled": false,
+          "title": "Move To…"
+        },
+        {
+          "enabled": false,
+          "title": "Export As…"
+        },
+        {
+          "separator": true
+        },
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": "p",
+          "shortcut": "⇧⌘P",
+          "title": "Page Setup…"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "p",
+          "shortcut": "⌘P",
+          "title": "Print…"
+        }
+      ],
+      "submenuSize": {
+        "h": 320,
+        "w": 209
+      },
+      "title": "File"
+    },
+    {
+      "enabled": true,
+      "submenu": [
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "z",
+          "shortcut": "⌘Z",
+          "title": "Undo"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "z",
+          "shortcut": "⇧⌘Z",
+          "title": "Redo"
+        },
+        {
+          "separator": true
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "x",
+          "shortcut": "⌘X",
+          "title": "Cut"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "c",
+          "shortcut": "⌘C",
+          "title": "Copy"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "v",
+          "shortcut": "⌘V",
+          "title": "Paste"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "v",
+          "shortcut": "⌥⇧⌘V",
+          "title": "Paste and Match Style"
+        },
+        {
+          "enabled": false,
+          "title": "Delete"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "a",
+          "shortcut": "⌘A",
+          "title": "Select All"
+        },
+        {
+          "separator": true
+        },
+        {
+          "enabled": true,
+          "submenu": [
+            {
+              "count": 5
+            }
+          ],
+          "submenuSize": {
+            "h": 130,
+            "w": 226
+          },
+          "title": "Find"
+        },
+        {
+          "enabled": true,
+          "submenu": [
+            {
+              "count": 2
+            }
+          ],
+          "submenuSize": {
+            "h": 58,
+            "w": 243
+          },
+          "title": "Spelling and Grammar"
+        },
+        {
+          "enabled": true,
+          "submenu": [
+            {
+              "count": 1
+            }
+          ],
+          "submenuSize": {
+            "h": 34,
+            "w": 116
+          },
+          "title": "Substitutions"
+        },
+        {
+          "enabled": true,
+          "submenu": [
+            {
+              "count": 1
+            }
+          ],
+          "submenuSize": {
+            "h": 34,
+            "w": 134
+          },
+          "title": "Transformations"
+        },
+        {
+          "enabled": true,
+          "submenu": [
+            {
+              "count": 1
+            }
+          ],
+          "submenuSize": {
+            "h": 34,
+            "w": 122
+          },
+          "title": "Speech"
+        },
+        {
+          "separator": true
+        },
+        {
+          "enabled": true,
+          "submenu": [
+            {
+              "count": 3
+            }
+          ],
+          "submenuSize": {
+            "h": 82,
+            "w": 133
+          },
+          "title": "AutoFill"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "🎤",
+          "shortcut": "🎤",
+          "title": "Start Dictation"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "hidden": true,
+          "keyEquivalent": "d",
+          "shortcut": "D",
+          "title": "Start Dictation"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": " ",
+          "shortcut": "⌘ ",
+          "title": "Emoji & Symbols"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "hidden": true,
+          "keyEquivalent": " ",
+          "shortcut": "⌃⌘ ",
+          "title": "Emoji & Symbols"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "hidden": true,
+          "keyEquivalent": "e",
+          "shortcut": "E",
+          "title": "Emoji & Symbols"
+        }
+      ],
+      "submenuSize": {
+        "h": 427,
+        "w": 268
+      },
+      "title": "Edit"
+    },
+    {
+      "enabled": true,
+      "submenu": [
+        {
+          "enabled": true,
+          "submenu": [
+            {
+              "count": 4
+            }
+          ],
+          "submenuSize": {
+            "h": 106,
+            "w": 149
+          },
+          "title": "Font"
+        },
+        {
+          "enabled": true,
+          "submenu": [
+            {
+              "count": 3
+            }
+          ],
+          "submenuSize": {
+            "h": 82,
+            "w": 140
+          },
+          "title": "Text"
+        }
+      ],
+      "submenuSize": {
+        "h": 58,
+        "w": 91
+      },
+      "title": "Format"
+    },
+    {
+      "enabled": true,
+      "submenu": [
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "t",
+          "shortcut": "⌥⌘T",
+          "title": "Show Toolbar"
+        },
+        {
+          "enabled": false,
+          "title": "Customize Toolbar…"
+        },
+        {
+          "separator": true
+        },
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "s",
+          "shortcut": "⌃⌘S",
+          "title": "Show Sidebar"
+        }
+      ],
+      "submenuSize": {
+        "h": 93,
+        "w": 235
+      },
+      "title": "View"
+    },
+    {
+      "enabled": true,
+      "submenu": [
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": "k",
+          "shortcut": "⌘K",
+          "title": "Command Only"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": "k",
+          "shortcut": "⇧⌘K",
+          "title": "Add Shift"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": "k",
+          "shortcut": "⌃⌥⇧⌘K",
+          "title": "All Four Modifiers"
+        },
+        {
+          "separator": true
+        },
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": "?",
+          "shortcut": "⌘?",
+          "title": "Help (Command-?)"
+        },
+        {
+          "autoLocalize": true,
+          "enabled": true,
+          "keyEquivalent": "/",
+          "shortcut": "⇧⌘/",
+          "title": "Shift-Command-Slash"
+        },
+        {
+          "autoLocalize": false,
+          "enabled": true,
+          "keyEquivalent": "?",
+          "shortcut": "⌘?",
+          "title": "Command-? Not Localized"
+        },
+        {
+          "autoLocalize": false,
+          "enabled": true,
+          "keyEquivalent": "/",
+          "shortcut": "⇧⌘/",
+          "title": "Shift-Command-/ Not Localized"
+        },
+        {
+          "separator": true
+        },
+        {
+          "enabled": false,
+          "title": "Unavailable Item"
+        }
+      ],
+      "submenuSize": {
+        "h": 224,
+        "w": 310
+      },
+      "title": "Keys"
+    },
+    {
+      "enabled": true,
+      "submenu": [
+        {
+          "autoLocalize": true,
+          "enabled": false,
+          "keyEquivalent": "m",
+          "shortcut": "⌘M",
+          "title": "Minimize"
+        },
+        {
+          "enabled": false,
+          "title": "Zoom"
+        },
+        {
+          "separator": true
+        },
+        {
+          "enabled": true,
+          "title": "Bring All to Front"
+        },
+        {
+          "separator": true
+        },
+        {
+          "enabled": true,
+          "title": "MenuProbe"
+        }
+      ],
+      "submenuSize": {
+        "h": 128,
+        "w": 203
+      },
+      "title": "Window"
+    },
+    {
+      "enabled": true,
+      "submenu": [
+        {
+          "enabled": true,
+          "title": "MenuProbe Help"
+        }
+      ],
+      "submenuSize": {
+        "h": 34,
+        "w": 152
+      },
+      "title": "Help"
+    }
+  ],
+  "menuBarHeightAPI": 33,
+  "menuSizes": {
+    "Edit": {
+      "h": 427,
+      "items": 22,
+      "w": 268
+    },
+    "File": {
+      "h": 320,
+      "items": 14,
+      "w": 209
+    },
+    "Format": {
+      "h": 58,
+      "items": 2,
+      "w": 91
+    },
+    "Help": {
+      "h": 34,
+      "items": 1,
+      "w": 152
+    },
+    "Keys": {
+      "h": 224,
+      "items": 10,
+      "w": 310
+    },
+    "MenuProbe": {
+      "h": 222,
+      "items": 11,
+      "w": 224
+    },
+    "View": {
+      "h": 93,
+      "items": 4,
+      "w": 235
+    },
+    "Window": {
+      "h": 128,
+      "items": 6,
+      "w": 203
+    },
+    "context": {
+      "h": 200,
+      "items": 9,
+      "w": 118
+    }
+  },
+  "mode": "dark",
+  "mouseAtStart": {
+    "x": 1239.23,
+    "y": 427.67
+  },
+  "os": "Version 26.6.2 (Build 25G83)",
+  "screen": {
+    "auxTopLeft": {
+      "h": 32,
+      "w": 663,
+      "x": 0,
+      "y": 950
+    },
+    "auxTopRight": {
+      "h": 32,
+      "w": 664,
+      "x": 848,
+      "y": 950
+    },
+    "frame": {
+      "h": 982,
+      "w": 1512,
+      "x": 0,
+      "y": 0
+    },
+    "safeTop": 32,
+    "visible": {
+      "h": 876,
+      "w": 1512,
+      "x": 0,
+      "y": 73
+    },
+    "visibleTopGap": 33
+  },
+  "statusBarThickness": 22
+}

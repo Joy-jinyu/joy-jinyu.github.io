@@ -1,0 +1,3257 @@
+{
+  "total": 192,
+  "posts": {
+    "macos-windows": 23,
+    "macos-sidebar-toolbar": 25,
+    "macos-menus": 25,
+    "macos-pointer-focus": 19,
+    "macos-controls": 24,
+    "macos-type-color": 21,
+    "macos-presentation": 25,
+    "macos-feedback": 30
+  },
+  "rules": [
+    {
+      "id": "WIN-01",
+      "rule": "对齐系统：普通文稿窗口的标题栏（含工具栏）高度只取四种外壳之一（设置窗口见 FB-15，utility 面板见 PRES-23，合并标签页后见 WIN-22）",
+      "check": "截窗口图（2x），量标题栏底部分隔线的 y",
+      "value": {
+        "plain": 32,
+        "unifiedCompact": 40,
+        "unified": 52,
+        "expanded": 76
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/data/gallery.json#.windows.plain.titlebarPlusToolbar",
+        "lab:macos/data/gallery.json#.windows.unifiedCompact.titlebarPlusToolbar",
+        "lab:macos/data/gallery.json#.windows.unified.titlebarPlusToolbar",
+        "lab:macos/data/gallery.json#.windows.expanded.titlebarPlusToolbar",
+        "lab:macos/macos-windows/data/apps-ax.json#.apps.Notes.bars[0].frame.h"
+      ],
+      "level": "should",
+      "post": "/blog/macos-windows/"
+    },
+    {
+      "id": "WIN-02",
+      "rule": "对齐系统：普通文稿窗口的红绿灯在系统给的位置，直径 14、圆心相距 23，不移动不缩放（utility 面板的红绿灯见 PRES-23）",
+      "check": "2x 截图上量关闭按钮左上角离窗口左边、顶边的距离",
+      "value": {
+        "closeOrigin": {
+          "plain": [
+            9,
+            9
+          ],
+          "unifiedCompact": [
+            12,
+            13
+          ],
+          "unified": [
+            19,
+            19
+          ],
+          "expanded": [
+            9,
+            9
+          ]
+        },
+        "diameter": 14,
+        "pitch": 23,
+        "zoomRightEdge": {
+          "plain": 69,
+          "unifiedCompact": 72,
+          "unified": 79
+        }
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-windows/data/windows.json#.shells.plain.buttons.close",
+        "lab:macos/macos-windows/data/windows.json#.shells.unifiedCompact.buttons.close",
+        "lab:macos/macos-windows/data/windows.json#.shells.unified.buttons.close",
+        "lab:macos/macos-windows/data/windows.json#.shells.unified.buttons.zoom"
+      ],
+      "level": "should",
+      "post": "/blog/macos-windows/"
+    },
+    {
+      "id": "WIN-03",
+      "rule": "窗口角上的控件和窗口圆角同心，控件和窗口边之间的缝在整个角上等宽",
+      "check": "看右上角最后一个工具栏按钮离顶边和右边是否相等、是否是圆形或胶囊形",
+      "value": {
+        "cornerRadius": {
+          "plain": 17.1,
+          "unifiedCompact": 20.5,
+          "unified": 25.6,
+          "expanded": 17.1
+        },
+        "toolbarItemDiameter": {
+          "unifiedCompact": 24,
+          "unified": 36
+        },
+        "toolbarItemInset": 8
+      },
+      "unit": "pt",
+      "source": [
+        "hig:toolbars \"ensure that its corner radius is also concentric with the bar’s corners\"",
+        "lab:macos/macos-windows/data/pixels.json#.corner.unified.equivalentRadiusPt",
+        "lab:macos/macos-windows/data/pixels.json#.toolbarTrailingItem.unified.heightPt",
+        "lab:macos/macos-windows/data/pixels.json#.toolbarTrailingItem.unified.insetPt"
+      ],
+      "level": "must",
+      "post": "/blog/macos-windows/"
+    },
+    {
+      "id": "WIN-04",
+      "rule": "对齐系统：标题用系统字体，竖直方向和红绿灯圆心同高",
+      "check": "2x 截图上量标题文字框中线和红绿灯圆心是否同高",
+      "value": {
+        "fontSize": {
+          "plain": 13,
+          "unifiedCompact": 13,
+          "unified": 15,
+          "expanded": 13
+        },
+        "weight": {
+          "plain": "bold",
+          "unifiedCompact": "bold",
+          "unified": "semibold",
+          "expanded": "bold"
+        },
+        "titleLeft": {
+          "plain": 82,
+          "unifiedCompact": 91,
+          "unified": 106
+        }
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-windows/data/windows.json#.shells.unified.title",
+        "lab:macos/macos-windows/data/windows.json#.shells.plain.title",
+        "lab:macos/macos-windows/data/windows.json#.shells.unifiedCompact.title"
+      ],
+      "level": "should",
+      "post": "/blog/macos-windows/"
+    },
+    {
+      "id": "WIN-05",
+      "rule": "不自绘窗口边框和红绿灯，不模仿系统外观",
+      "check": "窗口有没有系统的阴影和圆角，红绿灯在非活动时是否变灰",
+      "value": null,
+      "source": [
+        "hig:windows \"Avoid making custom window frames or controls, and don’t try to replicate the system-provided appearance\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-windows/"
+    },
+    {
+      "id": "WIN-06",
+      "rule": "标题栏和工具栏的空白处能拖动窗口，双击按用户在「桌面与程序坞」里的设置执行",
+      "check": "在工具栏按钮之间按住拖动；双击同一处，结果和其他应用一致",
+      "value": {
+        "doubleClickSetting": "AppleActionOnDoubleClick",
+        "observed": "Maximize"
+      },
+      "source": [
+        "hig:windows \"People can move a window by dragging the frame\"",
+        "lab:macos/macos-windows/data/defaults.json#.AppleActionOnDoubleClick"
+      ],
+      "level": "should",
+      "post": "/blog/macos-windows/"
+    },
+    {
+      "id": "WIN-07",
+      "rule": "对齐系统：红绿灯所在的前导区域不放内容和控件",
+      "check": "把窗口缩窄，看红绿灯右侧是否被工具栏项或内容盖住",
+      "value": {
+        "plain": 69,
+        "unifiedCompact": 72,
+        "unified": 79
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-windows/data/windows.json#.shells.plain.buttons.zoom",
+        "lab:macos/macos-windows/data/windows.json#.shells.unifiedCompact.buttons.zoom",
+        "lab:macos/macos-windows/data/windows.json#.shells.unified.buttons.zoom"
+      ],
+      "level": "should",
+      "post": "/blog/macos-windows/"
+    },
+    {
+      "id": "WIN-08",
+      "rule": "窗口非活动时用系统定义的外观：红绿灯变灰，标题栏上所有前景（包括应用自己画的工具栏项）一起变淡；带材质的区域不再透出底下的颜色，显得暗淡",
+      "check": "点一下桌面，看标题、每个工具栏图标是否和红绿灯一起变淡；有侧边栏 / 玻璃的窗口看材质区域是否变得暗淡",
+      "value": {
+        "titleColor": {
+          "unified": "labelColor",
+          "plain": "windowFrameTextColor",
+          "light": "#000000 a=0.847",
+          "dark": "#FFFFFF a=0.847"
+        },
+        "inactiveLooksLike": "tertiaryLabelColor",
+        "tertiaryLabelColor": {
+          "light": "#000000 a=0.259",
+          "dark": "#FFFFFF a=0.247"
+        },
+        "measuredOn": "无材质区域的 plain / unified 窗口",
+        "condition": "macOS 26.6.2 截图转 sRGB，深色截图偏蓝，来源未验证（推测与壁纸着色有关）"
+      },
+      "source": [
+        "hig:windows \"Make sure custom windows use the system-defined appearances\"",
+        "hig:windows \"inactive windows don’t use\"",
+        "hig:windows \"which makes them appear subdued\"",
+        "lab:macos/macos-windows/data/appearance-key-light.json#.titleColors[\"unified-key-light\"].catalogName",
+        "lab:macos/macos-windows/data/appearance-inactive.json#.titleColors[\"unified-inactive-light\"].sRGB",
+        "lab:macos/data/metrics.json#.colors.light.tertiaryLabelColor",
+        "lab:macos/macos-windows/data/pixels.json#.derivedTertiaryLabelOverWindow"
+      ],
+      "level": "must",
+      "post": "/blog/macos-windows/"
+    },
+    {
+      "id": "WIN-09",
+      "rule": "应用自己设最小内容尺寸，缩到最小时不截断、不重叠（工具栏的溢出见 BAR-19）",
+      "check": "拖右下角缩到最小，看文字截断、控件重叠",
+      "value": {
+        "appKitDefaultMinSize": {
+          "plain": [
+            0,
+            32
+          ],
+          "fullSizeContentToolbar": [
+            0,
+            0
+          ]
+        }
+      },
+      "unit": "pt",
+      "source": [
+        "hig:windows \"Make sure that your windows adapt fluidly to different sizes\"",
+        "lab:macos/macos-windows/data/windows.json#.shells.plain.minSizeProperty",
+        "lab:macos/macos-windows/data/windows.json#.shells.unified.minSizeProperty"
+      ],
+      "level": "must",
+      "post": "/blog/macos-windows/"
+    },
+    {
+      "id": "WIN-10",
+      "rule": "关键控件和信息不放在窗口底部，侧边栏底部也一样",
+      "check": "把窗口下沿拖到屏幕外，看是否丢了必须的操作或信息",
+      "value": null,
+      "source": [
+        "hig:layout \"Avoid placing controls or critical information at the bottom of a window\"",
+        "hig:sidebars \"Avoid putting critical information or actions at the bottom of a sidebar\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-windows/"
+    },
+    {
+      "id": "WIN-11",
+      "rule": "对齐系统：第一次打开的窗口完整落在屏幕可用区里，且不铺满",
+      "check": "首次启动看窗口有没有边落到程序坞下面或屏幕外",
+      "value": {
+        "screen": [
+          1512,
+          982
+        ],
+        "visibleFrame": {
+          "w": 1512,
+          "h": [
+            879,
+            884
+          ]
+        },
+        "systemAppWindows": {
+          "Calculator": [
+            230,
+            408
+          ],
+          "SystemSettings": [
+            723,
+            625
+          ],
+          "Terminal": [
+            860,
+            499
+          ],
+          "Notes": [
+            1000,
+            660
+          ],
+          "Safari": [
+            1072,
+            791
+          ]
+        }
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-windows/data/windows.json#.screen.visibleFrame",
+        "lab:macos/macos-windows/data/appearance-inactive.json#.screen.visibleFrame",
+        "lab:macos/macos-windows/data/apps-ax.json#.apps.Calculator.window",
+        "lab:macos/macos-windows/data/apps-ax.json#.apps[\"System Settings\"].window",
+        "lab:macos/macos-windows/data/apps-ax.json#.apps.Terminal.window",
+        "lab:macos/macos-windows/data/apps-ax.json#.apps.Notes.window",
+        "lab:macos/macos-windows/data/apps-ax.json#.apps.Safari.window"
+      ],
+      "level": "should",
+      "post": "/blog/macos-windows/"
+    },
+    {
+      "id": "WIN-12",
+      "rule": "进入全屏的入口用绿灯、「显示 → 进入全屏幕」和 ⌃⌘F",
+      "check": "点绿灯看是否进入新空间；查「显示」菜单和 ⌃⌘F",
+      "value": {
+        "greenButton": [
+          "AXZoomButton",
+          "AXFullScreenButton"
+        ],
+        "shortcut": "⌃⌘F"
+      },
+      "source": [
+        "hig:going-full-screen \"Prefer letting people use your window’s Enter Full Screen button, View menu item, or the Control-Command-F keyboard shortcut\"",
+        "lab:macos/macos-windows/data/apps-ax.json#.apps.Safari.fullScreen"
+      ],
+      "level": "should",
+      "post": "/blog/macos-windows/"
+    },
+    {
+      "id": "WIN-13",
+      "rule": "不做自定义的窗口模式菜单",
+      "check": "看应用有没有自己的「窗口模式 / 布局」菜单代替系统全屏",
+      "value": null,
+      "source": [
+        "hig:going-full-screen \"Avoid offering a custom menu of window modes\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-windows/"
+    },
+    {
+      "id": "WIN-14",
+      "rule": "「窗口 → 缩放」在适合内容的大小和用户设的大小之间切换，第二次回到原位原大小",
+      "check": "窗口菜单里选缩放两次，记下前后的位置和大小",
+      "value": {
+        "appKitDefault": {
+          "before": [
+            480,
+            300
+          ],
+          "afterZoom": [
+            1512,
+            879
+          ],
+          "afterSecondZoom": [
+            480,
+            300
+          ]
+        }
+      },
+      "unit": "pt",
+      "source": [
+        "hig:the-menu-bar \"Toggles between a predefined size appropriate to the window’s content and the window size people set\"",
+        "lab:macos/macos-windows/data/windows.json#.zoom.afterZoom",
+        "lab:macos/macos-windows/data/windows.json#.zoom.afterSecondZoom"
+      ],
+      "level": "should",
+      "post": "/blog/macos-windows/"
+    },
+    {
+      "id": "WIN-15",
+      "rule": "不用缩放进出全屏",
+      "check": "选「缩放」时窗口是否进入了全屏空间",
+      "value": null,
+      "source": [
+        "hig:the-menu-bar \"Avoid using Zoom to enter or exit full-screen mode\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-windows/"
+    },
+    {
+      "id": "WIN-16",
+      "rule": "全屏用系统的实现，内容避开顶部摄像头那一条，不用代码改窗口尺寸",
+      "check": "⌃⌘F 后看顶部那一条里有没有内容、工具栏是否还在",
+      "value": {
+        "screen": [
+          1512,
+          982
+        ],
+        "fullScreenWindow": [
+          1512,
+          949
+        ],
+        "toolbarStrip": [
+          1512,
+          52
+        ],
+        "content": [
+          1512,
+          897
+        ],
+        "trafficLights": "hidden"
+      },
+      "unit": "pt",
+      "source": [
+        "hig:going-full-screen \"Use the system-provided full-screen experience\"",
+        "hig:going-full-screen \"don’t programmatically resize your window\"",
+        "lab:macos/macos-windows/data/windows.json#.fullscreen.inFullScreen.frame",
+        "lab:macos/macos-windows/data/windows.json#.fullscreen.inFullScreen.contentLayoutRect",
+        "lab:macos/macos-windows/data/fullscreen-windows.json#.windows"
+      ],
+      "level": "must",
+      "post": "/blog/macos-windows/"
+    },
+    {
+      "id": "WIN-17",
+      "rule": "全屏时必需的控件仍可用，程序坞能叫出来（游戏除外），由用户决定何时退出",
+      "check": "全屏下把指针移到底部看程序坞；一段内容结束后看是否自动退出全屏",
+      "value": null,
+      "source": [
+        "hig:going-full-screen \"Continue to provide access to essential features and controls\"",
+        "hig:going-full-screen \"Let people choose when to exit full-screen mode\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-windows/"
+    },
+    {
+      "id": "WIN-18",
+      "rule": "每个窗口的标题说明它装的是哪份内容，不用应用名",
+      "check": "开两个窗口，看「窗口」菜单底部两项能否分开",
+      "value": null,
+      "source": [
+        "hig:toolbars \"Provide a useful title for each window\"",
+        "hig:toolbars \"Don’t title windows with your app name\"",
+        "hig:file-management \"a new document’s title is “Untitled”\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-windows/"
+    },
+    {
+      "id": "WIN-19",
+      "rule": "关掉自动存储时，未存的改动在关闭按钮和「窗口」菜单的文稿名旁显示一个点",
+      "check": "关掉自动存储后改一份文稿不保存，看关闭按钮中间有没有点",
+      "value": null,
+      "source": [
+        "hig:file-management \"make sure people know when a document has unsaved changes\"",
+        "hig:file-management \"display a dot on the document window’s close button\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-windows/"
+    },
+    {
+      "id": "WIN-20",
+      "rule": "不默认开新窗口，除非这对应用确实合理",
+      "check": "日常操作（打开一项、进入详情）有没有弹出新窗口",
+      "value": null,
+      "source": [
+        "hig:windows \"Avoid opening new windows as default behavior unless it makes sense for your app\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-windows/"
+    },
+    {
+      "id": "WIN-21",
+      "rule": "提供「在新窗口中打开」，让人自己选",
+      "check": "右键菜单或「文件」菜单里有没有「在新窗口中打开」",
+      "value": null,
+      "source": [
+        "hig:windows \"Consider letting people view content in a new window\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-windows/"
+    },
+    {
+      "id": "WIN-22",
+      "rule": "对齐系统：多份内容放进一个窗口时用系统的窗口标签，不在内容区自己画标签栏",
+      "check": "「窗口」菜单里有没有「合并所有窗口」；合并后是否出现系统标签栏",
+      "value": {
+        "tabBarHeight": 36,
+        "plain": [
+          32,
+          68
+        ],
+        "unified": [
+          52,
+          88
+        ],
+        "measuredVia": "addTabbedWindow"
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-windows/data/windows.json#.tabs.unified.tabBarHeight",
+        "lab:macos/macos-windows/data/windows.json#.tabs.plain.tabBarHeight",
+        "hig:the-menu-bar \"Combines all open windows into a single tabbed window\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-windows/"
+    },
+    {
+      "id": "WIN-23",
+      "rule": "退出再打开，窗口回到原来的位置、大小和滚动位置",
+      "check": "移动、缩放窗口并滚动，⌘Q 后重开对比",
+      "value": {
+        "appKitAutosaveString": "160 468 420 292 0 0 1512 949",
+        "fields": [
+          "windowX",
+          "windowY",
+          "windowW",
+          "windowH",
+          "screenX",
+          "screenY",
+          "screenW",
+          "screenHMinusTop33"
+        ]
+      },
+      "source": [
+        "hig:multitasking \"always needs to be prepared to save and restore their context\"",
+        "hig:launching \"Restore granular details of the previous state as much as possible\"",
+        "lab:macos/macos-windows/data/windows.json#.autosave.value"
+      ],
+      "level": "must",
+      "post": "/blog/macos-windows/"
+    },
+    {
+      "id": "BAR-01",
+      "rule": "玻璃只用在控件和导航层（工具栏、侧边栏），内容层的卡片、列表行、背景不用玻璃",
+      "check": "看内容区的卡片、行、输入框有没有玻璃的亮边和模糊",
+      "value": null,
+      "source": [
+        "hig:materials \"forms a distinct functional layer for controls and navigation elements\"",
+        "hig:materials \"Don’t use Liquid Glass in the content layer\"",
+        "hig:materials \"Use Liquid Glass effects sparingly\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-sidebar-toolbar/"
+    },
+    {
+      "id": "BAR-02",
+      "rule": "工具栏下面不铺实色或半透明底，内容从窗口顶边开始，滚到工具栏下面时由滚动边缘效果分开",
+      "check": "把内容往上滚到工具栏下面，看能否透出模糊的内容",
+      "value": {
+        "contentScrollTop": 0,
+        "contentInsetTop": 52
+      },
+      "unit": "pt",
+      "source": [
+        "hig:layout \"Instead of applying a solid or semi-opaque background color beneath controls, use a scroll edge effect\"",
+        "hig:toolbars \"Reduce the use of toolbar backgrounds and tinted controls\"",
+        "lab:macos/macos-sidebar-toolbar/data/sidebar.json#.mainL.table.scrollFrame.top",
+        "lab:macos/macos-sidebar-toolbar/data/sidebar.json#.mainL.table.contentInsets.top"
+      ],
+      "level": "should",
+      "post": "/blog/macos-sidebar-toolbar/"
+    },
+    {
+      "id": "BAR-03",
+      "rule": "滚动边缘效果只放在滚动视图上压着浮动控件的地方，每个视图一个；分栏里各栏的高度一致",
+      "check": "看没有浮动控件的区域是否也有模糊带；各栏顶部的模糊带是否一样高",
+      "value": null,
+      "source": [
+        "hig:scroll-views \"Only use a scroll edge effect when a scroll view is behind floating interface elements\"",
+        "hig:scroll-views \"Apply one scroll edge effect per view\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-sidebar-toolbar/"
+    },
+    {
+      "id": "BAR-04",
+      "rule": "对齐系统：侧边栏是浮在窗口里的一块玻璃，离窗口左、上、下边各 8 pt，圆角实测 18.8 pt",
+      "check": "看侧边栏四周有没有一圈窗口底色；量截图里侧边栏左边和顶边的位置",
+      "value": {
+        "inset": 8,
+        "cornerEqRadius": 18.8
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-sidebar-toolbar/data/sidebar.json#.mainL.sidebarView",
+        "lab:macos/macos-sidebar-toolbar/data/pixels.json#.sidebarGlass.cornerEqRadiusPt"
+      ],
+      "level": "should",
+      "post": "/blog/macos-sidebar-toolbar/"
+    },
+    {
+      "id": "BAR-05",
+      "rule": "侧边栏设合理的最小和最大宽度，保证分隔条一直看得见；对齐系统：默认宽度等于最小宽度 140 pt（窗口 700–2200 pt 宽实测都是 140），maximumThickness 默认不设，上限要应用自己定",
+      "check": "把分隔条往右拖到底，看侧边栏是否停在应用设的最大宽度，而不是跟到窗口另一边",
+      "value": {
+        "default": 140,
+        "min": 140,
+        "systemMax": null,
+        "automaticMaximumThicknessProperty": 250
+      },
+      "unit": "pt",
+      "source": [
+        "hig:split-views \"Set reasonable defaults for minimum and maximum pane sizes\"",
+        "hig:split-views \"keep the divider visible\"",
+        "lab:macos/macos-sidebar-toolbar/data/sidebar.json#.splitViewItemDefaults.sidebar",
+        "lab:macos/macos-sidebar-toolbar/data/sidebar.json#.sidebarInitialWidth",
+        "lab:macos/macos-sidebar-toolbar/data/sidebar.json#.sidebarDrag"
+      ],
+      "level": "should",
+      "post": "/blog/macos-sidebar-toolbar/"
+    },
+    {
+      "id": "BAR-06",
+      "rule": "对齐系统：检查器（inspector）默认宽 270 pt",
+      "check": "打开检查器量它的宽度",
+      "value": 270,
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-sidebar-toolbar/data/sidebar.json#.splitViewItemDefaults.inspector.minimumThickness"
+      ],
+      "level": "should",
+      "post": "/blog/macos-sidebar-toolbar/"
+    },
+    {
+      "id": "BAR-07",
+      "rule": "侧边栏能隐藏但默认不隐藏；藏起来后提供多种方式拿回来（工具栏按钮、带快捷键的菜单命令）",
+      "check": "首次打开看侧边栏是否显示；藏起来后看工具栏开关和「显示」菜单里的命令能否拿回来",
+      "value": null,
+      "source": [
+        "hig:sidebars \"Avoid hiding the sidebar by default\"",
+        "hig:split-views \"Provide multiple ways to reveal hidden panes\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-sidebar-toolbar/"
+    },
+    {
+      "id": "BAR-08",
+      "rule": "侧边栏行高、字号、图标大小默认跟着系统的「侧边栏图标大小」（全局偏好 NSTableViewDefaultSizeMode），应用可以指定但不该写死",
+      "check": "在系统设置里改侧边栏图标大小，看行高是否在 24 / 32 / 40 之间跟着变",
+      "value": {
+        "small": {
+          "row": 24,
+          "text": 11,
+          "symbol": 11
+        },
+        "medium": {
+          "row": 32,
+          "text": 13,
+          "symbol": 13
+        },
+        "large": {
+          "row": 40,
+          "text": 15,
+          "symbol": 15
+        },
+        "groupRow": 19,
+        "groupText": 11,
+        "default": "medium"
+      },
+      "unit": "pt",
+      "source": [
+        "hig:sidebars \"row height, text, and glyph size depend on its overall size\"",
+        "hig:sidebars \"You can set the size programmatically\"",
+        "lab:macos/macos-sidebar-toolbar/data/sidebar.json#.rowSizes",
+        "lab:macos/macos-sidebar-toolbar/data/rowsize.json#.runs"
+      ],
+      "level": "should",
+      "post": "/blog/macos-sidebar-toolbar/"
+    },
+    {
+      "id": "BAR-09",
+      "rule": "用 AppKit 时把侧边栏的 rowSizeStyle 设成 .default；代码新建的表默认是 custom、24 pt 行，不跟系统偏好",
+      "check": "改系统的侧边栏图标大小，行高不变就是没跟系统",
+      "value": {
+        "codeDefaultRow": 24,
+        "defaultResolvesTo": "medium"
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-sidebar-toolbar/data/sidebar.json#.codeBuiltOutline",
+        "lab:macos/macos-sidebar-toolbar/data/sidebar.json#.rowSizes.default.effectiveRowSizeStyle"
+      ],
+      "level": "should",
+      "post": "/blog/macos-sidebar-toolbar/"
+    },
+    {
+      "id": "BAR-10",
+      "rule": "侧边栏最多两层层级，图标用 SF Symbols；更深的层级放进中间一栏",
+      "check": "数侧边栏的缩进层数",
+      "value": 2,
+      "source": [
+        "hig:sidebars \"show no more than two levels of hierarchy in a sidebar\"",
+        "hig:sidebars \"Consider using familiar symbols to represent items in the sidebar\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-sidebar-toolbar/"
+    },
+    {
+      "id": "BAR-11",
+      "rule": "侧边栏图标颜色跟着用户选的强调色，固定颜色只给少数有含义的图标（HIG 2026-11 的要求；macOS 26.6.2 的默认行为见 BAR-27）",
+      "check": "按 HIG（2026-11 版，对应 macOS 27）查：在系统设置里换强调色，看侧边栏图标是否一起变；有固定颜色的图标是否只有少数几个",
+      "value": null,
+      "source": [
+        "hig:sidebars \"make sure your sidebar icons display the color people choose\"",
+        "hig:sidebars \"By default, sidebar icons use your app\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-sidebar-toolbar/"
+    },
+    {
+      "id": "BAR-12",
+      "rule": "侧边栏选中行在有焦点时是实心强调色、白字；焦点离开或窗口非活动时变成浅灰底、强调色字，不清除选中",
+      "check": "点侧边栏一项，再点右边列表，再点别的应用，看选中条是否一直在且变淡",
+      "value": {
+        "focused": {
+          "background": "controlAccentColor",
+          "fg": "white"
+        },
+        "unfocused": {
+          "background": "浅灰（截图浅色约 #EFEFEF，深色约 #2C3134）",
+          "fg": "controlAccentColor"
+        }
+      },
+      "source": [
+        "hig:split-views \"persistently highlight the current selection in each pane\"",
+        "lab:macos/data/metrics.json#.colors.light.controlAccentColor",
+        "lab:macos/macos-sidebar-toolbar/data/pixels.json#.sidebarSelectionColors"
+      ],
+      "level": "must",
+      "post": "/blog/macos-sidebar-toolbar/"
+    },
+    {
+      "id": "BAR-13",
+      "rule": "对齐系统：侧边栏选中条占满行高，离玻璃左右各 10 pt，圆角约 7 pt",
+      "check": "截图量选中条到侧边栏边缘的距离",
+      "value": {
+        "inset": 10,
+        "height": "rowHeight",
+        "cornerEqRadius": 6.8
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-sidebar-toolbar/data/pixels.json#.selectionPill"
+      ],
+      "level": "should",
+      "post": "/blog/macos-sidebar-toolbar/"
+    },
+    {
+      "id": "BAR-16",
+      "rule": "工具栏按功能分组，最多三组；前导端放侧边栏开关和标题，后部放检查器开关、搜索和唯一的主要操作",
+      "check": "数搜索框之外的玻璃胶囊数",
+      "value": 3,
+      "source": [
+        "hig:toolbars \"aim for a maximum of three\"",
+        "hig:toolbars \"Only specify one primary action, and put it on the trailing side of the toolbar\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-sidebar-toolbar/"
+    },
+    {
+      "id": "BAR-17",
+      "rule": "工具栏按钮只有图标不加边框；对齐系统：相邻按钮共用一块胶囊，空格项把胶囊断开，搜索框自成一块；有侧边栏时标题从侧边栏玻璃右边 +18 pt 开始；侧边栏开关 33.5 × 28 pt、落在侧边栏玻璃上，不是 36 × 36 的玻璃按钮。按钮尺寸、离边距离、标题字号见 WIN-03、WIN-04",
+      "check": "截图量胶囊宽度、胶囊之间的距离、标题左边缘到侧边栏玻璃右边的距离",
+      "value": {
+        "groupOf3": 107,
+        "groupOf2": 70,
+        "groupGap": 20,
+        "searchGap": 10,
+        "titleAfterSidebar": 18,
+        "sidebarToggle": {
+          "w": 33.5,
+          "h": 28
+        }
+      },
+      "unit": "pt",
+      "source": [
+        "hig:toolbars \"Prefer system-provided symbols without borders\"",
+        "lab:macos/macos-sidebar-toolbar/data/sidebar.json#.mainL.chrome[9].frame",
+        "lab:macos/macos-sidebar-toolbar/data/sidebar.json#.mainL.chrome[11].frame",
+        "lab:macos/macos-sidebar-toolbar/data/sidebar.json#.mainL.chrome[13].frame",
+        "lab:macos/macos-sidebar-toolbar/data/sidebar.json#.mainL.chrome[47].frame",
+        "lab:macos/macos-sidebar-toolbar/data/sidebar.json#.mainL.chrome[49].frame"
+      ],
+      "level": "should",
+      "post": "/blog/macos-sidebar-toolbar/"
+    },
+    {
+      "id": "BAR-18",
+      "rule": "带文字的工具栏按钮和图标按钮分开放；标题不超过 15 个字符",
+      "check": "看文字按钮旁边是否紧贴着图标按钮；数标题字数",
+      "value": 15,
+      "unit": "字符",
+      "source": [
+        "hig:toolbars \"Keep actions with text labels separate\"",
+        "hig:toolbars \"keep the title under 15 characters long\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-sidebar-toolbar/"
+    },
+    {
+      "id": "BAR-19",
+      "rule": "不自己做溢出菜单；窗口变窄时先让搜索框收成按钮，再把中间的项收进系统的 »；常用宽度下不出现 »",
+      "check": "慢慢拖窄窗口，看收起顺序，是否有按钮压住标题或凭空消失",
+      "value": {
+        "searchExpanded": {
+          "w": 264,
+          "h": 36
+        },
+        "searchCollapsed": 37,
+        "collapsedAtWindow": 720,
+        "overflowAtWindow": 520
+      },
+      "unit": "pt",
+      "source": [
+        "hig:toolbars \"add an overflow menu manually\"",
+        "hig:toolbars \"avoid layouts that cause toolbar items to overflow by default\"",
+        "lab:macos/macos-sidebar-toolbar/data/sidebar.json#.mainL.search.field",
+        "lab:macos/macos-sidebar-toolbar/data/sidebar.json#.heroL.search.field",
+        "lab:macos/macos-sidebar-toolbar/data/sidebar.json#.narrow.toolbarVisibleItems"
+      ],
+      "level": "must",
+      "post": "/blog/macos-sidebar-toolbar/"
+    },
+    {
+      "id": "BAR-20",
+      "rule": "搜内容的搜索框放在工具栏后部；只过滤侧边栏时放在侧边栏顶上",
+      "check": "看搜索框位置和它搜的范围是否对应",
+      "value": null,
+      "source": [
+        "hig:search-fields \"Put a search field at the trailing side of the toolbar\"",
+        "hig:search-fields \"Include search at the top of the sidebar when filtering content or navigation there\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-sidebar-toolbar/"
+    },
+    {
+      "id": "BAR-21",
+      "rule": "对齐系统：内容表格行高 24 pt、字 13 pt、表头 28 pt；inset 样式多 5 pt 顶部留白，首个单元格离左边 16 pt",
+      "check": "截图量行高和表头高度",
+      "value": {
+        "row": 24,
+        "text": 13,
+        "header": 28,
+        "insetTop": 5,
+        "cellLeading": {
+          "inset": 16,
+          "plain": 8,
+          "fullWidth": 6
+        }
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-sidebar-toolbar/data/sidebar.json#.tables"
+      ],
+      "level": "should",
+      "post": "/blog/macos-sidebar-toolbar/"
+    },
+    {
+      "id": "BAR-22",
+      "rule": "交替行色只用于多列表格，颜色用 alternatingContentBackgroundColors",
+      "check": "看单列列表有没有条纹；多列宽表能否跟着一行看过去",
+      "value": {
+        "light": [
+          "#FFFFFF",
+          "#F4F5F5"
+        ],
+        "dark": [
+          "#1E1E1E",
+          "#FFFFFF a=0.047"
+        ]
+      },
+      "source": [
+        "hig:lists-and-tables \"Consider using alternating row colors in a multicolumn table\"",
+        "lab:macos/data/metrics.json#.colors.alternatingContentBackgroundColors"
+      ],
+      "level": "should",
+      "post": "/blog/macos-sidebar-toolbar/"
+    },
+    {
+      "id": "BAR-23",
+      "rule": "多列表格的列标题可点击排序（再点反向），列宽可拖",
+      "check": "点列标题两次；拖列标题之间的线",
+      "value": null,
+      "source": [
+        "hig:lists-and-tables \"let people click a column heading to sort a table view\"",
+        "hig:lists-and-tables \"Let people resize columns\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-sidebar-toolbar/"
+    },
+    {
+      "id": "BAR-24",
+      "rule": "层级数据用大纲视图，层级只在第一列，记住展开状态",
+      "check": "展开几层后关掉窗口再打开，看是否还原",
+      "value": null,
+      "source": [
+        "hig:lists-and-tables \"Use an outline view instead of a table view to present hierarchical data\"",
+        "hig:outline-views \"Expose data hierarchy in the first column only\"",
+        "hig:outline-views \"expansion choices\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-sidebar-toolbar/"
+    },
+    {
+      "id": "BAR-25",
+      "rule": "分栏之间用 1 pt 的细分隔条",
+      "check": "截图量分隔条宽度",
+      "value": 1,
+      "unit": "pt",
+      "source": [
+        "hig:split-views \"The thin divider measures one point in width\"",
+        "lab:macos/macos-sidebar-toolbar/data/sidebar.json#.mainL.split.dividerThickness"
+      ],
+      "level": "should",
+      "post": "/blog/macos-sidebar-toolbar/"
+    },
+    {
+      "id": "BAR-27",
+      "rule": "对齐系统：macOS 26.6.2 实测，默认的 tint 配置下，没选中的侧边栏图标是单色，不是强调色（和 BAR-11 引的 HIG 2026-11 版、macOS 11–15 的强调色默认不同）",
+      "check": "在 macOS 26.x 上、强调色为系统默认（多色）时看没选中的侧边栏图标颜色",
+      "value": "单色，接近 labelColor（浅色近黑、深色近白）",
+      "source": [
+        "lab:macos/macos-sidebar-toolbar/data/pixels.json#.sidebarIconUnselected",
+        "lab:macos/data/metrics.json#.colors.light.labelColor"
+      ],
+      "level": "should",
+      "post": "/blog/macos-sidebar-toolbar/"
+    },
+    {
+      "id": "BAR-28",
+      "rule": "窗口缩小时考虑自动收起侧边栏、放大时再放出来；对齐系统：AppKit 侧边栏的 canCollapseFromWindowResize 默认是 true",
+      "check": "把窗口拖到很窄，看侧边栏是否自动收起，再拉宽是否回来（用户拖动时的行为本文没量）",
+      "value": {
+        "canCollapseFromWindowResize": true
+      },
+      "source": [
+        "hig:sidebars \"Consider automatically hiding and revealing a sidebar when its container window resizes\"",
+        "lab:macos/macos-sidebar-toolbar/data/sidebar.json#.splitViewItemDefaults.sidebar.canCollapseFromWindowResize"
+      ],
+      "level": "should",
+      "post": "/blog/macos-sidebar-toolbar/"
+    },
+    {
+      "id": "MENU-01",
+      "rule": "每个命令都能在菜单栏里找到，包括只在工具栏、右键菜单、面板里出现的命令",
+      "check": "把一个工具栏按钮或右键菜单项的名字输进帮助菜单的搜索框，能搜到",
+      "value": null,
+      "source": [
+        "hig:the-menu-bar \"risks making them difficult for everyone to find\"",
+        "hig:context-menus \"Always make context menu items available in the main interface, too.\"",
+        "hig:context-menus \"an app’s menu bar menus list all the app’s commands\"",
+        "hig:toolbars \"Make every toolbar item available as a command in the menu bar\"",
+        "lab:macos/macos-menus/data/ax/search-Rename-light-ax.json#.rows[0][0]"
+      ],
+      "level": "must",
+      "post": "/blog/macos-menus/"
+    },
+    {
+      "id": "MENU-02",
+      "rule": "帮助菜单交给系统，顶上有系统的搜索框",
+      "check": "打开帮助菜单，第一行是搜索框",
+      "value": {
+        "searchRowHeight": 40
+      },
+      "unit": "pt",
+      "source": [
+        "hig:the-menu-bar \"macOS automatically includes a search field at the top of the Help menu\"",
+        "lab:macos/macos-menus/data/ax/bar-Help-light-ax.json#.openMenuBarMenu.menu.items[0].frame.h",
+        "lab:macos/macos-menus/data/apps-menus.json#.[0].menus[\"帮助\"].items[0].childRoles"
+      ],
+      "level": "should",
+      "post": "/blog/macos-menus/"
+    },
+    {
+      "id": "MENU-03",
+      "rule": "菜单栏按约定排序：应用名、文件、编辑、格式、显示、应用自己的菜单、窗口、帮助",
+      "check": "从左到右数菜单栏的菜单",
+      "value": [
+        "应用名",
+        "文件",
+        "编辑",
+        "格式",
+        "显示",
+        "自定义",
+        "窗口",
+        "帮助"
+      ],
+      "source": [
+        "hig:the-menu-bar \"Support the default system-defined menus and their ordering.\"",
+        "lab:macos/macos-menus/data/apps-menus.json#.[].menuBarTitles"
+      ],
+      "level": "should",
+      "post": "/blog/macos-menus/"
+    },
+    {
+      "id": "MENU-04",
+      "rule": "不处理文件的应用可以改名或去掉文件菜单；显示菜单和窗口菜单即使只有一项也要有",
+      "check": "看菜单栏里有没有显示和窗口菜单",
+      "value": null,
+      "source": [
+        "hig:the-menu-bar \"you can rename or eliminate this menu\"",
+        "hig:the-menu-bar \"Provide a View menu even if your app supports only a subset\"",
+        "hig:the-menu-bar \"Provide a Window menu even if your app has only one window.\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-menus/"
+    },
+    {
+      "id": "MENU-05",
+      "rule": "应用自己的菜单放在显示和窗口之间，照应用的层级、从通用到专门排，菜单名尽量一个词",
+      "check": "看显示和窗口之间的菜单",
+      "value": null,
+      "source": [
+        "hig:the-menu-bar \"Your app’s custom menus appear in the menu bar between the View menu and the Window menu.\"",
+        "hig:the-menu-bar \"reflect your app’s hierarchy in app-specific menus\"",
+        "hig:the-menu-bar \"most to least general or commonly used\"",
+        "hig:the-menu-bar \"Prefer short, one-word menu titles.\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-menus/"
+    },
+    {
+      "id": "MENU-06",
+      "rule": "编辑、显示、窗口菜单用系统的 NSMenu，让系统补的项（听写、表情、全屏、填充、居中等）能补进来",
+      "check": "应用运行一阵后打开窗口菜单，看有没有填充、居中、移动与调整大小；还没有，多半不是系统的窗口菜单",
+      "value": {
+        "atLaunch": {
+          "edit": [
+            "自动填充",
+            "开始听写",
+            "表情与符号"
+          ],
+          "file": [
+            "全部关闭（⌥ 备选项）"
+          ],
+          "window": [
+            "窗口列表"
+          ]
+        },
+        "later": {
+          "view": [
+            "显示标签页栏",
+            "显示所有标签页",
+            "进入全屏幕"
+          ],
+          "window": [
+            "填充",
+            "居中",
+            "移动与调整大小",
+            "全屏幕平铺"
+          ]
+        },
+        "laterSeenInRuns": "2 of 3"
+      },
+      "source": [
+        "hig:the-menu-bar \"The system automatically adds the Start Dictation menu item\"",
+        "lab:macos/macos-menus/data/probe-light.json#.mainMenuAtLaunch[2].submenu[16].title",
+        "lab:macos/macos-menus/data/probe-dark.json#.mainMenuAfter[6].submenu[4].title",
+        "lab:macos/macos-menus/data/apps-menus.json#.[].menus[\"窗口\"].items[] | select(.title == \"居中\")",
+        "lab:macos/macos-menus/data/ax/bar-View-dark-ax.json#.openMenuBarMenu.menu.items"
+      ],
+      "level": "should",
+      "post": "/blog/macos-menus/"
+    },
+    {
+      "id": "MENU-07",
+      "rule": "对齐系统：躲开菜单栏摆窗口用所在屏的 visibleFrame，菜单栏本身多高读 menuBarHeight；不写死 22（NSStatusBar.thickness）或 24（HIG 讲菜单栏附加项图标时的数），也不拿刘海高度（safeAreaInsets.top）代替",
+      "check": "在带刘海的屏上看贴顶的内容是否被菜单栏压住 1 pt 以上",
+      "value": {
+        "menuBarHeight": 33,
+        "visibleTopGap": 33,
+        "safeAreaTop": 32,
+        "measuredOn": "带刘海的 MacBook 内建屏，菜单栏不自动隐藏"
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-menus/data/probe-light.json#.menuBarHeightAPI",
+        "lab:macos/macos-menus/data/apps-menus.json#.[0].menuBarFrame.h",
+        "lab:macos/macos-menus/data/probe-light.json#.screen.visibleTopGap",
+        "lab:macos/macos-menus/data/probe-light.json#.screen.safeTop",
+        "lab:macos/macos-menus/data/probe-light.json#.statusBarThickness",
+        "hig:the-menu-bar \"height is 24 pt\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-menus/"
+    },
+    {
+      "id": "MENU-08",
+      "rule": "执行动作的菜单项用动词或动词短语命名",
+      "check": "读一遍菜单项，看是不是都能当命令读",
+      "value": null,
+      "source": [
+        "hig:menus \"label a menu item that initiates an action using a verb or verb phrase\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-menus/"
+    },
+    {
+      "id": "MENU-09",
+      "rule": "点下去还要再输入或再选择的项，名字后加省略号字符 …（U+2026），前面不加空格",
+      "check": "搜菜单项里的 \"...\"（三个句点）和 \" …\"",
+      "value": "…",
+      "source": [
+        "hig:menus \"Append an ellipsis to a menu item\"",
+        "lab:macos/macos-menus/data/apps-menus.json#.[].menus[].items[].title"
+      ],
+      "level": "should",
+      "post": "/blog/macos-menus/"
+    },
+    {
+      "id": "MENU-10",
+      "rule": "英文菜单项用标题式大小写，去掉冠词；中文用系统的词：Copy 是「拷贝」，Duplicate 是「复制」",
+      "check": "看编辑菜单的 ⌘C 那一项叫什么",
+      "value": {
+        "copy": "拷贝",
+        "duplicate": "复制"
+      },
+      "source": [
+        "hig:menus \"use title-style capitalization\"",
+        "hig:menus \"Remove articles like a, an, and the from menu-item labels\"",
+        "lab:macos/macos-menus/data/apps-menus.json#.[0].menus[\"编辑\"].items[4].title",
+        "lab:macos/macos-menus/data/apps-menus.json#.[0].menus[\"文件\"].items[19].title"
+      ],
+      "level": "should",
+      "post": "/blog/macos-menus/"
+    },
+    {
+      "id": "MENU-11",
+      "rule": "显示 / 隐藏类的项，名字跟着当前状态变",
+      "check": "隐藏工具栏后再打开显示菜单，那一项变成「显示工具栏」",
+      "value": null,
+      "source": [
+        "hig:the-menu-bar \"Ensure that each show/hide item title reflects the current state\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-menus/"
+    },
+    {
+      "id": "MENU-12",
+      "rule": "自己加的菜单项按最后画出来的样子检查：同一组要么都有图标，要么都没有；常见动作用系统的图标",
+      "check": "打开每个菜单，看自己加的项所在的组图标齐不齐（系统会给部分项自动加图标）",
+      "value": null,
+      "source": [
+        "hig:menus \"provide icons for all menu items in a group, or none of them\"",
+        "hig:menus \"Represent common actions consistently.\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-menus/"
+    },
+    {
+      "id": "MENU-13",
+      "rule": "菜单栏里暂时不能用的项置灰，不隐藏；整个菜单都不能用时菜单仍能打开",
+      "check": "不打开任何文稿，看文件、编辑菜单里的项是否都在、是否是灰的",
+      "value": null,
+      "source": [
+        "hig:the-menu-bar \"disable the action instead of hiding it from the menu\"",
+        "hig:menus \"the menu itself needs to remain available\"",
+        "lab:macos/macos-menus/data/ax/pop-File-light-ax.json#.menuAtPoint.items[6] | .title == \"Save\" and .enabled == false"
+      ],
+      "level": "must",
+      "post": "/blog/macos-menus/"
+    },
+    {
+      "id": "MENU-14",
+      "rule": "按修饰键才出现的项只做捷径，只用一个修饰键，主要放在菜单栏的菜单里",
+      "check": "按住 ⌥ 打开菜单，变出来的项是否另有做法",
+      "value": null,
+      "source": [
+        "hig:the-menu-bar \"Avoid making a dynamic menu item the only way to accomplish a task.\"",
+        "hig:the-menu-bar \"Require only a single modifier key to reveal a dynamic menu item.\"",
+        "hig:the-menu-bar \"Use dynamic menu items primarily in menu bar menus\"",
+        "lab:macos/macos-menus/data/probe-light.json#.mainMenuAtLaunch[1].submenu[5] | .title == \"Close All\" and .alternate == true"
+      ],
+      "level": "must",
+      "post": "/blog/macos-menus/"
+    },
+    {
+      "id": "MENU-15",
+      "rule": "标准快捷键保持原义，不挪作他用",
+      "check": "按 ⌘N ⌘O ⌘W ⌘S ⌘P ⌘Z ⇧⌘Z ⌘F ⌘, ⌘H ⌘M ⌘Q，看是不是对应的动作",
+      "value": {
+        "new": "⌘N",
+        "open": "⌘O",
+        "close": "⌘W",
+        "save": "⌘S",
+        "print": "⌘P",
+        "undo": "⌘Z",
+        "redo": "⇧⌘Z",
+        "find": "⌘F",
+        "settings": "⌘,",
+        "hide": "⌘H",
+        "minimize": "⌘M",
+        "quit": "⌘Q"
+      },
+      "source": [
+        "hig:keyboards \"repurpose standard keyboard shortcuts for custom actions\"",
+        "lab:macos/macos-menus/data/apps-menus.json#[.[] | .menus[] | .items[] | select(.title == \"设置…\") | .shortcut] | unique == [\"⌘,\"]"
+      ],
+      "level": "should",
+      "post": "/blog/macos-menus/"
+    },
+    {
+      "id": "MENU-16",
+      "rule": "自定义快捷键以 ⌘ 为主，⇧ 表示相关的另一个动作，⌥ 少用",
+      "check": "列出应用自己定义的快捷键，看修饰键的用法",
+      "value": null,
+      "source": [
+        "hig:keyboards \"Prefer the Command key as the main modifier key\"",
+        "hig:keyboards \"Prefer the Shift key as a secondary modifier\"",
+        "hig:keyboards \"Use the Option modifier sparingly\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-menus/"
+    },
+    {
+      "id": "MENU-17",
+      "rule": "自定义快捷键不用 ⌃；不给无关命令配「已有组合加一个修饰键」",
+      "check": "列出应用自己定义的快捷键，找带 ⌃ 的，和「标准组合 + 一个修饰键」却与原命令无关的",
+      "value": null,
+      "source": [
+        "hig:keyboards \"Avoid using the Control key as a modifier.\"",
+        "hig:keyboards \"Avoid creating a new shortcut by adding a modifier to an existing shortcut\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-menus/"
+    },
+    {
+      "id": "MENU-18",
+      "rule": "快捷键的修饰键按 ⌃⌥⇧⌘ 的顺序显示，有 Fn / 🌐 时排最前（🌐⌃⌥⇧⌘，出自 Apple Style Guide「key, keys」条目），用符号，不写 Cmd+Shift；双字符键写上档字符（⌘? 而不是 ⇧⌘/）",
+      "check": "看工具提示、命令面板里的快捷键是否和菜单栏里同一项一致",
+      "value": "🌐⌃⌥⇧⌘",
+      "source": [
+        "hig:keyboards \"always list them in this order: Control, Option, Shift, Command\"",
+        "hig:keyboards \"Avoid adding Shift to a shortcut that uses the upper character of a two-character key\"",
+        "lab:macos/macos-menus/data/apps-menus.json#.[] | select(.bundle == \"com.apple.Chess\") | .menus[\"帮助\"].items[0].shortcut"
+      ],
+      "level": "must",
+      "post": "/blog/macos-menus/"
+    },
+    {
+      "id": "MENU-19",
+      "rule": "右键菜单只放和当前对象相关、最常用的少数几项，分组不超过约三组，子菜单最多一层",
+      "check": "右键一个对象，数项数和分组",
+      "value": {
+        "maxGroups": 3,
+        "submenuDepth": 1
+      },
+      "source": [
+        "hig:context-menus \"Prioritize relevancy when choosing items to include in a context menu.\"",
+        "hig:context-menus \"more than about three groups in a context menu\"",
+        "hig:context-menus \"keep them to one level\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-menus/"
+    },
+    {
+      "id": "MENU-20",
+      "rule": "右键菜单里不能用的项隐藏（剪切、拷贝、粘贴除外），不显示快捷键",
+      "check": "右键一个对象，看有没有灰的项和快捷键",
+      "value": null,
+      "source": [
+        "hig:context-menus \"Hide unavailable menu items\"",
+        "hig:context-menus \"Show keyboard shortcuts in your app’s main menus, not in context menus.\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-menus/"
+    },
+    {
+      "id": "MENU-21",
+      "rule": "能右键的地方处处都能右键",
+      "check": "在列表、侧边栏、内容区各右键一次",
+      "value": null,
+      "source": [
+        "hig:context-menus \"Support context menus consistently throughout your app.\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-menus/"
+    },
+    {
+      "id": "MENU-22",
+      "rule": "Dock 菜单放应用不在前台或没有窗口时最有用的几项，这些项在别处也有",
+      "check": "右键 Dock 图标，看自定义项是否也在菜单栏里",
+      "value": null,
+      "source": [
+        "hig:dock-menus \"Prefer high-value custom items for your Dock menu.\"",
+        "hig:dock-menus \"Make custom Dock menu items available in other places, too.\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-menus/"
+    },
+    {
+      "id": "MENU-23",
+      "rule": "互斥的选项用弹出按钮，显示当前值并给一个合理的默认值；打开时菜单盖住按钮，选中项对齐按钮",
+      "check": "点开按钮，看选中项是否压在按钮原来的位置",
+      "value": {
+        "menuWidth": 105,
+        "buttonWidth": 105,
+        "selectedRowY": [
+          89,
+          113
+        ],
+        "buttonY": [
+          89,
+          113
+        ],
+        "menuLeftOfButton": 12.5
+      },
+      "unit": "pt",
+      "source": [
+        "hig:pop-up-buttons \"Use a pop-up button to present a flat list of mutually exclusive options or states.\"",
+        "hig:pop-up-buttons \"Provide a useful default selection.\"",
+        "lab:macos/macos-menus/data/pixels.json#.derived.popUpSelectedRow",
+        "lab:macos/macos-menus/data/pixels.json#.derived.popUpButtonScreen",
+        "lab:macos/macos-menus/data/pixels.json#.derived.popUpMenuLeftOfButton"
+      ],
+      "level": "should",
+      "post": "/blog/macos-menus/"
+    },
+    {
+      "id": "MENU-24",
+      "rule": "和按钮相关的一组动作用下拉按钮，至少三项，菜单在按钮下方展开",
+      "check": "点开按钮，数项数，看菜单是否掉在按钮下面",
+      "value": {
+        "minItems": 3,
+        "gapBelowButton": 3
+      },
+      "unit": "pt",
+      "source": [
+        "hig:pull-down-buttons \"Use a pull-down button to present commands or items that are directly related to the button\"",
+        "hig:pull-down-buttons \"listing a minimum of three items\"",
+        "lab:macos/macos-menus/data/pixels.json#.derived.pullDownGapBelowButton"
+      ],
+      "level": "should",
+      "post": "/blog/macos-menus/"
+    },
+    {
+      "id": "MENU-25",
+      "rule": "对齐系统：自己画的菜单用系统菜单的字号、行高、分隔线、内边距和圆角",
+      "check": "截图量一行菜单项的高度和分隔线的高度",
+      "value": {
+        "font": 13,
+        "itemHeight": 24,
+        "separatorHeight": 11,
+        "paddingY": 5,
+        "radius": 11.9,
+        "titleInset": 17,
+        "shortcutInset": 18
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-menus/data/probe-light.json#.fonts.menuFont.size",
+        "lab:macos/macos-menus/data/ax/pop-File-light-ax.json#.menuAtPoint.items[0].frame.h",
+        "lab:macos/macos-menus/data/ax/pop-File-light-ax.json#.menuAtPoint.items[3].frame.h",
+        "lab:macos/macos-menus/data/pixels.json#.derived.menuPaddingTop",
+        "lab:macos/macos-menus/data/pixels.json#.menuCorner.eqRadiusPt",
+        "lab:macos/macos-menus/data/pixels.json#.menuTextInset.titleLeftInsetPt",
+        "lab:macos/macos-menus/data/pixels.json#.menuTextInset.shortcutRightInsetPt"
+      ],
+      "level": "should",
+      "post": "/blog/macos-menus/"
+    },
+    {
+      "id": "PTR-01",
+      "rule": "对齐系统：命中区等于控件的整个框，复选框、单选按钮的文字也算在内",
+      "check": "点复选框文字应能切换；点控件框外 1 pt 应无反应",
+      "value": {
+        "checkboxFrame": [
+          110,
+          16
+        ],
+        "checkboxBox": 16,
+        "outsideBy1pt": "miss"
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-pointer-focus/data/focus-light.json#.hitTest.checkbox",
+        "lab:macos/macos-pointer-focus/data/focus-light.json#.frames.checkbox",
+        "hig:accessibility \"reduce the chance that someone taps the wrong control\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-pointer-focus/"
+    },
+    {
+      "id": "PTR-02",
+      "rule": "自己画的、单独可点的控件（如图标按钮），命中区不小于 20 × 20 pt，HIG 给 macOS 的默认值是 28 × 28 pt；原生 mini、small 档本身低于或等于这个下限（push 按钮 16、20 pt 高，复选框更矮），这条不拿来查原生档位（档位见 CTL-01、CTL-16；HIG macOS 部分给 mini 举的用处是分组表单里一行一个设置的 mini 开关、空间紧的面板里的 small / mini 滚动条）",
+      "check": "量自己画的最小图标按钮的可点范围（不是图标本身）",
+      "value": {
+        "minimum": [
+          20,
+          20
+        ],
+        "default": [
+          28,
+          28
+        ]
+      },
+      "unit": "pt",
+      "source": [
+        "hig:accessibility \"macOS | 28x28 pt | 20x20 pt\"",
+        "hig:accessibility \"Strive to meet the recommended minimum control size\"",
+        "hig:toggles \"Within a grouped form, consider using a mini switch\"",
+        "hig:scroll-views \"use small or mini scroll bars in a panel\"",
+        "lab:macos/data/metrics.json#.controls[\"push(OK)\"].mini.fitH",
+        "lab:macos/data/metrics.json#.controls[\"push(OK)\"].small.fitH"
+      ],
+      "level": "should",
+      "post": "/blog/macos-pointer-focus/"
+    },
+    {
+      "id": "PTR-03",
+      "rule": "按钮和控件上用箭头光标，小手只用于链接，I 形只用于可选的文字",
+      "check": "指针移过按钮、链接、文字，看光标形状",
+      "value": {
+        "button": "arrow",
+        "link": "pointingHand",
+        "text": "iBeam"
+      },
+      "source": [
+        "hig:pointing-devices \"The content beneath the pointer is a URL link\"",
+        "hig:pointing-devices \"Standard pointer for selecting and interacting with content and interface elements\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-pointer-focus/"
+    },
+    {
+      "id": "PTR-04",
+      "rule": "可拖动的边和分割线用调整大小光标；到了最小或最大时只显示还能拖的那个方向",
+      "check": "把窗口或分栏拖到最小，看光标是否变成单向箭头",
+      "value": null,
+      "source": [
+        "hig:pointing-devices \"such as when it has reached its minimum or maximum width\"",
+        "lab:macos/macos-pointer-focus/data/cursors.json#.[] | select(.name==\"columnResize(left)\")"
+      ],
+      "level": "should",
+      "post": "/blog/macos-pointer-focus/"
+    },
+    {
+      "id": "PTR-05",
+      "rule": "对齐系统：带边框的 push 按钮、复选框不注册悬停区域，悬停时外观不变",
+      "check": "指针慢慢扫过按钮和复选框，看是否变色",
+      "value": {
+        "pushTrackingAreas": 0,
+        "checkboxTrackingAreas": 0
+      },
+      "source": [
+        "lab:macos/macos-pointer-focus/data/focus-light.json#.trackingAreas",
+        "lab:macos/macos-pointer-focus/data/focus-light.json#.hoverSent"
+      ],
+      "level": "should",
+      "post": "/blog/macos-pointer-focus/"
+    },
+    {
+      "id": "PTR-06",
+      "rule": "无边框按钮（工具栏图标、recessed）悬停时露出底色",
+      "check": "指针移到工具栏图标上，看是否出现浅色底",
+      "value": null,
+      "source": [
+        "hig:toolbars \"the system defines hover and selection state appearances automatically\"",
+        "lab:macos/macos-pointer-focus/data/ringdiff.json#.[16].diffPixels",
+        "lab:macos/macos-pointer-focus/data/ringdiff.json#.[15].diffPixels"
+      ],
+      "level": "should",
+      "post": "/blog/macos-pointer-focus/"
+    },
+    {
+      "id": "PTR-07",
+      "rule": "只在悬停时出现的控件，关键的放进右键菜单，触控屏上点大致位置能显示",
+      "check": "不悬停，右键内容区，看能否找到同样的操作",
+      "value": null,
+      "source": [
+        "hig:pointing-devices \"Make essential hidden controls available in a context menu\"",
+        "hig:pointing-devices \"Reveal a hidden control when someone taps its general location\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-pointer-focus/"
+    },
+    {
+      "id": "PTR-08",
+      "rule": "工具提示写控件做什么：动词开头，不重复控件名，60–75 个字符以内",
+      "check": "指针停在图标按钮上一会儿，读提示",
+      "value": {
+        "maxChars": 75
+      },
+      "source": [
+        "hig:buttons \"the system displays a tooltip after people hover over a button for a moment\"",
+        "hig:offering-help \"limit tooltip content to a maximum of 60 to 75 characters\"",
+        "hig:offering-help \"It often works well to begin the description with a verb\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-pointer-focus/"
+    },
+    {
+      "id": "PTR-09",
+      "rule": "没开全键盘访问时，Tab 只在文本框、搜索框、列表之间移动，不进按钮",
+      "check": "在默认系统设置下连按 Tab，记下焦点经过哪些控件",
+      "value": [
+        "textField",
+        "searchField",
+        "table"
+      ],
+      "source": [
+        "hig:focus-and-selection \"you only need to support focus for content elements like list items, text fields, and search fields\"",
+        "lab:macos/macos-pointer-focus/data/focus-light.json#.tabLoop",
+        "lab:macos/macos-pointer-focus/data/focus-light.json#.canBecomeKeyView"
+      ],
+      "level": "should",
+      "post": "/blog/macos-pointer-focus/"
+    },
+    {
+      "id": "PTR-10",
+      "rule": "建议：用户在辅助功能里打开全键盘访问后，按钮等控件也能用键盘够到（自绘按钮读这个开关）",
+      "check": "在系统设置的辅助功能里打开全键盘访问，再用键盘走一遍",
+      "value": null,
+      "source": [
+        "hig:keyboards \"Support Full Keyboard Access when possible\"",
+        "hig:focus-and-selection \"a full keyboard access mode helps people use the keyboard to reach every control\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-pointer-focus/"
+    },
+    {
+      "id": "PTR-11",
+      "rule": "不在用户没操作时移动焦点",
+      "check": "等待数据加载、弹出提示时，看焦点是否被抢走",
+      "value": null,
+      "source": [
+        "hig:focus-and-selection \"Avoid changing focus without people\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-pointer-focus/"
+    },
+    {
+      "id": "PTR-12",
+      "rule": "对齐系统：焦点环从控件框外 3 pt 画到框内 0.5 pt，宽 3.5 pt，跟着控件圆角，颜色用 keyboardFocusIndicatorColor",
+      "check": "2x 截图，对比焦点前后变色的范围",
+      "value": {
+        "outset": 3,
+        "width": 3.5,
+        "color": "keyboardFocusIndicatorColor"
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-pointer-focus/data/ringdiff.json#.[0].outsetPt",
+        "lab:macos/macos-pointer-focus/data/ringdiff.json#.[0].bandPt",
+        "lab:macos/macos-pointer-focus/data/ringdiff.json#.[4].bandPt",
+        "hig:focus-and-selection \"Rely on system-provided focus effects\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-pointer-focus/"
+    },
+    {
+      "id": "PTR-13",
+      "rule": "焦点环只围着接收键盘的那一块：复选框围方块，分段控件围当前段",
+      "check": "Tab 到复选框，看环是否包住文字",
+      "value": {
+        "checkboxRing": [
+          22,
+          22
+        ]
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-pointer-focus/data/ringdiff.json#.[9].bboxPt",
+        "lab:macos/macos-pointer-focus/data/ringdiff.json#.[10].bboxPt"
+      ],
+      "level": "should",
+      "post": "/blog/macos-pointer-focus/"
+    },
+    {
+      "id": "PTR-14",
+      "rule": "文本框、搜索框用焦点环；列表用选中行的底色，不画环",
+      "check": "Tab 到列表，看列表外有没有环",
+      "value": null,
+      "source": [
+        "hig:focus-and-selection \"use a focus ring for a text or search field, but use a highlight in a list or collection\"",
+        "lab:macos/macos-pointer-focus/data/ringdiff.json#.[3].bboxPt"
+      ],
+      "level": "should",
+      "post": "/blog/macos-pointer-focus/"
+    },
+    {
+      "id": "PTR-15",
+      "rule": "列表有焦点且窗口是 key 时选中行用强调色和白字；焦点移走、面板拿走键盘、别的窗口成为 key 时都换成不强调的灰",
+      "check": "选中一行后点旁边的输入框，看选中行是否变灰",
+      "value": {
+        "focused": "selectedContentBackgroundColor",
+        "unfocused": "unemphasizedSelectedContentBackgroundColor",
+        "focusedText": "alternateSelectedControlTextColor"
+      },
+      "source": [
+        "hig:focus-and-selection \"drawing unfocused items using the standard text color and a gray background highlight\"",
+        "lab:macos/macos-pointer-focus/data/pixels.json#.selectionRow",
+        "lab:macos/macos-pointer-focus/data/focus-light.json#.shots[\"light-sel-mainNotKey\"]"
+      ],
+      "level": "should",
+      "post": "/blog/macos-pointer-focus/"
+    },
+    {
+      "id": "PTR-16",
+      "rule": "不占用系统级的触控板手势，标准手势的结果和系统应用一致",
+      "check": "在应用里三指上推、拇指和三指捏合，看系统功能是否照常",
+      "value": null,
+      "source": [
+        "hig:pointing-devices \"Avoid redefining systemwide trackpad gestures\"",
+        "hig:pointing-devices \"Be consistent when responding to mouse and trackpad gestures\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-pointer-focus/"
+    },
+    {
+      "id": "PTR-17",
+      "rule": "「轻扫切换页面」按用户的系统设置开关，不把横向滚动直接当翻页",
+      "check": "系统设置里关掉轻扫切换页面，横向轻扫不应翻页",
+      "value": null,
+      "source": [
+        "lab:macos/macos-pointer-focus/data/focus-light.json#.system.swipeTrackingFromScrollEvents",
+        "hig:pointing-devices \"Remember that Mac users can customize the gestures\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-pointer-focus/"
+    },
+    {
+      "id": "PTR-18",
+      "rule": "支持触控时布局和控件尺寸不变，只放大点按热区",
+      "check": "对比触控和指针操作下的界面，控件大小、位置应相同",
+      "value": null,
+      "source": [
+        "hig:gestures \"Keep the layout and size of interface elements the same when you support touch\"",
+        "hig:gestures \"Make tap targets bigger, not the controls themselves\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-pointer-focus/"
+    },
+    {
+      "id": "PTR-19",
+      "rule": "所有功能都能用键盘和指针完成，触控不是唯一途径",
+      "check": "列出只靠手势或触控能做的操作，应为空",
+      "value": null,
+      "source": [
+        "hig:gestures \"Make sure all of your app\"",
+        "hig:gestures \"Give people more than one way to interact with your app\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-pointer-focus/"
+    },
+    {
+      "id": "CTL-01",
+      "rule": "控件高度只取五档之一，一行里的控件用同一档",
+      "check": "2x 截图上量一行按钮类控件的高度，应该相同且是 32 / 40 / 48 / 56 / 72 px 之一",
+      "value": {
+        "mini": 16,
+        "small": 20,
+        "regular": 24,
+        "large": 28,
+        "extraLarge": 36
+      },
+      "unit": "pt",
+      "source": [
+        "hig:buttons \"placing two buttons of different sizes near each other can make the interface look confusing and inconsistent\"",
+        "lab:macos/data/metrics.json#.controls[\"push(OK)\"].regular.fitH",
+        "lab:macos/macos-controls/data/pixels.json#.buttons.light[\"push.extraLarge\"].drawn.h"
+      ],
+      "level": "should",
+      "post": "/blog/macos-controls/"
+    },
+    {
+      "id": "CTL-02",
+      "rule": "字号跟着档位换（对齐系统：AppKit 换档不会自动换字号）",
+      "check": "2x 截图上量按钮里大写字母的高度，regular 约 19 px，mini 约 13 px",
+      "value": {
+        "mini": 9,
+        "small": 11,
+        "regular": 13,
+        "large": 13,
+        "extraLarge": 13
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-controls/data/controls-light.json#.defaultFont.mini.systemFontSizeFor",
+        "lab:macos/macos-controls/data/controls-light.json#.defaultFont.mini[\"push.font\"]",
+        "lab:macos/macos-controls/data/pixels.json#.swiftui.light[\"button.mini\"].ink.h"
+      ],
+      "level": "should",
+      "post": "/blog/macos-controls/"
+    },
+    {
+      "id": "CTL-03",
+      "rule": "对齐系统：mini 到 regular 是圆角矩形，large 和 extraLarge 是胶囊",
+      "check": "看按钮两端是平的还是半圆",
+      "value": {
+        "mini": 4,
+        "small": 5,
+        "regular": 6,
+        "large": "capsule",
+        "extraLarge": "capsule",
+        "tolerance": 1
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-controls/data/pixels.json#.buttons.light[\"push.regular\"].cornerRadiusFit",
+        "lab:macos/macos-controls/data/pixels.json#.radiusSensitivity.th4.regular",
+        "lab:macos/macos-controls/data/pixels.json#.radiusSensitivity.th16.regular",
+        "lab:macos/macos-controls/data/pixels.json#.buttons.light[\"push.large\"].capsule"
+      ],
+      "level": "should",
+      "post": "/blog/macos-controls/"
+    },
+    {
+      "id": "CTL-04",
+      "rule": "对齐系统：按钮文字墨迹到左右边的留白按档位取",
+      "check": "2x 截图上量文字最左一笔到按钮左边，随按钮名差 ±1 pt",
+      "value": {
+        "mini": 9,
+        "small": 11,
+        "regular": 13,
+        "large": 15,
+        "extraLarge": 19,
+        "tolerance": 1
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-controls/data/pixels.json#.buttons.light[\"push.regular\"].ink.left"
+      ],
+      "level": "should",
+      "post": "/blog/macos-controls/"
+    },
+    {
+      "id": "CTL-05",
+      "rule": "要突出某个选项时换按钮样式，不换按钮尺寸",
+      "check": "一组按钮里最重要的那个是否只是更大",
+      "value": null,
+      "source": [
+        "hig:buttons \"Use style — not size — to visually distinguish the preferred choice\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-controls/"
+    },
+    {
+      "id": "CTL-06",
+      "rule": "对齐系统：文本框高度由字号决定，不随档位变；large / extraLarge 按钮不和文本框并排",
+      "check": "把 large 按钮和文本框放一行，看上下边是否对齐",
+      "value": {
+        "font9": 19,
+        "font11": 22,
+        "font13": 24,
+        "font15": 27,
+        "outline": 1,
+        "comboBoxLarge": 28
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-controls/data/controls-light.json#.fieldHeightByFont.textField.large.font13",
+        "lab:macos/macos-controls/data/pixels.json#.fields.light[\"textField.large\"].drawn.h",
+        "lab:macos/macos-controls/data/controls-light.json#.fieldHeightByFont.comboBox.large.font13"
+      ],
+      "level": "should",
+      "post": "/blog/macos-controls/"
+    },
+    {
+      "id": "CTL-07",
+      "rule": "对齐系统：开关按档位取尺寸，尺寸在放进窗口之后再读",
+      "check": "看开关是否超出它所在的行，或四周空着一圈",
+      "value": {
+        "mini": [
+          36,
+          16
+        ],
+        "small": [
+          44,
+          20
+        ],
+        "regular": [
+          54,
+          24
+        ],
+        "large": [
+          64,
+          28
+        ],
+        "extraLarge": [
+          80,
+          36
+        ],
+        "beforeWindow": [
+          54,
+          24
+        ]
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-controls/data/controls-light.json#.gallery.switch.extraLarge.intrinsic.w",
+        "lab:macos/macos-controls/data/controls-light.json#.switchIntrinsic.extraLarge.intrinsic.w"
+      ],
+      "level": "should",
+      "post": "/blog/macos-controls/"
+    },
+    {
+      "id": "CTL-08",
+      "rule": "接回车的默认按钮一个窗口只有一个，用强调色填底；强调色按钮一个视图一到两个",
+      "check": "按回车，只有一个按钮响应；数一数强调色按钮不超过两个",
+      "value": {
+        "defaultButtons": 1,
+        "prominentButtonsMax": 2,
+        "color": "controlAccentColor",
+        "condition": "活动窗口"
+      },
+      "source": [
+        "hig:buttons \"a primary button uses an app’s accent color\"",
+        "hig:buttons \"Keep the number of prominent buttons to one or two per view\"",
+        "hig:buttons \"Assign the primary role to the button people are most likely to choose\"",
+        "lab:macos/macos-controls/data/controls-light.json#.keys.defaultButtonCell",
+        "lab:macos/data/metrics.json#.colors.light.controlAccentColor",
+        "lab:macos/macos-controls/data/pixels.json#.buttons.light[\"default.mini\"].fill"
+      ],
+      "level": "should",
+      "post": "/blog/macos-controls/"
+    },
+    {
+      "id": "CTL-09",
+      "rule": "默认按钮接回车（按键设成回车的按钮才画成默认样式）",
+      "check": "打开对话框直接按回车，触发的应该是强调色按钮",
+      "value": "Return",
+      "source": [
+        "hig:buttons \"When a primary button responds to the Return key\"",
+        "lab:macos/macos-controls/data/controls-light.json#.keys.returnNoFocus"
+      ],
+      "level": "should",
+      "post": "/blog/macos-controls/"
+    },
+    {
+      "id": "CTL-10",
+      "rule": "对齐系统：应用不活动时，默认按钮变回普通按钮的底色",
+      "check": "切到别的应用，看默认按钮的强调色是否消失",
+      "value": {
+        "sameAsPushButton": true
+      },
+      "source": [
+        "lab:macos/macos-controls/data/pixels.json#.buttons.lightInactive[\"default.regular\"].fill",
+        "lab:macos/macos-controls/data/pixels.json#.buttons.light[\"push.regular\"].fill",
+        "lab:macos/macos-controls/data/pixels.json#.buttons.darkInactive[\"default.regular\"].fill"
+      ],
+      "level": "should",
+      "post": "/blog/macos-controls/"
+    },
+    {
+      "id": "CTL-11",
+      "rule": "按钮名写这一下会做什么，用动词开头",
+      "check": "只读按钮名，能否知道它会做什么",
+      "value": null,
+      "source": [
+        "hig:buttons \"consider starting the label with a verb\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-controls/"
+    },
+    {
+      "id": "CTL-12",
+      "rule": "会打开另一个窗口或视图的按钮，名字后加省略号",
+      "check": "点开会弹出窗口的按钮，看名字是否以 … 结尾",
+      "value": "…",
+      "source": [
+        "hig:buttons \"Append a trailing ellipsis to the title when a push button opens another window, view, or app\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-controls/"
+    },
+    {
+      "id": "CTL-13",
+      "rule": "开关留给要强调的设置；单项设置和有层级的设置用复选框",
+      "check": "看每个开关管的是什么，只管一个小选项、又不在分组表单的行里的，应是复选框",
+      "value": null,
+      "source": [
+        "hig:toggles \"Prefer a switch for settings that you want to emphasize\"",
+        "hig:toggles \"In general, don’t replace a checkbox with a switch\"",
+        "hig:toggles \"Use a checkbox instead of a switch if you need to present a hierarchy of settings\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-controls/"
+    },
+    {
+      "id": "CTL-14",
+      "rule": "互斥选项超过五个左右时，用弹出按钮代替单选按钮",
+      "check": "数一组单选按钮的个数",
+      "value": 5,
+      "source": [
+        "hig:toggles \"If you need to present more than about five options\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-controls/"
+    },
+    {
+      "id": "CTL-15",
+      "rule": "开关、复选框、单选按钮只放在窗口内容里，不放进工具栏和状态栏",
+      "check": "看工具栏里有没有开关或复选框",
+      "value": null,
+      "source": [
+        "hig:toggles \"Use switches, checkboxes, and radio buttons in the window body, not the window frame\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-controls/"
+    },
+    {
+      "id": "CTL-16",
+      "rule": "对齐系统：复选框、单选按钮的方框按档位取尺寸",
+      "check": "2x 截图上量方框边长",
+      "value": {
+        "mini": 12,
+        "small": 14,
+        "regular": 16,
+        "large": 18,
+        "extraLarge": 18
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-controls/data/pixels.json#.inputs.light[\"checkbox.regular\"].accent.w",
+        "lab:macos/macos-controls/data/pixels.json#.inputs.light[\"radio.extraLarge\"].accent.w"
+      ],
+      "level": "should",
+      "post": "/blog/macos-controls/"
+    },
+    {
+      "id": "CTL-17",
+      "rule": "表单标签以冒号结尾，标签和控件对齐首基线；冒号到控件约 6 pt",
+      "check": "沿一行文字的底边拉水平线，标签和控件里的字都应压在线上；量冒号到控件边",
+      "value": {
+        "frameGap": 6,
+        "alignmentRectGap": 8,
+        "colonToFieldOutline": 6.5
+      },
+      "unit": "pt",
+      "source": [
+        "hig:sliders \"end with a colon\"",
+        "hig:toggles \"align the label’s baseline with the first checkbox in the group\"",
+        "lab:macos/macos-controls/data/pixels.json#.form.light.formatPopUpTextInk.bottom",
+        "lab:macos/macos-controls/data/pixels.json#.form.light.nameLabelInk.right",
+        "lab:macos/macos-controls/data/controls-light.json#.spacing.systemSpacing.regular[\"H label→textField\"].frameGap",
+        "lab:macos/macos-controls/data/controls-light.json#.spacing.systemSpacing.regular[\"H label→textField\"].alignGap"
+      ],
+      "level": "should",
+      "post": "/blog/macos-controls/"
+    },
+    {
+      "id": "CTL-18",
+      "rule": "对齐系统：控件之间用 AppKit 标准间距，档位越小间距越小",
+      "check": "量并排按钮、上下文本框、上下复选框之间的距离",
+      "value": {
+        "regular": {
+          "buttonH": 12,
+          "buttonV": 12,
+          "fieldV": 10,
+          "checkboxV": 6,
+          "popUpV": 10
+        },
+        "small": {
+          "buttonH": 8,
+          "buttonV": 10,
+          "fieldV": 8,
+          "checkboxV": 6,
+          "popUpV": 8
+        },
+        "mini": {
+          "buttonH": 8,
+          "buttonV": 8,
+          "fieldV": 8,
+          "checkboxV": 5,
+          "popUpV": 6
+        }
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-controls/data/controls-light.json#.spacing.systemSpacing.regular[\"H push→push\"].frameGap",
+        "lab:macos/macos-controls/data/controls-light.json#.spacing.systemSpacing.small[\"V textField↓textField\"].frameGap",
+        "lab:macos/macos-controls/data/controls-light.json#.spacing.systemSpacing.mini[\"V checkbox↓checkbox\"].frameGap"
+      ],
+      "level": "should",
+      "post": "/blog/macos-controls/"
+    },
+    {
+      "id": "CTL-19",
+      "rule": "带边框的控件四周留约 12 pt（HIG 无障碍建议）；AppKit 自己的标准间距在 6 到 12 pt 之间",
+      "check": "量带边框控件之间的距离，和同档的 AppKit 标准间距比",
+      "value": {
+        "hig": 12,
+        "appKitRegular": [
+          6,
+          12
+        ]
+      },
+      "unit": "pt",
+      "source": [
+        "hig:accessibility \"about 12 points of padding around elements that include a bezel\"",
+        "lab:macos/macos-controls/data/controls-light.json#.spacing.systemSpacing.regular[\"V checkbox↓checkbox\"].frameGap",
+        "lab:macos/macos-controls/data/controls-light.json#.spacing.systemSpacing.regular[\"H push→push\"].frameGap"
+      ],
+      "level": "should",
+      "post": "/blog/macos-controls/"
+    },
+    {
+      "id": "CTL-20",
+      "rule": "多个文本框等距排列（HIG）；间距取值对齐系统：AppKit 标准间距 10 pt，NSGridView 默认的 6 pt 偏紧",
+      "check": "量相邻文本框的 frame 间距是否一致、是否约 10 pt",
+      "value": {
+        "systemSpacing": 10,
+        "gridDefault": 6,
+        "visibleAtGridDefault": 4
+      },
+      "unit": "pt",
+      "source": [
+        "hig:text-fields \"Evenly space multiple text fields\"",
+        "lab:macos/macos-controls/data/controls-light.json#.spacing.systemSpacing.regular[\"V textField↓textField\"].frameGap",
+        "lab:macos/macos-controls/data/controls-light.json#.spacing[\"NSGridView.rowSpacing\"]",
+        "lab:macos/macos-controls/data/pixels.json#.form.light.emailFieldOutline.top"
+      ],
+      "level": "should",
+      "post": "/blog/macos-controls/"
+    },
+    {
+      "id": "CTL-21",
+      "rule": "对齐系统：内容到窗口边留 20 pt；并排按钮之间 8 到 12 pt",
+      "check": "量最外侧控件到窗口边，量两个并排按钮之间",
+      "value": {
+        "windowMargin": 20,
+        "buttonGapSystemSpacing": 12,
+        "buttonGapGeneric": 8
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-controls/data/controls-light.json#.spacing[\"visualFormat H:|-[a]-[b]-|\"]",
+        "lab:macos/macos-controls/data/controls-light.json#.spacing.systemSpacing.regular[\"H push→push\"].frameGap",
+        "lab:macos/macos-controls/data/controls-light.json#.spacing[\"NSStackView.spacing\"]"
+      ],
+      "level": "should",
+      "post": "/blog/macos-controls/"
+    },
+    {
+      "id": "CTL-22",
+      "rule": "在主窗口里切换视图用标签视图，不用分段控件；分段不超过五到七段",
+      "check": "看主内容区顶部是不是一个用来换页的分段控件",
+      "value": {
+        "maxSegments": 7
+      },
+      "source": [
+        "hig:segmented-controls \"Use a tab view in the main window area — instead of a segmented control — for view switching\"",
+        "hig:segmented-controls \"Aim for no more than about five to seven segments in a wide interface\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-controls/"
+    },
+    {
+      "id": "CTL-23",
+      "rule": "一个窗口最多一个帮助按钮",
+      "check": "数窗口里问号按钮的个数",
+      "value": 1,
+      "source": [
+        "hig:buttons \"Include no more than one help button per window\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-controls/"
+    },
+    {
+      "id": "CTL-24",
+      "rule": "步进器旁边配一个显示数值的文本框，两者同高",
+      "check": "看步进器左边有没有数值框，上下边是否齐",
+      "value": {
+        "stepperRegular": [
+          20,
+          26
+        ],
+        "textField13ptVisible": 26
+      },
+      "unit": "pt",
+      "source": [
+        "hig:steppers \"A stepper sits next to a field that displays its current value\"",
+        "lab:macos/macos-controls/data/controls-light.json#.gallery.stepper.regular.intrinsic.h",
+        "lab:macos/macos-controls/data/pixels.json#.fields.light[\"textField.regular\"].drawn.h"
+      ],
+      "level": "should",
+      "post": "/blog/macos-controls/"
+    },
+    {
+      "id": "TYPE-01",
+      "rule": "界面正文用 13 pt 系统字体，最小不低于 10 pt",
+      "check": "2x 截图量正文大写字母高约 18 px；或和菜单栏下拉菜单的字比大小",
+      "value": {
+        "default": 13,
+        "minimum": 10
+      },
+      "unit": "pt",
+      "source": [
+        "hig:typography \"macOS | 13 pt | 10 pt\"",
+        "lab:macos/data/metrics.json#.fonts.systemFontSize",
+        "lab:macos/data/metrics.json#.fonts.menuFont"
+      ],
+      "level": "should",
+      "post": "/blog/macos-type-color/"
+    },
+    {
+      "id": "TYPE-02",
+      "rule": "文字只用 macOS 的 11 个文字样式的字号和行高",
+      "check": "列出界面上所有字号 / 行高组合，和样式表逐个对照",
+      "value": {
+        "largeTitle": "26/32",
+        "title1": "22/26",
+        "title2": "17/22",
+        "title3": "15/20",
+        "headline": "13/16",
+        "body": "13/16",
+        "callout": "12/15",
+        "subheadline": "11/14",
+        "footnote": "10/13",
+        "caption1": "10/13",
+        "caption2": "10/13"
+      },
+      "unit": "pt",
+      "source": [
+        "hig:typography \"Large Title | Regular | 26 | 32 | Bold\"",
+        "lab:macos/data/metrics.json#.fonts.textStyles.body.lineHeight",
+        "lab:macos/macos-type-color/data/typecolor.json#.textStyles"
+      ],
+      "level": "should",
+      "post": "/blog/macos-type-color/"
+    },
+    {
+      "id": "TYPE-03",
+      "rule": "界面文字的行高按样式表取（body 13/16），不用网页默认的 1.5 倍",
+      "check": "2x 截图量多行标签相邻两行基线距离",
+      "value": {
+        "body": 16
+      },
+      "unit": "pt",
+      "source": [
+        "hig:typography \"Body | Regular | 13 | 16 | Semibold\"",
+        "lab:macos/data/metrics.json#.fonts.textStyles.body.lineHeight"
+      ],
+      "level": "should",
+      "post": "/blog/macos-type-color/"
+    },
+    {
+      "id": "TYPE-04",
+      "rule": "三行以上的文字不收紧行高；宽栏长段落可以加大行高",
+      "check": "看多行说明文字的行距是否小于样式表",
+      "value": null,
+      "source": [
+        "hig:typography \"If you need to display three or more lines of text, avoid tight leading\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-type-color/"
+    },
+    {
+      "id": "TYPE-05",
+      "rule": "同字号上的层级用字重和颜色区分，需要再多一级时用该样式的加粗变体",
+      "check": "把界面文字统一改成 13 pt，看标题和正文是否仍分得开",
+      "value": {
+        "headline": "Bold",
+        "bodyEmphasized": "Semibold",
+        "title3Emphasized": "Semibold",
+        "caption1Emphasized": "Medium"
+      },
+      "source": [
+        "hig:typography \"Adjust font weight, size, and color as needed\"",
+        "lab:macos/macos-type-color/data/typecolor.json#.textStyles.headline.emphasizedName"
+      ],
+      "level": "should",
+      "post": "/blog/macos-type-color/"
+    },
+    {
+      "id": "TYPE-06",
+      "rule": "界面文字不用 Ultralight、Thin、Light 字重",
+      "check": "在样式里搜 font-weight 小于 400 的值",
+      "value": {
+        "allowed": [
+          "Regular",
+          "Medium",
+          "Semibold",
+          "Bold"
+        ]
+      },
+      "source": [
+        "hig:typography \"In general, avoid light font weights\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-type-color/"
+    },
+    {
+      "id": "TYPE-07",
+      "rule": "用系统字体的名字取 SF Pro，不嵌入系统字体文件",
+      "check": "应用包里搜 SF-Pro*.otf / .ttf；或看字体面板里显示的字体名",
+      "value": null,
+      "source": [
+        "hig:typography \"SF Pro is the system font in macOS\"",
+        "hig:typography \"embed system fonts in your app\"",
+        "lab:macos/macos-type-color/data/typecolor.json#.systemFont13.fontName"
+      ],
+      "level": "must",
+      "post": "/blog/macos-type-color/"
+    },
+    {
+      "id": "TYPE-08",
+      "rule": "系统字体上不再加 letter-spacing，字距由系统按字号自动调；只在设计稿里照 HIG 字距表填",
+      "check": "样式里搜 letter-spacing / tracking- 类是否作用在系统字体文字上",
+      "value": {
+        "9": 19,
+        "11": 6,
+        "13": -6,
+        "17": -26
+      },
+      "unit": "1/1000 em",
+      "source": [
+        "hig:typography \"the system font dynamically adjusts tracking at every point size\"",
+        "hig:typography \"13 | -6 | -0.08\"",
+        "lab:macos/macos-type-color/data/typecolor.json#.tracking"
+      ],
+      "level": "should",
+      "post": "/blog/macos-type-color/"
+    },
+    {
+      "id": "TYPE-09",
+      "rule": "图标和旁边文字用同一个字重，用 SF Symbols 按文字字号取，再用 small / medium / large 调轻重",
+      "check": "截图放大 400%，比较图标线条和相邻字母竖画的粗细",
+      "value": {
+        "folder13ptSmall": "15x12",
+        "folder13ptMedium": "18x14",
+        "folder13ptLarge": "23x18",
+        "alignmentHeight": 9
+      },
+      "unit": "pt",
+      "source": [
+        "hig:icons \"In general, match the weights of interface icons and adjacent text\"",
+        "hig:sf-symbols \"The scales are defined relative to the cap height\"",
+        "lab:macos/macos-type-color/data/typecolor.json#.symbols13pt.folder"
+      ],
+      "level": "should",
+      "post": "/blog/macos-type-color/"
+    },
+    {
+      "id": "TYPE-10",
+      "rule": "颜色一律用系统语义色名，在运行时取值，不写死 hex",
+      "check": "运行中切换外观和强调色，界面上每个颜色都跟着变",
+      "value": null,
+      "source": [
+        "hig:color \"Avoid hard-coding system color values in your app\"",
+        "hig:dark-mode \"Avoid using hard-coded color values or colors that don\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-type-color/"
+    },
+    {
+      "id": "TYPE-11",
+      "rule": "语义色按用途用，不挪作他用（分隔线色不当文字色，文字色不当背景色）",
+      "check": "逐个看自定义视图用到的语义色名和它画的东西是否同一类",
+      "value": null,
+      "source": [
+        "hig:color \"Avoid redefining the semantic meanings of dynamic system colors\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-type-color/"
+    },
+    {
+      "id": "TYPE-12",
+      "rule": "正文和必须读的文字只用 labelColor 或 secondaryLabelColor；tertiary 只给不可用状态和占位，quaternary 只给水印（value 是各级文字色叠在 windowBackgroundColor 上的 WCAG 对比度）",
+      "check": "找出用 tertiary / quaternary 颜色的文字，确认都不是需要读的内容",
+      "value": {
+        "light": {
+          "label": 14.94,
+          "secondary": 3.95,
+          "tertiary": 1.88,
+          "quaternary": 1.25
+        },
+        "dark": {
+          "label": 12.27,
+          "secondary": 5.92,
+          "tertiary": 2.27,
+          "quaternary": 1.34
+        }
+      },
+      "unit": "ratio",
+      "source": [
+        "hig:color \"such as watermark text\"",
+        "lab:macos/macos-type-color/data/contrast.json#.text.light.windowBackgroundColor",
+        "lab:macos/macos-type-color/data/contrast.json#.text.dark.windowBackgroundColor"
+      ],
+      "level": "should",
+      "post": "/blog/macos-type-color/"
+    },
+    {
+      "id": "TYPE-13",
+      "rule": "自定义的文字和背景颜色，17 pt 及以下至少 4.5:1，18 pt 以上或粗体至少 3:1，浅色深色都要过",
+      "check": "取色器分别取字色和底色，按 WCAG 算比值",
+      "value": {
+        "upTo17pt": 4.5,
+        "from18pt": 3,
+        "bold": 3
+      },
+      "unit": "ratio",
+      "source": [
+        "hig:accessibility \"Up to 17 pts | All | 4.5:1\"",
+        "hig:accessibility \"18 pts | All | 3:1\"",
+        "hig:dark-mode \"no lower than 4.5:1\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-type-color/"
+    },
+    {
+      "id": "TYPE-14",
+      "rule": "自定义颜色同时给浅色、深色和两种增强对比度的值；即使只做一种外观也给浅深两套",
+      "check": "看颜色定义是否有四个变体",
+      "value": null,
+      "source": [
+        "hig:color \"make sure to supply light and dark variants, and an increased contrast option for each variant\"",
+        "hig:color \"provide both light and dark colors to support Liquid Glass adaptivity\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-type-color/"
+    },
+    {
+      "id": "TYPE-15",
+      "rule": "不自己填窗口底色，让系统画的窗口底透出来；中性状态的自定义控件底色带一点透明",
+      "check": "深色模式截图，取色比较自己画的面板和标题栏下方的窗口底",
+      "value": {
+        "darkWindowBackgroundColor": "#1E1E1E",
+        "darkFilledWithIt": "#1F1E1D",
+        "darkPaintedBySystem": "#222A30",
+        "darkPaintedBySystemCondition": "看起来的值：深色、非 key 窗口、当时的壁纸、强调色多色、P3 转 sRGB，来源未验证",
+        "light": "#FFFFFF"
+      },
+      "source": [
+        "hig:dark-mode \"Include some transparency in custom component backgrounds when appropriate\"",
+        "lab:macos/data/metrics.json#.colors.dark.windowBackgroundColor",
+        "lab:macos/macos-type-color/data/shots.json#.dark.swatchPixels"
+      ],
+      "level": "should",
+      "post": "/blog/macos-type-color/"
+    },
+    {
+      "id": "TYPE-16",
+      "rule": "交互和选中状态用 controlAccentColor，跟着用户选的强调色变；不假定是蓝色",
+      "check": "退出被测应用已开着的实例，open -n <应用> --args -AppleAccentColor 2（石墨写 ' -1'），强调色的地方全部变黄；只对从 NSColor 取强调色的应用有效，系统设置不变",
+      "value": {
+        "multicolor": "#007AFF",
+        "blue": "#007AFF",
+        "purple": "#953D96",
+        "pink": "#F74F9E",
+        "red": "#E0383E",
+        "orange": "#F7821B",
+        "yellow": "#FFC726",
+        "green": "#62BA46",
+        "graphite": "#989898"
+      },
+      "source": [
+        "hig:color \"The accent color people select in System Settings\"",
+        "hig:color \"replacing your accent color\"",
+        "lab:macos/macos-type-color/data/accents.json#.purple.light.controlAccentColor"
+      ],
+      "level": "should",
+      "post": "/blog/macos-type-color/"
+    },
+    {
+      "id": "TYPE-17",
+      "rule": "对齐系统：强调色底上的字色随强调色变，黄色时用黑字，其余用白字",
+      "check": "退出已开着的实例后用 open -n <应用> --args -AppleAccentColor 2 启动，看主按钮上的字是否变黑",
+      "value": {
+        "yellowOkButtonText": "#000000",
+        "yellowRatio": 13.45,
+        "whiteOnYellowRatio": 1.56
+      },
+      "source": [
+        "lab:macos/macos-type-color/data/contrast.json#.measured[\"yellow-light\"].okButton",
+        "lab:macos/macos-type-color/data/contrast.json#.accentText.yellow.light.whiteOnAccent"
+      ],
+      "level": "should",
+      "post": "/blog/macos-type-color/"
+    },
+    {
+      "id": "TYPE-18",
+      "rule": "强调色和系统色分开用：强调色表示可交互和选中，系统色表示状态；同一种颜色不表示两种意思",
+      "check": "列出界面上每个彩色元素的含义，看同一颜色是否既表示可点又表示状态",
+      "value": {
+        "accentBlue": "#007AFF",
+        "systemBlueLight": "#0088FF"
+      },
+      "source": [
+        "hig:color \"Avoid using the same color to mean different things\"",
+        "lab:macos/data/metrics.json#.colors.light.controlAccentColor",
+        "lab:macos/data/metrics.json#.colors.light.systemBlue"
+      ],
+      "level": "must",
+      "post": "/blog/macos-type-color/"
+    },
+    {
+      "id": "TYPE-19",
+      "rule": "系统色用名字（systemRed 等），它们的值和 HIG 表一致、浅深各一套",
+      "check": "切换外观，状态色当场变",
+      "value": {
+        "systemRed": {
+          "light": "#FF383C",
+          "dark": "#FF4245"
+        },
+        "systemGreen": {
+          "light": "#34C759",
+          "dark": "#30D158"
+        },
+        "systemBlue": {
+          "light": "#0088FF",
+          "dark": "#0091FF"
+        }
+      },
+      "source": [
+        "hig:color \"R-255,G-56,B-60\"",
+        "lab:macos/macos-type-color/data/system-colors.json#.systemRed.light.match"
+      ],
+      "level": "should",
+      "post": "/blog/macos-type-color/"
+    },
+    {
+      "id": "TYPE-20",
+      "rule": "不提供应用内的外观设置，跟随系统；外观在运行中切换时颜色当场更新",
+      "check": "应用开着时切换系统的浅色 / 深色，界面不重开就跟着变",
+      "value": null,
+      "source": [
+        "hig:dark-mode \"Avoid offering an app-specific appearance setting\"",
+        "hig:dark-mode \"potentially while your app is running\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-type-color/"
+    },
+    {
+      "id": "TYPE-21",
+      "rule": "玻璃上的颜色只给真正需要强调的一个元素，给背景上色而不是给文字和符号；不给多个控件的背景上色",
+      "check": "数工具栏和浮层玻璃上的彩色控件，一组里最多一个",
+      "value": null,
+      "source": [
+        "hig:color \"Apply color sparingly to the Liquid Glass material\"",
+        "hig:color \"apply color to the background rather than to symbols or text\"",
+        "hig:color \"Refrain from adding color to the background of multiple controls\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-type-color/"
+    },
+    {
+      "id": "PRES-01",
+      "rule": "只有不先回答就没法往下走的事才用模态；能放在界面里的信息不弹",
+      "check": "列出应用里所有弹出的对话框，逐个问「人能不能不理它」",
+      "value": null,
+      "source": [
+        "hig:modality \"Present content modally only when there’s a clear benefit\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-presentation/"
+    },
+    {
+      "id": "PRES-02",
+      "rule": "同一时间只出一个模态；sheet 里要再弹，先关掉当前的",
+      "check": "在 sheet 或 alert 里触发会再弹一层的操作，看是否叠了两层",
+      "value": null,
+      "source": [
+        "hig:modality \"Let people dismiss a modal view before presenting another one\"",
+        "hig:modality \"you never want to display more than one alert at the same time\"",
+        "hig:sheets \"Display only one sheet at a time from the main interface\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-presentation/"
+    },
+    {
+      "id": "PRES-03",
+      "rule": "模态里有看得见的关闭按钮，放在对话框内容里",
+      "check": "弹出对话框，不用键盘，看能不能只靠里面的按钮关掉",
+      "value": null,
+      "source": [
+        "hig:modality \"Always give people an obvious way to dismiss a modal view\"",
+        "hig:modality \"in macOS and tvOS apps, people expect to find a button in the main content view\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-presentation/"
+    },
+    {
+      "id": "PRES-04",
+      "rule": "和某个窗口有关的问题用挂在该窗口上的 sheet（窗口级模态），不用锁住整个应用的模态",
+      "check": "弹出后点同一个应用的另一个窗口，看它能否拿到前面并照常使用",
+      "value": {
+        "sheet": "NSApp.modalWindow 为空，母窗口收不到点击",
+        "runModal": "NSApp.modalWindow 为该 alert，别的窗口也收不到点击"
+      },
+      "source": [
+        "hig:sheets \"people expect to interact with other app windows before dismissing a sheet\"",
+        "lab:macos/macos-presentation/data/presentation-behavior.json#.alertSheet.appModalWindow",
+        "lab:macos/macos-presentation/data/presentation-behavior.json#.alertSheet.clickParentDelivered",
+        "lab:macos/macos-presentation/data/presentation-behavior.json#.alertAppModal.appModalWindowIsThis",
+        "lab:macos/macos-presentation/data/presentation-behavior.json#.alertAppModal.clickOtherWindowDelivered"
+      ],
+      "level": "should",
+      "post": "/blog/macos-presentation/"
+    },
+    {
+      "id": "PRES-05",
+      "rule": "sheet 出现时母窗口连标题栏整体变暗、关闭按钮不可用；不要只在内容区画一层遮罩",
+      "check": "弹出 sheet，看标题栏和工具栏是否也变暗，关闭按钮是否变灰",
+      "value": {
+        "parentCloseEnabled": false,
+        "dimLightLooksLike": "#FFFFFF → #CCCCCC（截图读数）"
+      },
+      "source": [
+        "hig:sheets \"The parent window is dimmed while the sheet is onscreen\"",
+        "lab:macos/macos-presentation/data/presentation-behavior.json#.alertSheet.parentButtonsDuringSheet.close.enabled",
+        "lab:macos/macos-presentation/data/pixels.json#.dim.light"
+      ],
+      "level": "must",
+      "post": "/blog/macos-presentation/"
+    },
+    {
+      "id": "PRES-06",
+      "rule": "对齐系统：macOS 26 起，sheet 在整个窗口（含标题栏）里上下左右居中，大小等于内容大小，圆角等效约 25.6 pt（HIG 没规定位置，AppKit 文档写的旧默认是标题栏下方）",
+      "check": "截图量 sheet 顶边到窗口顶、底边到窗口底是否相等",
+      "value": {
+        "topInset340": 95,
+        "sheetH": 150,
+        "cornerRadius": 25.6
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-presentation/data/presentation-light.json#.windowSheet.frame",
+        "lab:macos/macos-presentation/data/presentation-behavior.json#.windowSheetPlainParent.sheet.frame",
+        "lab:macos/macos-presentation/data/pixels.json#.corners[\"sheet-light\"].radiusPt"
+      ],
+      "level": "should",
+      "post": "/blog/macos-presentation/"
+    },
+    {
+      "id": "PRES-07",
+      "rule": "sheet 一开始就给合适的大小；有「完成」就配「取消」（多步时可配「返回」），三个不同时出现",
+      "check": "打开 sheet 看内容是否需要滚动或留大片空白；找它的取消或返回按钮",
+      "value": null,
+      "source": [
+        "hig:sheets \"Present a sheet in a reasonable default size\"",
+        "hig:sheets \"always pair it with a Cancel button\"",
+        "hig:sheets \"or a Back button to move to a previous step in the sheet\"",
+        "hig:sheets \"Avoid showing all three buttons\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-presentation/"
+    },
+    {
+      "id": "PRES-08",
+      "rule": "复杂或耗时的流程考虑新窗口或全屏，不塞进 sheet；要边输入边看结果的用面板",
+      "check": "看 sheet 里有没有多步流程、长表单或查找替换这类反复操作",
+      "value": null,
+      "source": [
+        "hig:sheets \"you might want to open a new window or let people enter full-screen mode instead of using a sheet\"",
+        "hig:sheets \"Use a panel instead of a sheet if people need to repeatedly provide input and observe results\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-presentation/"
+    },
+    {
+      "id": "PRES-09",
+      "rule": "alert 只用于重要且需要决定的事；不用于纯告知、常见可撤销的操作、应用启动时",
+      "check": "逐个触发 alert，问「它有没有让人做选择」「这个操作能不能撤销」",
+      "value": null,
+      "source": [
+        "hig:alerts \"Use alerts sparingly\"",
+        "hig:alerts \"Avoid using an alert merely to provide information\"",
+        "hig:alerts \"Avoid displaying alerts for common, undoable actions, even when they’re destructive\"",
+        "hig:alerts \"Avoid showing an alert when your app starts\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-presentation/"
+    },
+    {
+      "id": "PRES-10",
+      "rule": "对齐系统：alert 宽 260 pt，文字居中，标题 13 pt 粗体、说明 13 pt 常规，按钮高 28 pt 全圆",
+      "check": "截图量 alert 宽度和按钮高度；内容变长时看它是否只变高",
+      "value": {
+        "width": 260,
+        "titleSize": 13,
+        "messageSize": 13,
+        "buttonH": 28,
+        "buttonInset": 16,
+        "textInset": 20,
+        "iconAppModal": 64,
+        "cornerRadius": 25.6
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-presentation/data/presentation-light.json#.alertSheet.views",
+        "lab:macos/macos-presentation/data/presentation-light.json#.alertAppModal.views",
+        "lab:macos/macos-presentation/data/alert-layout.json#.[7].window",
+        "lab:macos/macos-presentation/data/pixels.json#.corners[\"appmodal-light\"].radiusPt"
+      ],
+      "level": "should",
+      "post": "/blog/macos-presentation/"
+    },
+    {
+      "id": "PRES-11",
+      "rule": "对齐系统：两个短按钮横排（各 110 pt，间隔 8），三个按钮或标题较长时竖排（间隔 6）",
+      "check": "截图量按钮的宽度和间隔",
+      "value": {
+        "rowW": 110,
+        "rowGap": 8,
+        "stackGap": 6
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-presentation/data/alert-layout.json#.[4].buttonsTopToBottomLeftToRight",
+        "lab:macos/macos-presentation/data/alert-layout.json#.[5].buttonsTopToBottomLeftToRight"
+      ],
+      "level": "should",
+      "post": "/blog/macos-presentation/"
+    },
+    {
+      "id": "PRES-12",
+      "rule": "alert 标题说清发生了什么，不超过两行；说明只在有用时写，不解释按钮",
+      "check": "读标题：有没有「错误」「出错了」这类空话，有没有折成三行",
+      "value": null,
+      "source": [
+        "hig:alerts \"Write a title that clearly and succinctly describes the situation\"",
+        "hig:alerts \"avoid overly long titles that wrap to more than two lines\"",
+        "hig:alerts \"Include informative text only if it adds value\"",
+        "hig:alerts \"Avoid explaining alert buttons\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-presentation/"
+    },
+    {
+      "id": "PRES-13",
+      "rule": "alert 按钮标题一两个词、说出按下去的结果，不用「是 / 否」；「好」只用于纯告知的 alert（按钮名写动作的通则见 CTL-11）",
+      "check": "读所有按钮标题，找「是」「否」「确定」",
+      "value": null,
+      "source": [
+        "hig:alerts \"Aim for a one- or two-word title that describes the result of selecting the button\"",
+        "hig:alerts \"avoiding “Yes” and “No.”\"",
+        "hig:alerts \"Avoid using OK as the default button title unless the alert is purely informational\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-presentation/"
+    },
+    {
+      "id": "PRES-14",
+      "rule": "alert 里默认按钮在横排最右、竖排最上；取消在横排最左、竖排最下（默认按钮接回车的通则见 CTL-09）",
+      "check": "看强调色按钮和「取消」的位置，横排、竖排各看一次",
+      "value": {
+        "row": [
+          "取消",
+          "默认"
+        ],
+        "stack": [
+          "默认",
+          "其他",
+          "取消"
+        ]
+      },
+      "source": [
+        "hig:alerts \"Always place the default button on the trailing side of a row or at the top of a stack\"",
+        "hig:alerts \"Cancel buttons are typically on the leading side of a row or at the bottom of a stack\"",
+        "lab:macos/macos-presentation/data/alert-layout.json#.[2].buttonsTopToBottomLeftToRight"
+      ],
+      "level": "must",
+      "post": "/blog/macos-presentation/"
+    },
+    {
+      "id": "PRES-15",
+      "rule": "取消 alert 操作的按钮标题就叫「取消」，不当默认按钮",
+      "check": "读 alert 的按钮，找「关闭」「算了」这类代替取消的标题；按回车看会不会触发取消",
+      "value": null,
+      "source": [
+        "hig:alerts \"Always use “Cancel” to title a button that cancels the alert’s action\"",
+        "hig:alerts \"you don’t want to make a Cancel button the default button\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-presentation/"
+    },
+    {
+      "id": "PRES-16",
+      "rule": "取消按钮显式设 Esc（⌘. 也能取消），不依赖 AppKit 按英文标题 Cancel 自动识别",
+      "check": "弹出 alert 按 Esc，看是否按取消关掉；三个按钮竖排时取消是否在最下面",
+      "value": {
+        "englishCancel": "Esc",
+        "chineseCancelNotLocalized": "无快捷键且停在中间",
+        "chineseCancelWithEsc": "最下面",
+        "dontSave": "⌘D"
+      },
+      "source": [
+        "hig:alerts \"Provide alternative ways to cancel an alert when it makes sense\"",
+        "hig:alerts \"Pressing Escape (Esc) or Command-Period (.)\"",
+        "lab:macos/macos-presentation/data/alert-layout.json#.[0].buttonsTopToBottomLeftToRight",
+        "lab:macos/macos-presentation/data/alert-layout.json#.[1].buttonsTopToBottomLeftToRight",
+        "lab:macos/macos-presentation/data/alert-layout.json#.[2].buttonsTopToBottomLeftToRight"
+      ],
+      "level": "should",
+      "post": "/blog/macos-presentation/"
+    },
+    {
+      "id": "PRES-17",
+      "rule": "破坏性样式只给人没打算做的破坏（如关窗口时的「不存储」）；破坏性按钮不当默认按钮",
+      "check": "看红色按钮是不是人原本想做的事；按回车看会不会触发它",
+      "value": "破坏性按钮红字、淡红底（截图）",
+      "source": [
+        "hig:alerts \"Use the destructive style to identify a button that performs a destructive action people didn’t deliberately choose\"",
+        "hig:buttons \"Don’t assign the primary role to a button that performs a destructive action\"",
+        "lab:macos/macos-presentation/data/presentation-light.json#.alertSheet.views[4].destructive"
+      ],
+      "level": "must",
+      "post": "/blog/macos-presentation/"
+    },
+    {
+      "id": "PRES-18",
+      "rule": "popover 不放警告，也不放关掉就会丢的输入；自动关闭时保存已做的改动",
+      "check": "在 popover 里改一项，点外面关掉，再打开看改动还在不在",
+      "value": null,
+      "source": [
+        "hig:popovers \"Avoid using a popover to show a warning\"",
+        "hig:popovers \"Always save work when automatically closing a nonmodal popover\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-presentation/"
+    },
+    {
+      "id": "PRES-19",
+      "rule": "popover 箭头尖对准触发它的控件；对齐系统：箭头高约 10.5、底宽约 21，气泡离控件框 13，圆角等效约 20.5 pt",
+      "check": "截图看箭头尖是否落在按钮中线上",
+      "value": {
+        "arrowH": 10.5,
+        "arrowW": 21,
+        "gap": 13,
+        "cornerRadius": 20.5
+      },
+      "unit": "pt",
+      "source": [
+        "hig:popovers \"Make sure a popover’s arrow points as directly as possible to the element that revealed it\"",
+        "lab:macos/macos-presentation/data/pixels.json#.popover.arrowHeightPt",
+        "lab:macos/macos-presentation/data/pixels.json#.popover.arrowWidthPtBeforeFlare",
+        "lab:macos/macos-presentation/data/presentation-light.json#.popover.contentInWindow.top",
+        "lab:macos/macos-presentation/data/pixels.json#.popover.bodyCorner.radiusPt"
+      ],
+      "level": "must",
+      "post": "/blog/macos-presentation/"
+    },
+    {
+      "id": "PRES-20",
+      "rule": "一次只开一个 popover，不从 popover 里再弹 popover",
+      "check": "开着一个 popover 时点另一个会弹 popover 的按钮，看是否一下换成新的",
+      "value": null,
+      "source": [
+        "hig:popovers \"Show one popover at a time\"",
+        "hig:popovers \"Never show a cascade or hierarchy of popovers\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-presentation/"
+    },
+    {
+      "id": "PRES-21",
+      "rule": "面板只在点标题栏或需要打字的控件时才拿到键盘",
+      "check": "点面板里的滑块后直接打字，字应进文稿窗口",
+      "value": {
+        "becomesKeyOnlyIfNeededDefault": false,
+        "keyAfterSliderClickWhenTrue": "文稿窗口",
+        "keyAfterTextFieldClickWhenTrue": "面板"
+      },
+      "source": [
+        "hig:windows \"become the key window only when people click the window’s title bar or a component that requires keyboard input\"",
+        "lab:macos/macos-presentation/data/presentation-light.json#.panels.utilityDefaults.becomesKeyOnlyIfNeeded",
+        "lab:macos/macos-presentation/data/presentation-light.json#.panels.keyAfterSliderClick",
+        "lab:macos/macos-presentation/data/presentation-light.json#.panels.keyAfterTextFieldClick"
+      ],
+      "level": "should",
+      "post": "/blog/macos-presentation/"
+    },
+    {
+      "id": "PRES-22",
+      "rule": "应用退到后台时面板一起藏起来；面板浮在普通窗口上，不成为主窗口",
+      "check": "开着面板切到别的应用，看面板是否消失",
+      "value": {
+        "hidesOnDeactivate": true,
+        "level": 3,
+        "canBecomeMain": false
+      },
+      "source": [
+        "hig:panels \"When your app is inactive, hide all of its panels\"",
+        "lab:macos/macos-presentation/data/presentation-light.json#.panels.utilityDefaults"
+      ],
+      "level": "should",
+      "post": "/blog/macos-presentation/"
+    },
+    {
+      "id": "PRES-23",
+      "rule": "对齐系统：utility 面板标题栏 24 pt、标题 11 pt 常规，红绿灯 10 pt，圆角等效约 15.4 pt",
+      "check": "截图量面板标题栏高度和红绿灯直径",
+      "value": {
+        "titlebar": 24,
+        "titleSize": 11,
+        "trafficLight": 10,
+        "trafficPitch": 17,
+        "cornerRadius": 15.4
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-presentation/data/presentation-light.json#.panels.utility.titlebar",
+        "lab:macos/macos-presentation/data/presentation-light.json#.panels.utility.titleFont",
+        "lab:macos/macos-presentation/data/presentation-light.json#.panels.utility.buttons",
+        "lab:macos/macos-presentation/data/pixels.json#.corners[\"panel-light\"].radiusPt"
+      ],
+      "level": "should",
+      "post": "/blog/macos-presentation/"
+    },
+    {
+      "id": "PRES-24",
+      "rule": "面板标题用名词，菜单里写「显示 + 标题」；面板不进「窗口」菜单的文稿列表，一般不给最小化",
+      "check": "看「窗口」菜单底部列表里有没有面板；面板的黄灯能不能按",
+      "value": null,
+      "source": [
+        "hig:panels \"Write a brief title that describes the panel’s purpose\"",
+        "hig:panels \"Avoid including panels in the Window menu’s documents list\"",
+        "hig:panels \"avoid making a panel’s minimize button available\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-presentation/"
+    },
+    {
+      "id": "PRES-25",
+      "rule": "优先用标准面板；HUD 只用在以电影、照片、幻灯片为主，或标准面板会挡住内容，或不需要控件的场合，并保持小",
+      "check": "看 HUD 是否出现在普通文稿类界面里、是否盖住了它调整的内容",
+      "value": null,
+      "source": [
+        "hig:panels \"Prefer standard panels\"",
+        "hig:panels \"In a media-oriented app that presents movies, photos, or slides\"",
+        "hig:panels \"When a standard panel would obscure essential content\"",
+        "hig:panels \"When you don’t need to include controls\"",
+        "hig:panels \"Keep HUDs small\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-presentation/"
+    },
+    {
+      "id": "FB-01",
+      "rule": "常见、能撤销的操作（删除、移动、改属性）不弹确认框；确认框只留给撤销不了的破坏性操作",
+      "check": "删一项，看有没有确认框；有的话按 ⌘Z 看能不能撤销，能撤销就不该确认",
+      "value": null,
+      "source": [
+        "hig:alerts \"Avoid displaying alerts for common, undoable actions\"",
+        "hig:feedback \"the Finder doesn’t warn people every time they throw away a file\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-02",
+      "rule": "撤销不限步数，能一路撤销到打开文稿或上次存储的地方",
+      "check": "连续做五个改动，按五次 ⌘Z，都要回得去",
+      "value": {
+        "levelsOfUndo": 0
+      },
+      "source": [
+        "hig:undo-and-redo \"Avoid placing unnecessary limits on the number of times people can undo or redo\"",
+        "lab:macos/macos-feedback/data/undo-l10n-en.json#.defaults.levelsOfUndo"
+      ],
+      "level": "must",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-03",
+      "rule": "撤销、重做是「编辑」菜单最上面的两项",
+      "check": "打开「编辑」菜单，看前两项",
+      "value": null,
+      "source": [
+        "hig:undo-and-redo \"Mac users expect to find undo and redo at the top of the Edit menu\"",
+        "lab:macos/macos-feedback/data/feedback-zh-Hans.json#.documents.autosave.after.editMenu[0].action",
+        "lab:macos/macos-feedback/data/feedback-zh-Hans.json#.documents.autosave.after.editMenu[1].action"
+      ],
+      "level": "should",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-04",
+      "rule": "撤销 / 重做菜单项带上动作名，例如「撤销键入」「重做加粗」",
+      "check": "做一个操作后打开「编辑」菜单，第一项不能只是「撤销」",
+      "value": {
+        "zh": "撤销键入",
+        "en": "Undo Typing"
+      },
+      "source": [
+        "hig:the-menu-bar \"Clarify the target of the undo\"",
+        "lab:macos/macos-feedback/data/feedback-zh-Hans.json#.documents.autosave.after.editMenu[0].title",
+        "lab:macos/macos-feedback/data/feedback-en.json#.documents.autosave.after.editMenu[0].title"
+      ],
+      "level": "should",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-05",
+      "rule": "对齐系统：动作名由应用本地化，前缀和动作名的拼接交给系统（英文有空格，中文没有）；应用不声明中文本地化时系统前缀是英文",
+      "check": "中文系统下看撤销菜单项，不能出现「撤销Bold」或「Undo Typing」",
+      "value": {
+        "zh": "撤销加粗",
+        "en": "Undo Bold"
+      },
+      "source": [
+        "lab:macos/macos-feedback/data/undo-l10n-zh-Hans.json#.titleFor[\"undo(加粗)\"]",
+        "lab:macos/macos-feedback/data/undo-l10n-en.json#.actionNameBold.undoMenuItemTitle",
+        "lab:macos/macos-feedback/data/undo-l10n-zh-Hans.json#.actionNameBold.undoMenuItemTitle",
+        "lab:macos/macos-feedback/data/undo-bare-zh-Hans.json#.textViewTyping.undoMenuItemTitle"
+      ],
+      "level": "should",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-06",
+      "rule": "对齐系统：文本视图里一段连续键入记成一步撤销（动作名「键入」），其余每个改动各一步",
+      "check": "打一个词后按一次 ⌘Z，整个词应该一起消失；改三次属性要撤销三次",
+      "value": {
+        "typing3Chars": 1,
+        "otherChanges3": 3
+      },
+      "source": [
+        "lab:macos/macos-feedback/data/undo-l10n-en.json#.textViewTyping.afterOneUndo",
+        "lab:macos/macos-feedback/data/undo-l10n-en.json#.nonTypingThreeChanges.undoSteps"
+      ],
+      "level": "should",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-07",
+      "rule": "撤销的结果在屏幕外时，滚动过去让人看见",
+      "check": "删掉一段后滚走，按 ⌘Z，视图应该滚回恢复的位置",
+      "value": null,
+      "source": [
+        "hig:undo-and-redo \"Show the results of an undo or redo\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-08",
+      "rule": "能选中、能显示的内容都支持拖放，包括拖到别的应用和访达；同时提供菜单命令作为替代",
+      "check": "选中一项拖到桌面、备忘录、另一个窗口",
+      "value": null,
+      "source": [
+        "hig:drag-and-drop \"As much as possible, support drag and drop throughout your app\"",
+        "hig:drag-and-drop \"Offer alternative ways to accomplish drag-and-drop actions\"",
+        "hig:drag-and-drop \"Consider letting people drag content from your app into the Finder\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-09",
+      "rule": "指针移动约 3 pt 就显示半透明的拖动图像，一直显示到放下",
+      "check": "按住一项慢慢拖，刚动一点就要出现拖动图像",
+      "value": 3,
+      "unit": "pt",
+      "source": [
+        "hig:drag-and-drop \"Display a drag image as soon as people drag a selection about three points\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-10",
+      "rule": "落点只在指针停在上面且能接收时高亮，移开就取消；不能放的地方不高亮或显示禁止图标；放失败时图像退回原处或放大淡出",
+      "check": "拖着一项在几个区域上移过，看高亮是不是跟着指针一次只亮一个",
+      "value": null,
+      "source": [
+        "hig:drag-and-drop \"Show people whether a destination can accept dragged content\"",
+        "hig:drag-and-drop \"scale up and fade out\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-11",
+      "rule": "同一容器内拖动是移动，跨容器是复制，跨应用总是复制；按住 Option 时同容器内变复制",
+      "check": "同一列表里拖一项（应移动），再按住 Option 拖（应复制）",
+      "value": null,
+      "source": [
+        "hig:drag-and-drop \"Dragging and dropping content between apps always results in a copy\"",
+        "hig:drag-and-drop \"check for the Option key at drop time\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-12",
+      "rule": "拖放可以撤销",
+      "check": "拖错位置后按 ⌘Z，应该回到原处",
+      "value": null,
+      "source": [
+        "hig:drag-and-drop \"Prefer letting people undo a drag-and-drop operation\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-13",
+      "rule": "非活动窗口里的选中内容可以直接拖走，不必先激活那个窗口",
+      "check": "在后台窗口里选中的项目上直接按住拖动",
+      "value": null,
+      "source": [
+        "hig:drag-and-drop \"Let people drag selected content from an inactive window without first making the window active\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-14",
+      "rule": "设置入口不放进主窗口的工具栏",
+      "check": "看主窗口工具栏里有没有齿轮之类的设置按钮",
+      "value": null,
+      "source": [
+        "hig:settings \"Avoid adding settings buttons to a window’s toolbar\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-15",
+      "rule": "设置窗口是独立的普通窗口，顶部是不可自定义、始终可见、标出当前分组的 preference 样式工具栏",
+      "check": "按 ⌘, 看是不是独立窗口；右键工具栏不应出现自定义工具栏的菜单项",
+      "value": {
+        "titlebarPlusToolbar": 88,
+        "toolbarStyle": "preference",
+        "userCustomizable": false
+      },
+      "unit": "pt",
+      "source": [
+        "hig:settings \"use a noncustomizable toolbar that remains visible and always indicates the active toolbar button\"",
+        "lab:macos/macos-feedback/data/feedback-zh-Hans.json#.settings.first.titlebarPlusToolbar",
+        "lab:macos/macos-feedback/data/feedback-zh-Hans.json#.settings.first.toolbarStyleIsPreference",
+        "lab:macos/macos-feedback/data/feedback-zh-Hans.json#.settings.first.toolbar.allowsUserCustomization"
+      ],
+      "level": "should",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-16",
+      "rule": "设置窗口的标题是当前分组名；只有一个分组时是「应用名 Settings」",
+      "check": "切换分组，看标题跟不跟着变",
+      "value": {
+        "pane1": "高级",
+        "pane2": "通用"
+      },
+      "source": [
+        "hig:settings \"Update the window’s title to reflect the currently visible pane\"",
+        "lab:macos/macos-feedback/data/feedback-zh-Hans.json#.settings.first.title",
+        "lab:macos/macos-feedback/data/feedback-zh-Hans.json#.settings.second.title"
+      ],
+      "level": "should",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-17",
+      "rule": "设置窗口的最小化、缩放按钮是灰的，窗口不能拖动改大小，高度跟着当前分组的内容变",
+      "check": "看黄绿两颗按钮；切分组看窗口高度",
+      "value": {
+        "miniaturizeEnabled": false,
+        "zoomEnabled": false,
+        "resizable": false,
+        "heights": {
+          "高级": 257,
+          "通用": 167
+        }
+      },
+      "unit": "pt",
+      "source": [
+        "hig:settings \"Dim a settings window’s minimize and maximize buttons\"",
+        "lab:macos/macos-feedback/data/feedback-zh-Hans.json#.settings.first.buttons.miniaturize.enabled",
+        "lab:macos/macos-feedback/data/feedback-zh-Hans.json#.settings.first.buttons.zoom.enabled",
+        "lab:macos/macos-feedback/data/feedback-zh-Hans.json#.settings.first.resizableMask",
+        "lab:macos/macos-feedback/data/feedback-zh-Hans.json#.settings.first.frame.h",
+        "lab:macos/macos-feedback/data/feedback-zh-Hans.json#.settings.second.frame.h"
+      ],
+      "level": "should",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-18",
+      "rule": "再次打开设置窗口时回到上次看的分组",
+      "check": "切到第二个分组，关掉，再按 ⌘,",
+      "value": null,
+      "source": [
+        "hig:settings \"Restore the most recently viewed pane\"",
+        "lab:macos/macos-feedback/data/feedback-zh-Hans.json#.settings.first.title"
+      ],
+      "level": "should",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-19",
+      "rule": "等待加载时尽早显示占位内容，别的功能照常能用，不用遮住整个窗口的转圈",
+      "check": "触发一个慢操作，看窗口其他地方还能不能点",
+      "value": null,
+      "source": [
+        "hig:loading \"Let people do other things in your app or game while they wait for content to load\"",
+        "hig:loading \"Show something as soon as possible\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-20",
+      "rule": "能算出进度就用条形确定进度；不确定的过程一旦能算出时长就切成确定的",
+      "check": "看长任务的指示器是否显示进度",
+      "value": null,
+      "source": [
+        "hig:progress-indicators \"When possible, use a determinate progress indicator\"",
+        "hig:progress-indicators \"When possible, switch a progress bar from indeterminate to determinate\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-21",
+      "rule": "不在转圈 / 环形和条形之间切换",
+      "check": "看同一个任务的指示器中途是否变形状",
+      "value": null,
+      "source": [
+        "hig:progress-indicators \"Don’t switch from the circular style to the bar style\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-22",
+      "rule": "后台任务和空间小的地方用转圈",
+      "check": "看列表刷新、文本框里的等待是不是一个小转圈",
+      "value": null,
+      "source": [
+        "hig:progress-indicators \"Prefer an activity indicator (spinner) to communicate the status of a background operation\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-23",
+      "rule": "转圈旁边不加文字说明",
+      "check": "看转圈旁有没有「加载中…」之类的字",
+      "value": null,
+      "source": [
+        "hig:progress-indicators \"Avoid labeling a spinning progress indicator\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-24",
+      "rule": "对齐系统：进度指示器尺寸按 controlSize（条形是控件高 / 画出的条）",
+      "check": "截图量条的粗细和转圈直径（2x 截图除以 2）",
+      "value": {
+        "bar": {
+          "mini": [
+            12,
+            6
+          ],
+          "small": [
+            12,
+            6
+          ],
+          "regular": [
+            20,
+            8
+          ],
+          "large": [
+            20,
+            8
+          ],
+          "extraLarge": [
+            20,
+            8
+          ]
+        },
+        "circular": {
+          "mini": 16,
+          "small": 16,
+          "regular": 32,
+          "large": 32,
+          "extraLarge": 32
+        },
+        "spinner": {
+          "mini": 10,
+          "small": 16,
+          "regular": 32,
+          "large": 32,
+          "extraLarge": 32
+        }
+      },
+      "unit": "pt",
+      "source": [
+        "lab:macos/macos-feedback/data/feedback-zh-Hans.json#.progress.regular.bar.intrinsic.h",
+        "lab:macos/macos-feedback/data/feedback-zh-Hans.json#.progress.small.spinner.intrinsic.w",
+        "lab:macos/macos-feedback/data/feedback-zh-Hans.json#.progress.mini.spinner.intrinsic.w",
+        "lab:macos/macos-feedback/data/feedback-zh-Hans.json#.progress.mini.circular.intrinsic.w",
+        "lab:macos/macos-feedback/data/pixels.json#.barDrawnThicknessPt"
+      ],
+      "level": "should",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-25",
+      "rule": "指示器一直在动；能中断的任务给「取消」，中断会丢进度时先确认",
+      "check": "慢操作过程中看指示器是否停住，有没有取消",
+      "value": null,
+      "source": [
+        "hig:progress-indicators \"Keep progress indicators moving\"",
+        "hig:progress-indicators \"When it’s feasible, let people halt processing\"",
+        "hig:progress-indicators \"Let people know when halting a process has a negative consequence\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-26",
+      "rule": "文稿自动定期存储，关闭和切走时也存，不要求人手动存",
+      "check": "新建文稿打几个字直接 ⌘Q，再打开内容还在",
+      "value": null,
+      "source": [
+        "hig:file-management \"avoid making people take an explicit action to save their work\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-27",
+      "rule": "对齐系统：自动存储开着时，标题后加「— 已编辑」，关闭按钮上不显示点（关掉自动存储时的点见 WIN-19）",
+      "check": "改动文稿后看标题栏和关闭按钮",
+      "value": {
+        "autosave": "未命名 — 已编辑"
+      },
+      "source": [
+        "lab:macos/macos-feedback/data/feedback-zh-Hans.json#.documents.autosave.afterUpdateChangeCount.titlebar",
+        "lab:macos/macos-feedback/data/feedback-zh-Hans.json#.documents.autosave.afterUpdateChangeCount.isDocumentEdited"
+      ],
+      "level": "should",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-28",
+      "rule": "动效短而精确，常用操作上不加自定义动效，不让人等动画结束才能操作",
+      "check": "连续切换分组 / 标签五次，看有没有每次都要等的动画",
+      "value": null,
+      "source": [
+        "hig:motion \"Aim for brevity and precision in feedback animations\"",
+        "hig:motion \"generally avoid adding motion to UI interactions that occur frequently\"",
+        "hig:motion \"Let people cancel motion\""
+      ],
+      "level": "should",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-29",
+      "rule": "对齐系统：动画默认 0.25 秒；窗口尺寸动画按距离算，到 0.35 秒封顶；设置窗口切分组不做逐帧动画",
+      "check": "读 NSAnimationContext 的 duration 和 NSWindow 的 animationResizeTime(_:)",
+      "value": {
+        "default": 0.25,
+        "resize50pt": 0.1,
+        "resize150pt": 0.22,
+        "resize300pt": 0.33,
+        "resize600pt": 0.35,
+        "resize1200pt": 0.35
+      },
+      "unit": "s",
+      "source": [
+        "lab:macos/macos-feedback/data/progress-zh-Hans.json#.motion.animationContextDefaultDuration",
+        "lab:macos/macos-feedback/data/progress-zh-Hans.json#.motion.windowAnimationResizeTime[\"+1200pt\"]",
+        "lab:macos/macos-feedback/data/feedback-zh-Hans.json#.settings.switchSamples"
+      ],
+      "level": "should",
+      "post": "/blog/macos-feedback/"
+    },
+    {
+      "id": "FB-30",
+      "rule": "响应「减少动态效果」：减少自动和重复的动画、缩放和外围移动，位移换成淡入淡出（不是把时长设成 0）；运行中设置改变也要跟上",
+      "check": "开着应用打开该设置，回来把常用动画做一遍",
+      "value": null,
+      "source": [
+        "hig:accessibility \"ensure your app or game responds by reducing automatic and repetitive animations\"",
+        "hig:accessibility \"Replacing transitions in x-, y-, and z-axes with fades to avoid motion\""
+      ],
+      "level": "must",
+      "post": "/blog/macos-feedback/"
+    }
+  ]
+}

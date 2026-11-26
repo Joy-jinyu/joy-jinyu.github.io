@@ -1,0 +1,587 @@
+{
+  "activeLog" : [
+
+  ],
+  "autosave" : {
+    "frame" : {
+      "h" : 292,
+      "w" : 420,
+      "x" : 160,
+      "y" : 468
+    },
+    "key" : "NSWindow Frame ProbeWindow",
+    "value" : "160 468 420 292 0 0 1512 949 "
+  },
+  "fullscreen" : {
+    "after" : {
+      "h" : 949,
+      "w" : 1512,
+      "x" : 0,
+      "y" : 0
+    },
+    "afterStyleMaskFullScreen" : true,
+    "before" : {
+      "buttons" : {
+        "close" : {
+          "enabled" : true,
+          "h" : 14,
+          "hidden" : false,
+          "left" : 19,
+          "top" : 19,
+          "w" : 14
+        },
+        "miniaturize" : {
+          "enabled" : true,
+          "h" : 14,
+          "hidden" : false,
+          "left" : 42,
+          "top" : 19,
+          "w" : 14
+        },
+        "zoom" : {
+          "enabled" : true,
+          "h" : 14,
+          "hidden" : false,
+          "left" : 65,
+          "top" : 19,
+          "w" : 14
+        }
+      },
+      "contentLayoutRect" : {
+        "h" : 308,
+        "w" : 640,
+        "x" : 0,
+        "y" : 0
+      },
+      "frame" : {
+        "h" : 360,
+        "w" : 640,
+        "x" : 160,
+        "y" : 440
+      },
+      "title" : {
+        "font" : ".SFNS-Semibold",
+        "h" : 19,
+        "left" : 106,
+        "size" : 15,
+        "top" : 16.5
+      },
+      "titlebarPlusToolbar" : 52
+    },
+    "inFullScreen" : {
+      "buttons" : {
+        "close" : {
+          "enabled" : false,
+          "h" : 14,
+          "hidden" : true,
+          "left" : 19,
+          "top" : 916,
+          "w" : 14
+        },
+        "miniaturize" : {
+          "enabled" : false,
+          "h" : 14,
+          "hidden" : true,
+          "left" : 42,
+          "top" : 916,
+          "w" : 14
+        },
+        "zoom" : {
+          "enabled" : false,
+          "h" : 14,
+          "hidden" : true,
+          "left" : 65,
+          "top" : 916,
+          "w" : 14
+        }
+      },
+      "contentLayoutRect" : {
+        "h" : 897,
+        "w" : 1512,
+        "x" : 0,
+        "y" : 0
+      },
+      "frame" : {
+        "h" : 949,
+        "w" : 1512,
+        "x" : 0,
+        "y" : 0
+      },
+      "titlebarPlusToolbar" : 52
+    },
+    "ownWindowsInFullScreen" : [
+
+    ],
+    "styleMaskFullScreen" : true
+  },
+  "screen" : {
+    "frame" : {
+      "h" : 982,
+      "w" : 1512,
+      "x" : 0,
+      "y" : 0
+    },
+    "safeAreaTop" : 32,
+    "visibleFrame" : {
+      "h" : 879,
+      "w" : 1512,
+      "x" : 0,
+      "y" : 70
+    }
+  },
+  "shells" : {
+    "expanded" : {
+      "buttons" : {
+        "close" : {
+          "enabled" : true,
+          "h" : 14,
+          "hidden" : false,
+          "left" : 9,
+          "top" : 9,
+          "w" : 14
+        },
+        "miniaturize" : {
+          "enabled" : true,
+          "h" : 14,
+          "hidden" : false,
+          "left" : 32,
+          "top" : 9,
+          "w" : 14
+        },
+        "zoom" : {
+          "enabled" : true,
+          "h" : 14,
+          "hidden" : false,
+          "left" : 55,
+          "top" : 9,
+          "w" : 14
+        }
+      },
+      "contentLayoutRect" : {
+        "h" : 124,
+        "w" : 480,
+        "x" : 0,
+        "y" : 0
+      },
+      "frame" : {
+        "h" : 200,
+        "w" : 480,
+        "x" : 120,
+        "y" : 660
+      },
+      "frameAfterShrinkTo1x1" : {
+        "h" : 1,
+        "w" : 1,
+        "x" : 120,
+        "y" : 600
+      },
+      "minSizeProperty" : {
+        "h" : 0,
+        "w" : 0
+      },
+      "title" : {
+        "font" : ".AppleSystemUIFaceHeadline",
+        "h" : 16,
+        "left" : 82,
+        "size" : 13,
+        "top" : 8
+      },
+      "titlebarPlusToolbar" : 76
+    },
+    "plain" : {
+      "buttons" : {
+        "close" : {
+          "enabled" : true,
+          "h" : 14,
+          "hidden" : false,
+          "left" : 9,
+          "top" : 9,
+          "w" : 14
+        },
+        "miniaturize" : {
+          "enabled" : true,
+          "h" : 14,
+          "hidden" : false,
+          "left" : 32,
+          "top" : 9,
+          "w" : 14
+        },
+        "zoom" : {
+          "enabled" : true,
+          "h" : 14,
+          "hidden" : false,
+          "left" : 55,
+          "top" : 9,
+          "w" : 14
+        }
+      },
+      "contentLayoutRect" : {
+        "h" : 200,
+        "w" : 480,
+        "x" : 0,
+        "y" : 0
+      },
+      "frame" : {
+        "h" : 232,
+        "w" : 480,
+        "x" : 120,
+        "y" : 628
+      },
+      "frameAfterShrinkTo1x1" : {
+        "h" : 1,
+        "w" : 1,
+        "x" : 120,
+        "y" : 600
+      },
+      "minSizeProperty" : {
+        "h" : 32,
+        "w" : 0
+      },
+      "title" : {
+        "font" : ".AppleSystemUIFaceHeadline",
+        "h" : 16,
+        "left" : 82,
+        "size" : 13,
+        "top" : 8
+      },
+      "titlebarPlusToolbar" : 32
+    },
+    "unified" : {
+      "buttons" : {
+        "close" : {
+          "enabled" : true,
+          "h" : 14,
+          "hidden" : false,
+          "left" : 19,
+          "top" : 19,
+          "w" : 14
+        },
+        "miniaturize" : {
+          "enabled" : true,
+          "h" : 14,
+          "hidden" : false,
+          "left" : 42,
+          "top" : 19,
+          "w" : 14
+        },
+        "zoom" : {
+          "enabled" : true,
+          "h" : 14,
+          "hidden" : false,
+          "left" : 65,
+          "top" : 19,
+          "w" : 14
+        }
+      },
+      "contentLayoutRect" : {
+        "h" : 148,
+        "w" : 480,
+        "x" : 0,
+        "y" : 0
+      },
+      "frame" : {
+        "h" : 200,
+        "w" : 480,
+        "x" : 120,
+        "y" : 660
+      },
+      "frameAfterShrinkTo1x1" : {
+        "h" : 1,
+        "w" : 1,
+        "x" : 120,
+        "y" : 600
+      },
+      "minSizeProperty" : {
+        "h" : 0,
+        "w" : 0
+      },
+      "title" : {
+        "font" : ".SFNS-Semibold",
+        "h" : 19,
+        "left" : 106,
+        "size" : 15,
+        "top" : 16.5
+      },
+      "titlebarPlusToolbar" : 52
+    },
+    "unifiedCompact" : {
+      "buttons" : {
+        "close" : {
+          "enabled" : true,
+          "h" : 14,
+          "hidden" : false,
+          "left" : 12,
+          "top" : 13,
+          "w" : 14
+        },
+        "miniaturize" : {
+          "enabled" : true,
+          "h" : 14,
+          "hidden" : false,
+          "left" : 35,
+          "top" : 13,
+          "w" : 14
+        },
+        "zoom" : {
+          "enabled" : true,
+          "h" : 14,
+          "hidden" : false,
+          "left" : 58,
+          "top" : 13,
+          "w" : 14
+        }
+      },
+      "contentLayoutRect" : {
+        "h" : 160,
+        "w" : 480,
+        "x" : 0,
+        "y" : 0
+      },
+      "frame" : {
+        "h" : 200,
+        "w" : 480,
+        "x" : 120,
+        "y" : 660
+      },
+      "frameAfterShrinkTo1x1" : {
+        "h" : 1,
+        "w" : 1,
+        "x" : 120,
+        "y" : 600
+      },
+      "minSizeProperty" : {
+        "h" : 0,
+        "w" : 0
+      },
+      "title" : {
+        "font" : ".SFNS-Bold",
+        "h" : 16,
+        "left" : 91,
+        "size" : 13,
+        "top" : 12
+      },
+      "titlebarPlusToolbar" : 40
+    }
+  },
+  "tabs" : {
+    "plain" : {
+      "oneTab" : {
+        "buttons" : {
+          "close" : {
+            "enabled" : true,
+            "h" : 14,
+            "hidden" : false,
+            "left" : 9,
+            "top" : 9,
+            "w" : 14
+          },
+          "miniaturize" : {
+            "enabled" : true,
+            "h" : 14,
+            "hidden" : false,
+            "left" : 32,
+            "top" : 9,
+            "w" : 14
+          },
+          "zoom" : {
+            "enabled" : true,
+            "h" : 14,
+            "hidden" : false,
+            "left" : 55,
+            "top" : 9,
+            "w" : 14
+          }
+        },
+        "contentLayoutRect" : {
+          "h" : 220,
+          "w" : 560,
+          "x" : 0,
+          "y" : 0
+        },
+        "frame" : {
+          "h" : 252,
+          "w" : 560,
+          "x" : 120,
+          "y" : 608
+        },
+        "title" : {
+          "font" : ".AppleSystemUIFaceHeadline",
+          "h" : 16,
+          "left" : 82,
+          "size" : 13,
+          "top" : 8
+        },
+        "titlebarPlusToolbar" : 32
+      },
+      "tabBarHeight" : 36,
+      "twoTabs" : {
+        "buttons" : {
+          "close" : {
+            "enabled" : true,
+            "h" : 14,
+            "hidden" : false,
+            "left" : 9,
+            "top" : 9,
+            "w" : 14
+          },
+          "miniaturize" : {
+            "enabled" : true,
+            "h" : 14,
+            "hidden" : false,
+            "left" : 32,
+            "top" : 9,
+            "w" : 14
+          },
+          "zoom" : {
+            "enabled" : true,
+            "h" : 14,
+            "hidden" : false,
+            "left" : 55,
+            "top" : 9,
+            "w" : 14
+          }
+        },
+        "contentLayoutRect" : {
+          "h" : 184,
+          "w" : 560,
+          "x" : 0,
+          "y" : 0
+        },
+        "frame" : {
+          "h" : 252,
+          "w" : 560,
+          "x" : 120,
+          "y" : 608
+        },
+        "title" : {
+          "font" : ".AppleSystemUIFaceHeadline",
+          "h" : 16,
+          "left" : 82,
+          "size" : 13,
+          "top" : 8
+        },
+        "titlebarPlusToolbar" : 68
+      }
+    },
+    "unified" : {
+      "oneTab" : {
+        "buttons" : {
+          "close" : {
+            "enabled" : true,
+            "h" : 14,
+            "hidden" : false,
+            "left" : 19,
+            "top" : 19,
+            "w" : 14
+          },
+          "miniaturize" : {
+            "enabled" : true,
+            "h" : 14,
+            "hidden" : false,
+            "left" : 42,
+            "top" : 19,
+            "w" : 14
+          },
+          "zoom" : {
+            "enabled" : true,
+            "h" : 14,
+            "hidden" : false,
+            "left" : 65,
+            "top" : 19,
+            "w" : 14
+          }
+        },
+        "contentLayoutRect" : {
+          "h" : 168,
+          "w" : 560,
+          "x" : 0,
+          "y" : 0
+        },
+        "frame" : {
+          "h" : 220,
+          "w" : 560,
+          "x" : 120,
+          "y" : 640
+        },
+        "title" : {
+          "font" : ".SFNS-Semibold",
+          "h" : 19,
+          "left" : 106,
+          "size" : 15,
+          "top" : 16.5
+        },
+        "titlebarPlusToolbar" : 52
+      },
+      "tabBarHeight" : 36,
+      "twoTabs" : {
+        "buttons" : {
+          "close" : {
+            "enabled" : true,
+            "h" : 14,
+            "hidden" : false,
+            "left" : 19,
+            "top" : 19,
+            "w" : 14
+          },
+          "miniaturize" : {
+            "enabled" : true,
+            "h" : 14,
+            "hidden" : false,
+            "left" : 42,
+            "top" : 19,
+            "w" : 14
+          },
+          "zoom" : {
+            "enabled" : true,
+            "h" : 14,
+            "hidden" : false,
+            "left" : 65,
+            "top" : 19,
+            "w" : 14
+          }
+        },
+        "contentLayoutRect" : {
+          "h" : 132,
+          "w" : 560,
+          "x" : 0,
+          "y" : 0
+        },
+        "frame" : {
+          "h" : 220,
+          "w" : 560,
+          "x" : 120,
+          "y" : 640
+        },
+        "title" : {
+          "font" : ".SFNS-Semibold",
+          "h" : 19,
+          "left" : 106,
+          "size" : 15,
+          "top" : 16.5
+        },
+        "titlebarPlusToolbar" : 88
+      }
+    }
+  },
+  "zoom" : {
+    "afterSecondZoom" : {
+      "h" : 300,
+      "w" : 480,
+      "x" : 200,
+      "y" : 500
+    },
+    "afterZoom" : {
+      "h" : 879,
+      "w" : 1512,
+      "x" : 0,
+      "y" : 70
+    },
+    "before" : {
+      "h" : 300,
+      "w" : 480,
+      "x" : 200,
+      "y" : 500
+    },
+    "isZoomed" : true
+  }
+}

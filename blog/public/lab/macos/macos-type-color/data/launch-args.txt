@@ -1,0 +1,17 @@
+# 启动参数实测，2026-11-26 22:54 +0800，macOS 26.6.2
+## typecolor appearance（无参数）
+NSAppearanceNameAqua
+## typecolor appearance -AppleInterfaceStyle Dark
+NSAppearanceNameAqua
+## typecolor data -AppleAccentColor -1（不带空格）→ 进程读到的 AppleAccentColor、浅色 controlAccentColor
+[null,"#007AFF"]
+## typecolor data -AppleAccentColor ' -1'（前面带空格）
+[" -1","#989898"]
+## typecolor data -AppleAccentColor 2
+["2","#FFC726"]
+## 跑完后 defaults read -g AppleAccentColor（只读，看系统设置有没有被改）
+The domain/default pair of (kCFPreferencesAnyApplication, AppleAccentColor) does not exist
+## 范围外的值 7、8、' -2'（看是否还有别的颜色）
+'7' → ["7","#007AFF"]
+'8' → ["8","#007AFF"]
+' -2' → [" -2","#007AFF"]

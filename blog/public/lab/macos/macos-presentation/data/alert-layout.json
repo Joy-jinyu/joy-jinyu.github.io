@@ -1,0 +1,252 @@
+[
+  {
+    "buttonsTopToBottomLeftToRight" : [
+      {
+        "h" : 28,
+        "key" : "Return",
+        "left" : 16,
+        "mods" : 0,
+        "title" : "存储",
+        "top" : 158,
+        "w" : 228
+      },
+      {
+        "h" : 28,
+        "key" : "",
+        "left" : 16,
+        "mods" : 0,
+        "title" : "取消",
+        "top" : 192,
+        "w" : 228
+      },
+      {
+        "h" : 28,
+        "key" : "",
+        "left" : 16,
+        "mods" : 0,
+        "title" : "不存储",
+        "top" : 226,
+        "w" : 228
+      }
+    ],
+    "defaultButtonCell" : "存储",
+    "iconShown" : true,
+    "name" : "zh-3-noEsc",
+    "window" : {
+      "h" : 270,
+      "w" : 260
+    }
+  },
+  {
+    "buttonsTopToBottomLeftToRight" : [
+      {
+        "h" : 28,
+        "key" : "Return",
+        "left" : 16,
+        "mods" : 0,
+        "title" : "存储",
+        "top" : 158,
+        "w" : 228
+      },
+      {
+        "h" : 28,
+        "key" : "",
+        "left" : 16,
+        "mods" : 0,
+        "title" : "不存储",
+        "top" : 192,
+        "w" : 228
+      },
+      {
+        "h" : 28,
+        "key" : "Esc",
+        "left" : 16,
+        "mods" : 0,
+        "title" : "取消",
+        "top" : 226,
+        "w" : 228
+      }
+    ],
+    "defaultButtonCell" : "存储",
+    "iconShown" : true,
+    "name" : "zh-3-escOnCancel",
+    "window" : {
+      "h" : 270,
+      "w" : 260
+    }
+  },
+  {
+    "buttonsTopToBottomLeftToRight" : [
+      {
+        "h" : 28,
+        "key" : "Return",
+        "left" : 16,
+        "mods" : 0,
+        "title" : "Save",
+        "top" : 158,
+        "w" : 228
+      },
+      {
+        "h" : 28,
+        "key" : "d",
+        "left" : 16,
+        "mods" : 1048576,
+        "title" : "Don’t Save",
+        "top" : 192,
+        "w" : 228
+      },
+      {
+        "h" : 28,
+        "key" : "Esc",
+        "left" : 16,
+        "mods" : 0,
+        "title" : "Cancel",
+        "top" : 226,
+        "w" : 228
+      }
+    ],
+    "defaultButtonCell" : "Save",
+    "iconShown" : true,
+    "name" : "en-3",
+    "window" : {
+      "h" : 270,
+      "w" : 260
+    }
+  },
+  {
+    "buttonsTopToBottomLeftToRight" : [
+      {
+        "h" : 28,
+        "key" : "",
+        "left" : 16,
+        "mods" : 0,
+        "title" : "取消",
+        "top" : 158,
+        "w" : 110
+      },
+      {
+        "h" : 28,
+        "key" : "Return",
+        "left" : 134,
+        "mods" : 0,
+        "title" : "删除",
+        "top" : 158,
+        "w" : 110
+      }
+    ],
+    "defaultButtonCell" : "删除",
+    "iconShown" : true,
+    "name" : "zh-2-noEsc",
+    "window" : {
+      "h" : 202,
+      "w" : 260
+    }
+  },
+  {
+    "buttonsTopToBottomLeftToRight" : [
+      {
+        "h" : 28,
+        "key" : "Esc",
+        "left" : 16,
+        "mods" : 0,
+        "title" : "取消",
+        "top" : 158,
+        "w" : 110
+      },
+      {
+        "h" : 28,
+        "key" : "Return",
+        "left" : 134,
+        "mods" : 0,
+        "title" : "删除",
+        "top" : 158,
+        "w" : 110
+      }
+    ],
+    "defaultButtonCell" : "删除",
+    "iconShown" : true,
+    "name" : "zh-2-escOnCancel",
+    "window" : {
+      "h" : 202,
+      "w" : 260
+    }
+  },
+  {
+    "buttonsTopToBottomLeftToRight" : [
+      {
+        "h" : 28,
+        "key" : "Return",
+        "left" : 16,
+        "mods" : 0,
+        "title" : "移到废纸篓并清空",
+        "top" : 158,
+        "w" : 228
+      },
+      {
+        "h" : 28,
+        "key" : "Esc",
+        "left" : 16,
+        "mods" : 0,
+        "title" : "取消",
+        "top" : 192,
+        "w" : 228
+      }
+    ],
+    "defaultButtonCell" : "移到废纸篓并清空",
+    "iconShown" : true,
+    "name" : "zh-2-longTitles",
+    "window" : {
+      "h" : 236,
+      "w" : 260
+    }
+  },
+  {
+    "buttonsTopToBottomLeftToRight" : [
+      {
+        "h" : 28,
+        "key" : "Return",
+        "left" : 16,
+        "mods" : 0,
+        "title" : "好",
+        "top" : 158,
+        "w" : 228
+      }
+    ],
+    "defaultButtonCell" : "好",
+    "iconShown" : true,
+    "name" : "zh-1",
+    "window" : {
+      "h" : 202,
+      "w" : 260
+    }
+  },
+  {
+    "buttonsTopToBottomLeftToRight" : [
+      {
+        "h" : 28,
+        "key" : "Esc",
+        "left" : 16,
+        "mods" : 0,
+        "title" : "取消",
+        "top" : 239,
+        "w" : 110
+      },
+      {
+        "h" : 28,
+        "key" : "Return",
+        "left" : 134,
+        "mods" : 0,
+        "title" : "删除",
+        "top" : 239,
+        "w" : 110
+      }
+    ],
+    "defaultButtonCell" : "删除",
+    "iconShown" : true,
+    "name" : "zh-2-longInfo",
+    "window" : {
+      "h" : 283,
+      "w" : 260
+    }
+  }
+]

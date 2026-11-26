@@ -1,0 +1,722 @@
+{
+  "acceptsFirstResponder" : {
+    "checkbox" : true,
+    "link" : false,
+    "popUp" : true,
+    "pushCancel" : true,
+    "pushOK" : true,
+    "recessed" : true,
+    "searchField" : true,
+    "segmented" : true,
+    "table" : true,
+    "textField" : true
+  },
+  "activatedWithin2s" : true,
+  "canBecomeKeyView" : {
+    "checkbox" : false,
+    "link" : false,
+    "popUp" : false,
+    "pushCancel" : false,
+    "pushOK" : false,
+    "recessed" : false,
+    "searchField" : true,
+    "segmented" : false,
+    "table" : true,
+    "textField" : true
+  },
+  "colors" : {
+    "alternateSelectedControlTextColor" : "#FFFFFF a=1.000",
+    "controlAccentColor" : "#007AFF a=1.000",
+    "keyboardFocusIndicatorColor" : "#0067F4 a=0.498",
+    "linkColor" : "#0068DA a=1.000",
+    "selectedContentBackgroundColor" : "#0064E1 a=1.000",
+    "selectedTextBackgroundColor" : "#B3D7FF a=1.000",
+    "unemphasizedSelectedContentBackgroundColor" : "#DCDCDC a=1.000",
+    "unemphasizedSelectedTextBackgroundColor" : "#DCDCDC a=1.000"
+  },
+  "cursors" : [
+    {
+      "hotSpot" : [
+        5,
+        5
+      ],
+      "name" : "arrow",
+      "size" : [
+        28,
+        40
+      ]
+    },
+    {
+      "hotSpot" : [
+        12,
+        11
+      ],
+      "name" : "iBeam",
+      "size" : [
+        23,
+        22
+      ]
+    },
+    {
+      "hotSpot" : [
+        13,
+        8
+      ],
+      "name" : "pointingHand",
+      "size" : [
+        32,
+        32
+      ]
+    },
+    {
+      "hotSpot" : [
+        16,
+        17
+      ],
+      "name" : "openHand",
+      "size" : [
+        32,
+        32
+      ]
+    },
+    {
+      "hotSpot" : [
+        16,
+        17
+      ],
+      "name" : "closedHand",
+      "size" : [
+        32,
+        32
+      ]
+    },
+    {
+      "hotSpot" : [
+        11,
+        11
+      ],
+      "name" : "crosshair",
+      "size" : [
+        24,
+        24
+      ]
+    },
+    {
+      "hotSpot" : [
+        5,
+        5
+      ],
+      "name" : "contextualMenu",
+      "size" : [
+        28,
+        40
+      ]
+    },
+    {
+      "hotSpot" : [
+        5,
+        5
+      ],
+      "name" : "dragCopy",
+      "size" : [
+        28,
+        40
+      ]
+    },
+    {
+      "hotSpot" : [
+        11,
+        3
+      ],
+      "name" : "dragLink",
+      "size" : [
+        16,
+        21
+      ]
+    },
+    {
+      "hotSpot" : [
+        5,
+        5
+      ],
+      "name" : "operationNotAllowed",
+      "size" : [
+        28,
+        40
+      ]
+    },
+    {
+      "hotSpot" : [
+        5,
+        5
+      ],
+      "name" : "disappearingItem",
+      "size" : [
+        28,
+        40
+      ]
+    },
+    {
+      "hotSpot" : [
+        11,
+        10
+      ],
+      "name" : "iBeamVertical",
+      "size" : [
+        22,
+        21
+      ]
+    },
+    {
+      "hotSpot" : [
+        15,
+        12
+      ],
+      "name" : "columnResize",
+      "size" : [
+        30,
+        24
+      ]
+    },
+    {
+      "hotSpot" : [
+        12,
+        14
+      ],
+      "name" : "rowResize",
+      "size" : [
+        24,
+        28
+      ]
+    },
+    {
+      "hotSpot" : [
+        12,
+        12
+      ],
+      "name" : "columnResize(left)",
+      "size" : [
+        24,
+        24
+      ]
+    },
+    {
+      "hotSpot" : [
+        12,
+        9
+      ],
+      "name" : "frameResize(right,all)",
+      "size" : [
+        24,
+        18
+      ]
+    },
+    {
+      "hotSpot" : [
+        11,
+        11
+      ],
+      "name" : "frameResize(bottomRight,all)",
+      "size" : [
+        22,
+        22
+      ]
+    },
+    {
+      "hotSpot" : [
+        12,
+        11
+      ],
+      "name" : "zoomIn",
+      "size" : [
+        28,
+        26
+      ]
+    },
+    {
+      "hotSpot" : [
+        12,
+        11
+      ],
+      "name" : "zoomOut",
+      "size" : [
+        28,
+        26
+      ]
+    }
+  ],
+  "frames" : {
+    "checkbox" : {
+      "h" : 16,
+      "top" : 110,
+      "w" : 110,
+      "x" : 190
+    },
+    "link" : {
+      "h" : 16,
+      "top" : 202,
+      "w" : 67,
+      "x" : 240
+    },
+    "popUp" : {
+      "h" : 24,
+      "top" : 148,
+      "w" : 97,
+      "x" : 220
+    },
+    "pushCancel" : {
+      "h" : 24,
+      "top" : 108,
+      "w" : 66,
+      "x" : 90
+    },
+    "pushOK" : {
+      "h" : 24,
+      "top" : 108,
+      "w" : 43,
+      "x" : 20
+    },
+    "recessed" : {
+      "h" : 24,
+      "top" : 110,
+      "w" : 83,
+      "x" : 330
+    },
+    "searchField" : {
+      "h" : 24,
+      "top" : 68,
+      "w" : 180,
+      "x" : 220
+    },
+    "segmented" : {
+      "h" : 24,
+      "top" : 148,
+      "w" : 159,
+      "x" : 20
+    },
+    "table" : {
+      "h" : 120,
+      "top" : 188,
+      "w" : 200,
+      "x" : 20
+    },
+    "textField" : {
+      "h" : 24,
+      "top" : 68,
+      "w" : 180,
+      "x" : 20
+    }
+  },
+  "hitTest" : {
+    "checkbox" : {
+      "inLeft+1" : "checkbox",
+      "inRight-1" : "checkbox",
+      "inTop-1" : "checkbox",
+      "outLeft-1" : "NSView",
+      "outRight+1" : "NSView",
+      "outTop+1" : "NSView"
+    },
+    "pushOK" : {
+      "inLeft+1" : "pushOK",
+      "inRight-1" : "pushOK",
+      "inTop-1" : "pushOK",
+      "outLeft-1" : "NSView",
+      "outRight+1" : "NSView",
+      "outTop+1" : "NSView"
+    },
+    "textField" : {
+      "inLeft+1" : "textField",
+      "inRight-1" : "textField",
+      "inTop-1" : "textField",
+      "outLeft-1" : "NSView",
+      "outRight+1" : "NSView",
+      "outTop+1" : "NSView"
+    }
+  },
+  "hoverSent" : [
+    "pushOK -> owner NSToolTipManager responds=true trackingArea=true",
+    "pushCancel -> no tracking area",
+    "recessed -> owner NSButtonCell responds=true trackingArea=true",
+    "checkbox -> no tracking area",
+    "toolbarButton -> owner _NSToolbarButtonCell responds=true trackingArea=true"
+  ],
+  "makeFirstResponder" : {
+    "pushOK" : {
+      "firstResponder" : "pushOK",
+      "returned" : true
+    },
+    "searchField" : {
+      "firstResponder" : "searchField(fieldEditor)",
+      "returned" : true
+    },
+    "table" : {
+      "firstResponder" : "table",
+      "returned" : true
+    },
+    "textField" : {
+      "firstResponder" : "textField(fieldEditor)",
+      "returned" : true
+    }
+  },
+  "mode" : "light",
+  "shots" : {
+    "light-focus-pushOK" : {
+      "active" : true,
+      "firstResponder" : "NSButton",
+      "forcedKey" : false,
+      "key" : true,
+      "main" : true
+    },
+    "light-focus-searchField" : {
+      "active" : true,
+      "firstResponder" : "NSTextView",
+      "forcedKey" : false,
+      "key" : true,
+      "main" : true
+    },
+    "light-focus-table" : {
+      "active" : true,
+      "firstResponder" : "NSTableView",
+      "forcedKey" : false,
+      "key" : true,
+      "main" : true
+    },
+    "light-focus-textField" : {
+      "active" : true,
+      "firstResponder" : "NSTextView",
+      "forcedKey" : false,
+      "key" : true,
+      "main" : true
+    },
+    "light-hover-after" : {
+      "active" : true,
+      "firstResponder" : "KeyWin",
+      "forcedKey" : false,
+      "key" : true,
+      "main" : true
+    },
+    "light-hover-before" : {
+      "active" : true,
+      "firstResponder" : "KeyWin",
+      "forcedKey" : false,
+      "key" : true,
+      "main" : true
+    },
+    "light-none" : {
+      "active" : true,
+      "firstResponder" : "KeyWin",
+      "forcedKey" : false,
+      "key" : true,
+      "main" : true
+    },
+    "light-sel-appInactive" : {
+      "active" : true,
+      "firstResponder" : "NSTableView",
+      "forcedKey" : false,
+      "key" : false,
+      "main" : false
+    },
+    "light-sel-fieldFocused" : {
+      "active" : true,
+      "firstResponder" : "NSTextView",
+      "forcedKey" : false,
+      "key" : true,
+      "main" : true
+    },
+    "light-sel-mainNotKey" : {
+      "active" : true,
+      "firstResponder" : "NSTableView",
+      "forcedKey" : false,
+      "key" : false,
+      "main" : true
+    },
+    "light-sel-otherWindowMain" : {
+      "active" : true,
+      "firstResponder" : "NSTableView",
+      "forcedKey" : false,
+      "key" : false,
+      "main" : false
+    },
+    "light-sel-tableFocused" : {
+      "active" : true,
+      "firstResponder" : "NSTableView",
+      "forcedKey" : false,
+      "key" : true,
+      "main" : true
+    }
+  },
+  "system" : {
+    "AppleKeyboardUIMode(incl. argument domain)" : 1,
+    "doubleClickInterval" : 0.5,
+    "isFullKeyboardAccessEnabled" : false,
+    "NSInitialToolTipDelay" : "unset",
+    "swipeTrackingFromScrollEvents" : true
+  },
+  "tabLoop" : [
+    "textField(fieldEditor)",
+    "searchField(fieldEditor)",
+    "table",
+    "textField(fieldEditor)",
+    "searchField(fieldEditor)",
+    "table",
+    "textField(fieldEditor)",
+    "searchField(fieldEditor)",
+    "table",
+    "textField(fieldEditor)",
+    "searchField(fieldEditor)"
+  ],
+  "trackingAreas" : [
+    {
+      "areas" : [
+        {
+          "options" : [
+            "enteredExited",
+            "always"
+          ],
+          "rect" : [
+            57,
+            289,
+            30,
+            30
+          ]
+        },
+        {
+          "options" : [
+            "enteredExited",
+            "always"
+          ],
+          "rect" : [
+            19,
+            297,
+            60,
+            14
+          ]
+        },
+        {
+          "options" : [
+            "moved",
+            "inActiveApp"
+          ],
+          "rect" : [
+            -3,
+            -3,
+            446,
+            336
+          ]
+        }
+      ],
+      "class" : "NSThemeFrame",
+      "depth" : 0,
+      "frame" : {
+        "h" : 330,
+        "top" : 0,
+        "w" : 440,
+        "x" : 0
+      },
+      "name" : ""
+    },
+    {
+      "areas" : [
+        {
+          "options" : [
+            "enteredExited",
+            "always"
+          ],
+          "rect" : [
+            0,
+            0,
+            43,
+            24
+          ]
+        }
+      ],
+      "class" : "NSButton",
+      "depth" : 2,
+      "frame" : {
+        "h" : 24,
+        "top" : 108,
+        "w" : 43,
+        "x" : 20
+      },
+      "name" : "pushOK"
+    },
+    {
+      "areas" : [
+        {
+          "options" : [
+            "enteredExited",
+            "always"
+          ],
+          "rect" : [
+            0,
+            0,
+            83,
+            24
+          ]
+        }
+      ],
+      "class" : "NSButton",
+      "depth" : 2,
+      "frame" : {
+        "h" : 24,
+        "top" : 110,
+        "w" : 83,
+        "x" : 330
+      },
+      "name" : "recessed"
+    },
+    {
+      "areas" : [
+        {
+          "options" : [
+            "enteredExited",
+            "moved",
+            "inKeyWindow"
+          ],
+          "rect" : [
+            0,
+            0,
+            440,
+            52
+          ]
+        }
+      ],
+      "class" : "NSTitlebarContainerView",
+      "depth" : 1,
+      "frame" : {
+        "h" : 52,
+        "top" : 0,
+        "w" : 440,
+        "x" : 0
+      },
+      "name" : ""
+    },
+    {
+      "areas" : [
+        {
+          "options" : [
+            "enteredExited",
+            "always"
+          ],
+          "rect" : [
+            19,
+            19,
+            60,
+            14
+          ]
+        }
+      ],
+      "class" : "NSTitlebarView",
+      "depth" : 2,
+      "frame" : {
+        "h" : 52,
+        "top" : 0,
+        "w" : 440,
+        "x" : 0
+      },
+      "name" : ""
+    },
+    {
+      "areas" : [
+        {
+          "options" : [
+            "enteredExited",
+            "always"
+          ],
+          "rect" : [
+            0,
+            0,
+            44,
+            52
+          ]
+        }
+      ],
+      "class" : "NSToolbarItemViewer",
+      "depth" : 4,
+      "frame" : {
+        "h" : 52,
+        "top" : 0,
+        "w" : 44,
+        "x" : 384
+      },
+      "name" : ""
+    },
+    {
+      "areas" : [
+        {
+          "options" : [
+            "enteredExited",
+            "always"
+          ],
+          "rect" : [
+            0,
+            0,
+            36,
+            36
+          ]
+        }
+      ],
+      "class" : "NSToolbarButton",
+      "depth" : 5,
+      "frame" : {
+        "h" : 36,
+        "top" : 8,
+        "w" : 36,
+        "x" : 388
+      },
+      "name" : ""
+    },
+    {
+      "areas" : [
+        {
+          "options" : [
+            "enteredExited",
+            "moved",
+            "always",
+            "inVisibleRect"
+          ],
+          "rect" : [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "class" : "NSToolbarTitleView",
+      "depth" : 4,
+      "frame" : {
+        "h" : 52,
+        "top" : 0,
+        "w" : 292,
+        "x" : 92
+      },
+      "name" : ""
+    },
+    {
+      "areas" : [
+        {
+          "options" : [
+            "enteredExited",
+            "always"
+          ],
+          "rect" : [
+            0,
+            0,
+            14,
+            14
+          ]
+        }
+      ],
+      "class" : "_NSThemeZoomWidget",
+      "depth" : 3,
+      "frame" : {
+        "h" : 14,
+        "top" : 19,
+        "w" : 14,
+        "x" : 65
+      },
+      "name" : ""
+    }
+  ]
+}

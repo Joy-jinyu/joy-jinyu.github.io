@@ -1,0 +1,142 @@
+---
+/**
+ * macOS 文字与颜色篇的色块。set 选一组：
+ * labels：四级文字色、链接、强调色叠在窗口底色上的样子和对比度（浅 / 深）
+ * accents：八种强调色下按钮和选中行的底色，字色取自原生控件截图
+ * system：12 个系统色的浅 / 深色值
+ * 数据都在 blog/public/lab/macos/ 下，构建时读进来，不另抄一份。
+ */
+import metrics from '../../public/lab/macos/data/metrics.json'
+import contrast from '../../public/lab/macos/macos-type-color/data/contrast.json'
+import accents from '../../public/lab/macos/macos-type-color/data/accents.json'
+import shots from '../../public/lab/macos/macos-type-color/data/shots.json'
+import system from '../../public/lab/macos/macos-type-color/data/system-colors.json'
+
+interface Props {
+  set: 'labels' | 'accents' | 'system'
+}
+const { set } = Astro.props
+
+/** "#000000 a=0.847" → rgba(...) */
+const css = (v: string) => {
+  const m = v.match(/#([0-9A-F]{6})(?: a=([0-9.]+))?/i)
+  if (!m) return v
+  const [r, g, b] = [0, 2, 4].map((i) => parseInt(m[1].slice(i, i + 2), 16))
+  return m[2] ? `rgba(${r}, ${g}, ${b}, ${m[2]})` : `#${m[1]}`
+}
+const fmt = (r: number) => `${r.toFixed(2)}:1`
+
+const labelRows = ['labelColor', 'secondaryLabelColor', 'tertiaryLabelColor', 'quaternaryLabelColor', 'linkColor', 'controlAccentColor'] as const
+const appearances = [
+  { key: 'light', name: '浅色' },
+  { key: 'dark', name: '深色' },
+] as const
+
+const accentNames: Record<string, string> = {
+  multicolor: '多色', purple: '紫色', pink: '粉色', red: '红色', orange: '橙色', yellow: '黄色', green: '绿色', graphite: '石墨色',
+}
+const shotKey = (n: string) => (n === 'multicolor' ? 'default-light' : `${n}-light`)
+const accentCells = Object.keys(accentNames).map((n) => {
+  const a = (accents as any)[n].light
+  const m = (contrast as any).measured[shotKey(n)]
+  return { n, name: accentNames[n], accent: a.controlAccentColor, sel: a.selectedContentBackgroundColor, ok: m.okButton, row: m.selectedRow }
+})
+
+const sysNames = Object.keys(system)
+---
+
+{set === 'labels' && (
+  <div class="mtc mtc-labels not-prose">
+    {appearances.map(({ key, name }) => {
+      const c = (metrics as any).colors[key]
+      const t = (contrast as any).text[key].windowBackgroundColor
+      const painted = (shots as any)[key].swatchPixels['windowBackground(未绘制区)']
+      return (
+        <div class="mtc-panel" style={`background:${css(c.windowBackgroundColor)}`}>
+          <p class="mtc-head" style={`color:${css(c.secondaryLabelColor)}`}>{name} · windowBackgroundColor {c.windowBackgroundColor}</p>
+          {labelRows.map((n) => (
+            <p class="mtc-row">
+              <span style={`color:${css(c[n])}`}>{n.replace('Color', '')}</span>
+              <span class={`mtc-ratio ${t[n].ratio < 4.5 ? 'is-low' : ''}`} style={`color:${css(c.labelColor)}`}>{fmt(t[n].ratio)}</span>
+            </p>
+          ))}
+          <div class="mtc-bgs" style={`color:${css(c.secondaryLabelColor)}`}>
+            <span class="mtc-bg"><span class="mtc-block" style={`background:${css(c.windowBackgroundColor)}`}></span>windowBackgroundColor<code>{c.windowBackgroundColor}</code></span>
+            <span class="mtc-bg"><span class="mtc-block" style={`background:${painted}`}></span>截图上的窗口底<code>{painted}</code></span>
+          </div>
+        </div>
+      )
+    })}
+  </div>
+)}
+
+{set === 'accents' && (
+  <div class="mtc mtc-accents not-prose">
+    {accentCells.map((a) => (
+      <div class="mtc-acc">
+        <span class="mtc-chip" style={`background:${a.ok.fill};color:${a.ok.text}`}>OK</span>
+        <span class="mtc-num">{fmt(a.ok.ratio)}</span>
+        <span class="mtc-chip is-row" style={`background:${a.row.fill};color:${a.row.text}`}>选中行</span>
+        <span class="mtc-num">{fmt(a.row.ratio)}</span>
+        <span class="mtc-name">{a.name}</span>
+        <code class="mtc-hex">{a.accent}</code>
+      </div>
+    ))}
+  </div>
+)}
+
+{set === 'system' && (
+  <div class="mtc mtc-system not-prose">
+    {sysNames.map((n) => {
+      const s = (system as any)[n]
+      return (
+        <div class="mtc-sys">
+          <span class="mtc-pair">
+            <span style={`background:${s.light.measured}`}></span>
+            <span style={`background:${s.dark.measured}`}></span>
+          </span>
+          <span class="mtc-name">{n.replace('system', '')}</span>
+          <code class="mtc-hex">{s.light.measured}<br />{s.dark.measured}</code>
+        </div>
+      )
+    })}
+  </div>
+)}
+
+<style is:global>
+  .mtc { width: 100%; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; }
+  .mtc-labels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; max-width: 640px; }
+  .mtc-panel { padding: 14px 16px 12px; border-radius: 12px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 10px 28px -14px rgba(0, 0, 0, 0.25); }
+  .mtc-panel p { margin: 0; }
+  .mtc-head { font-size: 11px; line-height: 14px; }
+  .mtc-head { margin-bottom: 8px !important; }
+  .mtc-row { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; line-height: 24px; }
+  .mtc-ratio { font-variant-numeric: tabular-nums; font-size: 12px; }
+  .mtc-ratio.is-low { opacity: 0.55; }
+  .mtc-bgs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 10px; font-size: 11px; line-height: 14px; }
+  .mtc-bg code { font: 11px/14px ui-monospace, Menlo, monospace; color: inherit; background: none; padding: 0; }
+  .mtc-bg { display: flex; flex-direction: column; gap: 2px; min-width: 0; overflow-wrap: anywhere; }
+  .mtc-block { margin-bottom: 4px; }
+  .mtc-block { display: block; height: 40px; border-radius: 8px; box-shadow: inset 0 0 0 1px rgba(128, 128, 128, 0.4); }
+
+  .mtc-accents { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 10px; }
+  /* 卡片底和说明字色：深色主题一套、浅色主题一套（色块本身是 macOS 的真实颜色，不随主题变） */
+  .mtc-accents, .mtc-system { --mtc-card: #1c1c1e; --mtc-ink: #f2f2f7; --mtc-sub: #a1a1a6; --mtc-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.5); }
+  :root[data-theme="light"] .mtc-accents, :root[data-theme="light"] .mtc-system { --mtc-card: #ffffff; --mtc-ink: #1d1d1f; --mtc-sub: #6e6e73; --mtc-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 8px 24px -12px rgba(0, 0, 0, 0.18); }
+  .mtc-acc, .mtc-sys { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 12px 4px 10px; border-radius: 12px; background: var(--mtc-card); box-shadow: var(--mtc-shadow); }
+  .mtc-chip { display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 24px; border-radius: 7px; font-size: 13px; }
+  .mtc-chip.is-row { margin-top: 6px; border-radius: 6px; }
+  .mtc-num { color: var(--mtc-sub); font-size: 11px; font-variant-numeric: tabular-nums; }
+  .mtc-name { margin-top: 4px; color: var(--mtc-ink); font-size: 12px; white-space: nowrap; }
+  .mtc-hex { color: var(--mtc-sub); font: 10px/1.3 ui-monospace, Menlo, monospace; text-align: center; }
+
+  .mtc-system { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; }
+  .mtc-pair { display: flex; width: 56px; height: 28px; border-radius: 7px; overflow: hidden; }
+  .mtc-pair span { flex: 1; }
+
+  @media (max-width: 640px) {
+    .mtc-labels { grid-template-columns: 1fr; }
+    .mtc-accents { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .mtc-system { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+</style>

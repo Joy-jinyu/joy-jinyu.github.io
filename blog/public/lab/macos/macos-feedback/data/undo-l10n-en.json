@@ -1,0 +1,37 @@
+{
+  "actionNameBold" : {
+    "redoMenuItemTitle" : "Redo",
+    "undoActionName" : "Bold",
+    "undoMenuItemTitle" : "Undo Bold"
+  },
+  "defaults" : {
+    "groupsByEvent" : true,
+    "levelsOfUndo" : 0
+  },
+  "emptyTitles" : {
+    "redo" : "Redo",
+    "undo" : "Undo"
+  },
+  "mainBundleLocalizations" : [
+    "en",
+    "zh-Hans"
+  ],
+  "nonTypingThreeChanges" : {
+    "undoSteps" : 3
+  },
+  "preferredLanguages" : [
+    "en"
+  ],
+  "textViewTyping" : {
+    "after3Inserts" : "abc",
+    "afterOneUndo" : "",
+    "redoMenuItemTitle" : "Redo Typing",
+    "undoActionName" : "Typing",
+    "undoMenuItemTitle" : "Undo Typing"
+  },
+  "titleFor" : {
+    "redo(加粗)" : "Redo 加粗",
+    "undo(加粗)" : "Undo 加粗",
+    "undo(空)" : "Undo "
+  }
+}

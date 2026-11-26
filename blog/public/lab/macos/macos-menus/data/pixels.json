@@ -1,0 +1,47 @@
+{
+  "menuCorner": {
+    "file": "raw/help-menu-alone-light.png",
+    "cmd": "pixels corner",
+    "curveSpanPt": 13.0,
+    "eqRadiusPt": 11.9
+  },
+  "menuTextInset": {
+    "file": "raw/file-menu-light.png",
+    "cmd": "pixels scan y 228 480 889",
+    "menuFramePt": {
+      "h": 296,
+      "w": 205,
+      "x": 240,
+      "y": 130
+    },
+    "firstInkPx": 514,
+    "lastInkPx": 853,
+    "titleLeftInsetPt": 17.0,
+    "shortcutRightInsetPt": 18.0
+  },
+  "derived": {
+    "menuPaddingTop": 5,
+    "menuPaddingBottom": 5,
+    "popUpButtonScreen": {
+      "x": 61.5,
+      "top": 89,
+      "bottom": 113,
+      "w": 105
+    },
+    "popUpSelectedRow": {
+      "title": "Medium",
+      "top": 89,
+      "bottom": 113
+    },
+    "popUpMenuWidth": 105,
+    "popUpMenuLeftOfButton": 12.5,
+    "pullDownButtonScreen": {
+      "x": 214.5,
+      "top": 89,
+      "bottom": 113,
+      "w": 72
+    },
+    "pullDownGapBelowButton": 3,
+    "pullDownMenuLeftOfButton": 5.5
+  }
+}
