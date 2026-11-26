@@ -9,7 +9,8 @@
     "build:blog": "astro build --root blog",
     "package:editor": "bash scripts/package-editor.sh",
     "preview": "python3 -m http.server 4173 --directory public",
-    "deploy": "bash deploy-gh.sh"
+    "deploy": "bash deploy-gh.sh",
+    "prepare": "git config core.hooksPath .githooks || true"
   },
   "license": "ISC",
   "dependencies": {

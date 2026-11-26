@@ -294,9 +294,10 @@ export async function submit(raw: Draft, progress: (step: SubmitStep, state: 'ac
 
   progress('commit', 'active')
   for (const m of media) {
-    await putFile(repo, branch, `${MEDIA_DIR}/${m.path.slice(MEDIA_PREFIX.length)}`, toBase64(m.bytes), `docs(blog): 投稿《${draft.title}》的图片`)
+    await putFile(repo, branch, `${MEDIA_DIR}/${m.path.slice(MEDIA_PREFIX.length)}`, toBase64(m.bytes), `docs(blog): add images for contributed post ${slug}`)
   }
-  await putFile(repo, branch, path, toBase64(new TextEncoder().encode(toMarkdown(draft, user.login))), `docs(blog): 投稿《${draft.title}》`)
+  // 提交信息只能是英文（scripts/check-commit-lang.mjs），稿件标题可能是中文，所以这里用 slug
+  await putFile(repo, branch, path, toBase64(new TextEncoder().encode(toMarkdown(draft, user.login))), `docs(blog): add contributed post ${slug}`)
   progress('commit', 'done')
 
   progress('pr', 'active')
@@ -307,10 +308,11 @@ export async function submit(raw: Draft, progress: (step: SubmitStep, state: 'ac
       gh<Pr>(`/repos/${UPSTREAM}/pulls`, {
         method: 'POST',
         body: JSON.stringify({
-          title: `投稿：${draft.title}`,
+          // 合并时 PR 标题会进合并提交，必须是英文，所以标题用 slug；稿件标题放正文，「我的投稿」从正文读回
+          title: `${TITLE_PREFIX}${slug}`,
           head,
           base: BASE,
-          body: `读者投稿，来自站内编辑器。\n\n> ${draft.description}\n\n作者：@${user.login}${media.length ? `\n\n附图 ${media.length} 张` : ''}`,
+          body: `Reader contribution from the in-site editor.\n\n${BODY_TITLE}${draft.title}\n\n> ${draft.description}\n\nAuthor: @${user.login}${media.length ? `\n\nImages: ${media.length}` : ''}`,
           maintainer_can_modify: true,
         }),
       }),
@@ -326,10 +328,21 @@ export async function submit(raw: Draft, progress: (step: SubmitStep, state: 'ac
   return { prNumber: pr.number, prUrl: pr.html_url, path }
 }
 
-const TITLE_PREFIX = '投稿：'
+const TITLE_PREFIX = 'Contribution: '
+const BODY_TITLE = 'Title: '
+/** 2026-11-25 之前提的投稿 PR（#1–#3）标题是「投稿：稿件标题」，「我的投稿」里还要认得它们 */
+const LEGACY_TITLE_PREFIX = '投稿：'
 
-type PullItem = { number: number; title: string; html_url: string; state: 'open' | 'closed'; merged_at: string | null; updated_at: string; user: { login: string }; head: { ref: string } }
-type SearchItem = { number: number; title: string; html_url: string; state: 'open' | 'closed'; updated_at: string; pull_request?: { merged_at: string | null } }
+/** 投稿 PR 的稿件标题：新格式从正文的 Title 行取（取不到就用标题里的 slug），旧格式去掉前缀；不是投稿 PR 返回 null */
+function contribTitle(pr: { title: string; body?: string | null }): string | null {
+  if (pr.title.startsWith(LEGACY_TITLE_PREFIX)) return pr.title.slice(LEGACY_TITLE_PREFIX.length)
+  if (!pr.title.startsWith(TITLE_PREFIX)) return null
+  const line = (pr.body ?? '').split('\n').find((l) => l.startsWith(BODY_TITLE))
+  return line ? line.slice(BODY_TITLE.length) : pr.title.slice(TITLE_PREFIX.length)
+}
+
+type PullItem = { number: number; title: string; body: string | null; html_url: string; state: 'open' | 'closed'; merged_at: string | null; updated_at: string; user: { login: string }; head: { ref: string } }
+type SearchItem = { number: number; title: string; body: string | null; html_url: string; state: 'open' | 'closed'; updated_at: string; pull_request?: { merged_at: string | null } }
 
 /**
  * 最近 100 个 PR 里取自己的（刚提交的也在，搜索索引会晚几十秒），
@@ -337,7 +350,7 @@ type SearchItem = { number: number; title: string; html_url: string; state: 'ope
  */
 export async function mine(): Promise<MyPr[]> {
   const { user } = need()
-  const q = encodeURIComponent(`repo:${UPSTREAM} is:pr author:${user.login} "${TITLE_PREFIX}" in:title`)
+  const q = encodeURIComponent(`repo:${UPSTREAM} is:pr author:${user.login}`)
   const [pulls, search] = await Promise.all([
     gh<PullItem[]>(`/repos/${UPSTREAM}/pulls?state=all&per_page=100&sort=updated&direction=desc`),
     gh<{ items: SearchItem[] }>(`/search/issues?q=${q}&sort=updated&order=desc&per_page=100`),
@@ -345,11 +358,12 @@ export async function mine(): Promise<MyPr[]> {
   const byNumber = new Map<number, MyPr>()
   for (const p of pulls) {
     if (p.user.login.toLowerCase() !== user.login.toLowerCase() || !p.head.ref.startsWith('contrib/')) continue
-    byNumber.set(p.number, { number: p.number, title: p.title.replace(TITLE_PREFIX, ''), url: p.html_url, state: p.merged_at ? 'merged' : p.state, updatedAt: p.updated_at })
+    byNumber.set(p.number, { number: p.number, title: contribTitle(p) ?? p.title, url: p.html_url, state: p.merged_at ? 'merged' : p.state, updatedAt: p.updated_at })
   }
   for (const i of search.items) {
-    if (byNumber.has(i.number) || !i.title.startsWith(TITLE_PREFIX)) continue
-    byNumber.set(i.number, { number: i.number, title: i.title.replace(TITLE_PREFIX, ''), url: i.html_url, state: i.pull_request?.merged_at ? 'merged' : i.state, updatedAt: i.updated_at })
+    const title = contribTitle(i)
+    if (byNumber.has(i.number) || title === null) continue
+    byNumber.set(i.number, { number: i.number, title, url: i.html_url, state: i.pull_request?.merged_at ? 'merged' : i.state, updatedAt: i.updated_at })
   }
   return [...byNumber.values()].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
 }
