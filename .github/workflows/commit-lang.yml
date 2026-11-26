@@ -1,0 +1,34 @@
+name: commit-lang
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  english-only:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Check commit messages are English
+        env:
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          if [ -n "$PR_BASE" ]; then
+            node scripts/check-commit-lang.mjs --range "$PR_BASE..$PR_HEAD"
+          elif git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            node scripts/check-commit-lang.mjs --range "$BEFORE..$AFTER"
+          else
+            # 新分支（before 全是 0）或强推（旧提交已经拉不到）：没有可靠的起点，整段历史都查
+            node scripts/check-commit-lang.mjs --all "$AFTER"
+          fi
