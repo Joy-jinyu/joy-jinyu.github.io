@@ -1,0 +1,322 @@
+---
+/**
+ * 顶栏搜索：Spotlight 式弹层，按专栏（名称、简介）和文章（标题、摘要、标签）过滤，⌘K / Ctrl K 打开。
+ * 数据是构建时生成的 search.json（pages/search.json.ts），第一次打开或指针移到按钮上时才拉取。
+ */
+const base = import.meta.env.BASE_URL
+---
+
+<site-search data-src={`${base}search.json`} data-home={base}>
+  <button class="search-btn" type="button" aria-haspopup="dialog" aria-label="搜索" title="搜索（⌘K / Ctrl K）" aria-keyshortcuts="Meta+K Control+K">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+  </button>
+  <dialog class="spot" aria-label="搜索专栏和文章">
+    <div class="panel">
+      <label class="field">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+        <span class="sr-only">搜索专栏和文章</span>
+        <input
+          type="text"
+          role="combobox"
+          aria-expanded="false"
+          aria-controls="spot-list"
+          aria-autocomplete="list"
+          autocomplete="off"
+          spellcheck="false"
+          enterkeyhint="go"
+          placeholder="搜专栏或文章，例如 SEO、终端"
+        />
+      </label>
+      <div class="results" id="spot-list" role="listbox" aria-label="搜索结果"></div>
+      <p class="status" hidden></p>
+      <p class="sr-only" aria-live="polite"></p>
+    </div>
+    <template>
+      <a class="opt" role="option" aria-selected="false" tabindex="-1">
+        <span class="tile" aria-hidden="true"></span>
+        <span class="opt-text"><span class="opt-t"></span><span class="opt-s"></span></span>
+        <span class="opt-n"></span>
+      </a>
+    </template>
+  </dialog>
+</site-search>
+
+<script>
+  import { OPEN_COLUMN_EVENT } from '../lib/columns'
+  import type { SearchIndex } from '../pages/search.json'
+
+  /** 没输入时列出的最近文章数，以及有输入时文章结果的上限 */
+  const RECENT = 5
+  const MAX_POSTS = 8
+
+  type Option = { href: string; glyph: string; tint: string; title: string; sub: string; aside?: string; column?: string }
+
+  class SiteSearchElement extends HTMLElement {
+    private index?: Promise<SearchIndex>
+    private options: HTMLAnchorElement[] = []
+    private active = -1
+
+    connectedCallback() {
+      const btn = this.querySelector<HTMLButtonElement>('.search-btn')!
+      const dialog = this.querySelector('dialog')!
+      const input = dialog.querySelector('input')!
+
+      btn.addEventListener('click', () => this.open())
+      btn.addEventListener('pointerenter', () => void this.load().catch(() => {}), { once: true })
+      document.addEventListener('keydown', (e) => {
+        if (!(e.metaKey || e.ctrlKey) || e.altKey || e.key.toLowerCase() !== 'k') return
+        // 页面里的按键演示已经接管了这个键，或焦点在别的输入框里（macOS 的 Ctrl K 是删到行尾），都不抢
+        if (e.defaultPrevented) return
+        const t = e.target as HTMLElement
+        if (t !== input && (t.isContentEditable || t.closest('input, textarea, select'))) return
+        e.preventDefault()
+        if (dialog.open) dialog.close()
+        else this.open()
+      })
+      // dialog 自身铺满视口，点到它而不是面板，就是点了遮罩
+      dialog.addEventListener('click', (e) => {
+        if (e.target === dialog) dialog.close()
+      })
+      input.addEventListener('input', () => void this.render())
+      input.addEventListener('keydown', (e) => {
+        // Safari 用回车上屏拼音时 isComposing 是 false，只能靠 keyCode 229 认出来
+        if (e.isComposing || e.keyCode === 229) return
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+          e.preventDefault()
+          if (this.options.length) this.select((this.active + (e.key === 'ArrowDown' ? 1 : -1) + this.options.length) % this.options.length)
+        } else if (e.key === 'Enter' && this.active >= 0) {
+          e.preventDefault()
+          this.options[this.active].click()
+        }
+      })
+    }
+
+    private load() {
+      this.index ??= fetch(this.dataset.src!).then((r) => {
+        if (!r.ok) throw new Error(`search.json ${r.status}`)
+        return r.json() as Promise<SearchIndex>
+      })
+      // 失败后清掉缓存，下次打开重新拉
+      this.index.catch(() => (this.index = undefined))
+      return this.index
+    }
+
+    private open() {
+      const dialog = this.querySelector('dialog')!
+      const input = dialog.querySelector('input')!
+      input.value = ''
+      if (!dialog.open) dialog.showModal()
+      input.focus()
+      void this.render()
+    }
+
+    private status(text: string) {
+      const el = this.querySelector<HTMLElement>('.status')!
+      el.textContent = text
+      el.hidden = !text
+    }
+
+    private async render() {
+      const input = this.querySelector('input')!
+      const query = input.value
+      let index: SearchIndex
+      try {
+        if (!this.options.length) this.status('正在加载…')
+        index = await this.load()
+      } catch (err) {
+        console.error('[site-search] 搜索数据加载失败', err)
+        this.status('搜索数据没加载出来，关掉再打开试试')
+        return
+      }
+      // 等数据期间又输入了，交给后一次渲染
+      if (query !== input.value) return
+      const terms = query.toLowerCase().split(/\s+/).filter(Boolean)
+      const hit = (text: string) => terms.every((t) => text.toLowerCase().includes(t))
+      const byId = new Map(index.columns.map((c) => [c.id, c]))
+
+      const cols: Option[] = index.columns
+        .filter((c) => hit(`${c.title} ${c.blurb}`))
+        .map((c) => ({ href: `${this.dataset.home}#${c.id}`, glyph: c.glyph, tint: c.tint, title: c.title, sub: c.blurb, aside: `${c.count} 篇`, column: c.id }))
+      const posts = terms.length
+        ? index.posts
+            .filter((p) => hit(`${p.title} ${p.description} ${p.tags.join(' ')}`))
+            // 标题命中的排前面，同档内保持新的在前
+            .sort((a, b) => Number(hit(b.title)) - Number(hit(a.title)))
+            .slice(0, MAX_POSTS)
+        : index.posts.slice(0, RECENT)
+      const postOpts: Option[] = posts.map((p) => {
+        const c = byId.get(p.column)
+        return { href: p.url, glyph: c?.glyph ?? '', tint: c?.tint ?? 'var(--brand)', title: p.title, sub: `${c?.title ?? ''} · ${p.date}` }
+      })
+
+      const list = this.querySelector<HTMLElement>('.results')!
+      list.replaceChildren()
+      this.options = []
+      if (cols.length) list.append(this.group('专栏', cols))
+      if (postOpts.length) list.append(this.group(terms.length ? '文章' : '最近文章', postOpts))
+      const total = cols.length + postOpts.length
+      this.status(total ? '' : '没有匹配的专栏或文章')
+      this.querySelector('[aria-live]')!.textContent = terms.length ? `找到 ${total} 个结果` : ''
+      input.setAttribute('aria-expanded', String(total > 0))
+      this.select(total ? 0 : -1)
+    }
+
+    private group(label: string, items: Option[]) {
+      const tpl = this.querySelector('template')!
+      const group = document.createElement('div')
+      const head = document.createElement('div')
+      head.className = 'group-h'
+      head.id = `spot-g-${this.options.length}`
+      head.textContent = label
+      group.setAttribute('role', 'group')
+      group.setAttribute('aria-labelledby', head.id)
+      group.append(head)
+      for (const item of items) {
+        const opt = (tpl.content.firstElementChild as HTMLAnchorElement).cloneNode(true) as HTMLAnchorElement
+        const i = this.options.length
+        opt.id = `spot-opt-${i}`
+        opt.href = item.href
+        opt.style.setProperty('--tint', item.tint)
+        opt.querySelector('.tile')!.textContent = item.glyph
+        opt.querySelector('.opt-t')!.textContent = item.title
+        opt.querySelector('.opt-s')!.textContent = item.sub
+        opt.querySelector('.opt-n')!.textContent = item.aside ?? ''
+        opt.addEventListener('pointermove', () => this.active !== i && this.select(i))
+        if (item.column) opt.addEventListener('click', (e) => this.openColumn(e, item.column!))
+        this.options.push(opt)
+        group.append(opt)
+      }
+      return group
+    }
+
+    /** 已经在博客首页时不刷新页面，直接让首页打开该专栏的弹层；其他页面照常跳到首页的 #专栏 */
+    private openColumn(e: MouseEvent, id: string) {
+      if (location.pathname !== this.dataset.home || e.metaKey || e.ctrlKey || e.shiftKey) return
+      e.preventDefault()
+      this.querySelector('dialog')!.close()
+      window.dispatchEvent(new CustomEvent(OPEN_COLUMN_EVENT, { detail: id }))
+    }
+
+    private select(i: number) {
+      const input = this.querySelector('input')!
+      this.options.forEach((o, k) => o.setAttribute('aria-selected', String(k === i)))
+      this.active = i
+      if (i < 0) return input.removeAttribute('aria-activedescendant')
+      input.setAttribute('aria-activedescendant', this.options[i].id)
+      this.options[i].scrollIntoView({ block: 'nearest' })
+    }
+  }
+  customElements.define('site-search', SiteSearchElement)
+</script>
+
+<style>
+  site-search { display: contents; }
+  .search-btn {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    margin-left: 4px;
+    padding: 0;
+    border: 1px solid var(--line-hi);
+    border-radius: 999px;
+    background: rgba(var(--ink-rgb), 0.04);
+    color: var(--strong);
+    transition: border-color 0.2s var(--ease), transform 0.18s var(--ease);
+  }
+  .search-btn:hover { border-color: color-mix(in srgb, var(--brand) 55%, transparent); }
+  .search-btn:active { transform: scale(0.95); }
+
+  /* dialog 自身铺满视口当容器，面板贴在上方 */
+  .spot {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    padding: 110px 24px 24px;
+    border: 0;
+    background: transparent;
+    color: var(--text);
+  }
+  .spot[open] { display: flex; justify-content: center; align-items: flex-start; }
+  .spot::backdrop {
+    background: rgba(0, 0, 0, 0.3);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+  :global([data-theme="light"]) .spot::backdrop { background: rgba(10, 14, 25, 0.12); }
+  .panel {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 600px;
+    max-height: 100%;
+    overflow: hidden;
+    border: 1px solid var(--line-hi);
+    border-radius: 22px;
+    background: color-mix(in srgb, var(--solid) 88%, transparent);
+    -webkit-backdrop-filter: blur(36px) saturate(1.8);
+    backdrop-filter: blur(36px) saturate(1.8);
+    box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.55);
+  }
+  .field { display: flex; flex: none; align-items: center; gap: 12px; height: 58px; padding: 0 18px; color: var(--muted); cursor: text; }
+  .field input {
+    flex: 1;
+    min-width: 0;
+    height: 40px;
+    padding: 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--strong);
+    font: 400 20px/1.2 var(--sans);
+  }
+  .field input::placeholder { color: var(--muted); opacity: 0.8; }
+  .results { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 6px; border-top: 1px solid var(--line); }
+  .results:empty { display: none; }
+  .results :global(.group-h) { padding: 10px 10px 4px; color: var(--muted); font: 500 11px/1.4 var(--mono); letter-spacing: 0.08em; }
+  .results :global(.opt) {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 10px;
+    border-radius: 12px;
+    color: var(--strong);
+    text-decoration: none;
+    transition: background 0.15s var(--ease);
+  }
+  .results :global(.opt[aria-selected="true"]) { background: color-mix(in srgb, var(--brand) 16%, transparent); }
+  .results :global(.tile) {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 22%;
+    background: var(--tint);
+    color: #fff;
+    font: 700 13px/1 var(--sans);
+    box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  }
+  .results :global(.opt-text) { display: grid; flex: 1; min-width: 0; }
+  .results :global(.opt-t) { overflow: hidden; font: 600 15px/1.5 var(--sans); white-space: nowrap; text-overflow: ellipsis; }
+  .results :global(.opt-s) { overflow: hidden; color: var(--muted); font-size: 12px; line-height: 1.5; white-space: nowrap; text-overflow: ellipsis; }
+  .results :global(.opt-n) { flex: none; color: var(--muted); font: 400 11px/1 var(--mono); }
+  .results :global(.opt-n:empty) { display: none; }
+  .status { margin: 0; padding: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; text-align: center; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .spot[open] .panel { animation: spot-in 0.28s cubic-bezier(0.2, 0.9, 0.3, 1) both; }
+    .spot[open]::backdrop { animation: spot-fade 0.3s ease both; }
+  }
+  @keyframes spot-in { from { opacity: 0; transform: translateY(-10px) scale(0.96); } }
+  @keyframes spot-fade { from { opacity: 0; } }
+  @media (max-width: 420px) {
+    .search-btn { margin-left: 2px; }
+  }
+  @media (max-width: 640px) {
+    .spot { padding: 72px 12px 12px; }
+    .field input { font-size: 17px; }
+  }
+</style>

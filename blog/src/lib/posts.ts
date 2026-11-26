@@ -1,4 +1,5 @@
 import { getCollection, type CollectionEntry } from 'astro:content'
+import { COLUMNS } from './columns'
 
 export type Post = CollectionEntry<'posts'>
 
@@ -7,6 +8,14 @@ export async function listPosts(): Promise<Post[]> {
   const all = await getCollection('posts', (p) => import.meta.env.DEV || !p.data.draft)
   return all.sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
 }
+
+/** 有文章的专栏，按 COLUMNS 的顺序；每个专栏里的文章按阅读顺序（早发的在前） */
+export async function listColumnGroups() {
+  const posts = await listPosts()
+  return COLUMNS.map((c) => ({ ...c, posts: posts.filter((p) => p.data.column === c.id).reverse() })).filter((g) => g.posts.length)
+}
+
+export type ColumnGroup = Awaited<ReturnType<typeof listColumnGroups>>[number]
 
 /** 中文按每分钟约 400 字估算，英文单词按 200 个估算；代码块不计入 */
 export function readingMinutes(body = ''): number {
