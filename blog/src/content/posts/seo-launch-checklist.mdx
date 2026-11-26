@@ -1,0 +1,171 @@
+---
+title: 网站上线前的 SEO 检查清单
+description: 一份能照着跑的清单，分七组：抓取文件、页面标签、结构化数据、渲染后的结果、页面正文、链接、Search Console。每一项写明怎么查、什么算合格，附一个检查脚本。单页应用特有的坑单独标出。例子来自 Pairdown 的上线过程。
+date: 2026-11-26
+tags: [SEO, 清单, Search Console, 单页应用]
+column: launch
+meta: 清单 · 七组
+---
+
+import Callout from '../../components/Callout.astro'
+
+这份清单是 [Pairdown 上线那篇](../spa-seo/) 的副产品：把那天查过、修过的东西按顺序排好，下次上线新站照着跑一遍。每一项都给出检查命令和合格标准。命令里的地址换成你自己的站点即可。
+
+搜索引擎处理一个页面大致是四步：抓到它，读懂它，判断它值不值得排，参考别的网站怎么链它。清单的前六组对应这几步，最后一组是告诉 Google、看结果。
+
+## 一键跑一遍
+
+能用 `curl` 直接查的部分我写成了一个脚本：抓取文件的状态码和类型、软 404、每个页面的标签在不在（JSON-LD 只看有没有，能不能解析见下面「结构化数据」一节），以及去掉标签后的正文字数。
+
+```bash
+#!/usr/bin/env bash
+# 用法：bash seo-check.sh https://example.com /about/
+site="${1%/}"; shift
+echo "== 抓取文件"
+for f in robots.txt sitemap.xml; do
+  curl -s -o /dev/null -w "%{http_code}  %{content_type}  /$f\n" "$site/$f"
+done
+curl -s "$site/robots.txt" | grep -i '^sitemap:' || echo "robots.txt 里没有 Sitemap 行"
+echo "== 不存在的路径（单页应用常见软 404）"
+curl -s -o /dev/null -w "%{http_code}  /this-page-does-not-exist\n" "$site/this-page-does-not-exist"
+for path in / "$@"; do
+  echo "== 页面 $path"
+  html="$(curl -s "$site$path")"
+  printf '%s' "$html" | grep -o '<title>[^<]*</title>' | head -1
+  for pat in 'name="description"' 'rel="canonical"' 'property="og:title"' 'property="og:image"' 'name="twitter:card"' 'application/ld+json'; do
+    printf '%s' "$html" | grep -q "$pat" && echo "  有 $pat" || echo "  缺 $pat"
+  done
+  words=$(printf '%s' "$html" | sed -e 's/<script[^>]*>.*<\/script>//g' -e 's/<[^>]*>/ /g' | wc -w | tr -d ' ')
+  echo "  去掉标签后约 $words 个词"
+done
+```
+
+对 Pairdown 跑的结果（节选）：
+
+```text
+== 抓取文件
+200  text/plain  /robots.txt
+200  application/xml  /sitemap.xml
+Sitemap: https://markdown.pairwise.site/sitemap.xml
+== 不存在的路径（单页应用常见软 404）
+200  /this-page-does-not-exist
+（== 页面 / 一段省略）
+== 页面 /lp/
+<title>Pairdown: A WYSIWYG Markdown Editor That Keeps Plain .md Files</title>
+  有 name="description"
+  有 rel="canonical"
+  …
+  去掉标签后约 658 个词
+```
+
+脚本只看服务器直接返回的 HTML。页面跑完 JavaScript 以后的样子要另外看，见下面「渲染后」一节。
+
+## 抓取：爬虫能不能拿到
+
+| 检查项 | 怎么查 | 合格 |
+| --- | --- | --- |
+| robots.txt | `curl -sI 站点/robots.txt` | 200，`text/plain`，没有误伤要收录的路径 |
+| sitemap 的位置 | robots.txt 里的 `Sitemap:` 行 | 写的是绝对地址 |
+| sitemap 本身 | `curl -sI 站点/sitemap.xml` | 200，`application/xml`，列出了所有要收录的页面 |
+| 不存在的路径 | `curl -s -o /dev/null -w '%{http_code}' 站点/随便什么` | 404；做不到的话，至少有 canonical 归并 |
+
+<Callout type="pit" title="单页应用：约定好的文件会被兜底成 HTML">
+  很多单页应用配置成「找不到的路径都返回 index.html」。没有真文件时，`/robots.txt` 和 `/sitemap.xml` 也会返回 200 和应用页面。状态码看起来正常，所以一定要看 `content_type`。
+</Callout>
+
+sitemap 里的 `priority` 和 `changefreq`，Google 的文档说明会忽略，不用写。`lastmod` 只在准确时有用，不要每次构建都写成当天。
+
+## 页面标签：读不读得懂
+
+| 检查项 | 合格 |
+| --- | --- |
+| `<title>` | 每个页面不同，前半句就说清是什么；60 个字符左右比较稳妥，更长的会在搜索结果里被截断（Pairdown 介绍页的标题是 62 个，靠前半句兜底） |
+| `<meta name="description">` | 一两句话，说清楚这页能帮读者做什么 |
+| `<link rel="canonical">` | 绝对地址，指向这个页面自己的正式地址 |
+| `<html lang>` | 和正文语言一致 |
+| `og:title` / `og:description` / `og:url` | 有，og:url 和 canonical 一致 |
+| `og:image` | 绝对地址，1200×630，图片能直接访问 |
+| `twitter:card` | `summary_large_image` |
+
+分享卡片可以用各平台的调试工具预览。最简单的检查是把图片地址单独打开，确认能看到图。
+
+## 结构化数据：机器能不能确认这是什么
+
+用 JSON-LD 描述页面的类型：应用用 `WebApplication`，文章用 `Article`，个人站用 `WebSite` 加 `Person`。几个站点属于同一个人时，给作者一个固定的 `@id`，例如 `https://你的主站/#me`，各站都引用它，搜索引擎就能把它们关联起来。
+
+先确认能解析：
+
+```bash
+curl -s https://markdown.pairwise.site/lp/ | node -e '
+let s = ""; process.stdin.on("data", d => s += d).on("end", () => {
+  const blocks = [...s.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
+  for (const [, json] of blocks) { const d = JSON.parse(json); console.log(d["@type"], d.name, d.url); }
+  console.log(blocks.length, "个 JSON-LD 块，都能解析");
+})'
+```
+
+能解析之后，再用 Google 的富媒体搜索结果测试工具看有没有警告。
+
+<Callout type="warn" title="不是加了就会显示">
+  富结果有资格要求。比如 `FAQPage`，Google 从 2023 年 8 月起只给少数权威的政府和医疗网站显示，个人项目加了也不会显示。先查清楚要加的类型现在还有没有展示，再决定加不加。
+</Callout>
+
+## 渲染后：跑完 JavaScript 还是不是那样
+
+Google 会渲染页面，最终看的是跑完 JavaScript 以后的 DOM。前面三组都对，也可能在这一步被改掉。
+
+```bash
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new \
+  --virtual-time-budget=10000 --dump-dom https://你的站点/ | grep -o '<title>[^<]*</title>'
+```
+
+| 检查项 | 合格 |
+| --- | --- |
+| 渲染后的标题 | 和静态 HTML 里的一样 |
+| 渲染后的 description、og 标签 | 没有内容不同的重复条目 |
+| 加载过程中 | 正文不会被一直隐藏（加载遮罩、要等某个事件才显示） |
+
+<Callout type="pit" title="框架的 Head 组件可能再写一遍">
+  很多框架的 Head 组件会在运行时设置标题和描述。Pairdown 用的框架不会复用页面里已有的标签，而是再追加一份。如果静态的和运行时的写的不是同一句话，页面里就有两条内容不同的描述。解决办法是让两边从同一个常量取值。
+</Callout>
+
+## 正文：页面上有没有字
+
+| 检查项 | 怎么查 | 合格 |
+| --- | --- | --- |
+| 正文在 HTML 里 | 脚本里的「去掉标签后约 N 个词」 | 介绍类页面至少几百个词，用户会搜的词出现在正文里 |
+| 不靠画布 | 看页面结构 | canvas、WebGL、图片里的文字不算正文 |
+| 不靠脚本生成 | `curl` 下来的 HTML 里能找到关键句 | 能找到 |
+| 文案属实 | 逐条对照已经实现的功能 | 没有承诺还没做的东西 |
+| 可读性 | Lighthouse 的无障碍项 | 正文对比度至少 4.5:1 |
+
+应用页面本身往往没什么文字。Pairdown 的编辑器页去掉标签后只有约 33 个词，所以正文放在单独的介绍页里，编辑器页只负责把标签写全。
+
+## 链接：有没有人指向它
+
+| 检查项 | 合格 |
+| --- | --- |
+| 从已收录的站点链过来 | 至少一个已经被 Google 收录的页面里，有指向新站的普通 `<a href>` |
+| 链接在 HTML 里 | 带动画、默认隐藏都可以，但要在 HTML 源码里，不是点击后才用脚本插入的 |
+| 新站链回去 | 页脚或关于页里有指向主站或作者主页的链接 |
+| 站内互链 | 应用页和介绍页互相能点到 |
+
+## Search Console：告诉 Google、看结果
+
+| 步骤 | 做法 | 合格 |
+| --- | --- | --- |
+| 选资源类型 | 一个域名下有好几个站，选网域资源（DNS 记录验证，覆盖所有子域名）；改不了 DNS 就用网址前缀资源 | 能看到资源的概述页 |
+| 验证 | 加 TXT 记录后，先用公共 DNS 确认生效：`curl -s "https://dns.google/resolve?name=你的域名&type=TXT"` | 返回里有 `google-site-verification=…` |
+| 提交 sitemap | 复制粘贴完整地址，不要手打 | 状态「成功」，已发现的网页数等于 sitemap 里的条数 |
+| 请求编入索引 | 顶部搜索框输入网址，按回车，等检查结果出来后点「请求编入索引」 | 提示「已请求编入索引」 |
+| 之后 | 每一两周看「网页」和「效果」两个报告 | 要收录的页面都在「已编入索引」里 |
+
+<Callout type="pit" title="提交时打错一个字母，单页应用不会报 404">
+  我把 `sitemap.xml` 提交成了 `sitemap.xm`。普通网站会返回 404，一看就知道错了。单页应用却返回 200 和应用页面，Search Console 只显示「无法抓取」，看不出是地址打错了（为什么报的是这个状态，我没有确认）。提交前先用 `curl -I` 确认一下地址返回的是 XML。
+</Callout>
+
+本机 `dig` 查不到刚加的 TXT 记录时，不一定是没生效：本机网络的 DNS 可能被代理或缓存接管了。以公共 DNS 的结果为准。
+
+## 最后
+
+收录要几天到几周，清单只保证「Google 来了能看懂」，不保证排名。上线后真正有用的信息在 Search Console 的报告里：哪些页没被收录、为什么，以及用户用什么词搜到了你。

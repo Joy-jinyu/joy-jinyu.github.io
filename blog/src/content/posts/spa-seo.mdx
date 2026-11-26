@@ -1,0 +1,180 @@
+---
+title: 给单页应用做 SEO：Pairdown 从搜不到到提交收录的一天
+description: Pairdown 是一个跑在浏览器里的 Markdown 编辑器，整站是单页应用。上线后我才发现 robots.txt 和 sitemap.xml 返回的都是编辑器的 HTML，首页标题只有一个词，落地页的正文画在 canvas 里。这篇记录怎么一层层补上：构建时生成抓取文件，框架在运行时重复追加标签的坑，给 3D 页面补纯 HTML 正文，主站和它互相链接，以及在 Search Console 里把 sitemap 少打一个字母的插曲。
+date: 2026-11-26
+tags: [SEO, 单页应用, Search Console, Cloudflare]
+column: launch
+meta: 一次上线记录
+---
+
+import Callout from '../../components/Callout.astro'
+
+[Pairdown](https://markdown.pairwise.site/lp/) 是我做的一个所见即所得 Markdown 编辑器，跑在浏览器里，文件保存成普通的 `.md`。站点部署在 Cloudflare Workers 上：根路径 `/` 是编辑器本身，`/lp/` 是一个介绍页，主体是一本可以翻页的 3D 日记。
+
+功能做得差不多以后，我想让它能被搜到。动手之前先用 `curl` 看了一眼线上，问题比预想的多。这篇按「爬虫能不能抓到 → 看不看得懂 → 页面上有没有字 → 有没有别人链过来 → 告诉 Google」的顺序，记录这一天补了什么、踩了哪些坑。照着做的检查清单单独整理成了[另一篇](../seo-launch-checklist/)。
+
+## 先量一下现状
+
+2026 年 11 月 26 日上午，线上的情况是这样：
+
+| 地址 | 实际返回 | 后果 |
+| --- | --- | --- |
+| `/robots.txt` | 200，`text/html`，内容是编辑器页面 | 爬虫读不到抓取规则 |
+| `/sitemap.xml` | 同上 | 没有 sitemap |
+| `/` | `<title>Pairdown</title>`，没有描述、canonical、分享卡片 | 搜索结果没有摘要，分享出去是空卡片 |
+| `/lp/` | 正文是一段河边日记，画在 WebGL canvas 里 | 页面上没有「Pairdown 是什么、能做什么」 |
+| 任意不存在的路径 | 200 和编辑器页面 | 软 404 |
+| 主站 www.pairwise.site | 没有任何链接指向 Pairdown | 新站是个孤岛 |
+
+前两行的原因是同一个：站点配置里写了 `not_found_handling: "single-page-application"`，Cloudflare 找不到文件时一律返回 `index.html`，状态码还是 200。单页应用靠这个让任意路径都能打开编辑器，代价是 `robots.txt`、`sitemap.xml` 这种约定好位置的文件，没有真文件时也会「成功」返回一个 HTML 页面。
+
+```bash
+curl -s -o /dev/null -w "%{http_code} %{content_type}\n" https://markdown.pairwise.site/robots.txt
+```
+
+## 让爬虫抓得到
+
+做法很直接：在构建时生成两个真文件，放进静态产物里。Cloudflare 会优先返回存在的文件，兜底只管真正找不到的路径。
+
+```text
+User-agent: *
+Allow: /
+Disallow: /token
+
+Sitemap: https://markdown.pairwise.site/sitemap.xml
+```
+
+`/token` 是网页版登录时换 GitHub 令牌的接口，没有必要让爬虫碰。sitemap 只列两个地址，`/` 和 `/lp/`。
+
+sitemap 里我没有写 `priority` 和 `changefreq`：Google 的文档说明这两个字段会被忽略。`lastmod` 只有在准确时才有用，构建时写当天日期等于每次部署都声称页面变了，所以也不写。
+
+站点地址不写死在代码里。仓库是公开的，地址来自部署配置，构建脚本读环境变量，没配置时只生成不带 Sitemap 行的 `robots.txt`，并给出提示。
+
+## 让它看得懂
+
+每个页面要告诉搜索引擎「我是什么」。两个页面补齐的内容：
+
+| 标签 | 作用 | 编辑器 `/` | 介绍页 `/lp/` |
+| --- | --- | --- | --- |
+| `<title>` | 搜索结果里的标题 | Pairdown — WYSIWYG Markdown Editor Online | Pairdown: A WYSIWYG Markdown Editor That Keeps Plain .md Files |
+| `description` | 标题下面的摘要 | 有 | 有 |
+| `canonical` | 声明这个页面的正式地址 | `/`，软 404 的路径也归到这里 | `/lp/` |
+| Open Graph | 分享卡片 | 有，共用一张 1200×630 的图 | 有 |
+| JSON-LD | 机器可读的「这是什么」 | `WebApplication` | 同一个实体 |
+
+介绍页是手写的 HTML，直接改源文件就行。编辑器的 `index.html` 是框架（我用的是 nsh）打包时生成的，源码里改不了，只能在打包后用脚本改写。
+
+<Callout type="pit" title="坑：预压缩文件">
+  打包工具会顺手生成 `index.html.gz` 和 `index.html.br`。只改 `index.html` 的话，支持预压缩的服务器可能直接发出改之前的版本。改写 HTML 时要把这两个文件一起重新压缩。
+</Callout>
+
+### 运行时又被改回去
+
+改完以后用 `curl` 看，标题和描述都对了。但我又用无头 Chrome 打开页面，等它跑完 JavaScript 再看：
+
+```bash
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new \
+  --virtual-time-budget=10000 --dump-dom https://markdown.pairwise.site/ | grep -o '<title>[^<]*</title>'
+```
+
+标题变回了 `Pairdown`。原因是应用代码里本来就用框架的 `<Head>` 组件设了标题和描述，它在运行时写回 `document.title`。Google 会渲染页面，用的是渲染后的结果，所以这一步不能漏。
+
+更麻烦的是描述。`<Head>` 不会复用页面里已有的 `<meta name="description">`，而是再追加一份（带一个 `data-nsh-head` 属性）。于是渲染后的页面里有两条描述：静态的是我新写的，运行时追加的是应用里原来那句，内容不一样。
+
+解决办法是让标题和描述只有一个来源：
+
+```ts
+// src/app-meta.ts：不引框架，Node 和应用都能 import
+export const APP_TITLE = "Pairdown — WYSIWYG Markdown Editor Online";
+export const APP_DESCRIPTION = "A WYSIWYG Markdown editor in your browser. …";
+```
+
+应用里的 `<Head>` 和打包脚本都从这里取值。Node 23.6 以上可以直接 import `.ts` 文件，打包脚本不用额外编译。重复的标签仍然存在，但两份内容完全一样，搜索引擎拿哪一份都没问题。不跑 JavaScript 的分享预览（Slack、X、微信这类）只读得到静态那份，所以静态标签也不能省。
+
+### 结构化数据
+
+JSON-LD 描述的是「这是一个免费的网页应用」，配置了作者时再带上作者：
+
+```json
+{
+  "@type": "WebApplication",
+  "@id": "https://markdown.pairwise.site/#app",
+  "name": "Pairdown",
+  "applicationCategory": "UtilitiesApplication",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": { "@type": "Person", "name": "…", "url": "…" }
+}
+```
+
+介绍页上有一组常见问题，我没有给它加 `FAQPage` 结构化数据。Google 从 2023 年 8 月起只给少数权威的政府和医疗网站显示 FAQ 富结果，个人项目加了也不会显示。
+
+## 页面上得有字
+
+标签只是门面，排名主要看页面上的真实文字。介绍页的 3D 日记画在 canvas 里，爬虫读不到；页面里虽然有一段给读屏用的文字，但也是 JavaScript 生成的，内容还是那段河边故事。
+
+常见的做法是把域名根路径做成介绍页，应用放到 `/app` 或 `app.` 子域名下。Pairdown 做不到：GitHub 登录的回调地址、服务端对 `redirect_uri` 的校验、PWA 的 manifest 都按 `/` 配置；如果挪到子域名，用户浏览器里已经存的文档也会留在原来的域名下（浏览器存储按域名隔离，挪到 `/app` 这样的路径倒不受影响）。把编辑器挪走是另一项大改动。所以分工是：`/` 补齐标签，`/lp/` 负责正文。
+
+我在 3D 日记下面加了一段纯 HTML 的介绍：一句话定位、六项功能、怎么开始、常见问题。不依赖 JavaScript，`curl` 下来就能读到。去掉标签后数一下词，编辑器页约 33 个词，介绍页约 658 个词。
+
+文案只写已经做完的功能。比如 macOS 版目前只能从源码构建，就不写「下载」；同步用的 GitHub Gist 是 secret 的（有链接就能看），就不写成「私有」。
+
+<Callout type="tip" title="Lighthouse 抓到的一个问题">
+  新加的灰色正文在纸色背景上对比度只有 4.33:1，低于 4.5:1。SEO 分本身是 100，但无障碍那一项提示了出来。换成深一级的文字色就过了。改完后两个页面的 SEO 分都是 100。
+</Callout>
+
+## 别让它是个孤岛
+
+新站没有任何链接指向它，Google 只能等 sitemap。主站 www.pairwise.site 已经被收录了，从那里链过来，一来能更快被发现，二来能传一部分信任。
+
+- **主站首页导航**：原来是 `blog · notes · resume`，现在多了一个 `pairdown`。
+- **两边的 JSON-LD 互相指认**：主站首页的结构化数据里加了一个 `@id` 相同的 `WebApplication` 节点，作者指向主站已有的 `Person`。
+- **Pairdown 链回主站**：介绍页页脚有一行「Made by 作者」链回主站，JSON-LD 的 author 也一起带上。作者名和地址同样走部署配置（CI 里的仓库 secret），不写在公开仓库里；没配置时这两处都不出现，其他功能不受影响。
+
+## 告诉 Google
+
+Search Console 里先要验证所有权，有两种资源可选：
+
+| 资源类型 | 覆盖范围 | 验证方式 | 适合 |
+| --- | --- | --- | --- |
+| 网址前缀 | 只有填的那个前缀，例如 `https://markdown.pairwise.site/` | HTML 文件、meta 标签、DNS 等 | 改不了 DNS，或只关心一个站 |
+| 网域 | 整个域名，所有子域名和 http/https | 只能用 DNS 记录（TXT 或 CNAME） | 一个域名下有好几个站 |
+
+我选了网域资源 `pairwise.site`，在 Cloudflare 里加一条 TXT 记录，一次就覆盖了主站和 Pairdown。不用改代码，也不用重新部署。Search Console 认出域名托管在 Cloudflare，默认提供一键授权，让它自己去加记录；我选的是「任何 DNS 提供商」，拿到 TXT 值后手动添加。
+
+加完后在本机用 `dig` 查了半分钟都查不到，但用公共 DNS 的 HTTPS 接口马上就能查到：
+
+```bash
+curl -s "https://dns.google/resolve?name=pairwise.site&type=TXT"
+```
+
+我猜是本机网络的 DNS 被代理接管了。公共 DNS 能查到以后，点「验证」就通过了。
+
+### sitemap 少打了一个字母
+
+提交 sitemap 时，地址被提交成了 `https://markdown.pairwise.site/sitemap.xm`，末尾少了一个 `l`。列表里的状态是「无法抓取」。
+
+正常情况下，打错的地址会返回 404，问题一眼就能看出来。但这是单页应用：`/sitemap.xm` 和 `/robots.txt` 原来一样，返回 200 和编辑器的 HTML。Search Console 只给了「无法抓取」，没有说具体原因；我猜它拿到的是一个能打开、但不是 sitemap 的 HTML 页面（猜测，Google 对格式错误另有「不支持的格式」这个状态，所以不一定是这个原因）。不管原因是哪个，打错的地址都不会像普通网站那样直接 404，问题不容易一眼看出来。重新提交正确的地址后，状态是「成功」，已发现 2 个网址。
+
+<Callout type="pit" title="坑：单页应用让打错的地址看起来是对的">
+  兜底返回 200，意味着任何拼错的地址都能「打开」。提交 sitemap、配置外链这类填地址的操作，最好复制粘贴，填完再用 `curl -I` 看一眼返回类型。
+</Callout>
+
+### 自动化没走通的部分
+
+这一天大部分浏览器操作我是用 [OpenCLI](https://github.com/jackwener/OpenCLI) 驱动已登录的 Chrome 完成的。Cloudflare 控制台里加 DNS 记录很顺利：打开表单、选 TXT、填值、保存，都正常。
+
+Search Console 却怎么也点不动。我试了四种方式：后台窗口点击、前台窗口点击、聚焦按钮后按回车、逐字键入后回车。「添加网站」、资源下拉框、「验证」、「提交」都没有反应。页面内容倒是读得出来，TXT 的值就是从页面 HTML 里取出来的。最后这几个按钮是手动点的，OpenCLI 负责读结果和核对。当时用的 OpenCLI 版本是 1.8.6，更新的版本也许已经解决，我没有升级去试。
+
+## 验收和还没做的
+
+上线后用一个小脚本把线上检查了一遍：两个抓取文件的状态码和类型，每个页面有没有 title、description、canonical、分享卡片和 JSON-LD，以及去掉标签后有多少字。脚本和每一项的合格标准放在了[清单那篇](../seo-launch-checklist/)里。
+
+没做的和不确定的：
+
+- **软 404 还在**：不存在的路径仍返回 200 和编辑器页。canonical 已经把它们归到 `/`，影响不大，但不算干净。
+- **只做了英文**：编辑器默认是英文，所以介绍页也只写了英文。以后要做中文搜索，需要单独的中文页面，并用 `hreflang` 标注两个版本的对应关系。
+- **收录结果还没出来**：sitemap 已读取成功，但页面要几天到几周才会出现在搜索结果里，之后在这里补上。
+
+<Callout type="todo">
+  等 Search Console 的「网页」报告有数据后，补上两个页面的收录状态和首批搜索词。
+</Callout>
