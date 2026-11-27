@@ -209,11 +209,9 @@
   const PAL = {
     dark: { bg: '#050608', dot: '238,240,243', dotA: 0.9, ai: '62,230,210', you: '244,244,239', glow: '215,235,240', cool: '120,200,255',
       lilac: '185,158,255', aqua: '116,225,219',
-      nebula: ['55,89,190', '104,76,205', '178,82,160', '73,143,185', '207,117,106'],
     },
     light: { bg: '#f6f6f3', dot: '13,14,17', dotA: 0.88, ai: '10,156,144', you: '13,14,17', glow: '255,255,255', cool: '20,110,150',
       lilac: '99,63,155', aqua: '20,116,111',
-      nebula: ['121,143,212', '155,121,212', '212,139,183', '104,172,197', '225,159,126'],
     },
   }
   const pal = () => PAL[document.documentElement.dataset.theme === 'light' ? 'light' : 'dark']
@@ -298,7 +296,7 @@
       seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0
       return seed / 4294967296
     }
-    const nebula = C0.nebula
+    const nebula = [C0.ai, C0.aqua]
 
     function mist(x, y, rx, ry, angle, color, alpha) {
       g.save()
@@ -314,9 +312,9 @@
       g.restore()
     }
 
-    mist(w * 0.23, h * 0.31, w * 0.66, h * 0.66, -0.24, nebula[0], light ? 0.45 : 0.39)
-    mist(w * 0.76, h * 0.62, w * 0.61, h * 0.6, -0.31, nebula[2], light ? 0.32 : 0.27)
-    mist(w * 0.81, h * 0.16, w * 0.55, h * 0.48, -0.4, nebula[3], light ? 0.33 : 0.27)
+    mist(w * 0.23, h * 0.31, w * 0.66, h * 0.66, -0.24, C0.ai, light ? 0.45 : 0.39)
+    mist(w * 0.76, h * 0.62, w * 0.61, h * 0.6, -0.31, C0.aqua, light ? 0.32 : 0.27)
+    mist(w * 0.81, h * 0.16, w * 0.55, h * 0.48, -0.4, C0.ai, light ? 0.33 : 0.27)
 
     const angle = Math.atan2(-h * 0.54, w)
     for (let i = 0; i < 55; i++) {
@@ -330,7 +328,7 @@
     }
 
     // 在雾带内积一层不闪烁的微光，密度从中轴向两边逐渐消退。
-    const ink = [C0.cool, C0.lilac, C0.aqua, nebula[4], C0.dot]
+    const ink = [C0.cool, C0.lilac, C0.aqua, C0.ai, C0.dot]
     const count = Math.max(780, Math.min(3000, Math.round(w * h / 135)))
     for (let i = 0; i < count; i++) {
       const u = random()
