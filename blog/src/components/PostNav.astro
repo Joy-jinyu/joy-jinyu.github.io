@@ -1,0 +1,61 @@
+---
+import type { ColumnGroup, Post } from '../lib/posts'
+
+/** 文章末尾的上一篇 / 下一篇，范围是同一专栏；专栏只有一篇时不渲染 */
+interface Props {
+  column: ColumnGroup
+  prev?: Post
+  next?: Post
+}
+
+const { column, prev, next } = Astro.props
+const base = import.meta.env.BASE_URL
+const href = (p: Post) => `${base}${p.id}/`
+---
+
+{(prev || next) && (
+  <nav class="post-nav" aria-label={`${column.title} 专栏内的上一篇和下一篇`} style={`--tint:${column.tint}`}>
+    <p class="col"><i aria-hidden="true"></i>{column.title} · 共 {column.posts.length} 篇</p>
+    <div class="links">
+      {prev ? (
+        <a class="link prev" href={href(prev)} rel="prev">
+          <span class="dir">← 上一篇</span>
+          <span class="title">{prev.data.title}</span>
+        </a>
+      ) : <span class="link empty" aria-hidden="true"></span>}
+      {next ? (
+        <a class="link next" href={href(next)} rel="next">
+          <span class="dir">下一篇 →</span>
+          <span class="title">{next.data.title}</span>
+        </a>
+      ) : <span class="link empty" aria-hidden="true"></span>}
+    </div>
+  </nav>
+)}
+
+<style>
+  .post-nav { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--line); }
+  .col { display: flex; align-items: center; gap: 8px; margin: 0 0 14px; color: var(--muted); font: 500 12px/1.4 var(--mono); }
+  .col i { width: 8px; height: 8px; border-radius: 50%; background: var(--tint); }
+  .links { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .link {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+    padding: 16px 18px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--panel);
+    transition: border-color 0.2s var(--ease), background 0.2s var(--ease);
+  }
+  .link:hover { border-color: color-mix(in srgb, var(--brand) 40%, transparent); background: var(--panel-hi); text-decoration: none; }
+  .next { align-items: flex-end; text-align: right; }
+  .empty { border: 0; background: none; padding: 0; }
+  .dir { color: var(--muted); font: 500 12px/1 var(--mono); }
+  .title { color: var(--strong); font: 600 15px/1.45 var(--sans); }
+  @media (max-width: 640px) {
+    .links { grid-template-columns: minmax(0, 1fr); }
+    .empty { display: none; }
+  }
+</style>
