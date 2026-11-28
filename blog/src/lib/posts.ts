@@ -17,6 +17,12 @@ export async function listColumnGroups() {
 
 export type ColumnGroup = Awaited<ReturnType<typeof listColumnGroups>>[number]
 
+/** 文章页底部的上一篇 / 下一篇：在同一专栏里按阅读顺序找相邻的文章 */
+export function columnNeighbors(group: ColumnGroup, post: Post) {
+  const i = group.posts.indexOf(post)
+  return { prev: group.posts[i - 1], next: group.posts[i + 1] }
+}
+
 /** 中文按每分钟约 400 字估算，英文单词按 200 个估算；代码块不计入 */
 export function readingMinutes(body = ''): number {
   const text = body.replace(/```[\s\S]*?```/g, '').replace(/<[^>]+>/g, '')
