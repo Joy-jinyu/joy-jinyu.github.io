@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>升级套餐</title>
+<style>
+  /* 色值与「团队空间」卡片（ai-ui-taste/run1.html）同一套，改动需两边一起改 */
+  :root {
+    --bg: #f4f4f1;
+    --card: #ffffff;
+    --text: #1c1c1a;
+    --text-2: #6b6a65;
+    --line: #e7e6e1;
+    --track: #ecebe6;
+    --accent: #c96442;
+    --accent-ink: #ffffff;
+    --tag-bg: #f6e9e3;
+    --tag-ink: #a24f32;
+    --danger: #c43d3d;
+    --hover: #f3f2ee;
+    --shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --menu-shadow: 0 2px 6px rgba(0,0,0,.06), 0 12px 32px rgba(0,0,0,.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141413;
+      --card: #1f1e1c;
+      --text: #f0efea;
+      --text-2: #a3a199;
+      --line: #2f2e2b;
+      --track: #2f2e2b;
+      --accent: #d97757;
+      --accent-ink: #1a1a19;
+      --tag-bg: #3a2a23;
+      --tag-ink: #eba78d;
+      --danger: #ef6b6b;
+      --hover: #2a2926;
+      --shadow: 0 1px 2px rgba(0,0,0,.3);
+      --menu-shadow: 0 12px 32px rgba(0,0,0,.5);
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font: 15px/1.5 -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* 顶部导航 */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: 40px 1fr 40px;
+    align-items: center;
+    gap: 8px;
+    padding: calc(4px + env(safe-area-inset-top)) 8px 4px;
+    background: var(--bg);
+  }
+  .nav h1 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.3;
+    text-align: center;
+  }
+  .icon-btn {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+  }
+  .icon-btn:active { background: var(--hover); }
+  .close-mark { position: relative; width: 16px; height: 16px; }
+  .close-mark::before, .close-mark::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 18px;
+    height: 2px;
+    border-radius: 1px;
+    background: currentColor;
+  }
+  .close-mark::before { transform: translate(-50%, -50%) rotate(45deg); }
+  .close-mark::after { transform: translate(-50%, -50%) rotate(-45deg); }
+
+  main {
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 8px 16px calc(24px + env(safe-area-inset-bottom));
+  }
+
+  /* 月付 / 年付 */
+  .period {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    margin: 0;
+    padding: 4px;
+    border: 0;
+    border-radius: 12px;
+    background: var(--track);
+  }
+  .period input { position: absolute; opacity: 0; pointer-events: none; }
+  .period label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 36px;
+    border-radius: 8px;
+    color: var(--text-2);
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease;
+  }
+  .period input:checked + label {
+    background: var(--card);
+    color: var(--text);
+    font-weight: 600;
+    box-shadow: var(--shadow);
+  }
+  .period input:focus-visible + label {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .tag {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 20px;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: var(--tag-bg);
+    color: var(--tag-ink);
+    white-space: nowrap;
+  }
+  .tag-muted { background: var(--track); color: var(--text-2); }
+
+  /* 套餐卡片 */
+  .plans {
+    display: grid;
+    gap: 12px;
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .card {
+    position: relative;
+    background: var(--card);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+  }
+  .card.is-recommended { box-shadow: 0 0 0 2px var(--accent), var(--shadow); }
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .head h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .price {
+    margin: 8px 0 0;
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+    font-variant-numeric: tabular-nums;
+  }
+  .price .amount { font-size: 28px; font-weight: 600; line-height: 1.2; }
+  .price .unit { color: var(--text-2); font-size: 13px; }
+  .note {
+    margin: 4px 0 0;
+    color: var(--text-2);
+    font-size: 14px;
+    font-variant-numeric: tabular-nums;
+  }
+  .perks {
+    margin: 16px 0 0;
+    padding: 16px 0 0;
+    list-style: none;
+    border-top: 1px solid var(--line);
+  }
+  .perks li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .perks li + li { margin-top: 8px; }
+  .check {
+    flex: none;
+    position: relative;
+    width: 16px;
+    height: 22px;
+  }
+  .check::after {
+    content: "";
+    position: absolute;
+    left: 3px;
+    top: 5px;
+    width: 9px;
+    height: 5px;
+    border-left: 2px solid var(--accent);
+    border-bottom: 2px solid var(--accent);
+    transform: rotate(-45deg);
+  }
+
+  .btn {
+    width: 100%;
+    min-height: 44px;
+    margin-top: 20px;
+    border-radius: 10px;
+    font: inherit;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: transform .1s ease, background-color .15s ease;
+  }
+  .btn:not(:disabled):active { transform: scale(.98); }
+  .btn-primary { background: var(--accent); color: var(--accent-ink); }
+  .btn-secondary { background: transparent; color: var(--text); border-color: var(--line); }
+  .btn-secondary:active { background: var(--hover); }
+  .btn:disabled {
+    background: var(--track);
+    color: var(--text-2);
+    cursor: default;
+  }
+  .btn:focus-visible, .icon-btn:focus-visible, .faq-q:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* 常见问题 */
+  .faq { margin-top: 24px; }
+  .faq > h2 {
+    margin: 0 0 8px;
+    padding: 0 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-2);
+  }
+  .faq .card { padding: 0 20px; }
+  .faq-item + .faq-item { border-top: 1px solid var(--line); }
+  .faq-item h3 { margin: 0; font: inherit; }
+  .faq-q {
+    width: 100%;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 0;
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    font-size: 15px;
+    text-align: left;
+    cursor: pointer;
+  }
+  .chevron {
+    flex: none;
+    width: 8px;
+    height: 8px;
+    margin-right: 4px;
+    border-right: 2px solid var(--text-2);
+    border-bottom: 2px solid var(--text-2);
+    transform: translateY(-2px) rotate(45deg);
+    transition: transform .15s ease;
+  }
+  .faq-q[aria-expanded="true"] .chevron { transform: translateY(2px) rotate(-135deg); }
+  .faq-a {
+    display: grid;
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition: grid-template-rows .2s ease, visibility 0s linear .2s;
+  }
+  .faq-a.open {
+    grid-template-rows: 1fr;
+    visibility: visible;
+    transition: grid-template-rows .2s ease, visibility 0s;
+  }
+  .faq-a > div { min-height: 0; overflow: hidden; }
+  .faq-a p {
+    margin: 0;
+    padding: 0 0 16px;
+    color: var(--text-2);
+    font-size: 14px;
+  }
+
+  .fineprint {
+    margin: 24px 0 0;
+    color: var(--text-2);
+    font-size: 13px;
+    text-align: center;
+  }
+
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: calc(32px + env(safe-area-inset-bottom));
+    transform: translate(-50%, 8px);
+    max-width: calc(100% - 32px);
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: var(--text);
+    color: var(--bg);
+    font-size: 14px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease, transform .2s ease;
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: 0s !important; transition-delay: 0s !important; }
+  }
+</style>
+</head>
+<body>
+<header class="nav">
+  <button class="icon-btn" type="button" aria-label="关闭" title="关闭" data-action="close">
+    <span class="close-mark" aria-hidden="true"></span>
+  </button>
+  <h1>升级套餐</h1>
+  <span aria-hidden="true"></span>
+</header>
+
+<main>
+  <fieldset class="period">
+    <legend class="sr-only">付费周期</legend>
+    <input type="radio" name="period" id="period-month" value="month" checked>
+    <label for="period-month">月付</label>
+    <input type="radio" name="period" id="period-year" value="year">
+    <label for="period-year">年付 <span class="tag">省 20%</span></label>
+  </fieldset>
+
+  <ul class="plans">
+    <li>
+      <article class="card" aria-labelledby="plan-free">
+        <div class="head">
+          <h2 id="plan-free">免费版</h2>
+        </div>
+        <p class="price"><span class="amount" data-amount="free">¥0</span></p>
+        <p class="note" data-note="free">永久免费</p>
+        <ul class="perks">
+          <li><span class="check" aria-hidden="true"></span>5GB 空间</li>
+          <li><span class="check" aria-hidden="true"></span>最多 3 人</li>
+          <li><span class="check" aria-hidden="true"></span>文件在线预览</li>
+        </ul>
+        <button class="btn btn-secondary" type="button" data-action="downgrade" data-plan="free">降级到免费版</button>
+      </article>
+    </li>
+    <li>
+      <article class="card" aria-labelledby="plan-pro">
+        <div class="head">
+          <h2 id="plan-pro">Pro</h2>
+          <span class="tag tag-muted">当前套餐</span>
+        </div>
+        <p class="price"><span class="amount" data-amount="pro">¥30</span><span class="unit" data-unit="pro">/月</span></p>
+        <p class="note" data-note="pro">按月扣费</p>
+        <ul class="perks">
+          <li><span class="check" aria-hidden="true"></span>100GB 空间</li>
+          <li><span class="check" aria-hidden="true"></span>最多 10 人</li>
+          <li><span class="check" aria-hidden="true"></span>30 天版本历史</li>
+        </ul>
+        <button class="btn" type="button" disabled>当前套餐</button>
+      </article>
+    </li>
+    <li>
+      <article class="card is-recommended" aria-labelledby="plan-team">
+        <div class="head">
+          <h2 id="plan-team">团队版</h2>
+          <span class="tag">推荐</span>
+        </div>
+        <p class="price"><span class="amount" data-amount="team">¥88</span><span class="unit" data-unit="team">/月</span></p>
+        <p class="note" data-note="team">按月扣费</p>
+        <ul class="perks">
+          <li><span class="check" aria-hidden="true"></span>1TB 空间</li>
+          <li><span class="check" aria-hidden="true"></span>不限人数</li>
+          <li><span class="check" aria-hidden="true"></span>成员权限与操作记录</li>
+        </ul>
+        <button class="btn btn-primary" type="button" data-action="upgrade" data-plan="team">升级到团队版</button>
+      </article>
+    </li>
+  </ul>
+
+  <section class="faq" aria-labelledby="faq-title">
+    <h2 id="faq-title">常见问题</h2>
+    <div class="card">
+      <div class="faq-item">
+        <h3><button class="faq-q" type="button" id="faq-q1" aria-expanded="false" aria-controls="faq-a1">升级后怎么计费？<span class="chevron" aria-hidden="true"></span></button></h3>
+        <div class="faq-a" id="faq-a1" role="region" aria-labelledby="faq-q1"><div><p>升级立即生效，本期剩余天数按差价折算，下个周期起按新套餐价格扣费。</p></div></div>
+      </div>
+      <div class="faq-item">
+        <h3><button class="faq-q" type="button" id="faq-q2" aria-expanded="false" aria-controls="faq-a2">可以随时取消吗？<span class="chevron" aria-hidden="true"></span></button></h3>
+        <div class="faq-a" id="faq-a2" role="region" aria-labelledby="faq-q2"><div><p>可以。取消后本期结束前仍可使用付费功能，到期自动转为免费版。</p></div></div>
+      </div>
+      <div class="faq-item">
+        <h3><button class="faq-q" type="button" id="faq-q3" aria-expanded="false" aria-controls="faq-a3">降级后超出空间的文件会被删除吗？<span class="chevron" aria-hidden="true"></span></button></h3>
+        <div class="faq-a" id="faq-a3" role="region" aria-labelledby="faq-q3"><div><p>不会删除。只是在清理到新套餐的空间以内之前，暂时不能上传新文件。</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <p class="fineprint">价格含税，可随时取消</p>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+  (function () {
+    var PLANS = {
+      free: { name: '免费版', monthly: 0 },
+      pro: { name: 'Pro', monthly: 30 },
+      team: { name: '团队版', monthly: 88 }
+    };
+    // 年付 8 折，对应「省 20%」标签
+    var YEAR_RATE = 0.8;
+    var fmt = new Intl.NumberFormat('zh-CN', { maximumFractionDigits: 1 });
+    var period = 'month';
+
+    function round1(n) { return Math.round(n * 10) / 10; }
+    function priceOf(key) {
+      var m = PLANS[key].monthly;
+      return period === 'year'
+        ? { total: round1(m * 12 * YEAR_RATE), perMonth: round1(m * YEAR_RATE) }
+        : { total: m, perMonth: m };
+    }
+
+    function render() {
+      Object.keys(PLANS).forEach(function (key) {
+        if (PLANS[key].monthly === 0) return;
+        var p = priceOf(key);
+        document.querySelector('[data-amount="' + key + '"]').textContent = '¥' + fmt.format(p.total);
+        document.querySelector('[data-unit="' + key + '"]').textContent = period === 'year' ? '/年' : '/月';
+        document.querySelector('[data-note="' + key + '"]').textContent = period === 'year'
+          ? '按年扣费，相当于 ¥' + fmt.format(p.perMonth) + '/月'
+          : '按月扣费';
+      });
+    }
+
+    document.querySelectorAll('input[name="period"]').forEach(function (input) {
+      input.addEventListener('change', function () {
+        period = input.value;
+        render();
+      });
+    });
+
+    document.querySelectorAll('.faq-q').forEach(function (q) {
+      var panel = document.getElementById(q.getAttribute('aria-controls'));
+      q.addEventListener('click', function () {
+        var expanded = q.getAttribute('aria-expanded') === 'true';
+        q.setAttribute('aria-expanded', String(!expanded));
+        panel.classList.toggle('open', !expanded);
+      });
+    });
+
+    var toast = document.getElementById('toast');
+    var toastTimer;
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 1600);
+    }
+
+    document.addEventListener('click', function (e) {
+      var target = e.target.closest('[data-action]');
+      if (!target) return;
+      var action = target.getAttribute('data-action');
+      if (action === 'close') { showToast('已关闭'); return; }
+      if (action === 'downgrade') {
+        if (!window.confirm('降级到免费版？空间将降为 5GB，成员上限 3 人。')) return;
+        showToast('已提交降级，本期结束后生效');
+        return;
+      }
+      if (action === 'upgrade') {
+        var key = target.getAttribute('data-plan');
+        var p = priceOf(key);
+        showToast('前往支付：' + PLANS[key].name + ' ¥' + fmt.format(p.total) + (period === 'year' ? '/年' : '/月'));
+      }
+    });
+  })();
+</script>
+</body>
+</html>

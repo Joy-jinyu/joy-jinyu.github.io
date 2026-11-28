@@ -1,0 +1,229 @@
+{
+ "file": "members-token.html",
+ "scheme": "dark",
+ "bag": {
+  "bg": {
+   "#ffffff": {
+    "n": 6,
+    "who": [
+     "header.topbar「团队成员 邀请」",
+     "input.search-input",
+     "div.card「周 周明远所有者 刚刚活跃 」",
+     "div.card「li.na@example.」"
+    ]
+   },
+   "#f4f4f1": {
+    "n": 9,
+    "who": [
+     "span.avatar「周」",
+     "span.avatar「林」",
+     "span.avatar「陈」",
+     "span.avatar「王」"
+    ]
+   },
+   "#b65a3c": {
+    "n": 1,
+    "who": [
+     "span.tag「所有者」"
+    ]
+   },
+   "#5f5e59": {
+    "n": 6,
+    "who": [
+     "span.icon-more",
+     "span.icon-more",
+     "span.icon-more",
+     "span.icon-more"
+    ]
+   }
+  },
+  "border": {
+   "1px #e7e6e1": {
+    "n": 19,
+    "who": [
+     "header.topbar「团队成员 邀请」",
+     "input.search-input",
+     "input.search-input",
+     "input.search-input"
+    ]
+   },
+   "2px #1c1c1a": {
+    "n": 2,
+    "who": [
+     "span.icon-back",
+     "span.icon-back"
+    ]
+   }
+  },
+  "radius": {
+   "10": {
+    "n": 17,
+    "who": [
+     "button.btn-ghost「返回」",
+     "button.btn-ghost「邀请」",
+     "input.search-input",
+     "span.avatar「周」"
+    ]
+   },
+   "16": {
+    "n": 2,
+    "who": [
+     "div.card「周 周明远所有者 刚刚活跃 」",
+     "div.card「li.na@example.」"
+    ]
+   },
+   "pill": {
+    "n": 12,
+    "who": [
+     "span.tag「所有者」",
+     "span.icon-more",
+     "span.tag「管理员」",
+     "span.icon-more"
+    ]
+   }
+  },
+  "controlHeight": {
+   "32": {
+    "n": 2,
+    "who": [
+     "button.btn-outline「撤回」",
+     "button.btn-outline「撤回」"
+    ]
+   },
+   "44": {
+    "n": 9,
+    "who": [
+     "button.btn-ghost「返回」",
+     "button.btn-ghost「邀请」",
+     "input.search-input",
+     "button.btn-ghost「更多」"
+    ]
+   }
+  },
+  "text": {
+   "#1c1c1a": {
+    "n": 11,
+    "who": [
+     "h1「团队成员」",
+     "span.member-name「周明远」",
+     "span.member-name「林晓」",
+     "span.member-name「陈思雨」"
+    ]
+   },
+   "#b65a3c": {
+    "n": 3,
+    "who": [
+     "button.btn-ghost「邀请」",
+     "span.tag「管理员」",
+     "span.tag「管理员」"
+    ]
+   },
+   "#5f5e59": {
+    "n": 23,
+    "who": [
+     "h2.section-title「成员 · 6」",
+     "span「6」",
+     "span.avatar「周」",
+     "p.meta「刚刚活跃」"
+    ]
+   },
+   "#ffffff": {
+    "n": 1,
+    "who": [
+     "span.tag「所有者」"
+    ]
+   }
+  },
+  "fontSize": {
+   "13": {
+    "n": 22,
+    "who": [
+     "h2.section-title「成员 · 6」",
+     "span「6」",
+     "span.tag「所有者」",
+     "p.meta「刚刚活跃」"
+    ]
+   },
+   "15": {
+    "n": 15,
+    "who": [
+     "button.btn-ghost「邀请」",
+     "span.avatar「周」",
+     "span.member-name「周明远」",
+     "span.avatar「林」"
+    ]
+   },
+   "18": {
+    "n": 1,
+    "who": [
+     "h1「团队成员」"
+    ]
+   }
+  },
+  "fontWeight": {
+   "400": {
+    "n": 24,
+    "who": [
+     "h2.section-title「成员 · 6」",
+     "span「6」",
+     "span.tag「所有者」",
+     "p.meta「刚刚活跃」"
+    ]
+   },
+   "600": {
+    "n": 14,
+    "who": [
+     "h1「团队成员」",
+     "button.btn-ghost「邀请」",
+     "span.avatar「周」",
+     "span.member-name「周明远」"
+    ]
+   }
+  },
+  "shadow": {
+   "#5f5e59 -6px 0px 0px 0px, #5f5e59 6px 0px 0px 0px": {
+    "n": 6,
+    "who": [
+     "span.icon-more",
+     "span.icon-more",
+     "span.icon-more",
+     "span.icon-more"
+    ]
+   },
+   "#b65a3c 0px 0px 0px 1px inset": {
+    "n": 2,
+    "who": [
+     "span.tag「管理员」",
+     "span.tag「管理员」"
+    ]
+   }
+  }
+ },
+ "vars": {
+  "--color-accent": "#b65a3c",
+  "--color-on-accent": "#ffffff",
+  "--color-text": "#1c1c1a",
+  "--color-text-2": "#5f5e59",
+  "--color-line": "#e7e6e1",
+  "--color-bg": "#f4f4f1",
+  "--color-card": "#ffffff",
+  "--radius-card": "16px",
+  "--radius-control": "10px",
+  "--font-sm": "13px",
+  "--font-md": "15px",
+  "--font-lg": "18px",
+  "--space-1": "4px",
+  "--space-2": "8px",
+  "--space-3": "12px",
+  "--space-4": "16px",
+  "--space-5": "24px",
+  "--size-touch": "44px",
+  "--size-icon-btn": "40px",
+  "--size-control-sm": "32px",
+  "--size-avatar": "40px",
+  "--size-icon": "16px"
+ },
+ "darkRule": false,
+ "literalColorsOutsideRoot": 0,
+ "errors": []
+}

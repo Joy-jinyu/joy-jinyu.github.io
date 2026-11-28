@@ -1,0 +1,529 @@
+{
+ "note": "截图是 2x（1 pt = 2 px），都在 raw/ 里，拍摄时前台都是探针自己（见 data/front.log）。corner：45° 等效圆角半径（连续曲线圆角，只给等效值）。composite：sheet / popover 和母窗口拼在同一张截图里，用 shape 按「和背景色差 > tol」逐行找边。颜色是截图上的读数，受 P3 / 壁纸影响，只作「看起来」的佐证。",
+ "corners": {
+  "appmodal-light": {
+   "png": "raw/appmodal-light.png",
+   "method": "pixels corner（透明像素）",
+   "transparentPxPerRow": [
+    65,
+    46,
+    40,
+    36,
+    33,
+    30,
+    28,
+    26,
+    24,
+    23,
+    21,
+    20,
+    19,
+    18,
+    16,
+    15,
+    14,
+    14,
+    13,
+    12,
+    11,
+    10,
+    10,
+    9,
+    8,
+    8,
+    7,
+    7,
+    6,
+    6,
+    5,
+    5,
+    5,
+    4,
+    4,
+    4,
+    3,
+    3,
+    3,
+    3,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0
+   ],
+   "radiusPt": 25.6
+  },
+  "panel-light": {
+   "png": "raw/panel-light.png",
+   "method": "pixels corner（透明像素）",
+   "transparentPxPerRow": [
+    33,
+    23,
+    19,
+    17,
+    15,
+    13,
+    12,
+    11,
+    10,
+    9,
+    8,
+    7,
+    6,
+    5,
+    5,
+    4,
+    4,
+    3,
+    3,
+    2,
+    2,
+    2,
+    2,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0
+   ],
+   "radiusPt": 15.4
+  },
+  "hud-light": {
+   "png": "raw/hud-light.png",
+   "method": "pixels corner（透明像素）",
+   "transparentPxPerRow": [
+    33,
+    23,
+    19,
+    17,
+    15,
+    13,
+    12,
+    11,
+    10,
+    9,
+    8,
+    7,
+    6,
+    5,
+    5,
+    4,
+    4,
+    3,
+    3,
+    2,
+    2,
+    2,
+    2,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0
+   ],
+   "radiusPt": 15.4
+  },
+  "alertsheet-light": {
+   "png": "raw/alertsheet-light.png",
+   "method": "shape rows（与变暗的母窗口底色比，tol 24）",
+   "sheetTopLeftPx": [
+    300,
+    150
+   ],
+   "insetPxPerRow": [
+    56,
+    44,
+    38,
+    35,
+    32,
+    29,
+    27,
+    25,
+    24,
+    22,
+    21,
+    19,
+    18,
+    17,
+    16,
+    15,
+    14,
+    13,
+    12,
+    11,
+    11,
+    10,
+    9,
+    9
+   ],
+   "diagonalRow": 15,
+   "radiusPt": 25.6
+  },
+  "alertsheet-dark": {
+   "png": "raw/alertsheet-dark.png",
+   "method": "shape rows（与变暗的母窗口底色比，tol 24）",
+   "sheetTopLeftPx": [
+    300,
+    150
+   ],
+   "insetPxPerRow": [
+    58,
+    44,
+    39,
+    35,
+    32,
+    29,
+    27,
+    25,
+    24,
+    22,
+    21,
+    20,
+    18,
+    17,
+    16,
+    15,
+    14,
+    13,
+    12,
+    12,
+    11,
+    10,
+    9,
+    9
+   ],
+   "diagonalRow": 15,
+   "radiusPt": 25.6
+  },
+  "sheet-light": {
+   "png": "raw/sheet-light.png",
+   "method": "shape rows（与变暗的母窗口底色比，tol 24）",
+   "sheetTopLeftPx": [
+    160,
+    190
+   ],
+   "insetPxPerRow": [
+    54,
+    43,
+    38,
+    34,
+    31,
+    29,
+    27,
+    25,
+    23,
+    22,
+    20,
+    19,
+    18,
+    17,
+    16,
+    15,
+    14,
+    13,
+    12,
+    11,
+    10,
+    10,
+    9,
+    8
+   ],
+   "diagonalRow": 15,
+   "radiusPt": 25.6
+  },
+  "sheet-dark": {
+   "png": "raw/sheet-dark.png",
+   "method": "shape rows（与变暗的母窗口底色比，tol 24）",
+   "sheetTopLeftPx": [
+    160,
+    190
+   ],
+   "insetPxPerRow": [
+    71,
+    47,
+    41,
+    36,
+    33,
+    30,
+    28,
+    26,
+    25,
+    23,
+    22,
+    20,
+    19,
+    18,
+    17,
+    16,
+    15,
+    14,
+    13,
+    12,
+    11,
+    11,
+    10,
+    9
+   ],
+   "diagonalRow": 16,
+   "radiusPt": 27.3,
+   "note": "深色窗口 sheet 读成 27.3，和浅色以及深色 alert sheet 的 25.6 不一致，原因没查；正文用浅色读数"
+  }
+ },
+ "dim": {
+  "pointPx": [
+   1000,
+   600
+  ],
+  "light": {
+   "parent-light": {
+    "png": "raw/parent-light.png",
+    "color": "#FFFFFF a=255"
+   },
+   "popover-light": {
+    "png": "raw/popover-light.png",
+    "color": "#FFFFFF a=255"
+   },
+   "alertsheet-light": {
+    "png": "raw/alertsheet-light.png",
+    "color": "#CCCCCC a=255"
+   },
+   "sheet-light": {
+    "png": "raw/sheet-light.png",
+    "color": "#CCCCCC a=255"
+   }
+  },
+  "dark": {
+   "popover-dark": {
+    "png": "raw/popover-dark.png",
+    "color": "#242A2F a=255"
+   },
+   "alertsheet-dark": {
+    "png": "raw/alertsheet-dark.png",
+    "color": "#1B1F22 a=255"
+   },
+   "sheet-dark": {
+    "png": "raw/sheet-dark.png",
+    "color": "#1B1F22 a=255"
+   }
+  }
+ },
+ "popover": {
+  "png": "raw/popover-dark.png",
+  "method": "shape rows（与母窗口底色比，tol 12）",
+  "anchorBottomPx": 192,
+  "arrowRows": [
+   [
+    197,
+    672,
+    679,
+    8
+   ],
+   [
+    198,
+    670,
+    680,
+    11
+   ],
+   [
+    199,
+    669,
+    678,
+    10
+   ],
+   [
+    200,
+    668,
+    680,
+    13
+   ],
+   [
+    201,
+    667,
+    682,
+    16
+   ],
+   [
+    202,
+    666,
+    683,
+    18
+   ],
+   [
+    203,
+    665,
+    684,
+    20
+   ],
+   [
+    204,
+    664,
+    685,
+    22
+   ],
+   [
+    205,
+    663,
+    686,
+    24
+   ],
+   [
+    206,
+    662,
+    687,
+    26
+   ],
+   [
+    207,
+    661,
+    688,
+    28
+   ],
+   [
+    208,
+    660,
+    689,
+    30
+   ],
+   [
+    209,
+    659,
+    690,
+    32
+   ],
+   [
+    210,
+    658,
+    691,
+    34
+   ],
+   [
+    211,
+    657,
+    692,
+    36
+   ],
+   [
+    212,
+    656,
+    693,
+    38
+   ],
+   [
+    213,
+    655,
+    694,
+    40
+   ],
+   [
+    214,
+    654,
+    695,
+    42
+   ],
+   [
+    215,
+    652,
+    696,
+    45
+   ],
+   [
+    216,
+    650,
+    700,
+    51
+   ],
+   [
+    217,
+    647,
+    703,
+    57
+   ]
+  ],
+  "arrowTipPx": 197,
+  "bodyTopPx": 218,
+  "arrowHeightPt": 10.5,
+  "arrowWidthPtBeforeFlare": 21.0,
+  "arrowCenterXPt": 337.75,
+  "anchorCenterXPt": 338,
+  "bodyPx": {
+   "left": 436,
+   "right": 915,
+   "top": 218,
+   "bottom": 409
+  },
+  "bodyCorner": {
+   "insetPxPerRow": [
+    39,
+    31,
+    27,
+    24,
+    22,
+    20,
+    18,
+    17,
+    15,
+    14,
+    13,
+    12,
+    11,
+    10,
+    9,
+    8,
+    8,
+    7,
+    6,
+    6,
+    5,
+    5,
+    4,
+    4
+   ],
+   "diagonalRow": 12,
+   "radiusPt": 20.5
+  }
+ },
+ "glassFallback": {
+  "note": "单独截一个半透明窗口时，背后没有内容可透，系统填了一层不透明的灰；屏幕上它是半透明的",
+  "appmodal-light": {
+   "png": "raw/appmodal-light.png",
+   "color": "#B1B6B9 a=255"
+  },
+  "hud-light": {
+   "png": "raw/hud-light.png",
+   "color": "#818486 a=255"
+  }
+ }
+}

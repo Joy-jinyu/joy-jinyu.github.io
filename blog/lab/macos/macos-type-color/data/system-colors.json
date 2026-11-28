@@ -1,0 +1,170 @@
+{
+  "systemRed": {
+    "light": {
+      "hig": "#FF383C",
+      "higAlt": "R-255,G-56,B-60",
+      "measured": "#FF383C",
+      "match": true
+    },
+    "dark": {
+      "hig": "#FF4245",
+      "higAlt": "R-255,G-66,B-69",
+      "measured": "#FF4245",
+      "match": true
+    }
+  },
+  "systemOrange": {
+    "light": {
+      "hig": "#FF8D28",
+      "higAlt": "R-255,G-141,B-40",
+      "measured": "#FF8D28",
+      "match": true
+    },
+    "dark": {
+      "hig": "#FF9230",
+      "higAlt": "R-255,G-146,B-48",
+      "measured": "#FF9230",
+      "match": true
+    }
+  },
+  "systemYellow": {
+    "light": {
+      "hig": "#FFCC00",
+      "higAlt": "R-255,G-204,B-0",
+      "measured": "#FFCC00",
+      "match": true
+    },
+    "dark": {
+      "hig": "#FFD600",
+      "higAlt": "R-255,G-214,B-0",
+      "measured": "#FFD600",
+      "match": true
+    }
+  },
+  "systemGreen": {
+    "light": {
+      "hig": "#34C759",
+      "higAlt": "R-52,G-199,B-89",
+      "measured": "#34C759",
+      "match": true
+    },
+    "dark": {
+      "hig": "#30D158",
+      "higAlt": "R-48,G-209,B-88",
+      "measured": "#30D158",
+      "match": true
+    }
+  },
+  "systemMint": {
+    "light": {
+      "hig": "#00C8B3",
+      "higAlt": "R-0,G-200,B-179",
+      "measured": "#00C8B3",
+      "match": true
+    },
+    "dark": {
+      "hig": "#00DAC3",
+      "higAlt": "R-0,G-218,B-195",
+      "measured": "#00DAC3",
+      "match": true
+    }
+  },
+  "systemTeal": {
+    "light": {
+      "hig": "#00C3D0",
+      "higAlt": "R-0,G-195,B-208",
+      "measured": "#00C3D0",
+      "match": true
+    },
+    "dark": {
+      "hig": "#00D2E0",
+      "higAlt": "R-0,G-210,B-224",
+      "measured": "#00D2E0",
+      "match": true
+    }
+  },
+  "systemCyan": {
+    "light": {
+      "hig": "#00C0E8",
+      "higAlt": "R-0,G-192,B-232",
+      "measured": "#00C0E8",
+      "match": true
+    },
+    "dark": {
+      "hig": "#3CD3FE",
+      "higAlt": "R-60,G-211,B-254",
+      "measured": "#3CD3FE",
+      "match": true
+    }
+  },
+  "systemBlue": {
+    "light": {
+      "hig": "#0088FF",
+      "higAlt": "R-0,G-136,B-255",
+      "measured": "#0088FF",
+      "match": true
+    },
+    "dark": {
+      "hig": "#0091FF",
+      "higAlt": "R-0,G-145,B-255",
+      "measured": "#0091FF",
+      "match": true
+    }
+  },
+  "systemIndigo": {
+    "light": {
+      "hig": "#6155F5",
+      "higAlt": "R-97,G-85,B-245",
+      "measured": "#6155F5",
+      "match": true
+    },
+    "dark": {
+      "hig": "#6D7CFF",
+      "higAlt": "R-109,G-124,B-255",
+      "measured": "#6D7CFF",
+      "match": true
+    }
+  },
+  "systemPurple": {
+    "light": {
+      "hig": "#CB30E0",
+      "higAlt": "R-203,G-48,B-224",
+      "measured": "#CB30E0",
+      "match": true
+    },
+    "dark": {
+      "hig": "#DB34F2",
+      "higAlt": "R-219,G-52,B-242",
+      "measured": "#DB34F2",
+      "match": true
+    }
+  },
+  "systemPink": {
+    "light": {
+      "hig": "#FF2D55",
+      "higAlt": "R-255,G-45,B-85",
+      "measured": "#FF2D55",
+      "match": true
+    },
+    "dark": {
+      "hig": "#FF375F",
+      "higAlt": "R-255,G-55,B-95",
+      "measured": "#FF375F",
+      "match": true
+    }
+  },
+  "systemBrown": {
+    "light": {
+      "hig": "#AC7F5E",
+      "higAlt": "R-172,G-127,B-94",
+      "measured": "#AC7F5E",
+      "match": true
+    },
+    "dark": {
+      "hig": "#B78A66",
+      "higAlt": "R-183,G-138,B-102",
+      "measured": "#B78A66",
+      "match": true
+    }
+  }
+}

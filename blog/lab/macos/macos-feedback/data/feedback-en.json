@@ -1,0 +1,837 @@
+{
+  "appMenu" : [
+    {
+      "action" : "orderFrontStandardAboutPanel:",
+      "enabled" : true,
+      "key" : "",
+      "mods" : [
+
+      ],
+      "separator" : false,
+      "title" : "About FeedbackProbe"
+    },
+    {
+      "action" : "",
+      "enabled" : false,
+      "key" : "",
+      "mods" : [
+        "cmd"
+      ],
+      "separator" : true,
+      "title" : ""
+    },
+    {
+      "action" : "menuAction:",
+      "enabled" : true,
+      "key" : ",",
+      "mods" : [
+        "cmd"
+      ],
+      "separator" : false,
+      "title" : "Settings…"
+    },
+    {
+      "action" : "",
+      "enabled" : false,
+      "key" : "",
+      "mods" : [
+        "cmd"
+      ],
+      "separator" : true,
+      "title" : ""
+    },
+    {
+      "action" : "submenuAction:",
+      "enabled" : true,
+      "key" : "",
+      "mods" : [
+        "cmd"
+      ],
+      "separator" : false,
+      "title" : "Services"
+    },
+    {
+      "action" : "",
+      "enabled" : false,
+      "key" : "",
+      "mods" : [
+        "cmd"
+      ],
+      "separator" : true,
+      "title" : ""
+    },
+    {
+      "action" : "hide:",
+      "enabled" : true,
+      "key" : "h",
+      "mods" : [
+        "cmd"
+      ],
+      "separator" : false,
+      "title" : "Hide FeedbackProbe"
+    },
+    {
+      "action" : "hideOtherApplications:",
+      "enabled" : true,
+      "key" : "h",
+      "mods" : [
+        "cmd",
+        "option"
+      ],
+      "separator" : false,
+      "title" : "Hide Others"
+    },
+    {
+      "action" : "unhideAllApplications:",
+      "enabled" : true,
+      "key" : "",
+      "mods" : [
+
+      ],
+      "separator" : false,
+      "title" : "Show All"
+    },
+    {
+      "action" : "",
+      "enabled" : false,
+      "key" : "",
+      "mods" : [
+        "cmd"
+      ],
+      "separator" : true,
+      "title" : ""
+    },
+    {
+      "action" : "terminate:",
+      "enabled" : true,
+      "key" : "q",
+      "mods" : [
+        "cmd"
+      ],
+      "separator" : false,
+      "title" : "Quit FeedbackProbe"
+    }
+  ],
+  "documents" : {
+    "autosave" : {
+      "after" : {
+        "editMenu" : [
+          {
+            "action" : "undo:",
+            "enabled" : true,
+            "key" : "z",
+            "mods" : [
+              "cmd"
+            ],
+            "separator" : false,
+            "title" : "Undo Typing"
+          },
+          {
+            "action" : "redo:",
+            "enabled" : false,
+            "key" : "z",
+            "mods" : [
+              "cmd",
+              "shift"
+            ],
+            "separator" : false,
+            "title" : "Redo"
+          },
+          {
+            "action" : "",
+            "enabled" : false,
+            "key" : "",
+            "mods" : [
+              "cmd"
+            ],
+            "separator" : true,
+            "title" : ""
+          }
+        ],
+        "hasUnautosavedChanges" : false,
+        "isDocumentEdited" : false,
+        "sameUndoManager" : true,
+        "subtitle" : "",
+        "title" : "Untitled",
+        "titlebar" : [
+          "Untitled"
+        ]
+      },
+      "afterUpdateChangeCount" : {
+        "isDocumentEdited" : false,
+        "title" : "Untitled",
+        "titlebar" : [
+          "Untitled",
+          "Edited",
+          "—"
+        ]
+      },
+      "before" : {
+        "isDocumentEdited" : false,
+        "title" : "Untitled",
+        "titlebar" : [
+          "Untitled"
+        ]
+      },
+      "displayName" : "Untitled"
+    },
+    "manual" : {
+      "after" : {
+        "editMenu" : [
+          {
+            "action" : "undo:",
+            "enabled" : true,
+            "key" : "z",
+            "mods" : [
+              "cmd"
+            ],
+            "separator" : false,
+            "title" : "Undo Typing"
+          },
+          {
+            "action" : "redo:",
+            "enabled" : false,
+            "key" : "z",
+            "mods" : [
+              "cmd",
+              "shift"
+            ],
+            "separator" : false,
+            "title" : "Redo"
+          },
+          {
+            "action" : "",
+            "enabled" : false,
+            "key" : "",
+            "mods" : [
+              "cmd"
+            ],
+            "separator" : true,
+            "title" : ""
+          }
+        ],
+        "hasUnautosavedChanges" : false,
+        "isDocumentEdited" : false,
+        "sameUndoManager" : true,
+        "subtitle" : "",
+        "title" : "Untitled",
+        "titlebar" : [
+          "Untitled"
+        ]
+      },
+      "afterUpdateChangeCount" : {
+        "isDocumentEdited" : true,
+        "title" : "Untitled",
+        "titlebar" : [
+          "Untitled"
+        ]
+      },
+      "before" : {
+        "isDocumentEdited" : false,
+        "title" : "Untitled",
+        "titlebar" : [
+          "Untitled"
+        ]
+      },
+      "displayName" : "Untitled"
+    }
+  },
+  "finish" : "ok",
+  "lang" : [
+    "en"
+  ],
+  "menuTitles" : [
+    "FeedbackProbe",
+    "Edit",
+    "View",
+    "Window",
+    "Help"
+  ],
+  "mode" : "strings",
+  "motion" : {
+    "animationContextDefaultDuration" : 0.25,
+    "reduceMotion" : false,
+    "windowAnimationResizeTime" : {
+      "+50pt" : 0.097852246090103678,
+      "+150pt" : 0.22113149662562945,
+      "+300pt" : 0.33455903915026691,
+      "+600pt" : 0.34999999999999998
+    }
+  },
+  "progress" : {
+    "extraLarge" : {
+      "bar" : {
+        "fitting" : {
+          "h" : 20,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : -1
+        }
+      },
+      "barIndeterminate" : {
+        "fitting" : {
+          "h" : 20,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : -1
+        }
+      },
+      "circular" : {
+        "fitting" : {
+          "h" : 32,
+          "w" : 32
+        },
+        "intrinsic" : {
+          "h" : 32,
+          "w" : 32
+        }
+      },
+      "spinner" : {
+        "fitting" : {
+          "h" : 32,
+          "w" : 32
+        },
+        "intrinsic" : {
+          "h" : 32,
+          "w" : 32
+        }
+      }
+    },
+    "laidOutFrames" : {
+      "extraLarge.bar" : {
+        "h" : 20,
+        "w" : 140,
+        "x" : 85,
+        "y" : 6
+      },
+      "extraLarge.barIndeterminate" : {
+        "h" : 20,
+        "w" : 140,
+        "x" : 245,
+        "y" : 6
+      },
+      "extraLarge.circular" : {
+        "h" : 32,
+        "w" : 32,
+        "x" : 405,
+        "y" : 0
+      },
+      "extraLarge.spinner" : {
+        "h" : 32,
+        "w" : 32,
+        "x" : 500,
+        "y" : 0
+      },
+      "large.bar" : {
+        "h" : 20,
+        "w" : 140,
+        "x" : 85,
+        "y" : 52
+      },
+      "large.barIndeterminate" : {
+        "h" : 20,
+        "w" : 140,
+        "x" : 245,
+        "y" : 52
+      },
+      "large.circular" : {
+        "h" : 32,
+        "w" : 32,
+        "x" : 405,
+        "y" : 46
+      },
+      "large.spinner" : {
+        "h" : 32,
+        "w" : 32,
+        "x" : 500,
+        "y" : 46
+      },
+      "mini.bar" : {
+        "h" : 12,
+        "w" : 140,
+        "x" : 85,
+        "y" : 170
+      },
+      "mini.barIndeterminate" : {
+        "h" : 12,
+        "w" : 140,
+        "x" : 245,
+        "y" : 170
+      },
+      "mini.circular" : {
+        "h" : 16,
+        "w" : 16,
+        "x" : 405,
+        "y" : 168
+      },
+      "mini.spinner" : {
+        "h" : 10,
+        "w" : 10,
+        "x" : 500,
+        "y" : 171
+      },
+      "regular.bar" : {
+        "h" : 20,
+        "w" : 140,
+        "x" : 85,
+        "y" : 98
+      },
+      "regular.barIndeterminate" : {
+        "h" : 20,
+        "w" : 140,
+        "x" : 245,
+        "y" : 98
+      },
+      "regular.circular" : {
+        "h" : 32,
+        "w" : 32,
+        "x" : 405,
+        "y" : 92
+      },
+      "regular.spinner" : {
+        "h" : 32,
+        "w" : 32,
+        "x" : 500,
+        "y" : 92
+      },
+      "small.bar" : {
+        "h" : 12,
+        "w" : 140,
+        "x" : 85,
+        "y" : 140
+      },
+      "small.barIndeterminate" : {
+        "h" : 12,
+        "w" : 140,
+        "x" : 245,
+        "y" : 140
+      },
+      "small.circular" : {
+        "h" : 16,
+        "w" : 16,
+        "x" : 405,
+        "y" : 138
+      },
+      "small.spinner" : {
+        "h" : 16,
+        "w" : 16,
+        "x" : 500,
+        "y" : 138
+      }
+    },
+    "large" : {
+      "bar" : {
+        "fitting" : {
+          "h" : 20,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : -1
+        }
+      },
+      "barIndeterminate" : {
+        "fitting" : {
+          "h" : 20,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : -1
+        }
+      },
+      "circular" : {
+        "fitting" : {
+          "h" : 32,
+          "w" : 32
+        },
+        "intrinsic" : {
+          "h" : 32,
+          "w" : 32
+        }
+      },
+      "spinner" : {
+        "fitting" : {
+          "h" : 32,
+          "w" : 32
+        },
+        "intrinsic" : {
+          "h" : 32,
+          "w" : 32
+        }
+      }
+    },
+    "mini" : {
+      "bar" : {
+        "fitting" : {
+          "h" : 12,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 12,
+          "w" : -1
+        }
+      },
+      "barIndeterminate" : {
+        "fitting" : {
+          "h" : 12,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 12,
+          "w" : -1
+        }
+      },
+      "circular" : {
+        "fitting" : {
+          "h" : 16,
+          "w" : 16
+        },
+        "intrinsic" : {
+          "h" : 16,
+          "w" : 16
+        }
+      },
+      "spinner" : {
+        "fitting" : {
+          "h" : 10,
+          "w" : 10
+        },
+        "intrinsic" : {
+          "h" : 10,
+          "w" : 10
+        }
+      }
+    },
+    "regular" : {
+      "bar" : {
+        "fitting" : {
+          "h" : 20,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : -1
+        }
+      },
+      "barIndeterminate" : {
+        "fitting" : {
+          "h" : 20,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : -1
+        }
+      },
+      "circular" : {
+        "fitting" : {
+          "h" : 32,
+          "w" : 32
+        },
+        "intrinsic" : {
+          "h" : 32,
+          "w" : 32
+        }
+      },
+      "spinner" : {
+        "fitting" : {
+          "h" : 32,
+          "w" : 32
+        },
+        "intrinsic" : {
+          "h" : 32,
+          "w" : 32
+        }
+      }
+    },
+    "small" : {
+      "bar" : {
+        "fitting" : {
+          "h" : 12,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 12,
+          "w" : -1
+        }
+      },
+      "barIndeterminate" : {
+        "fitting" : {
+          "h" : 12,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 12,
+          "w" : -1
+        }
+      },
+      "circular" : {
+        "fitting" : {
+          "h" : 16,
+          "w" : 16
+        },
+        "intrinsic" : {
+          "h" : 16,
+          "w" : 16
+        }
+      },
+      "spinner" : {
+        "fitting" : {
+          "h" : 16,
+          "w" : 16
+        },
+        "intrinsic" : {
+          "h" : 16,
+          "w" : 16
+        }
+      }
+    },
+    "usesThreadedAnimation" : true
+  },
+  "settings" : {
+    "first" : {
+      "buttons" : {
+        "close" : {
+          "enabled" : true,
+          "hidden" : false
+        },
+        "miniaturize" : {
+          "enabled" : false,
+          "hidden" : false
+        },
+        "zoom" : {
+          "enabled" : false,
+          "hidden" : false
+        }
+      },
+      "contentLayoutRect" : {
+        "h" : 79,
+        "w" : 420,
+        "x" : 0,
+        "y" : 0
+      },
+      "frame" : {
+        "h" : 167,
+        "w" : 420,
+        "x" : 700,
+        "y" : 693
+      },
+      "frameAutosaveName" : "com_apple_SwiftUI_Settings_window",
+      "identifier" : "com_apple_SwiftUI_Settings_window",
+      "miniaturizableMask" : false,
+      "resizableMask" : false,
+      "title" : "General",
+      "titlebarPlusToolbar" : 88,
+      "toolbar" : {
+        "allowsUserCustomization" : false,
+        "displayModeRaw" : 1,
+        "isVisible" : true,
+        "items" : [
+          {
+            "id" : "89FE58D5-3265-40A0-B441-5100D3472D41",
+            "label" : "General"
+          },
+          {
+            "id" : "D4669CFB-DF02-4716-9760-35045661217E",
+            "label" : "Advanced"
+          }
+        ],
+        "selected" : "89FE58D5-3265-40A0-B441-5100D3472D41"
+      },
+      "toolbarStyleIsPreference" : true,
+      "toolbarStyleRaw" : 2
+    },
+    "menuItem" : "Settings…",
+    "second" : {
+      "buttons" : {
+        "close" : {
+          "enabled" : true,
+          "hidden" : false
+        },
+        "miniaturize" : {
+          "enabled" : false,
+          "hidden" : false
+        },
+        "zoom" : {
+          "enabled" : false,
+          "hidden" : false
+        }
+      },
+      "contentLayoutRect" : {
+        "h" : 168,
+        "w" : 420,
+        "x" : 0,
+        "y" : 0
+      },
+      "frame" : {
+        "h" : 256,
+        "w" : 420,
+        "x" : 700,
+        "y" : 604
+      },
+      "frameAutosaveName" : "com_apple_SwiftUI_Settings_window",
+      "identifier" : "com_apple_SwiftUI_Settings_window",
+      "miniaturizableMask" : false,
+      "resizableMask" : false,
+      "title" : "Advanced",
+      "titlebarPlusToolbar" : 88,
+      "toolbar" : {
+        "allowsUserCustomization" : false,
+        "displayModeRaw" : 1,
+        "isVisible" : true,
+        "items" : [
+          {
+            "id" : "89FE58D5-3265-40A0-B441-5100D3472D41",
+            "label" : "General"
+          },
+          {
+            "id" : "D4669CFB-DF02-4716-9760-35045661217E",
+            "label" : "Advanced"
+          }
+        ],
+        "selected" : "D4669CFB-DF02-4716-9760-35045661217E"
+      },
+      "toolbarStyleIsPreference" : true,
+      "toolbarStyleRaw" : 2
+    },
+    "sendActionReturnedAfter" : 0,
+    "switchSamples" : [
+      {
+        "h" : 167,
+        "t" : 0
+      },
+      {
+        "h" : 256,
+        "t" : 0.10000000000000001
+      },
+      {
+        "h" : 256,
+        "t" : 0.11
+      },
+      {
+        "h" : 256,
+        "t" : 0.13
+      },
+      {
+        "h" : 256,
+        "t" : 0.14000000000000001
+      },
+      {
+        "h" : 256,
+        "t" : 0.16
+      },
+      {
+        "h" : 256,
+        "t" : 0.17999999999999999
+      },
+      {
+        "h" : 256,
+        "t" : 0.20000000000000001
+      },
+      {
+        "h" : 256,
+        "t" : 0.20999999999999999
+      },
+      {
+        "h" : 256,
+        "t" : 0.23000000000000001
+      },
+      {
+        "h" : 256,
+        "t" : 0.25
+      },
+      {
+        "h" : 256,
+        "t" : 0.26000000000000001
+      },
+      {
+        "h" : 256,
+        "t" : 0.28000000000000003
+      },
+      {
+        "h" : 256,
+        "t" : 0.29999999999999999
+      },
+      {
+        "h" : 256,
+        "t" : 0.31
+      },
+      {
+        "h" : 256,
+        "t" : 0.33000000000000002
+      },
+      {
+        "h" : 256,
+        "t" : 0.34999999999999998
+      },
+      {
+        "h" : 256,
+        "t" : 0.35999999999999999
+      },
+      {
+        "h" : 256,
+        "t" : 0.38
+      },
+      {
+        "h" : 256,
+        "t" : 0.40000000000000002
+      },
+      {
+        "h" : 256,
+        "t" : 0.40999999999999998
+      },
+      {
+        "h" : 256,
+        "t" : 0.42999999999999999
+      },
+      {
+        "h" : 256,
+        "t" : 0.45000000000000001
+      },
+      {
+        "h" : 256,
+        "t" : 0.46000000000000002
+      },
+      {
+        "h" : 256,
+        "t" : 0.47999999999999998
+      },
+      {
+        "h" : 256,
+        "t" : 0.5
+      },
+      {
+        "h" : 256,
+        "t" : 0.51000000000000001
+      },
+      {
+        "h" : 256,
+        "t" : 0.53000000000000003
+      },
+      {
+        "h" : 256,
+        "t" : 0.55000000000000004
+      },
+      {
+        "h" : 256,
+        "t" : 0.56000000000000005
+      },
+      {
+        "h" : 256,
+        "t" : 0.57999999999999996
+      },
+      {
+        "h" : 256,
+        "t" : 0.59999999999999998
+      }
+    ]
+  },
+  "shotLog" : [
+
+  ]
+}

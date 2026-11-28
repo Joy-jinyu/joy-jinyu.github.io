@@ -1,0 +1,1241 @@
+{
+ "lang": "zh-CN",
+ "viewport": "width=device-width, initial-scale=1, viewport-fit=cover",
+ "bodyFont": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+ "rootFs": 16,
+ "styles": [
+  {
+   "sel": "h1.nav-title",
+   "text": "版本更新",
+   "fs": 17,
+   "fw": 600,
+   "lh": 23.8,
+   "ls": "normal",
+   "color": "#eceef2",
+   "alpha": 1,
+   "bg": "#111317",
+   "bgImage": false,
+   "contrast": 16.01,
+   "ff": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+   "ta": "center",
+   "tw": "wrap",
+   "tt": "none",
+   "autospace": "no-autospace",
+   "trim": "normal",
+   "lb": "auto",
+   "wb": "normal",
+   "x": 48,
+   "y": 10,
+   "w": 279,
+   "h": 24
+  },
+  {
+   "sel": "span.vh",
+   "text": "版本",
+   "fs": 28,
+   "fw": 600,
+   "lh": 33.6,
+   "ls": "normal",
+   "color": "#eceef2",
+   "alpha": 1,
+   "bg": "#111317",
+   "bgImage": false,
+   "contrast": 16.01,
+   "ff": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+   "ta": "start",
+   "tw": "nowrap pretty",
+   "tt": "none",
+   "autospace": "no-autospace",
+   "trim": "normal",
+   "lb": "auto",
+   "wb": "normal",
+   "x": 95,
+   "y": 63,
+   "w": 1,
+   "h": 1
+  },
+  {
+   "sel": "p.version",
+   "text": "3.9.0",
+   "fs": 28,
+   "fw": 600,
+   "lh": 33.6,
+   "ls": "normal",
+   "color": "#eceef2",
+   "alpha": 1,
+   "bg": "#111317",
+   "bgImage": false,
+   "contrast": 16.01,
+   "ff": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+   "ta": "start",
+   "tw": "pretty",
+   "tt": "none",
+   "autospace": "no-autospace",
+   "trim": "normal",
+   "lb": "auto",
+   "wb": "normal",
+   "x": 96,
+   "y": 64,
+   "w": 181,
+   "h": 34
+  },
+  {
+   "sel": "time",
+   "text": "2026 年 10 月 28 日",
+   "fs": 13,
+   "fw": 400,
+   "lh": 18.2,
+   "ls": "normal",
+   "color": "#8d94a1",
+   "alpha": 1,
+   "bg": "#111317",
+   "bgImage": false,
+   "contrast": 6.09,
+   "ff": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+   "ta": "start",
+   "tw": "pretty",
+   "tt": "none",
+   "autospace": "no-autospace",
+   "trim": "normal",
+   "lb": "auto",
+   "wb": "normal",
+   "x": 96,
+   "y": 103,
+   "w": 119,
+   "h": 16
+  },
+  {
+   "sel": "span",
+   "text": "·",
+   "fs": 13,
+   "fw": 400,
+   "lh": 18.2,
+   "ls": "normal",
+   "color": "#8d94a1",
+   "alpha": 1,
+   "bg": "#111317",
+   "bgImage": false,
+   "contrast": 6.09,
+   "ff": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+   "ta": "start",
+   "tw": "pretty",
+   "tt": "none",
+   "autospace": "no-autospace",
+   "trim": "normal",
+   "lb": "auto",
+   "wb": "normal",
+   "x": 215,
+   "y": 103,
+   "w": 11,
+   "h": 16
+  },
+  {
+   "sel": "p.meta",
+   "text": "86.4 MB",
+   "fs": 13,
+   "fw": 400,
+   "lh": 18.2,
+   "ls": "normal",
+   "color": "#8d94a1",
+   "alpha": 1,
+   "bg": "#111317",
+   "bgImage": false,
+   "contrast": 6.09,
+   "ff": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+   "ta": "start",
+   "tw": "pretty",
+   "tt": "none",
+   "autospace": "no-autospace",
+   "trim": "normal",
+   "lb": "auto",
+   "wb": "normal",
+   "x": 96,
+   "y": 102,
+   "w": 181,
+   "h": 18
+  },
+  {
+   "sel": "p.lead",
+   "text": "这次更新重做了文件上传。用 Claude Code 上传的大文件（超过 2 GB）会自动分片，断网后能从断点继续，平均速度提升 35%。",
+   "fs": 16,
+   "fw": 400,
+   "lh": 27.2,
+   "ls": "normal",
+   "color": "#eceef2",
+   "alpha": 1,
+   "bg": "#111317",
+   "bgImage": false,
+   "contrast": 16.01,
+   "ff": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+   "ta": "start",
+   "tw": "pretty",
+   "tt": "none",
+   "autospace": "no-autospace",
+   "trim": "normal",
+   "lb": "auto",
+   "wb": "normal",
+   "x": 16,
+   "y": 148,
+   "w": 343,
+   "h": 82
+  },
+  {
+   "sel": "h2.group-title",
+   "text": "新功能",
+   "fs": 18,
+   "fw": 600,
+   "lh": 25.2,
+   "ls": "normal",
+   "color": "#eceef2",
+   "alpha": 1,
+   "bg": "#111317",
+   "bgImage": false,
+   "contrast": 16.01,
+   "ff": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+   "ta": "start",
+   "tw": "wrap",
+   "tt": "none",
+   "autospace": "no-autospace",
+   "trim": "normal",
+   "lb": "auto",
+   "wb": "normal",
+   "x": 16,
+   "y": 262,
+   "w": 343,
+   "h": 25
+  },
+  {
+   "sel": "h3.feature-title",
+   "text": "断点续传",
+   "fs": 16,
+   "fw": 600,
+   "lh": 24,
+   "ls": "normal",
+   "color": "#eceef2",
+   "alpha": 1,
+   "bg": "#111317",
+   "bgImage": false,
+   "contrast": 16.01,
+   "ff": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+   "ta": "start",
+   "tw": "pretty",
+   "tt": "none",
+   "autospace": "no-autospace",
+   "trim": "normal",
+   "lb": "auto",
+   "wb": "normal",
+   "x": 16,
+   "y": 299,
+   "w": 343,
+   "h": 24
+  },
+  {
+   "sel": "p.feature-desc",
+   "text": "上传中断后，重新连上 会从中断的位置继续，不用从头再传。",
+   "fs": 15,
+   "fw": 400,
+   "lh": 24,
+   "ls": "normal",
+   "color": "#aab0bc",
+   "alpha": 1,
+   "bg": "#111317",
+   "bgImage": false,
+   "contrast": 8.54,
+   "ff": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+   "ta": "start",
+   "tw": "pretty",
+   "tt": "none",
+   "autospace": "no-autospace",
+   "trim": "normal",
+   "lb": "auto",
+   "wb": "normal",
+   "x": 16,
+   "y": 327,
+   "w": 343,
+   "h": 48
+  },
+  {
+   "sel": "span.nowrap",
+   "text": "Wi-Fi",
+   "fs": 15,
+   "fw": 400,
+   "lh": 24,
+   "ls": "normal",
+   "color": "#aab0bc",
+   "alpha": 1,
+   "bg": "#111317",
+   "bgImage": false,
+   "contrast": 8.54,
+   "ff": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+   "ta": "start",
+   "tw": "nowrap pretty",
+   "tt": "none",
+   "autospace": "no-autospace",
+   "trim": "normal",
+   "lb": "auto",
+   "wb": "normal",
+   "x": 170,
+   "y": 330,
+   "w": 36,
+   "h": 18
+  },
+  {
+   "sel": "h3.feature-title",
+   "text": "链接有效期",
+   "fs": 16,
+   "fw": 600,
+   "lh": 24,
+   "ls": "normal",
+   "color": "#eceef2",
+   "alpha": 1,
+   "bg": "#111317",
+   "bgImage": false,
+   "contrast": 16.01,
+   "ff": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+   "ta": "start",
+   "tw": "pretty",
+   "tt": "none",
+   "autospace": "no-autospace",
+   "trim": "normal",
+   "lb": "auto",
+   "wb": "normal",
+   "x": 16,
+   "y": 391,
+   "w": 343,
+   "h": 24
+  },
+  {
+   "sel": "p.feature-desc",
+   "text": "分享链接可以选“1 天”“7 天”或“永久”，过期后自动失效。",
+   "fs": 15,
+   "fw": 400,
+   "lh": 24,
+   "ls": "normal",
+   "color": "#aab0bc",
+   "alpha": 1,
+   "bg": "#111317",
+   "bgImage": false,
+   "contrast": 8.54,
+   "ff": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+   "ta": "start",
+   "tw": "pretty",
+   "tt": "none",
+   "autospace": "no-autospace",
+   "trim": "normal",
+   "lb": "auto",
+   "wb": "normal",
+   "x": 16,
+   "y": 419,
+   "w": 343,
+   "h": 48
+  },
+  {
+   "sel": "h3.feature-title",
+   "text": "支持 AirDrop",
+   "fs": 16,
+   "fw": 600,
+   "lh": 24,
+   "ls": "normal",
+   "color": "#eceef2",
+   "alpha": 1,
+   "bg": "#111317",
+   "bgImage": false,
+   "contrast": 16.01,
+   "ff": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+   "ta": "start",
+   "tw": "pretty",
+   "tt": "none",
+   "autospace": "no-autospace",
+   "trim": "normal",
+   "lb": "auto",
+   "wb": "normal",
+   "x": 16,
+   "y": 483,
+   "w": 343,
+   "h": 24
+  },
+  {
+   "sel": "p.feature-desc",
+   "text": "在 iPhone 和 Mac 之间，可以直接把文件投送到团队空间。",
+   "fs": 15,
+   "fw": 400,
+   "lh": 24,
+   "ls": "normal",
+   "color": "#aab0bc",
+   "alpha": 1,
+   "bg": "#111317",
+   "bgImage": false,
+   "contrast": 8.54,
+   "ff": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+   "ta": "start",
+   "tw": "pretty",
+   "tt": "none",
+   "autospace": "no-autospace",
+   "trim": "normal",
+   "lb": "auto",
+   "wb": "normal",
+   "x": 16,
+   "y": 511,
+   "w": 343,
+   "h": 48
+  },
+  {
+   "sel": "h2.group-title",
+   "text": "体验优化",
+   "fs": 18,
+   "fw": 600,
+   "lh": 25.2,
+   "ls": "normal",
+   "color": "#eceef2",
+   "alpha": 1,
+   "bg": "#111317",
+   "bgImage": false,
+   "contrast": 16.01,
+   "ff": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+   "ta": "start",
+   "tw": "wrap",
+   "tt": "none",
+   "autospace": "no-autospace",
+   "trim": "normal",
+   "lb": "auto",
+   "wb": "normal",
+   "x": 16,
+   "y": 591,
+   "w": 343,
+   "h": 25
+  },
+  {
+   "sel": "li.bullet",
+   "text": "文件列表的加载速度提升约 2 倍，1 万个文件的文件夹也能在 1 秒内打开。",
+   "fs": 15,
+   "fw": 400,
+   "lh": 24,
+   "ls": "normal",
+   "color": "#eceef2",
+   "alpha": 1,
+   "bg": "#111317",
+   "bgImage": false,
+   "contrast": 16.01,
+   "ff": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+   "ta": "start",
+   "tw": "pretty",
+   "tt": "none",
+   "autospace": "no-autospace",
+   "trim": "normal",
+   "lb": "auto",
+   "wb": "normal",
+   "x": 16,
+   "y": 628,
+   "w": 343,
+   "h": 48
+  },
+  {
+   "sel": "li.bullet",
+   "text": "搜索支持拼音首字母——输入“bg”就能找到。",
+   "fs": 15,
+   "fw": 400,
+   "lh": 24,
+   "ls": "normal",
+   "color": "#eceef2",
+   "alpha": 1,
+   "bg": "#111317",
+   "bgImage": false,
+   "contrast": 16.01,
+   "ff": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+   "ta": "start",
+   "tw": "pretty",
+   "tt": "none",
+   "autospace": "no-autospace",
+   "trim": "normal",
+   "lb": "auto",
+   "wb": "normal",
+   "x": 16,
+   "y": 688,
+   "w": 343,
+   "h": 48
+  },
+  {
+   "sel": "span.nowrap",
+   "text": "《报告-2026Q3》",
+   "fs": 15,
+   "fw": 400,
+   "lh": 24,
+   "ls": "normal",
+   "color": "#eceef2",
+   "alpha": 1,
+   "bg": "#111317",
+   "bgImage": false,
+   "contrast": 16.01,
+   "ff": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+   "ta": "start",
+   "tw": "nowrap pretty",
+   "tt": "none",
+   "autospace": "no-autospace",
+   "trim": "normal",
+   "lb": "auto",
+   "wb": "normal",
+   "x": 32,
+   "y": 715,
+   "w": 116,
+   "h": 18
+  },
+  {
+   "sel": "li.bullet",
+   "text": "深色模式下，图片缩略图不再发灰。",
+   "fs": 15,
+   "fw": 400,
+   "lh": 24,
+   "ls": "normal",
+   "color": "#eceef2",
+   "alpha": 1,
+   "bg": "#111317",
+   "bgImage": false,
+   "contrast": 16.01,
+   "ff": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+   "ta": "start",
+   "tw": "pretty",
+   "tt": "none",
+   "autospace": "no-autospace",
+   "trim": "normal",
+   "lb": "auto",
+   "wb": "normal",
+   "x": 16,
+   "y": 748,
+   "w": 343,
+   "h": 24
+  },
+  {
+   "sel": "h2.group-title",
+   "text": "问题修复",
+   "fs": 18,
+   "fw": 600,
+   "lh": 25.2,
+   "ls": "normal",
+   "color": "#eceef2",
+   "alpha": 1,
+   "bg": "#111317",
+   "bgImage": false,
+   "contrast": 16.01,
+   "ff": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+   "ta": "start",
+   "tw": "wrap",
+   "tt": "none",
+   "autospace": "no-autospace",
+   "trim": "normal",
+   "lb": "auto",
+   "wb": "normal",
+   "x": 16,
+   "y": 804,
+   "w": 343,
+   "h": 25
+  },
+  {
+   "sel": "li.bullet",
+   "text": "修复了在 iOS 18 上偶尔无法预览 PDF 的问题。",
+   "fs": 15,
+   "fw": 400,
+   "lh": 24,
+   "ls": "normal",
+   "color": "#eceef2",
+   "alpha": 1,
+   "bg": "#111317",
+   "bgImage": false,
+   "contrast": 16.01,
+   "ff": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+   "ta": "start",
+   "tw": "pretty",
+   "tt": "none",
+   "autospace": "no-autospace",
+   "trim": "normal",
+   "lb": "auto",
+   "wb": "normal",
+   "x": 16,
+   "y": 841,
+   "w": 343,
+   "h": 24
+  },
+  {
+   "sel": "li.bullet",
+   "text": "修复了文件名含有 emoji 时，下载后文件名乱码的问题。",
+   "fs": 15,
+   "fw": 400,
+   "lh": 24,
+   "ls": "normal",
+   "color": "#eceef2",
+   "alpha": 1,
+   "bg": "#111317",
+   "bgImage": false,
+   "contrast": 16.01,
+   "ff": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+   "ta": "start",
+   "tw": "pretty",
+   "tt": "none",
+   "autospace": "no-autospace",
+   "trim": "normal",
+   "lb": "auto",
+   "wb": "normal",
+   "x": 16,
+   "y": 877,
+   "w": 343,
+   "h": 48
+  },
+  {
+   "sel": "span.note-mark",
+   "text": "!",
+   "fs": 12,
+   "fw": 700,
+   "lh": 16,
+   "ls": "normal",
+   "color": "#2b2213",
+   "alpha": 1,
+   "bg": "#d9962b",
+   "bgImage": false,
+   "contrast": 6.23,
+   "ff": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+   "ta": "center",
+   "tw": "pretty",
+   "tt": "none",
+   "autospace": "no-autospace",
+   "trim": "normal",
+   "lb": "auto",
+   "wb": "normal",
+   "x": 32,
+   "y": 971,
+   "w": 16,
+   "h": 16
+  },
+  {
+   "sel": "span",
+   "text": "3.9.0 起不再支持 iOS 15 及以下版本。",
+   "fs": 14,
+   "fw": 400,
+   "lh": 22.4,
+   "ls": "normal",
+   "color": "#f1d9a8",
+   "alpha": 1,
+   "bg": "#2b2213",
+   "bgImage": false,
+   "contrast": 11.36,
+   "ff": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+   "ta": "start",
+   "tw": "pretty",
+   "tt": "none",
+   "autospace": "no-autospace",
+   "trim": "normal",
+   "lb": "auto",
+   "wb": "normal",
+   "x": 56,
+   "y": 969,
+   "w": 239,
+   "h": 22
+  },
+  {
+   "sel": "p.action-hint",
+   "text": "更新约需 1 分钟，期间请勿关闭 App。",
+   "fs": 13,
+   "fw": 400,
+   "lh": 18.2,
+   "ls": "normal",
+   "color": "#8d94a1",
+   "alpha": 1,
+   "bg": "#181a1f",
+   "bgImage": false,
+   "contrast": 5.71,
+   "ff": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+   "ta": "center",
+   "tw": "pretty",
+   "tt": "none",
+   "autospace": "no-autospace",
+   "trim": "normal",
+   "lb": "auto",
+   "wb": "normal",
+   "x": 16,
+   "y": 730,
+   "w": 343,
+   "h": 18
+  },
+  {
+   "sel": "span.update-label",
+   "text": "立即更新",
+   "fs": 17,
+   "fw": 600,
+   "lh": 23.8,
+   "ls": "normal",
+   "color": "#ffffff",
+   "alpha": 1,
+   "bg": "#2f6be6",
+   "bgImage": false,
+   "contrast": 4.81,
+   "ff": "\"Han Punct\", -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans CJK SC\", \"Source Han Sans SC\", \"Microsoft YaHei\", sans-serif",
+   "ta": "center",
+   "tw": "wrap",
+   "tt": "none",
+   "autospace": "no-autospace",
+   "trim": "normal",
+   "lb": "auto",
+   "wb": "normal",
+   "x": 154,
+   "y": 769,
+   "w": 68,
+   "h": 20
+  }
+ ],
+ "paras": [
+  {
+   "sel": "h1.nav-title",
+   "fs": 17,
+   "width": 279,
+   "lines": [
+    "版本更新"
+   ]
+  },
+  {
+   "sel": "span.vh",
+   "fs": 28,
+   "width": 1,
+   "lines": [
+    "版本 "
+   ]
+  },
+  {
+   "sel": "p.version",
+   "fs": 28,
+   "width": 181,
+   "lines": [
+    "3.9.0"
+   ]
+  },
+  {
+   "sel": "p.meta",
+   "fs": 13,
+   "width": 181,
+   "lines": [
+    "2026 年 10 月 28 日 · 86.4 MB\n        "
+   ]
+  },
+  {
+   "sel": "p.lead",
+   "fs": 16,
+   "width": 343,
+   "lines": [
+    "这次更新重做了文件上传。用 Claude Code 上传",
+    "的大文件（超过 2 GB）会自动分片，断网后能",
+    "从断点继续，平均速度提升 35%。"
+   ]
+  },
+  {
+   "sel": "h2.group-title",
+   "fs": 18,
+   "width": 343,
+   "lines": [
+    "新功能"
+   ]
+  },
+  {
+   "sel": "h3.feature-title",
+   "fs": 16,
+   "width": 343,
+   "lines": [
+    "断点续传"
+   ]
+  },
+  {
+   "sel": "p.feature-desc",
+   "fs": 15,
+   "width": 343,
+   "lines": [
+    "上传中断后，重新连上 Wi-Fi 会从中断的位置继",
+    "续，不用从头再传。"
+   ]
+  },
+  {
+   "sel": "h3.feature-title",
+   "fs": 16,
+   "width": 343,
+   "lines": [
+    "链接有效期"
+   ]
+  },
+  {
+   "sel": "p.feature-desc",
+   "fs": 15,
+   "width": 343,
+   "lines": [
+    "分享链接可以选“1 天”“7 天”或“永久”，过期后自动",
+    "失效。"
+   ]
+  },
+  {
+   "sel": "h3.feature-title",
+   "fs": 16,
+   "width": 343,
+   "lines": [
+    "支持 AirDrop"
+   ]
+  },
+  {
+   "sel": "p.feature-desc",
+   "fs": 15,
+   "width": 343,
+   "lines": [
+    "在 iPhone 和 Mac 之间，可以直接把文件投送到团",
+    "队空间。"
+   ]
+  },
+  {
+   "sel": "h2.group-title",
+   "fs": 18,
+   "width": 343,
+   "lines": [
+    "体验优化"
+   ]
+  },
+  {
+   "sel": "li.bullet",
+   "fs": 15,
+   "width": 343,
+   "lines": [
+    "文件列表的加载速度提升约 2 倍，1 万个文件的",
+    "文件夹也能在 1 秒内打开。"
+   ]
+  },
+  {
+   "sel": "li.bullet",
+   "fs": 15,
+   "width": 343,
+   "lines": [
+    "搜索支持拼音首字母——输入“bg”就能找到",
+    "《报告-2026Q3》。"
+   ]
+  },
+  {
+   "sel": "li.bullet",
+   "fs": 15,
+   "width": 343,
+   "lines": [
+    "深色模式下，图片缩略图不再发灰。"
+   ]
+  },
+  {
+   "sel": "h2.group-title",
+   "fs": 18,
+   "width": 343,
+   "lines": [
+    "问题修复"
+   ]
+  },
+  {
+   "sel": "li.bullet",
+   "fs": 15,
+   "width": 343,
+   "lines": [
+    "修复了在 iOS 18 上偶尔无法预览 PDF 的问题。"
+   ]
+  },
+  {
+   "sel": "li.bullet",
+   "fs": 15,
+   "width": 343,
+   "lines": [
+    "修复了文件名含有 emoji 时，下载后文件名乱码",
+    "的问题。"
+   ]
+  },
+  {
+   "sel": "span.note-mark",
+   "fs": 12,
+   "width": 16,
+   "lines": [
+    "!"
+   ]
+  },
+  {
+   "sel": "span",
+   "fs": 14,
+   "width": 239,
+   "lines": [
+    "3.9.0 起不再支持 iOS 15 及以下版本。"
+   ]
+  },
+  {
+   "sel": "p.action-hint",
+   "fs": 13,
+   "width": 343,
+   "lines": [
+    "更新约需 1 分钟，期间请勿关闭 App。"
+   ]
+  },
+  {
+   "sel": "button.update",
+   "fs": 17,
+   "width": 343,
+   "lines": [
+    "立即更新"
+   ]
+  }
+ ],
+ "punct": [
+  {
+   "ch": "·",
+   "em": 0.292,
+   "ctx": " · ",
+   "sel": "span"
+  },
+  {
+   "ch": "。",
+   "em": 1,
+   "ctx": "件上传。用 C",
+   "sel": "p.lead"
+  },
+  {
+   "ch": "（",
+   "em": 1,
+   "ctx": "大文件（超过 ",
+   "sel": "p.lead"
+  },
+  {
+   "ch": "）",
+   "em": 1.001,
+   "ctx": " GB）会自动",
+   "sel": "p.lead"
+  },
+  {
+   "ch": "，",
+   "em": 1.001,
+   "ctx": "动分片，断网后",
+   "sel": "p.lead"
+  },
+  {
+   "ch": "，",
+   "em": 1,
+   "ctx": "点继续，平均速",
+   "sel": "p.lead"
+  },
+  {
+   "ch": "。",
+   "em": 1.001,
+   "ctx": "35%。",
+   "sel": "p.lead"
+  },
+  {
+   "ch": "，",
+   "em": 1,
+   "ctx": "中断后，重新连",
+   "sel": "p.feature-desc"
+  },
+  {
+   "ch": "，",
+   "em": 1,
+   "ctx": "置继续，不用从",
+   "sel": "p.feature-desc"
+  },
+  {
+   "ch": "。",
+   "em": 1,
+   "ctx": "头再传。",
+   "sel": "p.feature-desc"
+  },
+  {
+   "ch": "“",
+   "em": 0.538,
+   "ctx": "可以选“1 天",
+   "sel": "p.feature-desc"
+  },
+  {
+   "ch": "”",
+   "em": 0.539,
+   "ctx": "1 天”“7 ",
+   "sel": "p.feature-desc"
+  },
+  {
+   "ch": "“",
+   "em": 0.538,
+   "ctx": " 天”“7 天",
+   "sel": "p.feature-desc"
+  },
+  {
+   "ch": "”",
+   "em": 0.538,
+   "ctx": "7 天”或“永",
+   "sel": "p.feature-desc"
+  },
+  {
+   "ch": "“",
+   "em": 0.539,
+   "ctx": "天”或“永久”",
+   "sel": "p.feature-desc"
+  },
+  {
+   "ch": "”",
+   "em": 0.538,
+   "ctx": "“永久”，过期",
+   "sel": "p.feature-desc"
+  },
+  {
+   "ch": "，",
+   "em": 1.001,
+   "ctx": "永久”，过期后",
+   "sel": "p.feature-desc"
+  },
+  {
+   "ch": "。",
+   "em": 1,
+   "ctx": "动失效。",
+   "sel": "p.feature-desc"
+  },
+  {
+   "ch": "，",
+   "em": 1.001,
+   "ctx": " 之间，可以直",
+   "sel": "p.feature-desc"
+  },
+  {
+   "ch": "。",
+   "em": 1,
+   "ctx": "队空间。",
+   "sel": "p.feature-desc"
+  },
+  {
+   "ch": "，",
+   "em": 1.001,
+   "ctx": "2 倍，1 万",
+   "sel": "li.bullet"
+  },
+  {
+   "ch": "。",
+   "em": 1.001,
+   "ctx": "内打开。",
+   "sel": "li.bullet"
+  },
+  {
+   "ch": "—",
+   "em": 1,
+   "ctx": "首字母——输入",
+   "sel": "li.bullet"
+  },
+  {
+   "ch": "—",
+   "em": 1,
+   "ctx": "字母——输入“",
+   "sel": "li.bullet"
+  },
+  {
+   "ch": "“",
+   "em": 0.538,
+   "ctx": "—输入“bg”",
+   "sel": "li.bullet"
+  },
+  {
+   "ch": "”",
+   "em": 0.538,
+   "ctx": "“bg”就能找",
+   "sel": "li.bullet"
+  },
+  {
+   "ch": "《",
+   "em": 1,
+   "ctx": "《报告-",
+   "sel": "span.nowrap"
+  },
+  {
+   "ch": "》",
+   "em": 0.5,
+   "ctx": "6Q3》",
+   "sel": "span.nowrap"
+  },
+  {
+   "ch": "。",
+   "em": 1,
+   "ctx": "。",
+   "sel": "li.bullet"
+  },
+  {
+   "ch": "，",
+   "em": 1,
+   "ctx": "模式下，图片缩",
+   "sel": "li.bullet"
+  },
+  {
+   "ch": "。",
+   "em": 1,
+   "ctx": "再发灰。",
+   "sel": "li.bullet"
+  },
+  {
+   "ch": "。",
+   "em": 1.001,
+   "ctx": "的问题。",
+   "sel": "li.bullet"
+  },
+  {
+   "ch": "，",
+   "em": 1.001,
+   "ctx": "i 时，下载后",
+   "sel": "li.bullet"
+  },
+  {
+   "ch": "。",
+   "em": 1,
+   "ctx": "的问题。",
+   "sel": "li.bullet"
+  },
+  {
+   "ch": "。",
+   "em": 1.001,
+   "ctx": "下版本。",
+   "sel": "span"
+  },
+  {
+   "ch": "，",
+   "em": 1.001,
+   "ctx": " 分钟，期间请",
+   "sel": "p.action-hint"
+  },
+  {
+   "ch": "。",
+   "em": 1.001,
+   "ctx": "App。",
+   "sel": "p.action-hint"
+  }
+ ],
+ "bounds": [
+  {
+   "pair": "6年",
+   "space": true,
+   "ctx": "2026 年 10"
+  },
+  {
+   "pair": "年1",
+   "space": true,
+   "ctx": "26 年 10 月"
+  },
+  {
+   "pair": "0月",
+   "space": true,
+   "ctx": "年 10 月 28"
+  },
+  {
+   "pair": "月2",
+   "space": true,
+   "ctx": "10 月 28 日"
+  },
+  {
+   "pair": "8日",
+   "space": true,
+   "ctx": "月 28 日"
+  },
+  {
+   "pair": "用C",
+   "space": true,
+   "ctx": "上传。用 Clau"
+  },
+  {
+   "pair": "e上",
+   "space": true,
+   "ctx": "Code 上传的大"
+  },
+  {
+   "pair": "过2",
+   "space": true,
+   "ctx": "件（超过 2 GB"
+  },
+  {
+   "pair": "升3",
+   "space": true,
+   "ctx": "速度提升 35%。"
+  },
+  {
+   "pair": "持A",
+   "space": true,
+   "ctx": "支持 AirD"
+  },
+  {
+   "pair": "在i",
+   "space": true,
+   "ctx": "在 iPho"
+  },
+  {
+   "pair": "e和",
+   "space": true,
+   "ctx": "hone 和 Ma"
+  },
+  {
+   "pair": "和M",
+   "space": true,
+   "ctx": "ne 和 Mac "
+  },
+  {
+   "pair": "c之",
+   "space": true,
+   "ctx": " Mac 之间，可"
+  },
+  {
+   "pair": "约2",
+   "space": true,
+   "ctx": "度提升约 2 倍，"
+  },
+  {
+   "pair": "在1",
+   "space": true,
+   "ctx": "夹也能在 1 秒内"
+  },
+  {
+   "pair": "在i",
+   "space": true,
+   "ctx": "修复了在 iOS "
+  },
+  {
+   "pair": "8上",
+   "space": true,
+   "ctx": "S 18 上偶尔无"
+  },
+  {
+   "pair": "览P",
+   "space": true,
+   "ctx": "无法预览 PDF "
+  },
+  {
+   "pair": "F的",
+   "space": true,
+   "ctx": " PDF 的问题。"
+  },
+  {
+   "pair": "有e",
+   "space": true,
+   "ctx": "件名含有 emoj"
+  },
+  {
+   "pair": "i时",
+   "space": true,
+   "ctx": "moji 时，下载"
+  },
+  {
+   "pair": "0起",
+   "space": true,
+   "ctx": ".9.0 起不再支"
+  },
+  {
+   "pair": "持i",
+   "space": true,
+   "ctx": "不再支持 iOS "
+  },
+  {
+   "pair": "5及",
+   "space": true,
+   "ctx": "S 15 及以下版"
+  },
+  {
+   "pair": "需1",
+   "space": true,
+   "ctx": "更新约需 1 分钟"
+  },
+  {
+   "pair": "闭A",
+   "space": true,
+   "ctx": "请勿关闭 App。"
+  }
+ ],
+ "file": "release2.html",
+ "width": 375,
+ "errors": []
+}

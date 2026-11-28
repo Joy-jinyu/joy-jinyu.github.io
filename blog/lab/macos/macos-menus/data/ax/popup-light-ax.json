@@ -1,0 +1,148 @@
+{
+  "menuAtPoint" : {
+    "frame" : {
+      "h" : 106,
+      "w" : 105,
+      "x" : 49,
+      "y" : 60
+    },
+    "items" : [
+      {
+        "enabled" : true,
+        "frame" : {
+          "h" : 24,
+          "w" : 105,
+          "x" : 49,
+          "y" : 65
+        },
+        "role" : "AXMenuItem",
+        "title" : "Small"
+      },
+      {
+        "enabled" : true,
+        "frame" : {
+          "h" : 24,
+          "w" : 105,
+          "x" : 49,
+          "y" : 89
+        },
+        "mark" : "✓",
+        "role" : "AXMenuItem",
+        "title" : "Medium"
+      },
+      {
+        "enabled" : true,
+        "frame" : {
+          "h" : 24,
+          "w" : 105,
+          "x" : 49,
+          "y" : 113
+        },
+        "role" : "AXMenuItem",
+        "title" : "Large"
+      },
+      {
+        "enabled" : true,
+        "frame" : {
+          "h" : 24,
+          "w" : 105,
+          "x" : 49,
+          "y" : 137
+        },
+        "role" : "AXMenuItem",
+        "title" : "Custom…"
+      }
+    ]
+  },
+  "menuBar" : {
+    "frame" : {
+      "h" : 33,
+      "w" : 1512,
+      "x" : 0,
+      "y" : 0
+    },
+    "items" : [
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 34,
+          "x" : 10,
+          "y" : 0
+        },
+        "title" : "Apple"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 94,
+          "x" : 44,
+          "y" : 0
+        },
+        "title" : "MenuProbe"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 42,
+          "x" : 138,
+          "y" : 0
+        },
+        "title" : "File"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 44,
+          "x" : 180,
+          "y" : 0
+        },
+        "title" : "Edit"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 63,
+          "x" : 224,
+          "y" : 0
+        },
+        "title" : "Format"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 50,
+          "x" : 287,
+          "y" : 0
+        },
+        "title" : "View"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 49,
+          "x" : 337,
+          "y" : 0
+        },
+        "title" : "Keys"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 69,
+          "x" : 386,
+          "y" : 0
+        },
+        "title" : "Window"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 48,
+          "x" : 455,
+          "y" : 0
+        },
+        "title" : "Help"
+      }
+    ]
+  }
+}

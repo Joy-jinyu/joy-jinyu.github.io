@@ -1,0 +1,4449 @@
+{
+  "alerts" : {
+    "threeButtons" : [
+      {
+        "controlSize" : 3,
+        "font" : 13,
+        "frameInWindow" : {
+          "h" : 28,
+          "w" : 228,
+          "x" : 16,
+          "y" : 84
+        },
+        "hasDestructiveAction" : false,
+        "keyEquivalent" : "Return",
+        "keyEquivalentCommand" : false,
+        "title" : "Save"
+      },
+      {
+        "controlSize" : 3,
+        "font" : 13,
+        "frameInWindow" : {
+          "h" : 28,
+          "w" : 228,
+          "x" : 16,
+          "y" : 50
+        },
+        "hasDestructiveAction" : true,
+        "keyEquivalent" : "d",
+        "keyEquivalentCommand" : true,
+        "title" : "Don’t Save"
+      },
+      {
+        "controlSize" : 3,
+        "font" : 13,
+        "frameInWindow" : {
+          "h" : 28,
+          "w" : 228,
+          "x" : 16,
+          "y" : 16
+        },
+        "hasDestructiveAction" : false,
+        "keyEquivalent" : "Esc",
+        "keyEquivalentCommand" : false,
+        "title" : "Cancel"
+      }
+    ],
+    "threeButtonsWindow" : {
+      "h" : 270,
+      "w" : 260,
+      "x" : 219,
+      "y" : 505
+    },
+    "twoButtons" : [
+      {
+        "controlSize" : 3,
+        "font" : 13,
+        "frameInWindow" : {
+          "h" : 28,
+          "w" : 110,
+          "x" : 134,
+          "y" : 16
+        },
+        "hasDestructiveAction" : true,
+        "keyEquivalent" : "",
+        "keyEquivalentCommand" : false,
+        "title" : "Delete"
+      },
+      {
+        "controlSize" : 3,
+        "font" : 13,
+        "frameInWindow" : {
+          "h" : 28,
+          "w" : 110,
+          "x" : 16,
+          "y" : 16
+        },
+        "hasDestructiveAction" : false,
+        "keyEquivalent" : "Esc",
+        "keyEquivalentCommand" : false,
+        "title" : "Cancel"
+      }
+    ],
+    "twoButtonsNoDestructive" : [
+      {
+        "controlSize" : 3,
+        "font" : 13,
+        "frameInWindow" : {
+          "h" : 28,
+          "w" : 110,
+          "x" : 134,
+          "y" : 16
+        },
+        "hasDestructiveAction" : false,
+        "keyEquivalent" : "Return",
+        "keyEquivalentCommand" : false,
+        "title" : "Replace"
+      },
+      {
+        "controlSize" : 3,
+        "font" : 13,
+        "frameInWindow" : {
+          "h" : 28,
+          "w" : 110,
+          "x" : 16,
+          "y" : 16
+        },
+        "hasDestructiveAction" : false,
+        "keyEquivalent" : "Esc",
+        "keyEquivalentCommand" : false,
+        "title" : "Cancel"
+      }
+    ],
+    "twoButtonsWindow" : {
+      "h" : 202,
+      "w" : 260,
+      "x" : 219,
+      "y" : 573
+    }
+  },
+  "defaultFont" : {
+    "extraLarge" : {
+      "checkbox.font" : 13,
+      "popUp.font" : 13,
+      "push.fit" : {
+        "h" : 36,
+        "w" : 77
+      },
+      "push.font" : 13,
+      "systemFontSizeFor" : 13,
+      "textField.font" : 13
+    },
+    "large" : {
+      "checkbox.font" : 13,
+      "popUp.font" : 13,
+      "push.fit" : {
+        "h" : 28,
+        "w" : 69
+      },
+      "push.font" : 13,
+      "systemFontSizeFor" : 13,
+      "textField.font" : 13
+    },
+    "mini" : {
+      "checkbox.font" : 13,
+      "popUp.font" : 13,
+      "push.fit" : {
+        "h" : 16,
+        "w" : 46
+      },
+      "push.font" : 13,
+      "systemFontSizeFor" : 9,
+      "textField.font" : 13
+    },
+    "regular" : {
+      "checkbox.font" : 13,
+      "popUp.font" : 13,
+      "push.fit" : {
+        "h" : 24,
+        "w" : 65
+      },
+      "push.font" : 13,
+      "systemFontSizeFor" : 13,
+      "textField.font" : 13
+    },
+    "small" : {
+      "checkbox.font" : 13,
+      "popUp.font" : 13,
+      "push.fit" : {
+        "h" : 20,
+        "w" : 55
+      },
+      "push.font" : 13,
+      "systemFontSizeFor" : 11,
+      "textField.font" : 13
+    }
+  },
+  "fieldHeightByFont" : {
+    "comboBox" : {
+      "extraLarge" : {
+        "font9" : 36,
+        "font11" : 36,
+        "font13" : 36,
+        "font15" : 36
+      },
+      "large" : {
+        "font9" : 28,
+        "font11" : 28,
+        "font13" : 28,
+        "font15" : 28
+      },
+      "mini" : {
+        "font9" : 16,
+        "font11" : 16,
+        "font13" : 16,
+        "font15" : 16
+      },
+      "regular" : {
+        "font9" : 24,
+        "font11" : 24,
+        "font13" : 24,
+        "font15" : 24
+      },
+      "small" : {
+        "font9" : 20,
+        "font11" : 20,
+        "font13" : 20,
+        "font15" : 20
+      }
+    },
+    "searchField" : {
+      "extraLarge" : {
+        "font9" : 19,
+        "font11" : 22,
+        "font13" : 24,
+        "font15" : 27
+      },
+      "large" : {
+        "font9" : 19,
+        "font11" : 22,
+        "font13" : 24,
+        "font15" : 27
+      },
+      "mini" : {
+        "font9" : 15,
+        "font11" : 18,
+        "font13" : 20,
+        "font15" : 23
+      },
+      "regular" : {
+        "font9" : 19,
+        "font11" : 22,
+        "font13" : 24,
+        "font15" : 27
+      },
+      "small" : {
+        "font9" : 19,
+        "font11" : 22,
+        "font13" : 24,
+        "font15" : 27
+      }
+    },
+    "textField" : {
+      "extraLarge" : {
+        "font9" : 19,
+        "font11" : 22,
+        "font13" : 24,
+        "font15" : 27
+      },
+      "large" : {
+        "font9" : 19,
+        "font11" : 22,
+        "font13" : 24,
+        "font15" : 27
+      },
+      "mini" : {
+        "font9" : 19,
+        "font11" : 22,
+        "font13" : 24,
+        "font15" : 27
+      },
+      "regular" : {
+        "font9" : 19,
+        "font11" : 22,
+        "font13" : 24,
+        "font15" : 27
+      },
+      "small" : {
+        "font9" : 19,
+        "font11" : 22,
+        "font13" : 24,
+        "font15" : 27
+      }
+    }
+  },
+  "form" : {
+    "buttonsStackSpacing" : 8,
+    "cancel" : {
+      "alignmentRect" : {
+        "h" : 24,
+        "w" : 66,
+        "x" : 0,
+        "y" : 0
+      },
+      "baselineFromTop" : 17,
+      "controlSize" : 0,
+      "fitting" : {
+        "h" : 24,
+        "w" : 66
+      },
+      "font" : 13,
+      "frame" : {
+        "h" : 24,
+        "w" : 66,
+        "x" : 0,
+        "y" : 0
+      },
+      "frameInWindow" : {
+        "h" : 24,
+        "w" : 66,
+        "x" : 260,
+        "y" : 29
+      },
+      "intrinsic" : {
+        "h" : 24,
+        "w" : 66
+      },
+      "windowHeight" : 332
+    },
+    "copiesField" : {
+      "alignmentRect" : {
+        "h" : 24,
+        "w" : 40,
+        "x" : 0,
+        "y" : 1
+      },
+      "baselineFromTop" : 17,
+      "controlSize" : 0,
+      "fitting" : {
+        "h" : 24,
+        "w" : 40
+      },
+      "font" : 13,
+      "frame" : {
+        "h" : 24,
+        "w" : 40,
+        "x" : 0,
+        "y" : 1
+      },
+      "frameInWindow" : {
+        "h" : 24,
+        "w" : 40,
+        "x" : 77.5,
+        "y" : 74
+      },
+      "intrinsic" : {
+        "h" : 24,
+        "w" : -1
+      },
+      "windowHeight" : 332
+    },
+    "copiesLabel" : {
+      "alignmentRect" : {
+        "h" : 16,
+        "w" : 46,
+        "x" : 5.5,
+        "y" : 5
+      },
+      "baselineFromTop" : 13,
+      "controlSize" : 0,
+      "fitting" : {
+        "h" : 16,
+        "w" : 50
+      },
+      "font" : 13,
+      "frame" : {
+        "h" : 16,
+        "w" : 50,
+        "x" : 3.5,
+        "y" : 5
+      },
+      "frameInWindow" : {
+        "h" : 16,
+        "w" : 50,
+        "x" : 23.5,
+        "y" : 78
+      },
+      "intrinsic" : {
+        "h" : 16,
+        "w" : 46
+      },
+      "windowHeight" : 332
+    },
+    "emailField" : {
+      "alignmentRect" : {
+        "h" : 24,
+        "w" : 220,
+        "x" : 57.5,
+        "y" : 153
+      },
+      "baselineFromTop" : 17,
+      "controlSize" : 0,
+      "fitting" : {
+        "h" : 24,
+        "w" : 220
+      },
+      "font" : 13,
+      "frame" : {
+        "h" : 24,
+        "w" : 220,
+        "x" : 57.5,
+        "y" : 153
+      },
+      "frameInWindow" : {
+        "h" : 24,
+        "w" : 220,
+        "x" : 77.5,
+        "y" : 226
+      },
+      "intrinsic" : {
+        "h" : 24,
+        "w" : -1
+      },
+      "windowHeight" : 332
+    },
+    "emailLabel" : {
+      "alignmentRect" : {
+        "h" : 16,
+        "w" : 36.5,
+        "x" : 15,
+        "y" : 157
+      },
+      "baselineFromTop" : 13,
+      "controlSize" : 0,
+      "fitting" : {
+        "h" : 16,
+        "w" : 40.5
+      },
+      "font" : 13,
+      "frame" : {
+        "h" : 16,
+        "w" : 40.5,
+        "x" : 13,
+        "y" : 157
+      },
+      "frameInWindow" : {
+        "h" : 16,
+        "w" : 40.5,
+        "x" : 33,
+        "y" : 230
+      },
+      "intrinsic" : {
+        "h" : 16,
+        "w" : 36.5
+      },
+      "windowHeight" : 332
+    },
+    "export" : {
+      "alignmentRect" : {
+        "h" : 24,
+        "w" : 66,
+        "x" : 74,
+        "y" : 0
+      },
+      "baselineFromTop" : 17,
+      "controlSize" : 0,
+      "fitting" : {
+        "h" : 24,
+        "w" : 64
+      },
+      "font" : 13,
+      "frame" : {
+        "h" : 24,
+        "w" : 66,
+        "x" : 74,
+        "y" : 0
+      },
+      "frameInWindow" : {
+        "h" : 24,
+        "w" : 66,
+        "x" : 334,
+        "y" : 29
+      },
+      "intrinsic" : {
+        "h" : 24,
+        "w" : 64
+      },
+      "windowHeight" : 332
+    },
+    "formatLabel" : {
+      "alignmentRect" : {
+        "h" : 16,
+        "w" : 47,
+        "x" : 4.5,
+        "y" : 127
+      },
+      "baselineFromTop" : 13,
+      "controlSize" : 0,
+      "fitting" : {
+        "h" : 16,
+        "w" : 51
+      },
+      "font" : 13,
+      "frame" : {
+        "h" : 16,
+        "w" : 51,
+        "x" : 2.5,
+        "y" : 127
+      },
+      "frameInWindow" : {
+        "h" : 16,
+        "w" : 51,
+        "x" : 22.5,
+        "y" : 200
+      },
+      "intrinsic" : {
+        "h" : 16,
+        "w" : 47
+      },
+      "windowHeight" : 332
+    },
+    "formatPopUp" : {
+      "alignmentRect" : {
+        "h" : 24,
+        "w" : 75,
+        "x" : 57.5,
+        "y" : 123
+      },
+      "baselineFromTop" : 16.75,
+      "controlSize" : 0,
+      "fitting" : {
+        "h" : 24,
+        "w" : 75
+      },
+      "font" : 13,
+      "frame" : {
+        "h" : 24,
+        "w" : 75,
+        "x" : 57.5,
+        "y" : 123
+      },
+      "frameInWindow" : {
+        "h" : 24,
+        "w" : 75,
+        "x" : 77.5,
+        "y" : 196
+      },
+      "intrinsic" : {
+        "h" : 24,
+        "w" : 75
+      },
+      "windowHeight" : 332
+    },
+    "grid" : {
+      "columnSpacing" : 6,
+      "frame" : {
+        "h" : 207,
+        "w" : 277.5,
+        "x" : 20,
+        "y" : 73
+      },
+      "rowSpacing" : 6
+    },
+    "nameField" : {
+      "alignmentRect" : {
+        "h" : 24,
+        "w" : 220,
+        "x" : 57.5,
+        "y" : 183
+      },
+      "baselineFromTop" : 17,
+      "controlSize" : 0,
+      "fitting" : {
+        "h" : 24,
+        "w" : 220
+      },
+      "font" : 13,
+      "frame" : {
+        "h" : 24,
+        "w" : 220,
+        "x" : 57.5,
+        "y" : 183
+      },
+      "frameInWindow" : {
+        "h" : 24,
+        "w" : 220,
+        "x" : 77.5,
+        "y" : 256
+      },
+      "intrinsic" : {
+        "h" : 24,
+        "w" : -1
+      },
+      "windowHeight" : 332
+    },
+    "nameLabel" : {
+      "alignmentRect" : {
+        "h" : 16,
+        "w" : 39.5,
+        "x" : 12,
+        "y" : 187
+      },
+      "baselineFromTop" : 13,
+      "controlSize" : 0,
+      "fitting" : {
+        "h" : 16,
+        "w" : 43.5
+      },
+      "font" : 13,
+      "frame" : {
+        "h" : 16,
+        "w" : 43.5,
+        "x" : 10,
+        "y" : 187
+      },
+      "frameInWindow" : {
+        "h" : 16,
+        "w" : 43.5,
+        "x" : 30,
+        "y" : 260
+      },
+      "intrinsic" : {
+        "h" : 16,
+        "w" : 39.5
+      },
+      "windowHeight" : 332
+    },
+    "notifyLabel" : {
+      "alignmentRect" : {
+        "h" : 16,
+        "w" : 40.5,
+        "x" : 11,
+        "y" : 34
+      },
+      "baselineFromTop" : 13,
+      "controlSize" : 0,
+      "fitting" : {
+        "h" : 16,
+        "w" : 44.5
+      },
+      "font" : 13,
+      "frame" : {
+        "h" : 16,
+        "w" : 44.5,
+        "x" : 9,
+        "y" : 34
+      },
+      "frameInWindow" : {
+        "h" : 16,
+        "w" : 44.5,
+        "x" : 29,
+        "y" : 107
+      },
+      "intrinsic" : {
+        "h" : 16,
+        "w" : 40.5
+      },
+      "windowHeight" : 332
+    },
+    "notifySwitch" : {
+      "alignmentRect" : {
+        "h" : 16,
+        "w" : 36,
+        "x" : 57.5,
+        "y" : 32
+      },
+      "baselineFromTop" : 11,
+      "controlSize" : 2,
+      "fitting" : {
+        "h" : 16,
+        "w" : 36
+      },
+      "font" : 0,
+      "frame" : {
+        "h" : 16,
+        "w" : 36,
+        "x" : 57.5,
+        "y" : 32
+      },
+      "frameInWindow" : {
+        "h" : 16,
+        "w" : 36,
+        "x" : 77.5,
+        "y" : 105
+      },
+      "intrinsic" : {
+        "h" : 16,
+        "w" : 36
+      },
+      "windowHeight" : 332
+    },
+    "opt1" : {
+      "alignmentRect" : {
+        "h" : 16,
+        "w" : 127,
+        "x" : 57.5,
+        "y" : 78
+      },
+      "baselineFromTop" : 13,
+      "controlSize" : 0,
+      "fitting" : {
+        "h" : 16,
+        "w" : 127
+      },
+      "font" : 13,
+      "frame" : {
+        "h" : 16,
+        "w" : 127,
+        "x" : 57.5,
+        "y" : 78
+      },
+      "frameInWindow" : {
+        "h" : 16,
+        "w" : 127,
+        "x" : 77.5,
+        "y" : 151
+      },
+      "intrinsic" : {
+        "h" : 16,
+        "w" : 127
+      },
+      "windowHeight" : 332
+    },
+    "opt2" : {
+      "alignmentRect" : {
+        "h" : 16,
+        "w" : 129.5,
+        "x" : 57.5,
+        "y" : 56
+      },
+      "baselineFromTop" : 13,
+      "controlSize" : 0,
+      "fitting" : {
+        "h" : 16,
+        "w" : 129.5
+      },
+      "font" : 13,
+      "frame" : {
+        "h" : 16,
+        "w" : 129.5,
+        "x" : 57.5,
+        "y" : 56
+      },
+      "frameInWindow" : {
+        "h" : 16,
+        "w" : 129.5,
+        "x" : 77.5,
+        "y" : 129
+      },
+      "intrinsic" : {
+        "h" : 16,
+        "w" : 129.5
+      },
+      "windowHeight" : 332
+    },
+    "optionsLabel" : {
+      "alignmentRect" : {
+        "h" : 16,
+        "w" : 51.5,
+        "x" : 0,
+        "y" : 78
+      },
+      "baselineFromTop" : 13,
+      "controlSize" : 0,
+      "fitting" : {
+        "h" : 16,
+        "w" : 55.5
+      },
+      "font" : 13,
+      "frame" : {
+        "h" : 16,
+        "w" : 55.5,
+        "x" : -2,
+        "y" : 78
+      },
+      "frameInWindow" : {
+        "h" : 16,
+        "w" : 55.5,
+        "x" : 18,
+        "y" : 151
+      },
+      "intrinsic" : {
+        "h" : 16,
+        "w" : 51.5
+      },
+      "windowHeight" : 332
+    },
+    "qualityLabel" : {
+      "alignmentRect" : {
+        "h" : 16,
+        "w" : 46.5,
+        "x" : 5,
+        "y" : 100
+      },
+      "baselineFromTop" : 13,
+      "controlSize" : 0,
+      "fitting" : {
+        "h" : 16,
+        "w" : 50.5
+      },
+      "font" : 13,
+      "frame" : {
+        "h" : 16,
+        "w" : 50.5,
+        "x" : 3,
+        "y" : 100
+      },
+      "frameInWindow" : {
+        "h" : 16,
+        "w" : 50.5,
+        "x" : 23,
+        "y" : 173
+      },
+      "intrinsic" : {
+        "h" : 16,
+        "w" : 46.5
+      },
+      "windowHeight" : 332
+    },
+    "qualitySlider" : {
+      "alignmentRect" : {
+        "h" : 16,
+        "w" : 160,
+        "x" : 57.5,
+        "y" : 101
+      },
+      "baselineFromTop" : 14,
+      "controlSize" : 0,
+      "fitting" : {
+        "h" : 16,
+        "w" : 160
+      },
+      "font" : 0,
+      "frame" : {
+        "h" : 16,
+        "w" : 160,
+        "x" : 57.5,
+        "y" : 101
+      },
+      "frameInWindow" : {
+        "h" : 16,
+        "w" : 160,
+        "x" : 77.5,
+        "y" : 174
+      },
+      "intrinsic" : {
+        "h" : 16,
+        "w" : -1
+      },
+      "windowHeight" : 332
+    },
+    "stepper" : {
+      "alignmentRect" : {
+        "h" : 26,
+        "w" : 20,
+        "x" : 44,
+        "y" : 0
+      },
+      "baselineFromTop" : 17.5,
+      "controlSize" : 0,
+      "fitting" : {
+        "h" : 26,
+        "w" : 20
+      },
+      "font" : 0,
+      "frame" : {
+        "h" : 26,
+        "w" : 20,
+        "x" : 44,
+        "y" : 0
+      },
+      "frameInWindow" : {
+        "h" : 26,
+        "w" : 20,
+        "x" : 121.5,
+        "y" : 73
+      },
+      "intrinsic" : {
+        "h" : 26,
+        "w" : 20
+      },
+      "windowHeight" : 332
+    }
+  },
+  "gallery" : {
+    "cancel" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 36,
+          "w" : 78,
+          "x" : 620,
+          "y" : 302
+        },
+        "baselineFromTop" : 23,
+        "controlSize" : 4,
+        "fitting" : {
+          "h" : 36,
+          "w" : 78
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 36,
+          "w" : 78,
+          "x" : 620,
+          "y" : 302
+        },
+        "frameInWindow" : {
+          "h" : 36,
+          "w" : 78,
+          "x" : 620,
+          "y" : 302
+        },
+        "intrinsic" : {
+          "h" : 36,
+          "w" : 78
+        },
+        "windowHeight" : 504
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 28,
+          "w" : 70,
+          "x" : 470,
+          "y" : 306
+        },
+        "baselineFromTop" : 19,
+        "controlSize" : 3,
+        "fitting" : {
+          "h" : 28,
+          "w" : 70
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 28,
+          "w" : 70,
+          "x" : 470,
+          "y" : 306
+        },
+        "frameInWindow" : {
+          "h" : 28,
+          "w" : 70,
+          "x" : 470,
+          "y" : 306
+        },
+        "intrinsic" : {
+          "h" : 28,
+          "w" : 70
+        },
+        "windowHeight" : 504
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 16,
+          "w" : 47,
+          "x" : 20,
+          "y" : 312
+        },
+        "baselineFromTop" : 12,
+        "controlSize" : 2,
+        "fitting" : {
+          "h" : 16,
+          "w" : 46.5
+        },
+        "font" : 9,
+        "frame" : {
+          "h" : 16,
+          "w" : 47,
+          "x" : 20,
+          "y" : 312
+        },
+        "frameInWindow" : {
+          "h" : 16,
+          "w" : 47,
+          "x" : 20,
+          "y" : 312
+        },
+        "intrinsic" : {
+          "h" : 16,
+          "w" : 46.5
+        },
+        "windowHeight" : 504
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 66,
+          "x" : 320,
+          "y" : 308
+        },
+        "baselineFromTop" : 17,
+        "controlSize" : 0,
+        "fitting" : {
+          "h" : 24,
+          "w" : 66
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 24,
+          "w" : 66,
+          "x" : 320,
+          "y" : 308
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 66,
+          "x" : 320,
+          "y" : 308
+        },
+        "intrinsic" : {
+          "h" : 24,
+          "w" : 66
+        },
+        "windowHeight" : 504
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 20,
+          "w" : 56,
+          "x" : 170,
+          "y" : 310
+        },
+        "baselineFromTop" : 14,
+        "controlSize" : 1,
+        "fitting" : {
+          "h" : 20,
+          "w" : 56
+        },
+        "font" : 11,
+        "frame" : {
+          "h" : 20,
+          "w" : 56,
+          "x" : 170,
+          "y" : 310
+        },
+        "frameInWindow" : {
+          "h" : 20,
+          "w" : 56,
+          "x" : 170,
+          "y" : 310
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : 56
+        },
+        "windowHeight" : 504
+      }
+    },
+    "checkbox" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 18,
+          "w" : 63,
+          "x" : 620,
+          "y" : 255
+        },
+        "baselineFromTop" : 14,
+        "controlSize" : 4,
+        "fitting" : {
+          "h" : 18,
+          "w" : 62.5
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 18,
+          "w" : 63,
+          "x" : 620,
+          "y" : 255
+        },
+        "frameInWindow" : {
+          "h" : 18,
+          "w" : 63,
+          "x" : 620,
+          "y" : 255
+        },
+        "intrinsic" : {
+          "h" : 18,
+          "w" : 62.5
+        },
+        "windowHeight" : 504
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 18,
+          "w" : 63,
+          "x" : 470,
+          "y" : 255
+        },
+        "baselineFromTop" : 14,
+        "controlSize" : 3,
+        "fitting" : {
+          "h" : 18,
+          "w" : 62.5
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 18,
+          "w" : 63,
+          "x" : 470,
+          "y" : 255
+        },
+        "frameInWindow" : {
+          "h" : 18,
+          "w" : 63,
+          "x" : 470,
+          "y" : 255
+        },
+        "intrinsic" : {
+          "h" : 18,
+          "w" : 62.5
+        },
+        "windowHeight" : 504
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 12,
+          "w" : 44,
+          "x" : 20,
+          "y" : 258
+        },
+        "baselineFromTop" : 9.5,
+        "controlSize" : 2,
+        "fitting" : {
+          "h" : 12,
+          "w" : 44
+        },
+        "font" : 9,
+        "frame" : {
+          "h" : 12,
+          "w" : 44,
+          "x" : 20,
+          "y" : 258
+        },
+        "frameInWindow" : {
+          "h" : 12,
+          "w" : 44,
+          "x" : 20,
+          "y" : 258
+        },
+        "intrinsic" : {
+          "h" : 12,
+          "w" : 44
+        },
+        "windowHeight" : 504
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 16,
+          "w" : 61,
+          "x" : 320,
+          "y" : 256
+        },
+        "baselineFromTop" : 13,
+        "controlSize" : 0,
+        "fitting" : {
+          "h" : 16,
+          "w" : 60.5
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 16,
+          "w" : 61,
+          "x" : 320,
+          "y" : 256
+        },
+        "frameInWindow" : {
+          "h" : 16,
+          "w" : 61,
+          "x" : 320,
+          "y" : 256
+        },
+        "intrinsic" : {
+          "h" : 16,
+          "w" : 60.5
+        },
+        "windowHeight" : 504
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 14,
+          "w" : 52,
+          "x" : 170,
+          "y" : 257
+        },
+        "baselineFromTop" : 11,
+        "controlSize" : 1,
+        "fitting" : {
+          "h" : 14,
+          "w" : 51.5
+        },
+        "font" : 11,
+        "frame" : {
+          "h" : 14,
+          "w" : 52,
+          "x" : 170,
+          "y" : 257
+        },
+        "frameInWindow" : {
+          "h" : 14,
+          "w" : 52,
+          "x" : 170,
+          "y" : 257
+        },
+        "intrinsic" : {
+          "h" : 14,
+          "w" : 51.5
+        },
+        "windowHeight" : 504
+      }
+    },
+    "comboBox" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 36,
+          "w" : 100,
+          "x" : 620,
+          "y" : 302
+        },
+        "baselineFromTop" : 13,
+        "controlSize" : 4,
+        "fitting" : {
+          "h" : 36,
+          "w" : 0
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 36,
+          "w" : 100,
+          "x" : 620,
+          "y" : 302
+        },
+        "frameInWindow" : {
+          "h" : 36,
+          "w" : 100,
+          "x" : 620,
+          "y" : 302
+        },
+        "intrinsic" : {
+          "h" : 36,
+          "w" : -1
+        },
+        "windowHeight" : 504
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 28,
+          "w" : 100,
+          "x" : 470,
+          "y" : 306
+        },
+        "baselineFromTop" : 13,
+        "controlSize" : 3,
+        "fitting" : {
+          "h" : 28,
+          "w" : 0
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 28,
+          "w" : 100,
+          "x" : 470,
+          "y" : 306
+        },
+        "frameInWindow" : {
+          "h" : 28,
+          "w" : 100,
+          "x" : 470,
+          "y" : 306
+        },
+        "intrinsic" : {
+          "h" : 28,
+          "w" : -1
+        },
+        "windowHeight" : 504
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 16,
+          "w" : 100,
+          "x" : 20,
+          "y" : 312
+        },
+        "baselineFromTop" : 9,
+        "controlSize" : 2,
+        "fitting" : {
+          "h" : 16,
+          "w" : 0
+        },
+        "font" : 9,
+        "frame" : {
+          "h" : 16,
+          "w" : 100,
+          "x" : 20,
+          "y" : 312
+        },
+        "frameInWindow" : {
+          "h" : 16,
+          "w" : 100,
+          "x" : 20,
+          "y" : 312
+        },
+        "intrinsic" : {
+          "h" : 16,
+          "w" : -1
+        },
+        "windowHeight" : 504
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 100,
+          "x" : 320,
+          "y" : 308
+        },
+        "baselineFromTop" : 13,
+        "controlSize" : 0,
+        "fitting" : {
+          "h" : 24,
+          "w" : 0
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 24,
+          "w" : 100,
+          "x" : 320,
+          "y" : 308
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 100,
+          "x" : 320,
+          "y" : 308
+        },
+        "intrinsic" : {
+          "h" : 24,
+          "w" : -1
+        },
+        "windowHeight" : 504
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 20,
+          "w" : 100,
+          "x" : 170,
+          "y" : 310
+        },
+        "baselineFromTop" : 11,
+        "controlSize" : 1,
+        "fitting" : {
+          "h" : 20,
+          "w" : 0
+        },
+        "font" : 11,
+        "frame" : {
+          "h" : 20,
+          "w" : 100,
+          "x" : 170,
+          "y" : 310
+        },
+        "frameInWindow" : {
+          "h" : 20,
+          "w" : 100,
+          "x" : 170,
+          "y" : 310
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : -1
+        },
+        "windowHeight" : 504
+      }
+    },
+    "default" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 36,
+          "w" : 66,
+          "x" : 620,
+          "y" : 358
+        },
+        "baselineFromTop" : 23,
+        "controlSize" : 4,
+        "fitting" : {
+          "h" : 36,
+          "w" : 65.5
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 36,
+          "w" : 66,
+          "x" : 620,
+          "y" : 358
+        },
+        "frameInWindow" : {
+          "h" : 36,
+          "w" : 66,
+          "x" : 620,
+          "y" : 358
+        },
+        "intrinsic" : {
+          "h" : 36,
+          "w" : 65.5
+        },
+        "windowHeight" : 504
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 28,
+          "w" : 58,
+          "x" : 470,
+          "y" : 362
+        },
+        "baselineFromTop" : 19,
+        "controlSize" : 3,
+        "fitting" : {
+          "h" : 28,
+          "w" : 57.5
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 28,
+          "w" : 58,
+          "x" : 470,
+          "y" : 362
+        },
+        "frameInWindow" : {
+          "h" : 28,
+          "w" : 58,
+          "x" : 470,
+          "y" : 362
+        },
+        "intrinsic" : {
+          "h" : 28,
+          "w" : 57.5
+        },
+        "windowHeight" : 504
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 16,
+          "w" : 38,
+          "x" : 20,
+          "y" : 368
+        },
+        "baselineFromTop" : 12,
+        "controlSize" : 2,
+        "fitting" : {
+          "h" : 16,
+          "w" : 37.5
+        },
+        "font" : 9,
+        "frame" : {
+          "h" : 16,
+          "w" : 38,
+          "x" : 20,
+          "y" : 368
+        },
+        "frameInWindow" : {
+          "h" : 16,
+          "w" : 38,
+          "x" : 20,
+          "y" : 368
+        },
+        "intrinsic" : {
+          "h" : 16,
+          "w" : 37.5
+        },
+        "windowHeight" : 504
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 320,
+          "y" : 364
+        },
+        "baselineFromTop" : 17,
+        "controlSize" : 0,
+        "fitting" : {
+          "h" : 24,
+          "w" : 53.5
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 320,
+          "y" : 364
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 320,
+          "y" : 364
+        },
+        "intrinsic" : {
+          "h" : 24,
+          "w" : 53.5
+        },
+        "windowHeight" : 504
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 20,
+          "w" : 46,
+          "x" : 170,
+          "y" : 366
+        },
+        "baselineFromTop" : 14,
+        "controlSize" : 1,
+        "fitting" : {
+          "h" : 20,
+          "w" : 45.5
+        },
+        "font" : 11,
+        "frame" : {
+          "h" : 20,
+          "w" : 46,
+          "x" : 170,
+          "y" : 366
+        },
+        "frameInWindow" : {
+          "h" : 20,
+          "w" : 46,
+          "x" : 170,
+          "y" : 366
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : 45.5
+        },
+        "windowHeight" : 504
+      }
+    },
+    "destructive" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 36,
+          "w" : 76,
+          "x" : 620,
+          "y" : 246
+        },
+        "baselineFromTop" : 23,
+        "controlSize" : 4,
+        "fitting" : {
+          "h" : 36,
+          "w" : 75.5
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 36,
+          "w" : 76,
+          "x" : 620,
+          "y" : 246
+        },
+        "frameInWindow" : {
+          "h" : 36,
+          "w" : 76,
+          "x" : 620,
+          "y" : 246
+        },
+        "intrinsic" : {
+          "h" : 36,
+          "w" : 75.5
+        },
+        "windowHeight" : 504
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 28,
+          "w" : 68,
+          "x" : 470,
+          "y" : 250
+        },
+        "baselineFromTop" : 19,
+        "controlSize" : 3,
+        "fitting" : {
+          "h" : 28,
+          "w" : 67.5
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 28,
+          "w" : 68,
+          "x" : 470,
+          "y" : 250
+        },
+        "frameInWindow" : {
+          "h" : 28,
+          "w" : 68,
+          "x" : 470,
+          "y" : 250
+        },
+        "intrinsic" : {
+          "h" : 28,
+          "w" : 67.5
+        },
+        "windowHeight" : 504
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 16,
+          "w" : 45,
+          "x" : 20,
+          "y" : 256
+        },
+        "baselineFromTop" : 12,
+        "controlSize" : 2,
+        "fitting" : {
+          "h" : 16,
+          "w" : 44.5
+        },
+        "font" : 9,
+        "frame" : {
+          "h" : 16,
+          "w" : 45,
+          "x" : 20,
+          "y" : 256
+        },
+        "frameInWindow" : {
+          "h" : 16,
+          "w" : 45,
+          "x" : 20,
+          "y" : 256
+        },
+        "intrinsic" : {
+          "h" : 16,
+          "w" : 44.5
+        },
+        "windowHeight" : 504
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 64,
+          "x" : 320,
+          "y" : 252
+        },
+        "baselineFromTop" : 17,
+        "controlSize" : 0,
+        "fitting" : {
+          "h" : 24,
+          "w" : 63.5
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 24,
+          "w" : 64,
+          "x" : 320,
+          "y" : 252
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 64,
+          "x" : 320,
+          "y" : 252
+        },
+        "intrinsic" : {
+          "h" : 24,
+          "w" : 63.5
+        },
+        "windowHeight" : 504
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 20,
+          "w" : 54,
+          "x" : 170,
+          "y" : 254
+        },
+        "baselineFromTop" : 14,
+        "controlSize" : 1,
+        "fitting" : {
+          "h" : 20,
+          "w" : 54
+        },
+        "font" : 11,
+        "frame" : {
+          "h" : 20,
+          "w" : 54,
+          "x" : 170,
+          "y" : 254
+        },
+        "frameInWindow" : {
+          "h" : 20,
+          "w" : 54,
+          "x" : 170,
+          "y" : 254
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : 54
+        },
+        "windowHeight" : 504
+      }
+    },
+    "help" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 36,
+          "w" : 36,
+          "x" : 620,
+          "y" : 22
+        },
+        "baselineFromTop" : 22.75,
+        "controlSize" : 4,
+        "fitting" : {
+          "h" : 36,
+          "w" : 36
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 36,
+          "w" : 36,
+          "x" : 620,
+          "y" : 22
+        },
+        "frameInWindow" : {
+          "h" : 36,
+          "w" : 36,
+          "x" : 620,
+          "y" : 22
+        },
+        "intrinsic" : {
+          "h" : 36,
+          "w" : 36
+        },
+        "windowHeight" : 504
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 28,
+          "w" : 28,
+          "x" : 470,
+          "y" : 26
+        },
+        "baselineFromTop" : 18.75,
+        "controlSize" : 3,
+        "fitting" : {
+          "h" : 28,
+          "w" : 28
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 28,
+          "w" : 28,
+          "x" : 470,
+          "y" : 26
+        },
+        "frameInWindow" : {
+          "h" : 28,
+          "w" : 28,
+          "x" : 470,
+          "y" : 26
+        },
+        "intrinsic" : {
+          "h" : 28,
+          "w" : 28
+        },
+        "windowHeight" : 504
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 16,
+          "w" : 16,
+          "x" : 20,
+          "y" : 32
+        },
+        "baselineFromTop" : 11.75,
+        "controlSize" : 2,
+        "fitting" : {
+          "h" : 16,
+          "w" : 16
+        },
+        "font" : 9,
+        "frame" : {
+          "h" : 16,
+          "w" : 16,
+          "x" : 20,
+          "y" : 32
+        },
+        "frameInWindow" : {
+          "h" : 16,
+          "w" : 16,
+          "x" : 20,
+          "y" : 32
+        },
+        "intrinsic" : {
+          "h" : 16,
+          "w" : 16
+        },
+        "windowHeight" : 504
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 24,
+          "x" : 320,
+          "y" : 28
+        },
+        "baselineFromTop" : 16.75,
+        "controlSize" : 0,
+        "fitting" : {
+          "h" : 24,
+          "w" : 24
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 24,
+          "w" : 24,
+          "x" : 320,
+          "y" : 28
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 24,
+          "x" : 320,
+          "y" : 28
+        },
+        "intrinsic" : {
+          "h" : 24,
+          "w" : 24
+        },
+        "windowHeight" : 504
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 20,
+          "w" : 20,
+          "x" : 170,
+          "y" : 30
+        },
+        "baselineFromTop" : 14.75,
+        "controlSize" : 1,
+        "fitting" : {
+          "h" : 20,
+          "w" : 20
+        },
+        "font" : 11,
+        "frame" : {
+          "h" : 20,
+          "w" : 20,
+          "x" : 170,
+          "y" : 30
+        },
+        "frameInWindow" : {
+          "h" : 20,
+          "w" : 20,
+          "x" : 170,
+          "y" : 30
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : 20
+        },
+        "windowHeight" : 504
+      }
+    },
+    "popUp" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 36,
+          "w" : 111,
+          "x" : 620,
+          "y" : 190
+        },
+        "baselineFromTop" : 22.75,
+        "controlSize" : 4,
+        "fitting" : {
+          "h" : 36,
+          "w" : 110.5
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 36,
+          "w" : 111,
+          "x" : 620,
+          "y" : 190
+        },
+        "frameInWindow" : {
+          "h" : 36,
+          "w" : 111,
+          "x" : 620,
+          "y" : 190
+        },
+        "intrinsic" : {
+          "h" : 36,
+          "w" : 110.5
+        },
+        "windowHeight" : 504
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 28,
+          "w" : 97,
+          "x" : 470,
+          "y" : 194
+        },
+        "baselineFromTop" : 18.75,
+        "controlSize" : 3,
+        "fitting" : {
+          "h" : 28,
+          "w" : 96.5
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 28,
+          "w" : 97,
+          "x" : 470,
+          "y" : 194
+        },
+        "frameInWindow" : {
+          "h" : 28,
+          "w" : 97,
+          "x" : 470,
+          "y" : 194
+        },
+        "intrinsic" : {
+          "h" : 28,
+          "w" : 96.5
+        },
+        "windowHeight" : 504
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 16,
+          "w" : 62,
+          "x" : 20,
+          "y" : 200
+        },
+        "baselineFromTop" : 11.5,
+        "controlSize" : 2,
+        "fitting" : {
+          "h" : 16,
+          "w" : 61.5
+        },
+        "font" : 9,
+        "frame" : {
+          "h" : 16,
+          "w" : 62,
+          "x" : 20,
+          "y" : 200
+        },
+        "frameInWindow" : {
+          "h" : 16,
+          "w" : 62,
+          "x" : 20,
+          "y" : 200
+        },
+        "intrinsic" : {
+          "h" : 16,
+          "w" : 61.5
+        },
+        "windowHeight" : 504
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 89,
+          "x" : 320,
+          "y" : 196
+        },
+        "baselineFromTop" : 16.75,
+        "controlSize" : 0,
+        "fitting" : {
+          "h" : 24,
+          "w" : 88.5
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 24,
+          "w" : 89,
+          "x" : 320,
+          "y" : 196
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 89,
+          "x" : 320,
+          "y" : 196
+        },
+        "intrinsic" : {
+          "h" : 24,
+          "w" : 88.5
+        },
+        "windowHeight" : 504
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 20,
+          "w" : 76,
+          "x" : 170,
+          "y" : 198
+        },
+        "baselineFromTop" : 14,
+        "controlSize" : 1,
+        "fitting" : {
+          "h" : 20,
+          "w" : 75
+        },
+        "font" : 11,
+        "frame" : {
+          "h" : 20,
+          "w" : 76,
+          "x" : 170,
+          "y" : 198
+        },
+        "frameInWindow" : {
+          "h" : 20,
+          "w" : 76,
+          "x" : 170,
+          "y" : 198
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : 75
+        },
+        "windowHeight" : 504
+      }
+    },
+    "pullDown" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 36,
+          "w" : 109,
+          "x" : 620,
+          "y" : 134
+        },
+        "baselineFromTop" : 22.75,
+        "controlSize" : 4,
+        "fitting" : {
+          "h" : 36,
+          "w" : 108.5
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 36,
+          "w" : 109,
+          "x" : 620,
+          "y" : 134
+        },
+        "frameInWindow" : {
+          "h" : 36,
+          "w" : 109,
+          "x" : 620,
+          "y" : 134
+        },
+        "intrinsic" : {
+          "h" : 36,
+          "w" : 108.5
+        },
+        "windowHeight" : 504
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 28,
+          "w" : 95,
+          "x" : 470,
+          "y" : 138
+        },
+        "baselineFromTop" : 18.75,
+        "controlSize" : 3,
+        "fitting" : {
+          "h" : 28,
+          "w" : 94.5
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 28,
+          "w" : 95,
+          "x" : 470,
+          "y" : 138
+        },
+        "frameInWindow" : {
+          "h" : 28,
+          "w" : 95,
+          "x" : 470,
+          "y" : 138
+        },
+        "intrinsic" : {
+          "h" : 28,
+          "w" : 94.5
+        },
+        "windowHeight" : 504
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 16,
+          "w" : 60,
+          "x" : 20,
+          "y" : 144
+        },
+        "baselineFromTop" : 11.5,
+        "controlSize" : 2,
+        "fitting" : {
+          "h" : 16,
+          "w" : 59.5
+        },
+        "font" : 9,
+        "frame" : {
+          "h" : 16,
+          "w" : 60,
+          "x" : 20,
+          "y" : 144
+        },
+        "frameInWindow" : {
+          "h" : 16,
+          "w" : 60,
+          "x" : 20,
+          "y" : 144
+        },
+        "intrinsic" : {
+          "h" : 16,
+          "w" : 59.5
+        },
+        "windowHeight" : 504
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 87,
+          "x" : 320,
+          "y" : 140
+        },
+        "baselineFromTop" : 16.75,
+        "controlSize" : 0,
+        "fitting" : {
+          "h" : 24,
+          "w" : 86.5
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 24,
+          "w" : 87,
+          "x" : 320,
+          "y" : 140
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 87,
+          "x" : 320,
+          "y" : 140
+        },
+        "intrinsic" : {
+          "h" : 24,
+          "w" : 86.5
+        },
+        "windowHeight" : 504
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 20,
+          "w" : 74,
+          "x" : 170,
+          "y" : 142
+        },
+        "baselineFromTop" : 14,
+        "controlSize" : 1,
+        "fitting" : {
+          "h" : 20,
+          "w" : 73
+        },
+        "font" : 11,
+        "frame" : {
+          "h" : 20,
+          "w" : 74,
+          "x" : 170,
+          "y" : 142
+        },
+        "frameInWindow" : {
+          "h" : 20,
+          "w" : 74,
+          "x" : 170,
+          "y" : 142
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : 73
+        },
+        "windowHeight" : 504
+      }
+    },
+    "push" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 36,
+          "w" : 77,
+          "x" : 620,
+          "y" : 414
+        },
+        "baselineFromTop" : 23,
+        "controlSize" : 4,
+        "fitting" : {
+          "h" : 36,
+          "w" : 76.5
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 36,
+          "w" : 77,
+          "x" : 620,
+          "y" : 414
+        },
+        "frameInWindow" : {
+          "h" : 36,
+          "w" : 77,
+          "x" : 620,
+          "y" : 414
+        },
+        "intrinsic" : {
+          "h" : 36,
+          "w" : 76.5
+        },
+        "windowHeight" : 504
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 28,
+          "w" : 69,
+          "x" : 470,
+          "y" : 418
+        },
+        "baselineFromTop" : 19,
+        "controlSize" : 3,
+        "fitting" : {
+          "h" : 28,
+          "w" : 68.5
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 28,
+          "w" : 69,
+          "x" : 470,
+          "y" : 418
+        },
+        "frameInWindow" : {
+          "h" : 28,
+          "w" : 69,
+          "x" : 470,
+          "y" : 418
+        },
+        "intrinsic" : {
+          "h" : 28,
+          "w" : 68.5
+        },
+        "windowHeight" : 504
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 16,
+          "w" : 46,
+          "x" : 20,
+          "y" : 424
+        },
+        "baselineFromTop" : 12,
+        "controlSize" : 2,
+        "fitting" : {
+          "h" : 16,
+          "w" : 45.5
+        },
+        "font" : 9,
+        "frame" : {
+          "h" : 16,
+          "w" : 46,
+          "x" : 20,
+          "y" : 424
+        },
+        "frameInWindow" : {
+          "h" : 16,
+          "w" : 46,
+          "x" : 20,
+          "y" : 424
+        },
+        "intrinsic" : {
+          "h" : 16,
+          "w" : 45.5
+        },
+        "windowHeight" : 504
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 65,
+          "x" : 320,
+          "y" : 420
+        },
+        "baselineFromTop" : 17,
+        "controlSize" : 0,
+        "fitting" : {
+          "h" : 24,
+          "w" : 64.5
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 24,
+          "w" : 65,
+          "x" : 320,
+          "y" : 420
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 65,
+          "x" : 320,
+          "y" : 420
+        },
+        "intrinsic" : {
+          "h" : 24,
+          "w" : 64.5
+        },
+        "windowHeight" : 504
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 20,
+          "w" : 55,
+          "x" : 170,
+          "y" : 422
+        },
+        "baselineFromTop" : 14,
+        "controlSize" : 1,
+        "fitting" : {
+          "h" : 20,
+          "w" : 55
+        },
+        "font" : 11,
+        "frame" : {
+          "h" : 20,
+          "w" : 55,
+          "x" : 170,
+          "y" : 422
+        },
+        "frameInWindow" : {
+          "h" : 20,
+          "w" : 55,
+          "x" : 170,
+          "y" : 422
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : 55
+        },
+        "windowHeight" : 504
+      }
+    },
+    "radio" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 18,
+          "w" : 59,
+          "x" : 620,
+          "y" : 199
+        },
+        "baselineFromTop" : 14,
+        "controlSize" : 4,
+        "fitting" : {
+          "h" : 18,
+          "w" : 58.5
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 18,
+          "w" : 59,
+          "x" : 620,
+          "y" : 199
+        },
+        "frameInWindow" : {
+          "h" : 18,
+          "w" : 59,
+          "x" : 620,
+          "y" : 199
+        },
+        "intrinsic" : {
+          "h" : 18,
+          "w" : 58.5
+        },
+        "windowHeight" : 504
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 18,
+          "w" : 59,
+          "x" : 470,
+          "y" : 199
+        },
+        "baselineFromTop" : 14,
+        "controlSize" : 3,
+        "fitting" : {
+          "h" : 18,
+          "w" : 58.5
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 18,
+          "w" : 59,
+          "x" : 470,
+          "y" : 199
+        },
+        "frameInWindow" : {
+          "h" : 18,
+          "w" : 59,
+          "x" : 470,
+          "y" : 199
+        },
+        "intrinsic" : {
+          "h" : 18,
+          "w" : 58.5
+        },
+        "windowHeight" : 504
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 12,
+          "w" : 41,
+          "x" : 20,
+          "y" : 202
+        },
+        "baselineFromTop" : 9.5,
+        "controlSize" : 2,
+        "fitting" : {
+          "h" : 12,
+          "w" : 41
+        },
+        "font" : 9,
+        "frame" : {
+          "h" : 12,
+          "w" : 41,
+          "x" : 20,
+          "y" : 202
+        },
+        "frameInWindow" : {
+          "h" : 12,
+          "w" : 41,
+          "x" : 20,
+          "y" : 202
+        },
+        "intrinsic" : {
+          "h" : 12,
+          "w" : 41
+        },
+        "windowHeight" : 504
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 16,
+          "w" : 57,
+          "x" : 320,
+          "y" : 200
+        },
+        "baselineFromTop" : 13,
+        "controlSize" : 0,
+        "fitting" : {
+          "h" : 16,
+          "w" : 56.5
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 16,
+          "w" : 57,
+          "x" : 320,
+          "y" : 200
+        },
+        "frameInWindow" : {
+          "h" : 16,
+          "w" : 57,
+          "x" : 320,
+          "y" : 200
+        },
+        "intrinsic" : {
+          "h" : 16,
+          "w" : 56.5
+        },
+        "windowHeight" : 504
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 14,
+          "w" : 48,
+          "x" : 170,
+          "y" : 201
+        },
+        "baselineFromTop" : 11,
+        "controlSize" : 1,
+        "fitting" : {
+          "h" : 14,
+          "w" : 48
+        },
+        "font" : 11,
+        "frame" : {
+          "h" : 14,
+          "w" : 48,
+          "x" : 170,
+          "y" : 201
+        },
+        "frameInWindow" : {
+          "h" : 14,
+          "w" : 48,
+          "x" : 170,
+          "y" : 201
+        },
+        "intrinsic" : {
+          "h" : 14,
+          "w" : 48
+        },
+        "windowHeight" : 504
+      }
+    },
+    "search" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 110,
+          "x" : 620,
+          "y" : 364
+        },
+        "baselineFromTop" : 17,
+        "controlSize" : 4,
+        "fitting" : {
+          "h" : 24,
+          "w" : 0
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 24,
+          "w" : 110,
+          "x" : 620,
+          "y" : 364
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 110,
+          "x" : 620,
+          "y" : 364
+        },
+        "intrinsic" : {
+          "h" : 24,
+          "w" : -1
+        },
+        "windowHeight" : 504
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 110,
+          "x" : 470,
+          "y" : 364
+        },
+        "baselineFromTop" : 17,
+        "controlSize" : 3,
+        "fitting" : {
+          "h" : 24,
+          "w" : 0
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 24,
+          "w" : 110,
+          "x" : 470,
+          "y" : 364
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 110,
+          "x" : 470,
+          "y" : 364
+        },
+        "intrinsic" : {
+          "h" : 24,
+          "w" : -1
+        },
+        "windowHeight" : 504
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 15,
+          "w" : 110,
+          "x" : 20,
+          "y" : 369
+        },
+        "baselineFromTop" : 11,
+        "controlSize" : 2,
+        "fitting" : {
+          "h" : 15,
+          "w" : 0
+        },
+        "font" : 9,
+        "frame" : {
+          "h" : 15,
+          "w" : 110,
+          "x" : 20,
+          "y" : 369
+        },
+        "frameInWindow" : {
+          "h" : 15,
+          "w" : 110,
+          "x" : 20,
+          "y" : 369
+        },
+        "intrinsic" : {
+          "h" : 15,
+          "w" : -1
+        },
+        "windowHeight" : 504
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 110,
+          "x" : 320,
+          "y" : 364
+        },
+        "baselineFromTop" : 17,
+        "controlSize" : 0,
+        "fitting" : {
+          "h" : 24,
+          "w" : 0
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 24,
+          "w" : 110,
+          "x" : 320,
+          "y" : 364
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 110,
+          "x" : 320,
+          "y" : 364
+        },
+        "intrinsic" : {
+          "h" : 24,
+          "w" : -1
+        },
+        "windowHeight" : 504
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 22,
+          "w" : 110,
+          "x" : 170,
+          "y" : 365
+        },
+        "baselineFromTop" : 15,
+        "controlSize" : 1,
+        "fitting" : {
+          "h" : 22,
+          "w" : 0
+        },
+        "font" : 11,
+        "frame" : {
+          "h" : 22,
+          "w" : 110,
+          "x" : 170,
+          "y" : 365
+        },
+        "frameInWindow" : {
+          "h" : 22,
+          "w" : 110,
+          "x" : 170,
+          "y" : 365
+        },
+        "intrinsic" : {
+          "h" : 22,
+          "w" : -1
+        },
+        "windowHeight" : 504
+      }
+    },
+    "segmented" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 36,
+          "w" : 115,
+          "x" : 620,
+          "y" : 78
+        },
+        "baselineFromTop" : 23,
+        "controlSize" : 4,
+        "fitting" : {
+          "h" : 36,
+          "w" : 115
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 36,
+          "w" : 115,
+          "x" : 620,
+          "y" : 78
+        },
+        "frameInWindow" : {
+          "h" : 36,
+          "w" : 115,
+          "x" : 620,
+          "y" : 78
+        },
+        "intrinsic" : {
+          "h" : 36,
+          "w" : 115
+        },
+        "windowHeight" : 504
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 28,
+          "w" : 99,
+          "x" : 470,
+          "y" : 82
+        },
+        "baselineFromTop" : 19,
+        "controlSize" : 3,
+        "fitting" : {
+          "h" : 28,
+          "w" : 99
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 28,
+          "w" : 99,
+          "x" : 470,
+          "y" : 82
+        },
+        "frameInWindow" : {
+          "h" : 28,
+          "w" : 99,
+          "x" : 470,
+          "y" : 82
+        },
+        "intrinsic" : {
+          "h" : 28,
+          "w" : 99
+        },
+        "windowHeight" : 504
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 16,
+          "w" : 65,
+          "x" : 20,
+          "y" : 88
+        },
+        "baselineFromTop" : 12,
+        "controlSize" : 2,
+        "fitting" : {
+          "h" : 16,
+          "w" : 65
+        },
+        "font" : 9,
+        "frame" : {
+          "h" : 16,
+          "w" : 65,
+          "x" : 20,
+          "y" : 88
+        },
+        "frameInWindow" : {
+          "h" : 16,
+          "w" : 65,
+          "x" : 20,
+          "y" : 88
+        },
+        "intrinsic" : {
+          "h" : 16,
+          "w" : 65
+        },
+        "windowHeight" : 504
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 91,
+          "x" : 320,
+          "y" : 84
+        },
+        "baselineFromTop" : 17,
+        "controlSize" : 0,
+        "fitting" : {
+          "h" : 24,
+          "w" : 91
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 24,
+          "w" : 91,
+          "x" : 320,
+          "y" : 84
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 91,
+          "x" : 320,
+          "y" : 84
+        },
+        "intrinsic" : {
+          "h" : 24,
+          "w" : 91
+        },
+        "windowHeight" : 504
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 20,
+          "w" : 81,
+          "x" : 170,
+          "y" : 86
+        },
+        "baselineFromTop" : 14,
+        "controlSize" : 1,
+        "fitting" : {
+          "h" : 20,
+          "w" : 80
+        },
+        "font" : 11,
+        "frame" : {
+          "h" : 20,
+          "w" : 81,
+          "x" : 170,
+          "y" : 86
+        },
+        "frameInWindow" : {
+          "h" : 20,
+          "w" : 81,
+          "x" : 170,
+          "y" : 86
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : 80
+        },
+        "windowHeight" : 504
+      }
+    },
+    "slider" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 20,
+          "w" : 100,
+          "x" : 620,
+          "y" : 86
+        },
+        "baselineFromTop" : 16,
+        "controlSize" : 4,
+        "fitting" : {
+          "h" : 20,
+          "w" : 0
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 20,
+          "w" : 100,
+          "x" : 620,
+          "y" : 86
+        },
+        "frameInWindow" : {
+          "h" : 20,
+          "w" : 100,
+          "x" : 620,
+          "y" : 86
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : -1
+        },
+        "windowHeight" : 504
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 20,
+          "w" : 100,
+          "x" : 470,
+          "y" : 86
+        },
+        "baselineFromTop" : 16,
+        "controlSize" : 3,
+        "fitting" : {
+          "h" : 20,
+          "w" : 0
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 20,
+          "w" : 100,
+          "x" : 470,
+          "y" : 86
+        },
+        "frameInWindow" : {
+          "h" : 20,
+          "w" : 100,
+          "x" : 470,
+          "y" : 86
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : -1
+        },
+        "windowHeight" : 504
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 12,
+          "w" : 100,
+          "x" : 20,
+          "y" : 90
+        },
+        "baselineFromTop" : 10,
+        "controlSize" : 2,
+        "fitting" : {
+          "h" : 12,
+          "w" : 0
+        },
+        "font" : 9,
+        "frame" : {
+          "h" : 12,
+          "w" : 100,
+          "x" : 20,
+          "y" : 90
+        },
+        "frameInWindow" : {
+          "h" : 12,
+          "w" : 100,
+          "x" : 20,
+          "y" : 90
+        },
+        "intrinsic" : {
+          "h" : 12,
+          "w" : -1
+        },
+        "windowHeight" : 504
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 16,
+          "w" : 100,
+          "x" : 320,
+          "y" : 88
+        },
+        "baselineFromTop" : 14,
+        "controlSize" : 0,
+        "fitting" : {
+          "h" : 16,
+          "w" : 0
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 16,
+          "w" : 100,
+          "x" : 320,
+          "y" : 88
+        },
+        "frameInWindow" : {
+          "h" : 16,
+          "w" : 100,
+          "x" : 320,
+          "y" : 88
+        },
+        "intrinsic" : {
+          "h" : 16,
+          "w" : -1
+        },
+        "windowHeight" : 504
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 14,
+          "w" : 100,
+          "x" : 170,
+          "y" : 89
+        },
+        "baselineFromTop" : 11,
+        "controlSize" : 1,
+        "fitting" : {
+          "h" : 14,
+          "w" : 0
+        },
+        "font" : 11,
+        "frame" : {
+          "h" : 14,
+          "w" : 100,
+          "x" : 170,
+          "y" : 89
+        },
+        "frameInWindow" : {
+          "h" : 14,
+          "w" : 100,
+          "x" : 170,
+          "y" : 89
+        },
+        "intrinsic" : {
+          "h" : 14,
+          "w" : -1
+        },
+        "windowHeight" : 504
+      }
+    },
+    "stepper" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 38,
+          "w" : 30,
+          "x" : 620,
+          "y" : 21
+        },
+        "baselineFromTop" : 23.5,
+        "controlSize" : 4,
+        "fitting" : {
+          "h" : 38,
+          "w" : 30
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 38,
+          "w" : 30,
+          "x" : 620,
+          "y" : 21
+        },
+        "frameInWindow" : {
+          "h" : 38,
+          "w" : 30,
+          "x" : 620,
+          "y" : 21
+        },
+        "intrinsic" : {
+          "h" : 38,
+          "w" : 30
+        },
+        "windowHeight" : 504
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 30,
+          "w" : 23,
+          "x" : 470,
+          "y" : 25
+        },
+        "baselineFromTop" : 19.5,
+        "controlSize" : 3,
+        "fitting" : {
+          "h" : 30,
+          "w" : 23
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 30,
+          "w" : 23,
+          "x" : 470,
+          "y" : 25
+        },
+        "frameInWindow" : {
+          "h" : 30,
+          "w" : 23,
+          "x" : 470,
+          "y" : 25
+        },
+        "intrinsic" : {
+          "h" : 30,
+          "w" : 23
+        },
+        "windowHeight" : 504
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 20,
+          "w" : 13,
+          "x" : 20,
+          "y" : 30
+        },
+        "baselineFromTop" : 13,
+        "controlSize" : 2,
+        "fitting" : {
+          "h" : 20,
+          "w" : 13
+        },
+        "font" : 9,
+        "frame" : {
+          "h" : 20,
+          "w" : 13,
+          "x" : 20,
+          "y" : 30
+        },
+        "frameInWindow" : {
+          "h" : 20,
+          "w" : 13,
+          "x" : 20,
+          "y" : 30
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : 13
+        },
+        "windowHeight" : 504
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 26,
+          "w" : 20,
+          "x" : 320,
+          "y" : 27
+        },
+        "baselineFromTop" : 17.5,
+        "controlSize" : 0,
+        "fitting" : {
+          "h" : 26,
+          "w" : 20
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 26,
+          "w" : 20,
+          "x" : 320,
+          "y" : 27
+        },
+        "frameInWindow" : {
+          "h" : 26,
+          "w" : 20,
+          "x" : 320,
+          "y" : 27
+        },
+        "intrinsic" : {
+          "h" : 26,
+          "w" : 20
+        },
+        "windowHeight" : 504
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 22,
+          "w" : 17,
+          "x" : 170,
+          "y" : 29
+        },
+        "baselineFromTop" : 15,
+        "controlSize" : 1,
+        "fitting" : {
+          "h" : 22,
+          "w" : 17
+        },
+        "font" : 11,
+        "frame" : {
+          "h" : 22,
+          "w" : 17,
+          "x" : 170,
+          "y" : 29
+        },
+        "frameInWindow" : {
+          "h" : 22,
+          "w" : 17,
+          "x" : 170,
+          "y" : 29
+        },
+        "intrinsic" : {
+          "h" : 22,
+          "w" : 17
+        },
+        "windowHeight" : 504
+      }
+    },
+    "switch" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 620,
+          "y" : 140
+        },
+        "baselineFromTop" : 22.5,
+        "controlSize" : 4,
+        "fitting" : {
+          "h" : 36,
+          "w" : 80
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 620,
+          "y" : 140
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 620,
+          "y" : 140
+        },
+        "intrinsic" : {
+          "h" : 36,
+          "w" : 80
+        },
+        "windowHeight" : 504
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 470,
+          "y" : 140
+        },
+        "baselineFromTop" : 18.5,
+        "controlSize" : 3,
+        "fitting" : {
+          "h" : 28,
+          "w" : 64
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 470,
+          "y" : 140
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 470,
+          "y" : 140
+        },
+        "intrinsic" : {
+          "h" : 28,
+          "w" : 64
+        },
+        "windowHeight" : 504
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 20,
+          "y" : 140
+        },
+        "baselineFromTop" : 11,
+        "controlSize" : 2,
+        "fitting" : {
+          "h" : 16,
+          "w" : 36
+        },
+        "font" : 9,
+        "frame" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 20,
+          "y" : 140
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 20,
+          "y" : 140
+        },
+        "intrinsic" : {
+          "h" : 16,
+          "w" : 36
+        },
+        "windowHeight" : 504
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 320,
+          "y" : 140
+        },
+        "baselineFromTop" : 16.5,
+        "controlSize" : 0,
+        "fitting" : {
+          "h" : 24,
+          "w" : 54
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 320,
+          "y" : 140
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 320,
+          "y" : 140
+        },
+        "intrinsic" : {
+          "h" : 24,
+          "w" : 54
+        },
+        "windowHeight" : 504
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 170,
+          "y" : 140
+        },
+        "baselineFromTop" : 14,
+        "controlSize" : 1,
+        "fitting" : {
+          "h" : 20,
+          "w" : 44
+        },
+        "font" : 11,
+        "frame" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 170,
+          "y" : 140
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 170,
+          "y" : 140
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : 44
+        },
+        "windowHeight" : 504
+      }
+    },
+    "textField" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 100,
+          "x" : 620,
+          "y" : 420
+        },
+        "baselineFromTop" : 17,
+        "controlSize" : 4,
+        "fitting" : {
+          "h" : 24,
+          "w" : 0
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 24,
+          "w" : 100,
+          "x" : 620,
+          "y" : 420
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 100,
+          "x" : 620,
+          "y" : 420
+        },
+        "intrinsic" : {
+          "h" : 24,
+          "w" : -1
+        },
+        "windowHeight" : 504
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 100,
+          "x" : 470,
+          "y" : 420
+        },
+        "baselineFromTop" : 17,
+        "controlSize" : 3,
+        "fitting" : {
+          "h" : 24,
+          "w" : 0
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 24,
+          "w" : 100,
+          "x" : 470,
+          "y" : 420
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 100,
+          "x" : 470,
+          "y" : 420
+        },
+        "intrinsic" : {
+          "h" : 24,
+          "w" : -1
+        },
+        "windowHeight" : 504
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 19,
+          "w" : 100,
+          "x" : 20,
+          "y" : 423
+        },
+        "baselineFromTop" : 13,
+        "controlSize" : 2,
+        "fitting" : {
+          "h" : 19,
+          "w" : 0
+        },
+        "font" : 9,
+        "frame" : {
+          "h" : 19,
+          "w" : 100,
+          "x" : 20,
+          "y" : 423
+        },
+        "frameInWindow" : {
+          "h" : 19,
+          "w" : 100,
+          "x" : 20,
+          "y" : 423
+        },
+        "intrinsic" : {
+          "h" : 19,
+          "w" : -1
+        },
+        "windowHeight" : 504
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 100,
+          "x" : 320,
+          "y" : 420
+        },
+        "baselineFromTop" : 17,
+        "controlSize" : 0,
+        "fitting" : {
+          "h" : 24,
+          "w" : 0
+        },
+        "font" : 13,
+        "frame" : {
+          "h" : 24,
+          "w" : 100,
+          "x" : 320,
+          "y" : 420
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 100,
+          "x" : 320,
+          "y" : 420
+        },
+        "intrinsic" : {
+          "h" : 24,
+          "w" : -1
+        },
+        "windowHeight" : 504
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 22,
+          "w" : 100,
+          "x" : 170,
+          "y" : 421
+        },
+        "baselineFromTop" : 15,
+        "controlSize" : 1,
+        "fitting" : {
+          "h" : 22,
+          "w" : 0
+        },
+        "font" : 11,
+        "frame" : {
+          "h" : 22,
+          "w" : 100,
+          "x" : 170,
+          "y" : 421
+        },
+        "frameInWindow" : {
+          "h" : 22,
+          "w" : 100,
+          "x" : 170,
+          "y" : 421
+        },
+        "intrinsic" : {
+          "h" : 22,
+          "w" : -1
+        },
+        "windowHeight" : 504
+      }
+    }
+  },
+  "os" : "Version 26.6.2 (Build 25G83)",
+  "shots" : [
+    {
+      "appActive" : false,
+      "appearance" : "NSAppearanceNameAqua",
+      "file" : "buttons-light-inactive.png",
+      "isKey" : false
+    },
+    {
+      "appActive" : false,
+      "appearance" : "NSAppearanceNameAqua",
+      "file" : "alert2-light-inactive.png",
+      "isKey" : false
+    },
+    {
+      "appActive" : false,
+      "appearance" : "NSAppearanceNameDarkAqua",
+      "file" : "buttons-dark-inactive.png",
+      "isKey" : false
+    }
+  ],
+  "spacing" : {
+    "baselineSystemSpacing" : "NSInternalInconsistencyException: unable to resolve symbolic constant NSLayoutAnchorConstraintSpace（NSTextField 标签之间）",
+    "NSGridView.columnSpacing" : 6,
+    "NSGridView.rowSpacing" : 6,
+    "NSStackView.spacing" : 8,
+    "systemSpacing" : {
+      "extraLarge" : {
+        "H checkbox→checkbox" : {
+          "alignGap" : 8,
+          "aW" : 63,
+          "bW" : 63,
+          "frameGap" : 8
+        },
+        "H label→popUp" : {
+          "alignGap" : 8,
+          "aW" : 44,
+          "bW" : 111,
+          "frameGap" : 6
+        },
+        "H label→textField" : {
+          "alignGap" : 8,
+          "aW" : 44,
+          "bW" : 100,
+          "frameGap" : 6
+        },
+        "H push→push" : {
+          "alignGap" : 12,
+          "aW" : 77,
+          "bW" : 77,
+          "frameGap" : 12
+        },
+        "V checkbox↓checkbox" : {
+          "aH" : 18,
+          "alignGap" : 6,
+          "baselineToBaseline" : 24,
+          "bH" : 18,
+          "frameGap" : 6
+        },
+        "V popUp↓popUp" : {
+          "aH" : 36,
+          "alignGap" : 10,
+          "baselineToBaseline" : 46,
+          "bH" : 36,
+          "frameGap" : 10
+        },
+        "V push↓push" : {
+          "aH" : 36,
+          "alignGap" : 12,
+          "baselineToBaseline" : 48,
+          "bH" : 36,
+          "frameGap" : 12
+        },
+        "V textField↓textField" : {
+          "aH" : 24,
+          "alignGap" : 10,
+          "baselineToBaseline" : 34,
+          "bH" : 24,
+          "frameGap" : 10
+        }
+      },
+      "large" : {
+        "H checkbox→checkbox" : {
+          "alignGap" : 8,
+          "aW" : 63,
+          "bW" : 63,
+          "frameGap" : 8
+        },
+        "H label→popUp" : {
+          "alignGap" : 8,
+          "aW" : 44,
+          "bW" : 97,
+          "frameGap" : 6
+        },
+        "H label→textField" : {
+          "alignGap" : 8,
+          "aW" : 44,
+          "bW" : 100,
+          "frameGap" : 6
+        },
+        "H push→push" : {
+          "alignGap" : 12,
+          "aW" : 69,
+          "bW" : 69,
+          "frameGap" : 12
+        },
+        "V checkbox↓checkbox" : {
+          "aH" : 18,
+          "alignGap" : 6,
+          "baselineToBaseline" : 24,
+          "bH" : 18,
+          "frameGap" : 6
+        },
+        "V popUp↓popUp" : {
+          "aH" : 28,
+          "alignGap" : 10,
+          "baselineToBaseline" : 38,
+          "bH" : 28,
+          "frameGap" : 10
+        },
+        "V push↓push" : {
+          "aH" : 28,
+          "alignGap" : 12,
+          "baselineToBaseline" : 40,
+          "bH" : 28,
+          "frameGap" : 12
+        },
+        "V textField↓textField" : {
+          "aH" : 24,
+          "alignGap" : 10,
+          "baselineToBaseline" : 34,
+          "bH" : 24,
+          "frameGap" : 10
+        }
+      },
+      "mini" : {
+        "H checkbox→checkbox" : {
+          "alignGap" : 8,
+          "aW" : 44,
+          "bW" : 44,
+          "frameGap" : 8
+        },
+        "H label→popUp" : {
+          "alignGap" : 8,
+          "aW" : 33,
+          "bW" : 62,
+          "frameGap" : 6
+        },
+        "H label→textField" : {
+          "alignGap" : 8,
+          "aW" : 33,
+          "bW" : 100,
+          "frameGap" : 6
+        },
+        "H push→push" : {
+          "alignGap" : 8,
+          "aW" : 46,
+          "bW" : 46,
+          "frameGap" : 8
+        },
+        "V checkbox↓checkbox" : {
+          "aH" : 12,
+          "alignGap" : 5,
+          "baselineToBaseline" : 17,
+          "bH" : 12,
+          "frameGap" : 5
+        },
+        "V popUp↓popUp" : {
+          "aH" : 16,
+          "alignGap" : 6,
+          "baselineToBaseline" : 22,
+          "bH" : 16,
+          "frameGap" : 6
+        },
+        "V push↓push" : {
+          "aH" : 16,
+          "alignGap" : 8,
+          "baselineToBaseline" : 24,
+          "bH" : 16,
+          "frameGap" : 8
+        },
+        "V textField↓textField" : {
+          "aH" : 19,
+          "alignGap" : 8,
+          "baselineToBaseline" : 27,
+          "bH" : 19,
+          "frameGap" : 8
+        }
+      },
+      "regular" : {
+        "H checkbox→checkbox" : {
+          "alignGap" : 8,
+          "aW" : 61,
+          "bW" : 61,
+          "frameGap" : 8
+        },
+        "H label→popUp" : {
+          "alignGap" : 8,
+          "aW" : 44,
+          "bW" : 89,
+          "frameGap" : 6
+        },
+        "H label→textField" : {
+          "alignGap" : 8,
+          "aW" : 44,
+          "bW" : 100,
+          "frameGap" : 6
+        },
+        "H push→push" : {
+          "alignGap" : 12,
+          "aW" : 65,
+          "bW" : 65,
+          "frameGap" : 12
+        },
+        "V checkbox↓checkbox" : {
+          "aH" : 16,
+          "alignGap" : 6,
+          "baselineToBaseline" : 22,
+          "bH" : 16,
+          "frameGap" : 6
+        },
+        "V popUp↓popUp" : {
+          "aH" : 24,
+          "alignGap" : 10,
+          "baselineToBaseline" : 33.5,
+          "bH" : 24,
+          "frameGap" : 10
+        },
+        "V push↓push" : {
+          "aH" : 24,
+          "alignGap" : 12,
+          "baselineToBaseline" : 36,
+          "bH" : 24,
+          "frameGap" : 12
+        },
+        "V textField↓textField" : {
+          "aH" : 24,
+          "alignGap" : 10,
+          "baselineToBaseline" : 34,
+          "bH" : 24,
+          "frameGap" : 10
+        }
+      },
+      "small" : {
+        "H checkbox→checkbox" : {
+          "alignGap" : 8,
+          "aW" : 52,
+          "bW" : 52,
+          "frameGap" : 8
+        },
+        "H label→popUp" : {
+          "alignGap" : 8,
+          "aW" : 38,
+          "bW" : 76,
+          "frameGap" : 6
+        },
+        "H label→textField" : {
+          "alignGap" : 8,
+          "aW" : 38,
+          "bW" : 100,
+          "frameGap" : 6
+        },
+        "H push→push" : {
+          "alignGap" : 8,
+          "aW" : 55,
+          "bW" : 55,
+          "frameGap" : 8
+        },
+        "V checkbox↓checkbox" : {
+          "aH" : 14,
+          "alignGap" : 6,
+          "baselineToBaseline" : 20,
+          "bH" : 14,
+          "frameGap" : 6
+        },
+        "V popUp↓popUp" : {
+          "aH" : 20,
+          "alignGap" : 8,
+          "baselineToBaseline" : 27.5,
+          "bH" : 20,
+          "frameGap" : 8
+        },
+        "V push↓push" : {
+          "aH" : 20,
+          "alignGap" : 10,
+          "baselineToBaseline" : 30,
+          "bH" : 20,
+          "frameGap" : 10
+        },
+        "V textField↓textField" : {
+          "aH" : 22,
+          "alignGap" : 8,
+          "baselineToBaseline" : 30,
+          "bH" : 22,
+          "frameGap" : 8
+        }
+      }
+    },
+    "visualFormat H:|-[a]-[b]-|" : [
+      20,
+      8,
+      20
+    ],
+    "visualFormat V:|-[a]-[b]-|" : [
+      20,
+      8,
+      20
+    ]
+  },
+  "swiftui" : {
+    "button" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 36,
+          "w" : 77,
+          "x" : 620,
+          "y" : 190
+        },
+        "baselineFromTop" : 23,
+        "fitting" : {
+          "h" : 36,
+          "w" : 76.5
+        },
+        "frame" : {
+          "h" : 36,
+          "w" : 77,
+          "x" : 620,
+          "y" : 190
+        },
+        "frameInWindow" : {
+          "h" : 36,
+          "w" : 77,
+          "x" : 620,
+          "y" : 190
+        },
+        "intrinsic" : {
+          "h" : 36,
+          "w" : 76.5
+        },
+        "windowHeight" : 280
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 28,
+          "w" : 69,
+          "x" : 470,
+          "y" : 194
+        },
+        "baselineFromTop" : 19,
+        "fitting" : {
+          "h" : 28,
+          "w" : 68.5
+        },
+        "frame" : {
+          "h" : 28,
+          "w" : 69,
+          "x" : 470,
+          "y" : 194
+        },
+        "frameInWindow" : {
+          "h" : 28,
+          "w" : 69,
+          "x" : 470,
+          "y" : 194
+        },
+        "intrinsic" : {
+          "h" : 28,
+          "w" : 68.5
+        },
+        "windowHeight" : 280
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 13,
+          "w" : 46,
+          "x" : 20,
+          "y" : 202
+        },
+        "baselineFromTop" : 10,
+        "fitting" : {
+          "h" : 13,
+          "w" : 45.5
+        },
+        "frame" : {
+          "h" : 13,
+          "w" : 46,
+          "x" : 20,
+          "y" : 202
+        },
+        "frameInWindow" : {
+          "h" : 13,
+          "w" : 46,
+          "x" : 20,
+          "y" : 202
+        },
+        "intrinsic" : {
+          "h" : 13,
+          "w" : 45.5
+        },
+        "windowHeight" : 280
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 65,
+          "x" : 320,
+          "y" : 196
+        },
+        "baselineFromTop" : 17,
+        "fitting" : {
+          "h" : 24,
+          "w" : 64.5
+        },
+        "frame" : {
+          "h" : 24,
+          "w" : 65,
+          "x" : 320,
+          "y" : 196
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 65,
+          "x" : 320,
+          "y" : 196
+        },
+        "intrinsic" : {
+          "h" : 24,
+          "w" : 64.5
+        },
+        "windowHeight" : 280
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 20,
+          "w" : 55,
+          "x" : 170,
+          "y" : 198
+        },
+        "baselineFromTop" : 14,
+        "fitting" : {
+          "h" : 20,
+          "w" : 55
+        },
+        "frame" : {
+          "h" : 20,
+          "w" : 55,
+          "x" : 170,
+          "y" : 198
+        },
+        "frameInWindow" : {
+          "h" : 20,
+          "w" : 55,
+          "x" : 170,
+          "y" : 198
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : 55
+        },
+        "windowHeight" : 280
+      }
+    },
+    "prominent" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 36,
+          "w" : 66,
+          "x" : 620,
+          "y" : 134
+        },
+        "baselineFromTop" : 23,
+        "fitting" : {
+          "h" : 36,
+          "w" : 65.5
+        },
+        "frame" : {
+          "h" : 36,
+          "w" : 66,
+          "x" : 620,
+          "y" : 134
+        },
+        "frameInWindow" : {
+          "h" : 36,
+          "w" : 66,
+          "x" : 620,
+          "y" : 134
+        },
+        "intrinsic" : {
+          "h" : 36,
+          "w" : 65.5
+        },
+        "windowHeight" : 280
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 28,
+          "w" : 58,
+          "x" : 470,
+          "y" : 138
+        },
+        "baselineFromTop" : 19,
+        "fitting" : {
+          "h" : 28,
+          "w" : 57.5
+        },
+        "frame" : {
+          "h" : 28,
+          "w" : 58,
+          "x" : 470,
+          "y" : 138
+        },
+        "frameInWindow" : {
+          "h" : 28,
+          "w" : 58,
+          "x" : 470,
+          "y" : 138
+        },
+        "intrinsic" : {
+          "h" : 28,
+          "w" : 57.5
+        },
+        "windowHeight" : 280
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 13,
+          "w" : 38,
+          "x" : 20,
+          "y" : 146
+        },
+        "baselineFromTop" : 10,
+        "fitting" : {
+          "h" : 13,
+          "w" : 37.5
+        },
+        "frame" : {
+          "h" : 13,
+          "w" : 38,
+          "x" : 20,
+          "y" : 146
+        },
+        "frameInWindow" : {
+          "h" : 13,
+          "w" : 38,
+          "x" : 20,
+          "y" : 146
+        },
+        "intrinsic" : {
+          "h" : 13,
+          "w" : 37.5
+        },
+        "windowHeight" : 280
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 320,
+          "y" : 140
+        },
+        "baselineFromTop" : 17,
+        "fitting" : {
+          "h" : 24,
+          "w" : 53.5
+        },
+        "frame" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 320,
+          "y" : 140
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 320,
+          "y" : 140
+        },
+        "intrinsic" : {
+          "h" : 24,
+          "w" : 53.5
+        },
+        "windowHeight" : 280
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 20,
+          "w" : 46,
+          "x" : 170,
+          "y" : 142
+        },
+        "baselineFromTop" : 14,
+        "fitting" : {
+          "h" : 20,
+          "w" : 45.5
+        },
+        "frame" : {
+          "h" : 20,
+          "w" : 46,
+          "x" : 170,
+          "y" : 142
+        },
+        "frameInWindow" : {
+          "h" : 20,
+          "w" : 46,
+          "x" : 170,
+          "y" : 142
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : 45.5
+        },
+        "windowHeight" : 280
+      }
+    },
+    "textField" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 100,
+          "x" : 620,
+          "y" : 28
+        },
+        "baselineFromTop" : 17,
+        "fitting" : {
+          "h" : 24,
+          "w" : 100
+        },
+        "frame" : {
+          "h" : 24,
+          "w" : 100,
+          "x" : 620,
+          "y" : 28
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 100,
+          "x" : 620,
+          "y" : 28
+        },
+        "intrinsic" : {
+          "h" : 24,
+          "w" : 100
+        },
+        "windowHeight" : 280
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 100,
+          "x" : 470,
+          "y" : 28
+        },
+        "baselineFromTop" : 17,
+        "fitting" : {
+          "h" : 24,
+          "w" : 100
+        },
+        "frame" : {
+          "h" : 24,
+          "w" : 100,
+          "x" : 470,
+          "y" : 28
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 100,
+          "x" : 470,
+          "y" : 28
+        },
+        "intrinsic" : {
+          "h" : 24,
+          "w" : 100
+        },
+        "windowHeight" : 280
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 19,
+          "w" : 100,
+          "x" : 20,
+          "y" : 31
+        },
+        "baselineFromTop" : 13,
+        "fitting" : {
+          "h" : 19,
+          "w" : 100
+        },
+        "frame" : {
+          "h" : 19,
+          "w" : 100,
+          "x" : 20,
+          "y" : 31
+        },
+        "frameInWindow" : {
+          "h" : 19,
+          "w" : 100,
+          "x" : 20,
+          "y" : 31
+        },
+        "intrinsic" : {
+          "h" : 19,
+          "w" : 100
+        },
+        "windowHeight" : 280
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 100,
+          "x" : 320,
+          "y" : 28
+        },
+        "baselineFromTop" : 17,
+        "fitting" : {
+          "h" : 24,
+          "w" : 100
+        },
+        "frame" : {
+          "h" : 24,
+          "w" : 100,
+          "x" : 320,
+          "y" : 28
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 100,
+          "x" : 320,
+          "y" : 28
+        },
+        "intrinsic" : {
+          "h" : 24,
+          "w" : 100
+        },
+        "windowHeight" : 280
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 21,
+          "w" : 100,
+          "x" : 170,
+          "y" : 30
+        },
+        "baselineFromTop" : 14.5,
+        "fitting" : {
+          "h" : 21,
+          "w" : 100
+        },
+        "frame" : {
+          "h" : 21,
+          "w" : 100,
+          "x" : 170,
+          "y" : 30
+        },
+        "frameInWindow" : {
+          "h" : 21,
+          "w" : 100,
+          "x" : 170,
+          "y" : 30
+        },
+        "intrinsic" : {
+          "h" : 21,
+          "w" : 100
+        },
+        "windowHeight" : 280
+      }
+    },
+    "toggleSwitch" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 620,
+          "y" : 84
+        },
+        "baselineFromTop" : 16.5,
+        "fitting" : {
+          "h" : 36,
+          "w" : 80
+        },
+        "frame" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 620,
+          "y" : 84
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 620,
+          "y" : 84
+        },
+        "intrinsic" : {
+          "h" : 36,
+          "w" : 80
+        },
+        "windowHeight" : 280
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 470,
+          "y" : 84
+        },
+        "baselineFromTop" : 16.5,
+        "fitting" : {
+          "h" : 28,
+          "w" : 64
+        },
+        "frame" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 470,
+          "y" : 84
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 470,
+          "y" : 84
+        },
+        "intrinsic" : {
+          "h" : 28,
+          "w" : 64
+        },
+        "windowHeight" : 280
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 20,
+          "y" : 84
+        },
+        "baselineFromTop" : 15,
+        "fitting" : {
+          "h" : 16,
+          "w" : 36
+        },
+        "frame" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 20,
+          "y" : 84
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 20,
+          "y" : 84
+        },
+        "intrinsic" : {
+          "h" : 16,
+          "w" : 36
+        },
+        "windowHeight" : 280
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 320,
+          "y" : 84
+        },
+        "baselineFromTop" : 16.5,
+        "fitting" : {
+          "h" : 24,
+          "w" : 54
+        },
+        "frame" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 320,
+          "y" : 84
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 320,
+          "y" : 84
+        },
+        "intrinsic" : {
+          "h" : 24,
+          "w" : 54
+        },
+        "windowHeight" : 280
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 170,
+          "y" : 84
+        },
+        "baselineFromTop" : 16,
+        "fitting" : {
+          "h" : 20,
+          "w" : 44
+        },
+        "frame" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 170,
+          "y" : 84
+        },
+        "frameInWindow" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 170,
+          "y" : 84
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : 44
+        },
+        "windowHeight" : 280
+      }
+    }
+  },
+  "switchIntrinsic" : {
+    "extraLarge" : {
+      "alignmentRectInsets" : {
+        "bottom" : 0,
+        "top" : 0
+      },
+      "fitting" : {
+        "h" : 24,
+        "w" : 54
+      },
+      "intrinsic" : {
+        "h" : 24,
+        "w" : 54
+      }
+    },
+    "large" : {
+      "alignmentRectInsets" : {
+        "bottom" : 0,
+        "top" : 0
+      },
+      "fitting" : {
+        "h" : 24,
+        "w" : 54
+      },
+      "intrinsic" : {
+        "h" : 24,
+        "w" : 54
+      }
+    },
+    "mini" : {
+      "alignmentRectInsets" : {
+        "bottom" : 0,
+        "top" : 0
+      },
+      "fitting" : {
+        "h" : 24,
+        "w" : 54
+      },
+      "intrinsic" : {
+        "h" : 24,
+        "w" : 54
+      }
+    },
+    "regular" : {
+      "alignmentRectInsets" : {
+        "bottom" : 0,
+        "top" : 0
+      },
+      "fitting" : {
+        "h" : 24,
+        "w" : 54
+      },
+      "intrinsic" : {
+        "h" : 24,
+        "w" : 54
+      }
+    },
+    "small" : {
+      "alignmentRectInsets" : {
+        "bottom" : 0,
+        "top" : 0
+      },
+      "fitting" : {
+        "h" : 24,
+        "w" : 54
+      },
+      "intrinsic" : {
+        "h" : 24,
+        "w" : 54
+      }
+    }
+  }
+}

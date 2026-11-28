@@ -1,0 +1,7 @@
+{"about": "rowsize.swift 的输出：.default 档位读全局偏好 NSTableViewDefaultSizeMode。用命令行参数域只对本进程覆盖，没改系统设置。effectiveRowSizeStyle：1 小、2 中、3 大。",
+"runs": {
+"unset": {"effectiveRowSizeStyle":2,"NSTableViewDefaultSizeMode":"unset","rowHeight":32},
+"mode1": {"effectiveRowSizeStyle":1,"NSTableViewDefaultSizeMode":"1","rowHeight":24},
+"mode2": {"effectiveRowSizeStyle":2,"NSTableViewDefaultSizeMode":"2","rowHeight":32},
+"mode3": {"effectiveRowSizeStyle":3,"NSTableViewDefaultSizeMode":"3","rowHeight":40}
+}}

@@ -1,0 +1,497 @@
+{
+  "note": "截图 2x，px ÷ 2 = pt；颜色是截图按 sRGB 解出的值，受壁纸着色影响，只作「看起来」的佐证",
+  "corner": {
+    "plain": {
+      "file": "gallery-plain-light.png",
+      "transparentPxPerRow": [
+        35,
+        25,
+        21,
+        18,
+        16,
+        15,
+        13,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        6,
+        5,
+        4,
+        4,
+        3,
+        3,
+        3,
+        2,
+        2,
+        2,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "equivalentRadiusPx": 34,
+      "equivalentRadiusPt": 17.1
+    },
+    "unifiedCompact": {
+      "file": "gallery-unifiedCompact-light.png",
+      "transparentPxPerRow": [
+        46,
+        33,
+        28,
+        25,
+        22,
+        20,
+        19,
+        17,
+        16,
+        15,
+        13,
+        12,
+        11,
+        10,
+        10,
+        9,
+        8,
+        7,
+        7,
+        6,
+        5,
+        5,
+        4,
+        4,
+        4,
+        3,
+        3,
+        3,
+        2,
+        2,
+        2,
+        2,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "equivalentRadiusPx": 41,
+      "equivalentRadiusPt": 20.5
+    },
+    "unified": {
+      "file": "gallery-unified-light.png",
+      "transparentPxPerRow": [
+        63,
+        46,
+        40,
+        36,
+        32,
+        30,
+        28,
+        26,
+        24,
+        23,
+        21,
+        20,
+        19,
+        17,
+        16,
+        15,
+        14,
+        13,
+        13,
+        12,
+        11,
+        10,
+        10,
+        9,
+        8,
+        8,
+        7,
+        7,
+        6,
+        6,
+        5,
+        5,
+        4,
+        4,
+        4,
+        4,
+        3,
+        3,
+        3,
+        3,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "equivalentRadiusPx": 51,
+      "equivalentRadiusPt": 25.6
+    },
+    "expanded": {
+      "file": "gallery-expanded-light.png",
+      "transparentPxPerRow": [
+        35,
+        25,
+        21,
+        18,
+        16,
+        15,
+        13,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        6,
+        5,
+        4,
+        4,
+        3,
+        3,
+        3,
+        2,
+        2,
+        2,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "equivalentRadiusPx": 34,
+      "equivalentRadiusPt": 17.1
+    }
+  },
+  "toolbarTrailingItem": {
+    "files": {
+      "unified": "gallery-unified-light.png",
+      "unifiedCompact": "gallery-unifiedCompact-light.png"
+    },
+    "unified": {
+      "windowWidthPt": 640,
+      "columnScanX1200": [
+        {
+          "px": 0,
+          "color": "#FEFEFE a=255"
+        },
+        {
+          "px": 1,
+          "color": "#FDFDFD a=255"
+        },
+        {
+          "px": 2,
+          "color": "#FCFCFC a=255"
+        },
+        {
+          "px": 5,
+          "color": "#FBFBFB a=255"
+        },
+        {
+          "px": 12,
+          "color": "#FAFAFA a=255"
+        },
+        {
+          "px": 16,
+          "color": "#FFFFFF a=255"
+        },
+        {
+          "px": 88,
+          "color": "#F4F4F4 a=255"
+        },
+        {
+          "px": 92,
+          "color": "#F5F5F5 a=255"
+        },
+        {
+          "px": 98,
+          "color": "#F6F6F6 a=255"
+        },
+        {
+          "px": 102,
+          "color": "#DEDEDE a=255"
+        },
+        {
+          "px": 103,
+          "color": "#DFDFDF a=255"
+        },
+        {
+          "px": 104,
+          "color": "#F7F7F7 a=255"
+        },
+        {
+          "px": 108,
+          "color": "#F8F8F8 a=255"
+        }
+      ],
+      "rowScanY52": [
+        {
+          "px": 1240,
+          "color": "#FFFFFF a=255"
+        },
+        {
+          "px": 1264,
+          "color": "#F8F8F8 a=255"
+        },
+        {
+          "px": 1270,
+          "color": "#F9F9F9 a=255"
+        },
+        {
+          "px": 1276,
+          "color": "#FAFAFA a=255"
+        },
+        {
+          "px": 1279,
+          "color": "#1A1A1A a=27"
+        }
+      ],
+      "topPt": 8,
+      "bottomPt": 44,
+      "heightPt": 36,
+      "rightEdgePt": 632,
+      "insetPt": 8
+    },
+    "unifiedCompact": {
+      "windowWidthPt": 640,
+      "columnScanX1200": [
+        {
+          "px": 0,
+          "color": "#FEFEFE a=255"
+        },
+        {
+          "px": 1,
+          "color": "#FDFDFD a=255"
+        },
+        {
+          "px": 2,
+          "color": "#FCFCFC a=255"
+        },
+        {
+          "px": 5,
+          "color": "#FBFBFB a=255"
+        },
+        {
+          "px": 12,
+          "color": "#FAFAFA a=255"
+        },
+        {
+          "px": 16,
+          "color": "#FFFFFF a=255"
+        },
+        {
+          "px": 64,
+          "color": "#F4F4F4 a=255"
+        },
+        {
+          "px": 68,
+          "color": "#F5F5F5 a=255"
+        },
+        {
+          "px": 74,
+          "color": "#F6F6F6 a=255"
+        },
+        {
+          "px": 78,
+          "color": "#DEDEDE a=255"
+        },
+        {
+          "px": 79,
+          "color": "#DFDFDF a=255"
+        },
+        {
+          "px": 80,
+          "color": "#F7F7F7 a=255"
+        },
+        {
+          "px": 84,
+          "color": "#F8F8F8 a=255"
+        },
+        {
+          "px": 89,
+          "color": "#F9F9F9 a=255"
+        }
+      ],
+      "rowScanY40": [
+        {
+          "px": 1180,
+          "color": "#FFFFFF a=255"
+        },
+        {
+          "px": 1264,
+          "color": "#F8F8F8 a=255"
+        },
+        {
+          "px": 1269,
+          "color": "#F9F9F9 a=255"
+        },
+        {
+          "px": 1275,
+          "color": "#FAFAFA a=255"
+        },
+        {
+          "px": 1279,
+          "color": "#3A3A3A a=59"
+        }
+      ],
+      "topPt": 8,
+      "bottomPt": 32,
+      "heightPt": 24,
+      "rightEdgePt": 632,
+      "insetPt": 8
+    }
+  },
+  "titlebarSeparator": {
+    "unified": {
+      "file": "gallery-unified-light.png",
+      "columnScanX400": [
+        {
+          "px": 50,
+          "color": "#FFFFFF a=255"
+        },
+        {
+          "px": 102,
+          "color": "#E6E6E6 a=255"
+        },
+        {
+          "px": 104,
+          "color": "#FFFFFF a=255"
+        }
+      ],
+      "linePx": [
+        102,
+        103
+      ],
+      "linePt": 51
+    },
+    "plain": {
+      "file": "gallery-plain-light.png",
+      "columnScanX400": [
+        {
+          "px": 40,
+          "color": "#FFFFFF a=255"
+        },
+        {
+          "px": 62,
+          "color": "#E6E6E6 a=255"
+        },
+        {
+          "px": 64,
+          "color": "#FFFFFF a=255"
+        }
+      ],
+      "linePx": [
+        62,
+        63
+      ],
+      "linePt": 31
+    }
+  },
+  "unifiedStates": {
+    "key-light": {
+      "file": "unified-key-light.png",
+      "close": "#FF5C60",
+      "minimize": "#FAC800",
+      "zoom": "#35C759",
+      "titleInk": "#4D4D4D",
+      "plusIconInk": "#4C4C4C",
+      "titlebarBackground": "#FFFFFF",
+      "contentBackground": "#FFFFFF"
+    },
+    "key-dark": {
+      "file": "unified-key-dark.png",
+      "close": "#FF5C60",
+      "minimize": "#FAC800",
+      "zoom": "#35C759",
+      "titleInk": "#E9E9EA",
+      "plusIconInk": "#E9EAEB",
+      "titlebarBackground": "#222A30",
+      "contentBackground": "#222A30"
+    },
+    "inactive-light": {
+      "file": "unified-inactive-light.png",
+      "close": "#DCDCDC",
+      "minimize": "#DCDCDC",
+      "zoom": "#DCDCDC",
+      "titleInk": "#B8B8B8",
+      "plusIconInk": "#B6B7B6",
+      "titlebarBackground": "#FFFFFF",
+      "contentBackground": "#FFFFFF"
+    },
+    "inactive-dark": {
+      "file": "unified-inactive-dark.png",
+      "close": "#464D53",
+      "minimize": "#464D53",
+      "zoom": "#464D53",
+      "titleInk": "#5A5F63",
+      "plusIconInk": "#677279",
+      "titlebarBackground": "#222A30",
+      "contentBackground": "#222A30"
+    }
+  },
+  "derivedTertiaryLabelOverWindow": {
+    "note": "tertiaryLabelColor（metrics.json）按 alpha 叠在截图里的窗口底色上，和非活动标题的截图色对比",
+    "light": {
+      "tertiaryLabelColor": "#000000 a=0.259",
+      "over": "#FFFFFF",
+      "composite": "#BDBDBD",
+      "measuredInactiveTitle": "#B8B8B8"
+    },
+    "dark": {
+      "tertiaryLabelColor": "#FFFFFF a=0.247",
+      "over": "#222A30",
+      "composite": "#595F63",
+      "measuredInactiveTitle": "#5A5F63"
+    }
+  }
+}

@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>通知</title>
+<style>
+/* ===== 团队变量文件 tokens.css，原样复制 ===== */
+/* 「团队空间」App 的设计变量。浅色、深色各一套。
+   成对的颜色（accent / on-accent，card 上的 text、text-2、danger）对比度都在 4.5:1 以上；
+   accent 当文字用时只能放在 card 上（放在 bg 上只有 4.22:1）。 */
+:root {
+  --color-accent: #b65a3c;      --color-on-accent: #ffffff;
+  --color-bg: #f4f4f1;          --color-card: #ffffff;
+  --color-text: #1c1c1a;        --color-text-2: #5f5e59;
+  --color-line: #e7e6e1;        --color-danger: #b42318;
+  --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-title: 600 18px/1.4 var(--font-sans);
+  --font-body: 400 15px/1.6 var(--font-sans);
+  --font-body-strong: 600 15px/1.6 var(--font-sans);
+  --font-caption: 400 13px/1.5 var(--font-sans);
+  --radius-card: 16px;  --radius-control: 10px;  --radius-pill: 999px;
+  --control-h: 44px;    --control-h-sm: 32px;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px rgb(0 0 0 / 0.06);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-accent: #d97757;    --color-on-accent: #1a1a19;
+    --color-bg: #141413;        --color-card: #1f1e1c;
+    --color-text: #f0efea;      --color-text-2: #a3a199;
+    --color-line: #2f2e2b;      --color-danger: #f97066;
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3);
+  }
+}
+/* ===== tokens.css 结束 ===== */
+
+/* 左右留白的唯一公式：导航、正文、底栏都用它，边才会对齐。横屏时把刘海那一侧的安全区加进来。 */
+:root {
+  --gutter-l: calc(var(--space-4) + env(safe-area-inset-left));
+  --gutter-r: calc(var(--space-4) + env(safe-area-inset-right));
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  text-autospace: normal;
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font: var(--font-body);
+}
+h1, h2, p { margin: 0; }
+button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+
+.gutter { padding-left: var(--gutter-l); padding-right: var(--gutter-r); }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* 导航栏 */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding-top: env(safe-area-inset-top);
+  background: var(--color-card);
+  border-bottom: 1px solid var(--color-line);
+}
+.nav-inner {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  min-height: var(--control-h);
+}
+.nav-title { font: var(--font-title); color: var(--color-text); }
+.nav-title:focus:not(:focus-visible) { outline: none; }
+.nav-back {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  min-width: var(--control-h);
+  min-height: var(--control-h);
+}
+/* 用边框画的左箭头；旋转后视觉左边会外扩，补一个 space-1 让箭头尖贴住留白线 */
+.chevron {
+  width: var(--space-3);
+  height: var(--space-3);
+  margin-left: var(--space-1);
+  border-left: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+}
+.nav-action {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: var(--control-h);
+  min-height: var(--control-h);
+  color: var(--color-accent);
+}
+.nav-action[aria-disabled="true"] { color: var(--color-text-2); cursor: default; }
+
+/* 正文 */
+.main { flex: 1; padding-top: var(--space-4); padding-bottom: var(--space-5); }
+.group + .group { margin-top: var(--space-5); }
+.group-title {
+  margin-bottom: var(--space-2);
+  padding-inline: var(--space-4);
+  font: var(--font-caption);
+  color: var(--color-text-2);
+}
+.card {
+  background: var(--color-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+.list { margin: 0; padding: 0; list-style: none; overflow: hidden; }
+.item + .item { border-top: 1px solid var(--color-line); }
+
+.notice { display: block; width: 100%; padding: var(--space-4); text-align: start; }
+button.notice:active { background: var(--color-bg); }
+button.notice[aria-busy="true"] { cursor: progress; }
+.notice:focus-visible { outline-offset: -2px; }
+.notice-head { display: flex; align-items: baseline; gap: var(--space-3); }
+.notice-title {
+  position: relative;
+  display: block;
+  flex: 1;
+  min-width: 0;
+  font: var(--font-body-strong);
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+.notice-time {
+  display: block;
+  flex: none;
+  font: var(--font-caption);
+  color: var(--color-text-2);
+  white-space: nowrap;
+}
+.notice-body {
+  display: block;
+  margin-top: var(--space-3);
+  font: var(--font-body);
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+/* 未读圆点挂在卡片内边距里，已读、未读的标题左边对齐。
+   top 0.8em = --font-body-strong 行高 1.6 的一半，即第一行的中线 */
+.dot {
+  position: absolute;
+  left: calc(var(--space-3) * -1);
+  top: calc(0.8em - var(--space-1));
+  width: var(--space-2);
+  height: var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+}
+
+/* 加载中 / 出错 / 没有通知 */
+.state { padding: var(--space-5) var(--space-4); text-align: center; }
+.state:focus:not(:focus-visible) { outline: none; }
+.state-title { font: var(--font-body-strong); color: var(--color-text); }
+.state-desc { font: var(--font-body); color: var(--color-text-2); }
+.state-title + .state-desc { margin-top: var(--space-2); }
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--control-h);
+  margin-top: var(--space-4);
+  padding-inline: var(--space-5);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-control);
+  color: var(--color-accent);
+}
+
+/* 底栏 */
+.footer {
+  position: sticky;
+  bottom: 0;
+  padding-top: var(--space-3);
+  padding-bottom: calc(var(--space-3) + env(safe-area-inset-bottom));
+  background: var(--color-card);
+  border-top: 1px solid var(--color-line);
+}
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: var(--control-h);
+  border-radius: var(--radius-control);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font: var(--font-body-strong);
+}
+.toast {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-3);
+  padding-block: var(--space-1);
+  padding-left: var(--space-3);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-control);
+}
+.toast-msg {
+  flex: 1 1 12em;
+  min-width: 0;
+  margin-block: var(--space-2);
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+.toast-actions { display: flex; margin-left: auto; }
+.btn-text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--control-h);
+  min-height: var(--control-h);
+  padding-inline: var(--space-3);
+  color: var(--color-text-2);
+}
+.btn-text.is-accent { color: var(--color-accent); }
+
+/* 按字形量间距：裁掉行盒上下的空白，再把汉字冒出 cap 线和基线的部分补回来 */
+@supports (text-box: trim-both cap alphabetic) {
+  .trim { text-box: trim-both cap alphabetic; padding-block: 0.16em 0.12em; }
+  /* 裁过以后第一行墨迹约占 0.16em + cap 高 0.7em + 0.12em ≈ 1em，中线落在 0.5em */
+  .dot { top: calc(0.5em - var(--space-1)); }
+}
+</style>
+</head>
+<body>
+<header class="nav gutter">
+  <div class="nav-inner">
+    <button type="button" class="nav-back" id="back" aria-label="返回"><span class="chevron" aria-hidden="true"></span></button>
+    <h1 class="nav-title trim" id="page-title" tabindex="-1">通知</h1>
+    <button type="button" class="nav-action" id="read-all" aria-disabled="true"><span class="btn-label trim">全部已读</span></button>
+  </div>
+</header>
+
+<main class="main gutter" id="main" aria-busy="true">
+  <div class="card state" id="loading" tabindex="-1">
+    <p class="state-desc trim">正在加载通知…</p>
+  </div>
+  <div class="card state" id="error" tabindex="-1" hidden>
+    <p class="state-title trim">通知没加载出来</p>
+    <p class="state-desc trim" id="error-msg"></p>
+    <button type="button" class="btn-secondary" id="retry"><span class="btn-label trim">重试</span></button>
+  </div>
+  <div class="card state" id="empty" tabindex="-1" hidden>
+    <p class="state-desc trim">暂时没有通知</p>
+  </div>
+  <div id="list" hidden></div>
+</main>
+
+<footer class="footer gutter">
+  <div class="toast" id="toast" hidden>
+    <p class="toast-msg trim" id="toast-msg"></p>
+    <div class="toast-actions">
+      <button type="button" class="btn-text" id="toast-close"><span class="btn-label trim">关闭</span></button>
+      <button type="button" class="btn-text is-accent" id="toast-retry"><span class="btn-label trim">重试</span></button>
+    </div>
+  </div>
+  <button type="button" class="btn-primary" id="settings"><span class="btn-label trim">通知设置</span></button>
+</footer>
+
+<p class="sr-only" id="live" aria-live="polite"></p>
+
+<script>
+(() => {
+  const API_LIST = './api/notices.json'
+  const API_READ_ALL = './api/notices/read-all'
+  const apiRead = (id) => `./api/notices/${encodeURIComponent(id)}/read`
+  /** fetch 没有默认超时；15 秒取自 UI 规则里的示例值 */
+  const TIMEOUT_MS = 15000
+
+  const $ = (sel) => document.querySelector(sel)
+  const els = {
+    main: $('#main'), title: $('#page-title'), back: $('#back'),
+    readAll: $('#read-all'), readAllLabel: $('#read-all .btn-label'),
+    loading: $('#loading'), error: $('#error'), errorMsg: $('#error-msg'), retry: $('#retry'),
+    empty: $('#empty'), list: $('#list'),
+    toast: $('#toast'), toastMsg: $('#toast-msg'), toastRetry: $('#toast-retry'), toastClose: $('#toast-close'),
+    live: $('#live'),
+  }
+
+  const MESSAGES = {
+    timeout: '请求超时了，请检查网络后重试。',
+    network: '网络连接失败，请检查网络后重试。',
+    http: '服务暂时不可用，请稍后重试。',
+    data: '返回的数据有误，请稍后重试。',
+  }
+
+  class RequestError extends Error {
+    constructor(kind, detail) {
+      super(MESSAGES[kind])
+      this.kind = kind
+      this.detail = detail
+    }
+  }
+
+  const isAbort = (err) => !!err && (err.name === 'TimeoutError' || err.name === 'AbortError')
+  const asRequestError = (err) => (err instanceof RequestError ? err : new RequestError(isAbort(err) ? 'timeout' : 'data', err))
+
+  /** iOS 16 以下的 WebView 没有 AbortSignal.timeout，用 AbortController 兜底 */
+  function timeoutSignal(ms) {
+    if (typeof AbortSignal.timeout === 'function') return AbortSignal.timeout(ms)
+    const controller = new AbortController()
+    setTimeout(() => controller.abort(new DOMException('请求超时', 'TimeoutError')), ms)
+    return controller.signal
+  }
+
+  async function request(url, init = {}) {
+    let res
+    try {
+      res = await fetch(url, { ...init, headers: { Accept: 'application/json' }, signal: timeoutSignal(TIMEOUT_MS) })
+    } catch (err) {
+      throw new RequestError(isAbort(err) ? 'timeout' : 'network', err)
+    }
+    if (!res.ok) throw new RequestError('http', `${res.status} ${url}`)
+    return res
+  }
+
+  const isNotice = (n) =>
+    !!n && (typeof n.id === 'number' || typeof n.id === 'string') &&
+    ['group', 'title', 'body', 'time'].every((k) => typeof n[k] === 'string') &&
+    typeof n.read === 'boolean'
+
+  function parseNotices(data) {
+    if (!Array.isArray(data)) throw new RequestError('data', '通知列表不是数组')
+    const bad = data.filter((n) => !isNotice(n))
+    if (bad.length) console.warn(`[notices] 丢弃 ${bad.length} 条字段不全的通知`, bad)
+    return data.filter(isNotice)
+  }
+
+  /** 当前通知状态，key 是 String(id)；DOM 只照着它更新 */
+  let notices = new Map()
+  let loaded = false
+  let readAllBusy = false
+  /** 当前提示条对应的操作：{ key, retry, focusTarget } */
+  let toastAction = null
+
+  const countUnread = () => [...notices.values()].filter((n) => !n.read).length
+  const noticeEl = (id) => els.list.querySelector(`.notice[data-id="${CSS.escape(id)}"]`)
+
+  function announce(text) {
+    els.live.textContent = ''
+    requestAnimationFrame(() => { els.live.textContent = text })
+  }
+
+  function focusEl(el) {
+    if (!el) return els.title.focus()
+    if (!el.matches('button, [tabindex]')) el.tabIndex = -1
+    el.focus()
+  }
+
+  function span(className, text) {
+    const el = document.createElement('span')
+    el.className = className
+    if (text != null) el.textContent = text
+    return el
+  }
+
+  function buildNotice(n) {
+    const unread = !n.read
+    const root = document.createElement(unread ? 'button' : 'div')
+    if (unread) root.type = 'button'
+    root.className = 'notice'
+    root.dataset.id = String(n.id)
+    const title = span('notice-title trim')
+    if (unread) {
+      const dot = span('dot')
+      dot.setAttribute('aria-hidden', 'true')
+      title.append(dot, span('sr-only', '未读，'))
+    }
+    title.append(n.title)
+    const head = span('notice-head')
+    head.append(title, span('notice-time trim', n.time))
+    root.append(head, span('notice-body trim', n.body))
+    return root
+  }
+
+  function buildGroups(list) {
+    const groups = new Map()
+    for (const n of list) groups.set(n.group, [...(groups.get(n.group) ?? []), n])
+    return [...groups].map(([name, items], i) => {
+      const section = document.createElement('section')
+      section.className = 'group'
+      section.setAttribute('aria-labelledby', `group-${i}`)
+      const h2 = document.createElement('h2')
+      h2.className = 'group-title trim'
+      h2.id = `group-${i}`
+      h2.textContent = name
+      const ul = document.createElement('ul')
+      ul.className = 'card list'
+      ul.setAttribute('role', 'list')
+      for (const n of items) {
+        const li = document.createElement('li')
+        li.className = 'item'
+        li.append(buildNotice(n))
+        ul.append(li)
+      }
+      section.append(h2, ul)
+      return section
+    })
+  }
+
+  /** 切换加载中 / 出错 / 空 / 列表；焦点在要藏起来的那块里时，先挪到新出现的那块，再藏 */
+  function showOnly(name) {
+    const views = { loading: els.loading, error: els.error, empty: els.empty, list: els.list }
+    const next = views[name]
+    next.hidden = false
+    const leaving = Object.values(views).filter((v) => v !== next)
+    if (leaving.some((v) => v.contains(document.activeElement))) focusEl(name === 'list' ? els.title : next)
+    for (const v of leaving) v.hidden = true
+    els.main.setAttribute('aria-busy', String(name === 'loading'))
+  }
+
+  function updateReadAll() {
+    els.readAllLabel.textContent = readAllBusy ? '标记中…' : '全部已读'
+    const off = !loaded || readAllBusy || countUnread() === 0
+    els.readAll.setAttribute('aria-disabled', String(off))
+  }
+
+  function showToast(message, action) {
+    toastAction = action
+    els.toastMsg.textContent = message
+    els.toast.hidden = false
+    announce(message)
+  }
+
+  function hideToast(focusTarget) {
+    if (els.toast.hidden) return
+    if (els.toast.contains(document.activeElement)) focusEl(focusTarget)
+    els.toast.hidden = true
+    toastAction = null
+  }
+
+  /** 把一批通知标成已读：替换成不可点的 div；焦点在旧按钮上时先落到新 div，再移除旧按钮 */
+  function applyRead(ids) {
+    const next = new Map(notices)
+    for (const id of ids) {
+      const n = next.get(id)
+      if (!n || n.read) continue
+      const updated = { ...n, read: true }
+      next.set(id, updated)
+      const old = noticeEl(id)
+      if (!old) continue
+      const fresh = buildNotice(updated)
+      if (old.contains(document.activeElement)) {
+        old.before(fresh)
+        focusEl(fresh)
+        old.remove()
+      } else {
+        old.replaceWith(fresh)
+      }
+    }
+    notices = next
+    updateReadAll()
+  }
+
+  async function load() {
+    loaded = false
+    updateReadAll()
+    showOnly('loading')
+    try {
+      const res = await request(API_LIST)
+      let data
+      try { data = await res.json() } catch (err) { throw asRequestError(err) }
+      const list = parseNotices(data)
+      notices = new Map(list.map((n) => [String(n.id), { ...n }]))
+      loaded = true
+      els.list.replaceChildren(...buildGroups(list))
+      showOnly(list.length ? 'list' : 'empty')
+      announce(list.length ? `已加载 ${list.length} 条通知，其中 ${countUnread()} 条未读` : '暂时没有通知')
+    } catch (err) {
+      const e = asRequestError(err)
+      console.error('[notices] 通知列表加载失败', e.kind, e.detail)
+      els.errorMsg.textContent = e.message
+      showOnly('error')
+      announce(`通知没加载出来。${e.message}`)
+    }
+    updateReadAll()
+  }
+
+  async function markRead(id) {
+    const n = notices.get(id)
+    const el = noticeEl(id)
+    if (!n || n.read || !el || el.getAttribute('aria-busy') === 'true') return
+    el.setAttribute('aria-busy', 'true')
+    try {
+      await request(apiRead(id), { method: 'POST' })
+      applyRead([id])
+      if (toastAction?.key === id) hideToast(noticeEl(id))
+      announce(`「${n.title}」已标为已读`)
+    } catch (err) {
+      const e = asRequestError(err)
+      console.error('[notices] 标为已读失败', id, e.kind, e.detail)
+      if (notices.get(id)?.read) return
+      showToast(`「${n.title}」没能标为已读：${e.message}`, { key: id, retry: () => markRead(id), focusTarget: () => noticeEl(id) })
+    } finally {
+      noticeEl(id)?.removeAttribute('aria-busy')
+    }
+  }
+
+  async function readAll() {
+    if (readAllBusy || !loaded || countUnread() === 0) return
+    readAllBusy = true
+    updateReadAll()
+    try {
+      await request(API_READ_ALL, { method: 'POST' })
+      applyRead([...notices.values()].filter((n) => !n.read).map((n) => String(n.id)))
+      hideToast(els.readAll)
+      announce('已全部标为已读')
+    } catch (err) {
+      const e = asRequestError(err)
+      console.error('[notices] 全部已读失败', e.kind, e.detail)
+      showToast(`没能全部标为已读：${e.message}`, { key: 'all', retry: readAll, focusTarget: () => els.readAll })
+    } finally {
+      readAllBusy = false
+      updateReadAll()
+    }
+  }
+
+  els.list.addEventListener('click', (event) => {
+    const target = event.target.closest('button.notice')
+    if (target) markRead(target.dataset.id)
+  })
+  els.readAll.addEventListener('click', readAll)
+  els.retry.addEventListener('click', load)
+  els.toastRetry.addEventListener('click', () => {
+    const action = toastAction
+    if (!action) return
+    hideToast(action.focusTarget())
+    action.retry()
+  })
+  els.toastClose.addEventListener('click', () => hideToast(toastAction?.focusTarget()))
+  els.back.addEventListener('click', () => {
+    if (history.length > 1) history.back()
+  })
+
+  load()
+})()
+</script>
+</body>
+</html>

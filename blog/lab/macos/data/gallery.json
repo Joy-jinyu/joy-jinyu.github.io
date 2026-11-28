@@ -1,0 +1,956 @@
+{
+  "gallery" : {
+    "checkbox" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 18,
+          "w" : 63,
+          "x" : 612,
+          "y" : 150
+        },
+        "baselineOffset" : 14,
+        "frame" : {
+          "h" : 18,
+          "w" : 63,
+          "x" : 612,
+          "y" : 150
+        }
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 18,
+          "w" : 63,
+          "x" : 464,
+          "y" : 150
+        },
+        "baselineOffset" : 14,
+        "frame" : {
+          "h" : 18,
+          "w" : 63,
+          "x" : 464,
+          "y" : 150
+        }
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 12,
+          "w" : 44,
+          "x" : 20,
+          "y" : 156
+        },
+        "baselineOffset" : 9.5,
+        "frame" : {
+          "h" : 12,
+          "w" : 44,
+          "x" : 20,
+          "y" : 156
+        }
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 16,
+          "w" : 61,
+          "x" : 316,
+          "y" : 152
+        },
+        "baselineOffset" : 13,
+        "frame" : {
+          "h" : 16,
+          "w" : 61,
+          "x" : 316,
+          "y" : 152
+        }
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 14,
+          "w" : 52,
+          "x" : 168,
+          "y" : 154
+        },
+        "baselineOffset" : 11,
+        "frame" : {
+          "h" : 14,
+          "w" : 52,
+          "x" : 168,
+          "y" : 154
+        }
+      }
+    },
+    "default" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 36,
+          "w" : 55,
+          "x" : 612,
+          "y" : 392
+        },
+        "baselineOffset" : 23,
+        "frame" : {
+          "h" : 36,
+          "w" : 55,
+          "x" : 612,
+          "y" : 392
+        }
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 28,
+          "w" : 47,
+          "x" : 464,
+          "y" : 400
+        },
+        "baselineOffset" : 19,
+        "frame" : {
+          "h" : 28,
+          "w" : 47,
+          "x" : 464,
+          "y" : 400
+        }
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 16,
+          "w" : 30,
+          "x" : 20,
+          "y" : 412
+        },
+        "baselineOffset" : 12,
+        "frame" : {
+          "h" : 16,
+          "w" : 30,
+          "x" : 20,
+          "y" : 412
+        }
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 43,
+          "x" : 316,
+          "y" : 404
+        },
+        "baselineOffset" : 17,
+        "frame" : {
+          "h" : 24,
+          "w" : 43,
+          "x" : 316,
+          "y" : 404
+        }
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 20,
+          "w" : 36,
+          "x" : 168,
+          "y" : 408
+        },
+        "baselineOffset" : 14,
+        "frame" : {
+          "h" : 20,
+          "w" : 36,
+          "x" : 168,
+          "y" : 408
+        }
+      }
+    },
+    "popUp" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 36,
+          "w" : 111,
+          "x" : 612,
+          "y" : 340
+        },
+        "baselineOffset" : 23,
+        "frame" : {
+          "h" : 36,
+          "w" : 111,
+          "x" : 612,
+          "y" : 340
+        }
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 28,
+          "w" : 97,
+          "x" : 464,
+          "y" : 348
+        },
+        "baselineOffset" : 19,
+        "frame" : {
+          "h" : 28,
+          "w" : 97,
+          "x" : 464,
+          "y" : 348
+        }
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 16,
+          "w" : 62,
+          "x" : 20,
+          "y" : 360
+        },
+        "baselineOffset" : 11.5,
+        "frame" : {
+          "h" : 16,
+          "w" : 62,
+          "x" : 20,
+          "y" : 360
+        }
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 89,
+          "x" : 316,
+          "y" : 352
+        },
+        "baselineOffset" : 16.5,
+        "frame" : {
+          "h" : 24,
+          "w" : 89,
+          "x" : 316,
+          "y" : 352
+        }
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 20,
+          "w" : 76,
+          "x" : 168,
+          "y" : 356
+        },
+        "baselineOffset" : 13.5,
+        "frame" : {
+          "h" : 20,
+          "w" : 76,
+          "x" : 168,
+          "y" : 356
+        }
+      }
+    },
+    "push" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 36,
+          "w" : 77,
+          "x" : 612,
+          "y" : 444
+        },
+        "baselineOffset" : 23,
+        "frame" : {
+          "h" : 36,
+          "w" : 77,
+          "x" : 612,
+          "y" : 444
+        }
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 28,
+          "w" : 69,
+          "x" : 464,
+          "y" : 452
+        },
+        "baselineOffset" : 19,
+        "frame" : {
+          "h" : 28,
+          "w" : 69,
+          "x" : 464,
+          "y" : 452
+        }
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 16,
+          "w" : 46,
+          "x" : 20,
+          "y" : 464
+        },
+        "baselineOffset" : 12,
+        "frame" : {
+          "h" : 16,
+          "w" : 46,
+          "x" : 20,
+          "y" : 464
+        }
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 65,
+          "x" : 316,
+          "y" : 456
+        },
+        "baselineOffset" : 17,
+        "frame" : {
+          "h" : 24,
+          "w" : 65,
+          "x" : 316,
+          "y" : 456
+        }
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 20,
+          "w" : 55,
+          "x" : 168,
+          "y" : 460
+        },
+        "baselineOffset" : 14,
+        "frame" : {
+          "h" : 20,
+          "w" : 55,
+          "x" : 168,
+          "y" : 460
+        }
+      }
+    },
+    "search" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 110,
+          "x" : 612,
+          "y" : 196
+        },
+        "baselineOffset" : 17,
+        "frame" : {
+          "h" : 24,
+          "w" : 110,
+          "x" : 612,
+          "y" : 196
+        }
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 110,
+          "x" : 464,
+          "y" : 196
+        },
+        "baselineOffset" : 17,
+        "frame" : {
+          "h" : 24,
+          "w" : 110,
+          "x" : 464,
+          "y" : 196
+        }
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 15,
+          "w" : 110,
+          "x" : 20,
+          "y" : 205
+        },
+        "baselineOffset" : 11,
+        "frame" : {
+          "h" : 15,
+          "w" : 110,
+          "x" : 20,
+          "y" : 205
+        }
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 110,
+          "x" : 316,
+          "y" : 196
+        },
+        "baselineOffset" : 17,
+        "frame" : {
+          "h" : 24,
+          "w" : 110,
+          "x" : 316,
+          "y" : 196
+        }
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 22,
+          "w" : 110,
+          "x" : 168,
+          "y" : 198
+        },
+        "baselineOffset" : 15,
+        "frame" : {
+          "h" : 22,
+          "w" : 110,
+          "x" : 168,
+          "y" : 198
+        }
+      }
+    },
+    "segmented" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 36,
+          "w" : 115,
+          "x" : 612,
+          "y" : 288
+        },
+        "baselineOffset" : 23,
+        "frame" : {
+          "h" : 36,
+          "w" : 115,
+          "x" : 612,
+          "y" : 288
+        }
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 28,
+          "w" : 99,
+          "x" : 464,
+          "y" : 296
+        },
+        "baselineOffset" : 19,
+        "frame" : {
+          "h" : 28,
+          "w" : 99,
+          "x" : 464,
+          "y" : 296
+        }
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 16,
+          "w" : 65,
+          "x" : 20,
+          "y" : 308
+        },
+        "baselineOffset" : 12,
+        "frame" : {
+          "h" : 16,
+          "w" : 65,
+          "x" : 20,
+          "y" : 308
+        }
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 91,
+          "x" : 316,
+          "y" : 300
+        },
+        "baselineOffset" : 17,
+        "frame" : {
+          "h" : 24,
+          "w" : 91,
+          "x" : 316,
+          "y" : 300
+        }
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 20,
+          "w" : 81,
+          "x" : 168,
+          "y" : 304
+        },
+        "baselineOffset" : 14,
+        "frame" : {
+          "h" : 20,
+          "w" : 81,
+          "x" : 168,
+          "y" : 304
+        }
+      }
+    },
+    "slider" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 20,
+          "w" : 100,
+          "x" : 612,
+          "y" : 44
+        },
+        "baselineOffset" : 0,
+        "frame" : {
+          "h" : 20,
+          "w" : 100,
+          "x" : 612,
+          "y" : 44
+        }
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 20,
+          "w" : 100,
+          "x" : 464,
+          "y" : 44
+        },
+        "baselineOffset" : 0,
+        "frame" : {
+          "h" : 20,
+          "w" : 100,
+          "x" : 464,
+          "y" : 44
+        }
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 12,
+          "w" : 100,
+          "x" : 20,
+          "y" : 52
+        },
+        "baselineOffset" : 6,
+        "frame" : {
+          "h" : 12,
+          "w" : 100,
+          "x" : 20,
+          "y" : 52
+        }
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 16,
+          "w" : 100,
+          "x" : 316,
+          "y" : 48
+        },
+        "baselineOffset" : 14,
+        "frame" : {
+          "h" : 16,
+          "w" : 100,
+          "x" : 316,
+          "y" : 48
+        }
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 14,
+          "w" : 100,
+          "x" : 168,
+          "y" : 50
+        },
+        "baselineOffset" : 9,
+        "frame" : {
+          "h" : 14,
+          "w" : 100,
+          "x" : 168,
+          "y" : 50
+        }
+      }
+    },
+    "switch" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 612,
+          "y" : 92
+        },
+        "baselineOffset" : 16.5,
+        "frame" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 612,
+          "y" : 92
+        }
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 464,
+          "y" : 92
+        },
+        "baselineOffset" : 16.5,
+        "frame" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 464,
+          "y" : 92
+        }
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 20,
+          "y" : 92
+        },
+        "baselineOffset" : 15,
+        "frame" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 20,
+          "y" : 92
+        }
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 316,
+          "y" : 92
+        },
+        "baselineOffset" : 16.5,
+        "frame" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 316,
+          "y" : 92
+        }
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 168,
+          "y" : 92
+        },
+        "baselineOffset" : 16,
+        "frame" : {
+          "h" : 24,
+          "w" : 54,
+          "x" : 168,
+          "y" : 92
+        }
+      }
+    },
+    "textField" : {
+      "extraLarge" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 90,
+          "x" : 612,
+          "y" : 248
+        },
+        "baselineOffset" : 17,
+        "frame" : {
+          "h" : 24,
+          "w" : 90,
+          "x" : 612,
+          "y" : 248
+        }
+      },
+      "large" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 90,
+          "x" : 464,
+          "y" : 248
+        },
+        "baselineOffset" : 17,
+        "frame" : {
+          "h" : 24,
+          "w" : 90,
+          "x" : 464,
+          "y" : 248
+        }
+      },
+      "mini" : {
+        "alignmentRect" : {
+          "h" : 19,
+          "w" : 90,
+          "x" : 20,
+          "y" : 253
+        },
+        "baselineOffset" : 13,
+        "frame" : {
+          "h" : 19,
+          "w" : 90,
+          "x" : 20,
+          "y" : 253
+        }
+      },
+      "regular" : {
+        "alignmentRect" : {
+          "h" : 24,
+          "w" : 90,
+          "x" : 316,
+          "y" : 248
+        },
+        "baselineOffset" : 17,
+        "frame" : {
+          "h" : 24,
+          "w" : 90,
+          "x" : 316,
+          "y" : 248
+        }
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 22,
+          "w" : 90,
+          "x" : 168,
+          "y" : 250
+        },
+        "baselineOffset" : 15,
+        "frame" : {
+          "h" : 22,
+          "w" : 90,
+          "x" : 168,
+          "y" : 250
+        }
+      }
+    }
+  },
+  "windows" : {
+    "controls" : {
+      "close" : {
+        "h" : 14,
+        "w" : 14,
+        "x" : 9,
+        "y" : 529
+      },
+      "contentLayoutRect" : {
+        "h" : 520,
+        "w" : 760,
+        "x" : 0,
+        "y" : 0
+      },
+      "contentView" : {
+        "h" : 520,
+        "w" : 760,
+        "x" : 0,
+        "y" : 0
+      },
+      "frame" : {
+        "h" : 552,
+        "w" : 760,
+        "x" : 190,
+        "y" : 198
+      },
+      "miniaturize" : {
+        "h" : 14,
+        "w" : 14,
+        "x" : 32,
+        "y" : 529
+      },
+      "titlebarPlusToolbar" : 32,
+      "zoom" : {
+        "h" : 14,
+        "w" : 14,
+        "x" : 55,
+        "y" : 529
+      }
+    },
+    "expanded" : {
+      "close" : {
+        "h" : 14,
+        "w" : 14,
+        "x" : 9,
+        "y" : 297
+      },
+      "contentLayoutRect" : {
+        "h" : 244,
+        "w" : 640,
+        "x" : 0,
+        "y" : 0
+      },
+      "contentView" : {
+        "h" : 320,
+        "w" : 640,
+        "x" : 0,
+        "y" : 0
+      },
+      "frame" : {
+        "h" : 320,
+        "w" : 640,
+        "x" : 130,
+        "y" : 490
+      },
+      "miniaturize" : {
+        "h" : 14,
+        "w" : 14,
+        "x" : 32,
+        "y" : 297
+      },
+      "titlebarPlusToolbar" : 76,
+      "zoom" : {
+        "h" : 14,
+        "w" : 14,
+        "x" : 55,
+        "y" : 297
+      }
+    },
+    "plain" : {
+      "close" : {
+        "h" : 14,
+        "w" : 14,
+        "x" : 9,
+        "y" : 309
+      },
+      "contentLayoutRect" : {
+        "h" : 300,
+        "w" : 480,
+        "x" : 0,
+        "y" : 0
+      },
+      "contentView" : {
+        "h" : 300,
+        "w" : 480,
+        "x" : 0,
+        "y" : 0
+      },
+      "frame" : {
+        "h" : 332,
+        "w" : 480,
+        "x" : 40,
+        "y" : 568
+      },
+      "miniaturize" : {
+        "h" : 14,
+        "w" : 14,
+        "x" : 32,
+        "y" : 309
+      },
+      "titlebarPlusToolbar" : 32,
+      "zoom" : {
+        "h" : 14,
+        "w" : 14,
+        "x" : 55,
+        "y" : 309
+      }
+    },
+    "sidebar" : {
+      "cell0InWindow" : {
+        "h" : 24,
+        "w" : 108,
+        "x" : 24,
+        "y" : 404
+      },
+      "close" : {
+        "h" : 14,
+        "w" : 14,
+        "x" : 19,
+        "y" : 447
+      },
+      "contentLabelInWindow" : {
+        "h" : 40,
+        "w" : 400,
+        "x" : 168,
+        "y" : 200
+      },
+      "contentLayoutRect" : {
+        "h" : 428,
+        "w" : 820,
+        "x" : 0,
+        "y" : 0
+      },
+      "contentView" : {
+        "h" : 480,
+        "w" : 820,
+        "x" : 0,
+        "y" : 0
+      },
+      "effectiveStyle" : 3,
+      "frame" : {
+        "h" : 480,
+        "w" : 820,
+        "x" : 160,
+        "y" : 300
+      },
+      "miniaturize" : {
+        "h" : 14,
+        "w" : 14,
+        "x" : 42,
+        "y" : 447
+      },
+      "rowHeight" : 24,
+      "rowRect0" : {
+        "h" : 24,
+        "w" : 140,
+        "x" : 0,
+        "y" : 0
+      },
+      "sidebarMax" : -1,
+      "sidebarMin" : 140,
+      "sidebarWidth" : 140,
+      "titlebarPlusToolbar" : 52,
+      "zoom" : {
+        "h" : 14,
+        "w" : 14,
+        "x" : 65,
+        "y" : 447
+      }
+    },
+    "unified" : {
+      "close" : {
+        "h" : 14,
+        "w" : 14,
+        "x" : 19,
+        "y" : 287
+      },
+      "contentLayoutRect" : {
+        "h" : 268,
+        "w" : 640,
+        "x" : 0,
+        "y" : 0
+      },
+      "contentView" : {
+        "h" : 320,
+        "w" : 640,
+        "x" : 0,
+        "y" : 0
+      },
+      "frame" : {
+        "h" : 320,
+        "w" : 640,
+        "x" : 70,
+        "y" : 550
+      },
+      "miniaturize" : {
+        "h" : 14,
+        "w" : 14,
+        "x" : 42,
+        "y" : 287
+      },
+      "titlebarPlusToolbar" : 52,
+      "zoom" : {
+        "h" : 14,
+        "w" : 14,
+        "x" : 65,
+        "y" : 287
+      }
+    },
+    "unifiedCompact" : {
+      "close" : {
+        "h" : 14,
+        "w" : 14,
+        "x" : 12,
+        "y" : 293
+      },
+      "contentLayoutRect" : {
+        "h" : 280,
+        "w" : 640,
+        "x" : 0,
+        "y" : 0
+      },
+      "contentView" : {
+        "h" : 320,
+        "w" : 640,
+        "x" : 0,
+        "y" : 0
+      },
+      "frame" : {
+        "h" : 320,
+        "w" : 640,
+        "x" : 100,
+        "y" : 520
+      },
+      "miniaturize" : {
+        "h" : 14,
+        "w" : 14,
+        "x" : 35,
+        "y" : 293
+      },
+      "titlebarPlusToolbar" : 40,
+      "zoom" : {
+        "h" : 14,
+        "w" : 14,
+        "x" : 58,
+        "y" : 293
+      }
+    }
+  }
+}

@@ -1,0 +1,182 @@
+{
+  "multicolor": {
+    "AppleAccentColor": null,
+    "AppleHighlightColor": null,
+    "dark": {
+      "controlAccentColor": "#007AFF",
+      "keyboardFocusIndicatorColor": "#1AA9FF a=0.498",
+      "linkColor": "#419CFF",
+      "selectedContentBackgroundColor": "#0059D1",
+      "selectedTextBackgroundColor": "#3F638B",
+      "systemBlue": "#0091FF"
+    },
+    "light": {
+      "controlAccentColor": "#007AFF",
+      "keyboardFocusIndicatorColor": "#0067F4 a=0.498",
+      "linkColor": "#0068DA",
+      "selectedContentBackgroundColor": "#0064E1",
+      "selectedTextBackgroundColor": "#B3D7FF",
+      "systemBlue": "#0088FF"
+    }
+  },
+  "blue": {
+    "AppleAccentColor": "4",
+    "AppleHighlightColor": null,
+    "dark": {
+      "controlAccentColor": "#007AFF",
+      "keyboardFocusIndicatorColor": "#1AA9FF a=0.498",
+      "linkColor": "#419CFF",
+      "selectedContentBackgroundColor": "#0059D1",
+      "selectedTextBackgroundColor": "#3F638B",
+      "systemBlue": "#0091FF"
+    },
+    "light": {
+      "controlAccentColor": "#007AFF",
+      "keyboardFocusIndicatorColor": "#0067F4 a=0.498",
+      "linkColor": "#0068DA",
+      "selectedContentBackgroundColor": "#0064E1",
+      "selectedTextBackgroundColor": "#B3D7FF",
+      "systemBlue": "#0088FF"
+    }
+  },
+  "purple": {
+    "AppleAccentColor": "5",
+    "AppleHighlightColor": null,
+    "dark": {
+      "controlAccentColor": "#A550A7",
+      "keyboardFocusIndicatorColor": "#DC78DE a=0.498",
+      "linkColor": "#419CFF",
+      "selectedContentBackgroundColor": "#803482",
+      "selectedTextBackgroundColor": "#705771",
+      "systemBlue": "#0091FF"
+    },
+    "light": {
+      "controlAccentColor": "#953D96",
+      "keyboardFocusIndicatorColor": "#842685 a=0.498",
+      "linkColor": "#0068DA",
+      "selectedContentBackgroundColor": "#7D2A7E",
+      "selectedTextBackgroundColor": "#DFC5E0",
+      "systemBlue": "#0088FF"
+    }
+  },
+  "pink": {
+    "AppleAccentColor": "6",
+    "AppleHighlightColor": null,
+    "dark": {
+      "controlAccentColor": "#F74F9E",
+      "keyboardFocusIndicatorColor": "#FF77D4 a=0.498",
+      "linkColor": "#419CFF",
+      "selectedContentBackgroundColor": "#C93379",
+      "selectedTextBackgroundColor": "#89576E",
+      "systemBlue": "#0091FF"
+    },
+    "light": {
+      "controlAccentColor": "#F74F9E",
+      "keyboardFocusIndicatorColor": "#EC398D a=0.498",
+      "linkColor": "#0068DA",
+      "selectedContentBackgroundColor": "#D93B86",
+      "selectedTextBackgroundColor": "#FDCBE2",
+      "systemBlue": "#0088FF"
+    }
+  },
+  "red": {
+    "AppleAccentColor": "0",
+    "AppleHighlightColor": null,
+    "dark": {
+      "controlAccentColor": "#FF5257",
+      "keyboardFocusIndicatorColor": "#FF7A80 a=0.498",
+      "linkColor": "#419CFF",
+      "selectedContentBackgroundColor": "#D13539",
+      "selectedTextBackgroundColor": "#8B5759",
+      "systemBlue": "#0091FF"
+    },
+    "light": {
+      "controlAccentColor": "#E0383E",
+      "keyboardFocusIndicatorColor": "#D32127 a=0.498",
+      "linkColor": "#0068DA",
+      "selectedContentBackgroundColor": "#C4262B",
+      "selectedTextBackgroundColor": "#F6C4C5",
+      "systemBlue": "#0088FF"
+    }
+  },
+  "orange": {
+    "AppleAccentColor": "1",
+    "AppleHighlightColor": null,
+    "dark": {
+      "controlAccentColor": "#F7821B",
+      "keyboardFocusIndicatorColor": "#FFB33A a=0.498",
+      "linkColor": "#419CFF",
+      "selectedContentBackgroundColor": "#C96003",
+      "selectedTextBackgroundColor": "#896647",
+      "systemBlue": "#0091FF"
+    },
+    "light": {
+      "controlAccentColor": "#F7821B",
+      "keyboardFocusIndicatorColor": "#EC7002 a=0.498",
+      "linkColor": "#0068DA",
+      "selectedContentBackgroundColor": "#D96B0A",
+      "selectedTextBackgroundColor": "#FDDABB",
+      "systemBlue": "#0088FF"
+    }
+  },
+  "yellow": {
+    "AppleAccentColor": "2",
+    "AppleHighlightColor": null,
+    "dark": {
+      "controlAccentColor": "#FFC600",
+      "keyboardFocusIndicatorColor": "#FFFF1A a=0.498",
+      "linkColor": "#419CFF",
+      "selectedContentBackgroundColor": "#D19E00",
+      "selectedTextBackgroundColor": "#8B7A3F",
+      "systemBlue": "#0091FF"
+    },
+    "light": {
+      "controlAccentColor": "#FFC726",
+      "keyboardFocusIndicatorColor": "#F4B90E a=0.498",
+      "linkColor": "#0068DA",
+      "selectedContentBackgroundColor": "#E1AC15",
+      "selectedTextBackgroundColor": "#FFEEBE",
+      "systemBlue": "#0088FF"
+    }
+  },
+  "green": {
+    "AppleAccentColor": "3",
+    "AppleHighlightColor": null,
+    "dark": {
+      "controlAccentColor": "#62BA46",
+      "keyboardFocusIndicatorColor": "#8DF56C a=0.498",
+      "linkColor": "#419CFF",
+      "selectedContentBackgroundColor": "#43932A",
+      "selectedTextBackgroundColor": "#5C7654",
+      "systemBlue": "#0091FF"
+    },
+    "light": {
+      "controlAccentColor": "#62BA46",
+      "keyboardFocusIndicatorColor": "#4EAB30 a=0.498",
+      "linkColor": "#0068DA",
+      "selectedContentBackgroundColor": "#4DA033",
+      "selectedTextBackgroundColor": "#D0EAC8",
+      "systemBlue": "#0088FF"
+    }
+  },
+  "graphite": {
+    "AppleAccentColor": " -1",
+    "AppleHighlightColor": null,
+    "dark": {
+      "controlAccentColor": "#8C8C8C",
+      "keyboardFocusIndicatorColor": "#C3C3C3 a=0.498",
+      "linkColor": "#419CFF",
+      "selectedContentBackgroundColor": "#696969",
+      "selectedTextBackgroundColor": "#696969",
+      "systemBlue": "#0091FF"
+    },
+    "light": {
+      "controlAccentColor": "#989898",
+      "keyboardFocusIndicatorColor": "#99999E",
+      "linkColor": "#0068DA",
+      "selectedContentBackgroundColor": "#808080",
+      "selectedTextBackgroundColor": "#E0E0E0",
+      "systemBlue": "#0088FF"
+    }
+  }
+}

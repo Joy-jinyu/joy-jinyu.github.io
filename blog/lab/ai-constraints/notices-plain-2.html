@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>通知</title>
+<style>
+/* ===== tokens.css（原样复制，勿改） ===== */
+/* 「团队空间」App 的设计变量。浅色、深色各一套。
+   成对的颜色（accent / on-accent，card 上的 text、text-2、danger）对比度都在 4.5:1 以上；
+   accent 当文字用时只能放在 card 上（放在 bg 上只有 4.22:1）。 */
+:root {
+  --color-accent: #b65a3c;      --color-on-accent: #ffffff;
+  --color-bg: #f4f4f1;          --color-card: #ffffff;
+  --color-text: #1c1c1a;        --color-text-2: #5f5e59;
+  --color-line: #e7e6e1;        --color-danger: #b42318;
+  --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-title: 600 18px/1.4 var(--font-sans);
+  --font-body: 400 15px/1.6 var(--font-sans);
+  --font-body-strong: 600 15px/1.6 var(--font-sans);
+  --font-caption: 400 13px/1.5 var(--font-sans);
+  --radius-card: 16px;  --radius-control: 10px;  --radius-pill: 999px;
+  --control-h: 44px;    --control-h-sm: 32px;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px rgb(0 0 0 / 0.06);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-accent: #d97757;    --color-on-accent: #1a1a19;
+    --color-bg: #141413;        --color-card: #1f1e1c;
+    --color-text: #f0efea;      --color-text-2: #a3a199;
+    --color-line: #2f2e2b;      --color-danger: #f97066;
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3);
+  }
+}
+
+/* ===== 页面级派生变量：团队 tokens 里没有的角色，全部由上面的语义变量推出 ===== */
+:root {
+  --color-pressed: color-mix(in srgb, var(--color-text) 8%, transparent);
+  --size-dot: 8px;
+  --page-max: 640px;
+  --bar-h: calc(var(--control-h) + var(--space-2) * 2);
+  --safe-l: max(var(--space-4), env(safe-area-inset-left));
+  --safe-r: max(var(--space-4), env(safe-area-inset-right));
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+/* ===== 基础 ===== */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font: var(--font-body);
+  text-autospace: normal;
+  -webkit-tap-highlight-color: transparent;
+}
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; margin: 0; cursor: pointer; }
+button:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+h1, h2, p { margin: 0; }
+ul { margin: 0; padding: 0; list-style: none; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ===== 顶部导航 ===== */
+.nav {
+  position: sticky; top: 0; z-index: 2;
+  padding-top: env(safe-area-inset-top);
+  background: var(--color-card);
+  border-bottom: 1px solid var(--color-line);
+}
+.nav-inner {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  max-width: var(--page-max);
+  min-height: var(--control-h);
+  margin-inline: auto;
+  padding-inline: max(var(--space-1), env(safe-area-inset-left)) max(var(--space-1), env(safe-area-inset-right));
+}
+.nav-title { font: var(--font-title); text-align: center; }
+.nav-back {
+  justify-self: start;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--control-h); height: var(--control-h);
+  border-radius: var(--radius-control);
+}
+.nav-back::before {
+  content: "";
+  width: 10px; height: 10px;
+  border-left: 2px solid currentColor; border-bottom: 2px solid currentColor;
+  transform: translateX(2px) rotate(45deg);
+}
+.nav-action {
+  justify-self: end;
+  min-height: var(--control-h);
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-control);
+  color: var(--color-accent);
+  white-space: nowrap;
+}
+.nav-back:active, .nav-action:not([aria-disabled="true"]):active { background: var(--color-pressed); }
+.nav-action[aria-disabled="true"] { color: var(--color-text-2); opacity: 0.5; cursor: default; }
+
+/* ===== 主体 ===== */
+.main {
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding: 0 var(--safe-r) calc(var(--bar-h) + var(--safe-b) + var(--space-5)) var(--safe-l);
+}
+.group-title {
+  padding: var(--space-5) var(--space-4) var(--space-2);
+  font: var(--font-caption);
+  color: var(--color-text-2);
+}
+.card {
+  background: var(--color-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.card > li + li { border-top: 1px solid var(--color-line); }
+
+/* 一条通知：左列是固定宽度的圆点槽，已读条目也保留这一列，标题起始边才不会跳 */
+.notice {
+  display: grid;
+  grid-template-columns: var(--size-dot) minmax(0, 1fr);
+  column-gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+}
+.notice:focus-visible { outline: 2px solid var(--color-accent); outline-offset: -2px; }
+button.notice:active { background: var(--color-pressed); }
+.notice[aria-busy="true"] { opacity: 0.6; cursor: progress; }
+.notice-text { display: block; }
+.dot-slot { font: var(--font-body-strong); height: 1lh; display: flex; align-items: center; }
+.dot { width: var(--size-dot); height: var(--size-dot); border-radius: var(--radius-pill); background: var(--color-accent); }
+.notice-head { display: flex; align-items: baseline; gap: var(--space-3); }
+.notice-title { flex: 1; min-width: 0; font: var(--font-body-strong); overflow-wrap: anywhere; }
+.notice-time { flex: none; font: var(--font-caption); color: var(--color-text-2); white-space: nowrap; }
+.notice-body { display: block; margin-top: var(--space-1); color: var(--color-text-2); overflow-wrap: anywhere; }
+
+@media (hover: hover) {
+  button.notice:hover, .nav-back:hover, .nav-action:not([aria-disabled="true"]):hover { background: var(--color-pressed); }
+}
+
+/* ===== 加载 / 空 / 失败 ===== */
+.skeleton { margin-top: var(--space-5); }
+.skeleton li { padding: var(--space-3) var(--space-4) var(--space-3) calc(var(--space-4) + var(--size-dot) + var(--space-2)); }
+.bone { height: var(--space-3); border-radius: var(--radius-pill); background: var(--color-line); animation: pulse 1.2s ease-in-out infinite alternate; }
+.bone + .bone { margin-top: var(--space-2); width: 70%; }
+@keyframes pulse { from { opacity: 1; } to { opacity: 0.4; } }
+
+.state {
+  display: flex; flex-direction: column; align-items: center; gap: var(--space-2);
+  padding: calc(var(--space-5) * 2) var(--space-4);
+  text-align: center;
+}
+.state-title { font: var(--font-body-strong); }
+.state-desc { color: var(--color-text-2); }
+.state-retry {
+  margin-top: var(--space-2);
+  min-height: var(--control-h);
+  padding-inline: var(--space-5);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-control);
+  background: var(--color-card);
+}
+.state-retry:active { background: var(--color-pressed); }
+
+/* ===== 底部固定按钮 ===== */
+.bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 2;
+  padding-bottom: var(--safe-b);
+  background: var(--color-bg);
+  border-top: 1px solid var(--color-line);
+}
+.bar-inner {
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding: var(--space-2) var(--safe-r) var(--space-2) var(--safe-l);
+}
+.bar-btn {
+  display: block; width: 100%;
+  min-height: var(--control-h);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-control);
+  background: var(--color-card);
+  font: var(--font-body-strong);
+}
+.bar-btn:active { background: var(--color-pressed); }
+
+/* ===== 轻提示 ===== */
+.toast {
+  position: fixed; left: 0; right: 0; z-index: 3;
+  bottom: calc(var(--bar-h) + var(--safe-b) + var(--space-3));
+  width: fit-content;
+  max-width: calc(100% - var(--space-4) * 2);
+  margin-inline: auto;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-control);
+  background: var(--color-text);
+  color: var(--color-bg);
+  font: var(--font-caption);
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+}
+.toast.is-shown { opacity: 1; visibility: visible; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bone { animation: none; }
+  .toast { transition: none; }
+}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="nav-inner">
+    <button type="button" class="nav-back" id="back" aria-label="返回" title="返回"></button>
+    <h1 class="nav-title">通知</h1>
+    <button type="button" class="nav-action" id="read-all" aria-disabled="true">全部已读</button>
+  </div>
+</header>
+
+<main class="main" id="main" aria-busy="true">
+  <div id="content"></div>
+</main>
+
+<div class="bar">
+  <div class="bar-inner">
+    <button type="button" class="bar-btn" id="settings">通知设置</button>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="sr-only" id="announcer" aria-live="polite"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  var API_LIST = './api/notices.json';
+  var API_READ = function (id) { return './api/notices/' + encodeURIComponent(String(id)) + '/read'; };
+  var API_READ_ALL = './api/notices/read-all';
+  // 通知设置页地址需求里没给，先占位
+  var SETTINGS_URL = './notice-settings.html';
+  // WebView 弱网下 fetch 可能一直挂着，超时后给出失败态而不是无限转圈
+  var REQUEST_TIMEOUT_MS = 10000;
+  var TOAST_MS = 3000;
+
+  var content = document.getElementById('content');
+  var main = document.getElementById('main');
+  var readAllBtn = document.getElementById('read-all');
+  var toastEl = document.getElementById('toast');
+  var announcer = document.getElementById('announcer');
+
+  var notices = [];
+  var pending = new Set();
+  var readAllPending = false;
+  var loadState = 'loading';
+  var toastTimer = 0;
+
+  function request(url, options) {
+    var ctrl = new AbortController();
+    var timer = setTimeout(function () { ctrl.abort(); }, REQUEST_TIMEOUT_MS);
+    var opts = Object.assign({ headers: { Accept: 'application/json' }, signal: ctrl.signal }, options);
+    return fetch(url, opts).then(function (res) {
+      clearTimeout(timer);
+      if (!res.ok) {
+        var err = new Error('HTTP ' + res.status);
+        err.status = res.status;
+        throw err;
+      }
+      return res;
+    }, function (err) {
+      clearTimeout(timer);
+      throw err;
+    });
+  }
+
+  function isNotice(n) {
+    return n !== null && typeof n === 'object' &&
+      (typeof n.id === 'number' || typeof n.id === 'string') &&
+      typeof n.group === 'string' && typeof n.title === 'string' &&
+      typeof n.body === 'string' && typeof n.time === 'string' &&
+      typeof n.read === 'boolean';
+  }
+
+  function el(tag, className, text) {
+    var node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
+
+  function showToast(message) {
+    clearTimeout(toastTimer);
+    toastEl.textContent = message;
+    toastEl.classList.add('is-shown');
+    toastTimer = setTimeout(function () { toastEl.classList.remove('is-shown'); }, TOAST_MS);
+  }
+
+  function announce(message) {
+    announcer.textContent = '';
+    setTimeout(function () { announcer.textContent = message; }, 50);
+  }
+
+  function unreadCount() {
+    return notices.filter(function (n) { return !n.read; }).length;
+  }
+
+  function syncReadAllBtn() {
+    var off = loadState !== 'ready' || readAllPending || unreadCount() === 0;
+    readAllBtn.setAttribute('aria-disabled', String(off));
+    readAllBtn.setAttribute('aria-busy', String(readAllPending));
+  }
+
+  /* ---------- 渲染 ---------- */
+
+  function renderNotice(n) {
+    var row = el(n.read ? 'div' : 'button', 'notice');
+    row.dataset.id = String(n.id);
+    if (!n.read) row.type = 'button';
+
+    var slot = el('span', 'dot-slot');
+    slot.setAttribute('aria-hidden', 'true');
+    if (!n.read) slot.appendChild(el('span', 'dot'));
+
+    var head = el('span', 'notice-head');
+    var title = el('span', 'notice-title');
+    if (!n.read) title.appendChild(el('span', 'sr-only', '未读，'));
+    title.appendChild(document.createTextNode(n.title));
+    head.appendChild(title);
+    head.appendChild(el('span', 'notice-time', n.time));
+
+    var text = el('span', 'notice-text');
+    text.appendChild(head);
+    text.appendChild(el('span', 'notice-body', n.body));
+
+    row.appendChild(slot);
+    row.appendChild(text);
+    return row;
+  }
+
+  function renderList() {
+    var groups = new Map();
+    notices.forEach(function (n) {
+      if (!groups.has(n.group)) groups.set(n.group, []);
+      groups.get(n.group).push(n);
+    });
+
+    var frag = document.createDocumentFragment();
+    var i = 0;
+    groups.forEach(function (items, name) {
+      var headingId = 'group-' + (i++);
+      var section = el('section');
+      section.setAttribute('aria-labelledby', headingId);
+      var h2 = el('h2', 'group-title', name);
+      h2.id = headingId;
+      var ul = el('ul', 'card');
+      items.forEach(function (n) {
+        var li = el('li');
+        li.appendChild(renderNotice(n));
+        ul.appendChild(li);
+      });
+      section.appendChild(h2);
+      section.appendChild(ul);
+      frag.appendChild(section);
+    });
+    content.replaceChildren(frag);
+  }
+
+  function renderSkeleton() {
+    var ul = el('ul', 'card skeleton');
+    ul.setAttribute('aria-hidden', 'true');
+    for (var i = 0; i < 3; i++) {
+      var li = el('li');
+      li.appendChild(el('div', 'bone'));
+      li.appendChild(el('div', 'bone'));
+      ul.appendChild(li);
+    }
+    content.replaceChildren(el('p', 'sr-only', '正在加载通知'), ul);
+  }
+
+  function renderState(title, desc, withRetry) {
+    var box = el('div', 'state');
+    box.appendChild(el('p', 'state-title', title));
+    if (desc) box.appendChild(el('p', 'state-desc', desc));
+    if (withRetry) {
+      var btn = el('button', 'state-retry', '重试');
+      btn.type = 'button';
+      btn.addEventListener('click', load);
+      box.appendChild(btn);
+    }
+    content.replaceChildren(box);
+  }
+
+  function errorCopy(err) {
+    if (!navigator.onLine) return ['网络未连接', '连接网络后重试。'];
+    if (err && (err.status === 401 || err.status === 403)) return ['没有权限查看通知', '请重新登录后再试。'];
+    return ['没能加载通知', '请检查网络后重试。'];
+  }
+
+  /* ---------- 数据 ---------- */
+
+  function load() {
+    loadState = 'loading';
+    main.setAttribute('aria-busy', 'true');
+    syncReadAllBtn();
+    renderSkeleton();
+
+    request(API_LIST, { cache: 'no-store' })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (!Array.isArray(data)) throw new Error('通知数据格式不对：期望数组');
+        var valid = data.filter(isNotice);
+        if (valid.length !== data.length) {
+          console.warn('[notices] 跳过 ' + (data.length - valid.length) + ' 条字段不完整的通知', data);
+        }
+        notices = valid;
+        loadState = 'ready';
+        if (notices.length === 0) renderState('没有通知', '', false);
+        else renderList();
+      })
+      .catch(function (err) {
+        console.error('[notices] 加载失败', err);
+        notices = [];
+        loadState = 'error';
+        var copy = errorCopy(err);
+        renderState(copy[0], copy[1], true);
+      })
+      .finally(function () {
+        main.setAttribute('aria-busy', 'false');
+        syncReadAllBtn();
+      });
+  }
+
+  // 已读后按钮换成 div：焦点原本在这条上就留在这条上，键盘用户不会被甩回页首
+  function applyRead(id) {
+    var n = notices.find(function (x) { return String(x.id) === String(id); });
+    if (!n || n.read) return;
+    n.read = true;
+    var old = content.querySelector('.notice[data-id="' + CSS.escape(String(id)) + '"]');
+    if (!old) return;
+    var hadFocus = document.activeElement === old;
+    var next = renderNotice(n);
+    old.replaceWith(next);
+    if (hadFocus) {
+      next.tabIndex = -1;
+      next.focus();
+    }
+  }
+
+  function markRead(id, row) {
+    var key = String(id);
+    if (pending.has(key)) return;
+    pending.add(key);
+    row.setAttribute('aria-busy', 'true');
+
+    request(API_READ(id), { method: 'POST' })
+      .then(function () {
+        applyRead(id);
+        syncReadAllBtn();
+      })
+      .catch(function (err) {
+        console.error('[notices] 标为已读失败', id, err);
+        showToast('没能标为已读，请检查网络后重试。');
+      })
+      .finally(function () {
+        pending.delete(key);
+        if (row.isConnected) row.removeAttribute('aria-busy');
+      });
+  }
+
+  function markAllRead() {
+    if (readAllBtn.getAttribute('aria-disabled') === 'true') return;
+    readAllPending = true;
+    syncReadAllBtn();
+
+    request(API_READ_ALL, { method: 'POST' })
+      .then(function () {
+        notices.filter(function (n) { return !n.read; }).forEach(function (n) { applyRead(n.id); });
+        announce('已全部标为已读');
+      })
+      .catch(function (err) {
+        console.error('[notices] 全部已读失败', err);
+        showToast('没能全部标为已读，请检查网络后重试。');
+      })
+      .finally(function () {
+        readAllPending = false;
+        syncReadAllBtn();
+      });
+  }
+
+  /* ---------- 事件 ---------- */
+
+  content.addEventListener('click', function (e) {
+    var row = e.target.closest('button.notice');
+    if (row) markRead(row.dataset.id, row);
+  });
+  readAllBtn.addEventListener('click', markAllRead);
+  document.getElementById('back').addEventListener('click', function () { history.back(); });
+  document.getElementById('settings').addEventListener('click', function () { location.href = SETTINGS_URL; });
+  window.addEventListener('online', function () { if (loadState === 'error') load(); });
+
+  load();
+})();
+</script>
+</body>
+</html>

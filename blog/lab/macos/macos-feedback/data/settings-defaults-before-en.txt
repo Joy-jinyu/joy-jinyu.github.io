@@ -1,0 +1,4 @@
+{
+    "NSWindow Frame com_apple_SwiftUI_Settings_window" = "700 693 420 167 0 0 1512 949 ";
+    "com_apple_SwiftUI_Settings_selectedTabIndex" = 0;
+}

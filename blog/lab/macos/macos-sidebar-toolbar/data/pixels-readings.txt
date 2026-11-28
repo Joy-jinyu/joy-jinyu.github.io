@@ -1,0 +1,146 @@
+== 侧边栏玻璃：左上角（白色描边逐行起点）、左边和顶边
+bg #FFFFFF top y=16px left x=16px
+starts: -1,-1,-1,-1,-1,-1,52,44,40,37,35,33,31,30,29,28,27,26,25,24,23,23,22,21,21,20,20,19,19,19,18,18,18,18,17,17,17,17,17,17,17,17,17,17,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16
+45° 等效圆角半径约 38px = 18.8pt
+size 1720x920px
+0px (0.0pt): #F7F7F7 a=255
+2px (1.0pt): #F6F6F6 a=255
+6px (3.0pt): #F5F5F5 a=255
+9px (4.5pt): #F4F4F4 a=255
+13px (6.5pt): #F3F3F3 a=255
+16px (8.0pt): #FFFFFF a=255
+17px (8.5pt): #FEFEFE a=255
+18px (9.0pt): #FAFAFA a=255
+size 1720x920px
+0px (0.0pt): #FDFDFD a=255
+1px (0.5pt): #FCFCFC a=255
+2px (1.0pt): #FAFAFA a=255
+6px (3.0pt): #F9F9F9 a=255
+10px (5.0pt): #F8F8F8 a=255
+14px (7.0pt): #F7F7F7 a=255
+16px (8.0pt): #FFFFFF a=255
+17px (8.5pt): #FEFEFE a=255
+18px (9.0pt): #FAFAFA a=255
+== 选中条（中号）：左上角、竖直范围、水平范围
+bg #FAFAFA top y=206px left x=36px
+starts: -1,-1,-1,-1,-1,-1,47,44,43,41,40,39,39,38,37,37,37,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36
+45° 等效圆角半径约 14px = 6.8pt
+size 1720x920px
+195px (97.5pt): #FAFAFA a=255
+206px (103.0pt): #007AFF a=255
+228px (114.0pt): #C8E6FF a=255
+229px (114.5pt): #FFFEFF a=255
+230px (115.0pt): #8ACAFF a=255
+231px (115.5pt): #007AFF a=255
+233px (116.5pt): #009DFF a=255
+234px (117.0pt): #FFFFFF a=255
+236px (118.0pt): #008AFF a=255
+237px (118.5pt): #007AFF a=255
+270px (135.0pt): #FAFAFA a=255
+size 1720x920px
+20px (10.0pt): #FAFAFA a=255
+36px (18.0pt): #0086FF a=255
+37px (18.5pt): #007AFF a=255
+57px (28.5pt): #0091FF a=255
+58px (29.0pt): #BBE0FF a=255
+59px (29.5pt): #FFFFFF a=255
+63px (31.5pt): #FFFEFF a=255
+64px (32.0pt): #FFFFFF a=255
+65px (32.5pt): #FFFEFF a=255
+66px (33.0pt): #FFFFFF a=255
+70px (35.0pt): #FEFFFF a=255
+71px (35.5pt): #DDEFFF a=255
+72px (36.0pt): #1EA3FF a=255
+73px (36.5pt): #007AFF a=255
+275px (137.5pt): #0086FF a=255
+276px (138.0pt): #FAFAFA a=255
+293px (146.5pt): #FAFAF9 a=255
+294px (147.0pt): #FDFDFD a=255
+295px (147.5pt): #FFFFFF a=255
+296px (148.0pt): #F1F1F1 a=255
+299px (149.5pt): #F2F2F2 a=255
+== 侧边栏选中条颜色（at 250 212）和选中行前景（at 103 238）
+main-light-key pill=#007AFF fg=#FFFFFF
+main-light-tablefocus pill=#EFEFEF fg=#007AFF
+main-light-inactive pill=#F2F2F2 fg=#007AFF
+main-dark-key pill=#008EFF fg=#FFFFFF
+main-dark-tablefocus pill=#2C3134 fg=#007AFF
+main-dark-inactive pill=#2F3336 fg=#007AFF
+== 没选中的侧边栏图标（Inbox 行）
+main-light-key
+size 1720x920px
+100px (50.0pt): #FAFAFA a=255
+113px (56.5pt): #2E2E2E a=255
+114px (57.0pt): #000000 a=255
+115px (57.5pt): #393939 a=255
+116px (58.0pt): #FAFAFA a=255
+119px (59.5pt): #656565 a=255
+120px (60.0pt): #000000 a=255
+122px (61.0pt): #C5C5C5 a=255
+123px (61.5pt): #FAFAFA a=255
+128px (64.0pt): #3C3C3C a=255
+129px (64.5pt): #000000 a=255
+130px (65.0pt): #272727 a=255
+131px (65.5pt): #FAFAFA a=255
+134px (67.0pt): #858585 a=255
+135px (67.5pt): #000000 a=255
+137px (68.5pt): #7A7A7A a=255
+138px (69.0pt): #FAFAFA a=255
+143px (71.5pt): #F9F9F9 a=255
+144px (72.0pt): #2F2F2F a=255
+145px (72.5pt): #000000 a=255
+146px (73.0pt): #313131 a=255
+147px (73.5pt): #FAFAFA a=255
+150px (75.0pt): #313131 a=255
+main-dark-key
+size 1720x920px
+100px (50.0pt): #1D2225 a=255
+113px (56.5pt): #F7F7F7 a=255
+114px (57.0pt): #FFFFFF a=255
+115px (57.5pt): #EDEEEE a=255
+116px (58.0pt): #1D2225 a=255
+119px (59.5pt): #C6C7C7 a=255
+120px (60.0pt): #FFFFFF a=255
+122px (61.0pt): #6E7274 a=255
+123px (61.5pt): #1D2225 a=255
+128px (64.0pt): #ECECEC a=255
+129px (64.5pt): #FFFFFF a=255
+130px (65.0pt): #FEFEFE a=255
+131px (65.5pt): #22272A a=255
+132px (66.0pt): #1D2225 a=255
+134px (67.0pt): #A9AAAB a=255
+135px (67.5pt): #FFFFFF a=255
+137px (68.5pt): #B3B4B5 a=255
+138px (69.0pt): #1D2225 a=255
+143px (71.5pt): #262B2E a=255
+144px (72.0pt): #EFEFF0 a=255
+145px (72.5pt): #FFFFFF a=255
+146px (73.0pt): #FCFCFC a=255
+147px (73.5pt): #23282B a=255
+148px (74.0pt): #1D2225 a=255
+149px (74.5pt): #24292C a=255
+150px (75.0pt): #FCFCFC a=255
+== 表格颜色
+tables-light-key fullWidth row1=#FFFFFF row2=#F4F5F5 selUnfocused=#DBDCDC inset selFocused=#0064E1
+tables-dark-key fullWidth row1=#242A2E row2=#2E3439 selUnfocused=#454646 inset selFocused=#0058D0
+== inset 选中块的左右边
+size 1920x664px
+640px (320.0pt): #FFFFFF a=255
+650px (325.0pt): #0364E2 a=255
+651px (325.5pt): #0065E1 a=255
+652px (326.0pt): #0064E1 a=255
+653px (326.5pt): #0065E1 a=255
+654px (327.0pt): #0064E2 a=255
+655px (327.5pt): #0065E1 a=255
+656px (328.0pt): #0165E0 a=255
+657px (328.5pt): #0364E1 a=255
+658px (329.0pt): #0064E2 a=255
+659px (329.5pt): #0165E0 a=255
+660px (330.0pt): #0165E1 a=255
+size 1920x664px
+1255px (627.5pt): #0064E2 a=255
+1256px (628.0pt): #0364E1 a=255
+1257px (628.5pt): #0165E1 a=255
+1258px (629.0pt): #0364E2 a=255
+1259px (629.5pt): #0065E1 a=255
+1260px (630.0pt): #FFFFFF a=255

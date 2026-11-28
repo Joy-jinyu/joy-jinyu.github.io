@@ -1,0 +1,424 @@
+{
+  "file": "token1.html",
+  "errors": [],
+  "cssFacts": {
+    "transitionAll": false,
+    "outlineNone": false,
+    "focusVisible": true,
+    "focusRule": false,
+    "active": true,
+    "hoverRules": 0,
+    "hoverInMediaHover": false,
+    "reducedMotion": false,
+    "tapHighlight": "transparent",
+    "tabularNums": true,
+    "safeArea": false,
+    "vh100": false,
+    "dvh": false,
+    "textWrap": false,
+    "cssVars": 17,
+    "transitions": [],
+    "animations": [],
+    "keyframes": 0
+  },
+  "spacing": [
+    {
+      "v": 4,
+      "off4": false,
+      "who": [
+        "div.progress「已用空间」 marginTop"
+      ]
+    },
+    {
+      "v": 8,
+      "off4": false,
+      "who": [
+        "header.card__head「团队空间 Pro」 rowGap",
+        "header.card__head「团队空间 Pro」 columnGap",
+        "span.badge「Pro」 paddingRight"
+      ]
+    },
+    {
+      "v": 12,
+      "off4": false,
+      "who": [
+        "dl.stats「今日上传文件数 128 已用」 paddingTop",
+        "div.stat「今日上传文件数 128」 rowGap",
+        "div.stat「今日上传文件数 128」 columnGap"
+      ]
+    },
+    {
+      "v": 16,
+      "off4": false,
+      "who": [
+        "section.card「团队空间 Pro ··· 重」 paddingTop",
+        "section.card「团队空间 Pro ··· 重」 paddingRight",
+        "section.card「团队空间 Pro ··· 重」 paddingBottom"
+      ]
+    },
+    {
+      "v": 24,
+      "off4": false,
+      "who": [
+        "div.actions「升级套餐 管理成员」 marginTop"
+      ]
+    },
+    {
+      "v": 44,
+      "off4": false,
+      "who": [
+        "header.card__head「团队空间 Pro」 paddingRight"
+      ]
+    }
+  ],
+  "fontSizes": [
+    {
+      "v": 13,
+      "who": [
+        "span.badge「Pro」",
+        "p.card__desc「本周通过 Claude Co」",
+        "dt「今日上传文件数」"
+      ]
+    },
+    {
+      "v": 15,
+      "who": [
+        "button.btn「升级套餐」",
+        "button.btn「管理成员」"
+      ]
+    },
+    {
+      "v": 18,
+      "who": [
+        "h1.card__title「团队空间」",
+        "button.more「更多」",
+        "span「128」"
+      ]
+    }
+  ],
+  "weights": [
+    "600",
+    "400"
+  ],
+  "radii": [
+    {
+      "v": 16,
+      "who": [
+        "section.card「团队空间 Pro ··· 重」"
+      ]
+    },
+    {
+      "v": 10,
+      "who": [
+        "span.badge「Pro」",
+        "button.more「更多」",
+        "div.progress「已用空间」"
+      ]
+    }
+  ],
+  "textColors": [
+    "rgb(28, 28, 26)",
+    "rgb(255, 255, 255)",
+    "rgb(95, 94, 89)"
+  ],
+  "bgColors": 3,
+  "contrast": [
+    {
+      "who": "span.badge「Pro」",
+      "ratio": 4.65,
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(182, 90, 60)",
+      "size": 13,
+      "weight": "600"
+    },
+    {
+      "who": "button.btn「升级套餐」",
+      "ratio": 4.65,
+      "fg": "rgb(255, 255, 255)",
+      "bg": "rgb(182, 90, 60)",
+      "size": 15,
+      "weight": "600"
+    },
+    {
+      "who": "button.more「更多」",
+      "ratio": 6.5,
+      "fg": "rgb(95, 94, 89)",
+      "bg": "rgb(255, 255, 255)",
+      "size": 18,
+      "weight": "400"
+    },
+    {
+      "who": "p.card__desc「本周通过 Claude Co」",
+      "ratio": 6.5,
+      "fg": "rgb(95, 94, 89)",
+      "bg": "rgb(255, 255, 255)",
+      "size": 13,
+      "weight": "400"
+    },
+    {
+      "who": "dt「今日上传文件数」",
+      "ratio": 6.5,
+      "fg": "rgb(95, 94, 89)",
+      "bg": "rgb(255, 255, 255)",
+      "size": 13,
+      "weight": "400"
+    },
+    {
+      "who": "dt「已用空间」",
+      "ratio": 6.5,
+      "fg": "rgb(95, 94, 89)",
+      "bg": "rgb(255, 255, 255)",
+      "size": 13,
+      "weight": "400"
+    },
+    {
+      "who": "small「/ 100 GB」",
+      "ratio": 6.5,
+      "fg": "rgb(95, 94, 89)",
+      "bg": "rgb(255, 255, 255)",
+      "size": 13,
+      "weight": "400"
+    },
+    {
+      "who": "h1.card__title「团队空间」",
+      "ratio": 17.07,
+      "fg": "rgb(28, 28, 26)",
+      "bg": "rgb(255, 255, 255)",
+      "size": 18,
+      "weight": "600"
+    }
+  ],
+  "nested": [
+    {
+      "child": "button.more「更多」",
+      "r": 10,
+      "parent": "section.card「团队空间 Pro ··· 重」",
+      "pr": 16,
+      "inset": 13,
+      "ideal": 3
+    },
+    {
+      "child": "div.progress__bar「」",
+      "r": 10,
+      "parent": "div.progress「已用空间」",
+      "pr": 10,
+      "inset": 0,
+      "ideal": 10
+    }
+  ],
+  "targets": [
+    {
+      "who": "button.more「更多」",
+      "w": 36,
+      "h": 36,
+      "visible": true
+    },
+    {
+      "who": "button.menu__item「重命名」",
+      "w": 0,
+      "h": 0,
+      "visible": false
+    },
+    {
+      "who": "button.menu__item「复制链接」",
+      "w": 0,
+      "h": 0,
+      "visible": false
+    },
+    {
+      "who": "button.menu__item「删除」",
+      "w": 0,
+      "h": 0,
+      "visible": false
+    },
+    {
+      "who": "button.btn「升级套餐」",
+      "w": 148.5,
+      "h": 44,
+      "visible": true
+    },
+    {
+      "who": "button.btn「管理成员」",
+      "w": 148.5,
+      "h": 44,
+      "visible": true
+    }
+  ],
+  "lefts": [
+    {
+      "x": 33,
+      "who": [
+        "h1.card__title「团队空间」",
+        "p.card__desc「本周通过 Claude Co」",
+        "dt「今日上传文件数」"
+      ]
+    },
+    {
+      "x": 77.25,
+      "who": [
+        "button.btn「升级套餐」"
+      ]
+    },
+    {
+      "x": 121,
+      "who": [
+        "span.badge「Pro」"
+      ]
+    },
+    {
+      "x": 237.75,
+      "who": [
+        "button.btn「管理成员」"
+      ]
+    },
+    {
+      "x": 244.67,
+      "who": [
+        "dd「37.5 / 100 GB」"
+      ]
+    },
+    {
+      "x": 288.52,
+      "who": [
+        "small「/ 100 GB」"
+      ]
+    },
+    {
+      "x": 307.88,
+      "who": [
+        "span「128」"
+      ]
+    },
+    {
+      "x": 317.5,
+      "who": [
+        "button.more「更多」"
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "row": "div.stat「今日上传文件数 128」",
+      "alignItems": "baseline",
+      "spread": 1.5,
+      "mids": [
+        {
+          "who": "dt「今日上传文件数」",
+          "mid": 163.39
+        },
+        {
+          "who": "dd「128」",
+          "mid": 161.89
+        }
+      ]
+    },
+    {
+      "row": "div.stat「已用空间 37.5 / 10」",
+      "alignItems": "baseline",
+      "spread": 1.5,
+      "mids": [
+        {
+          "who": "dt「已用空间」",
+          "mid": 206.39
+        },
+        {
+          "who": "dd「37.5 / 100 GB」",
+          "mid": 204.89
+        }
+      ]
+    }
+  ],
+  "nonIntegerHeights": [
+    {
+      "who": "main「团队空间 Pro ··· 重」",
+      "h": 299.39
+    },
+    {
+      "who": "section.card「团队空间 Pro ··· 重」",
+      "h": 299.39
+    },
+    {
+      "who": "header.card__head「团队空间 Pro」",
+      "h": 23.39
+    },
+    {
+      "who": "h1.card__title「团队空间」",
+      "h": 23.39
+    },
+    {
+      "who": "dt「今日上传文件数」",
+      "h": 19.5
+    },
+    {
+      "who": "dt「已用空间」",
+      "h": 19.5
+    }
+  ],
+  "copy": {
+    "text": "团队空间 Pro ··· 本周通过 Claude Code 上传了 12GB 文件，还剩 63GB 可用 今日上传文件数 128 已用空间 37.5 / 100 GB 升级套餐 管理成员",
+    "cjkLatinNoSpace": 0,
+    "halfWidthPunctInCjk": 0,
+    "threeDots": false
+  },
+  "tick": {
+    "numeric": "tabular-nums",
+    "family": "-apple-system, \"system-ui\", \"PingFang SC\", \"Helvet",
+    "widths": [
+      "133@34.13",
+      "135@34.13",
+      "136@34.13",
+      "137@34.13",
+      "138@34.13",
+      "141@34.13"
+    ],
+    "rightAligned": "start"
+  },
+  "menu": {
+    "found": true,
+    "button": {
+      "w": 36,
+      "h": 36
+    },
+    "closed": {
+      "tag": "body.",
+      "visible": true,
+      "opacity": "1",
+      "transform": "none",
+      "origin": "187.5px 173.695px",
+      "transition": "all",
+      "animation": "none 0s",
+      "top": 0,
+      "right": 375
+    },
+    "frames": [
+      "1.00|none",
+      "1.00|none",
+      "1.00|none",
+      "1.00|none",
+      "1.00|none",
+      "1.00|none"
+    ],
+    "open": {
+      "tag": "body.",
+      "visible": true,
+      "opacity": "1",
+      "transform": "none",
+      "origin": "187.5px 173.695px",
+      "transition": "all",
+      "animation": "none 0s",
+      "top": 0,
+      "right": 375
+    },
+    "ariaExpanded": "true",
+    "escCloses": false,
+    "outsideCloses": false,
+    "interrupt": [
+      "1.00|none",
+      "1.00|none",
+      "1.00|none",
+      "1.00|none",
+      "1.00|none",
+      "1.00|none"
+    ]
+  }
+}

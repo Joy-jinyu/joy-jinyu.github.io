@@ -1,0 +1,49 @@
+{
+  "activeLog" : [
+    "unified-inactive-light: active=false key=false",
+    "plain-inactive-light: active=false key=false",
+    "unified-inactive-dark: active=false key=false",
+    "plain-inactive-dark: active=false key=false"
+  ],
+  "screen" : {
+    "frame" : {
+      "h" : 982,
+      "w" : 1512,
+      "x" : 0,
+      "y" : 0
+    },
+    "safeAreaTop" : 32,
+    "visibleFrame" : {
+      "h" : 884,
+      "w" : 1512,
+      "x" : 0,
+      "y" : 65
+    }
+  },
+  "titleColors" : {
+    "plain-inactive-dark" : {
+      "alphaValue" : 1,
+      "catalogName" : "windowFrameTextColor",
+      "description" : "Catalog color: System windowFrameTextColor",
+      "sRGB" : "#FFFFFF a=0.847"
+    },
+    "plain-inactive-light" : {
+      "alphaValue" : 1,
+      "catalogName" : "windowFrameTextColor",
+      "description" : "Catalog color: System windowFrameTextColor",
+      "sRGB" : "#000000 a=0.847"
+    },
+    "unified-inactive-dark" : {
+      "alphaValue" : 1,
+      "catalogName" : "labelColor",
+      "description" : "Catalog color: System labelColor",
+      "sRGB" : "#FFFFFF a=0.847"
+    },
+    "unified-inactive-light" : {
+      "alphaValue" : 1,
+      "catalogName" : "labelColor",
+      "description" : "Catalog color: System labelColor",
+      "sRGB" : "#000000 a=0.847"
+    }
+  }
+}

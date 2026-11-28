@@ -1,0 +1,949 @@
+{
+  "axTrusted" : true,
+  "colors" : {
+    "alternatingContentBackgroundColors" : {
+      "dark" : [
+        "#1E1E1E",
+        "#FFFFFF a=0.047"
+      ],
+      "darkHC" : [
+        "#1E1E1E",
+        "#FFFFFF a=0.047"
+      ],
+      "light" : [
+        "#FFFFFF",
+        "#F4F5F5"
+      ],
+      "lightHC" : [
+        "#FFFFFF",
+        "#F4F5F5"
+      ]
+    },
+    "dark" : {
+      "alternateSelectedControlTextColor" : "#FFFFFF",
+      "controlAccentColor" : "#007AFF",
+      "controlBackgroundColor" : "#1E1E1E",
+      "controlColor" : "#FFFFFF a=0.247",
+      "controlTextColor" : "#FFFFFF a=0.847",
+      "disabledControlTextColor" : "#FFFFFF a=0.247",
+      "findHighlightColor" : "#FFFF00",
+      "gridColor" : "#1A1A1A",
+      "headerTextColor" : "#FFFFFF",
+      "highlightColor" : "#B4B4B4",
+      "keyboardFocusIndicatorColor" : "#1AA9FF a=0.498",
+      "labelColor" : "#FFFFFF a=0.847",
+      "linkColor" : "#419CFF",
+      "placeholderTextColor" : "#FFFFFF a=0.549",
+      "quaternaryLabelColor" : "#FFFFFF a=0.098",
+      "quaternarySystemFill" : "#FFFFFF a=0.027",
+      "quinarySystemFill" : "#FFFFFF a=0.008",
+      "secondaryLabelColor" : "#FFFFFF a=0.549",
+      "secondarySystemFill" : "#FFFFFF a=0.078",
+      "selectedContentBackgroundColor" : "#0059D1",
+      "selectedControlColor" : "#3F638B",
+      "selectedControlTextColor" : "#FFFFFF a=0.847",
+      "selectedMenuItemTextColor" : "#FFFFFF",
+      "selectedTextBackgroundColor" : "#3F638B",
+      "selectedTextColor" : "#FFFFFF",
+      "separatorColor" : "#FFFFFF a=0.098",
+      "shadowColor" : "#000000",
+      "systemBlue" : "#0091FF",
+      "systemBrown" : "#B78A66",
+      "systemCyan" : "#3CD3FE",
+      "systemFill" : "#FFFFFF a=0.098",
+      "systemGray" : "#98989D",
+      "systemGreen" : "#30D158",
+      "systemIndigo" : "#6D7CFF",
+      "systemMint" : "#00DAC3",
+      "systemOrange" : "#FF9230",
+      "systemPink" : "#FF375F",
+      "systemPurple" : "#DB34F2",
+      "systemRed" : "#FF4245",
+      "systemTeal" : "#00D2E0",
+      "systemYellow" : "#FFD600",
+      "tertiaryLabelColor" : "#FFFFFF a=0.247",
+      "tertiarySystemFill" : "#FFFFFF a=0.047",
+      "textBackgroundColor" : "#1E1E1E",
+      "textColor" : "#FFFFFF",
+      "underPageBackgroundColor" : "#282828",
+      "unemphasizedSelectedContentBackgroundColor" : "#464646",
+      "unemphasizedSelectedTextBackgroundColor" : "#464646",
+      "unemphasizedSelectedTextColor" : "#FFFFFF",
+      "windowBackgroundColor" : "#1E1E1E",
+      "windowFrameTextColor" : "#FFFFFF a=0.847"
+    },
+    "darkHC" : {
+      "alternateSelectedControlTextColor" : "#FFFFFF",
+      "controlAccentColor" : "#007AFF",
+      "controlBackgroundColor" : "#1E1E1E",
+      "controlColor" : "#FFFFFF a=0.247",
+      "controlTextColor" : "#FFFFFF a=0.847",
+      "disabledControlTextColor" : "#FFFFFF a=0.247",
+      "findHighlightColor" : "#FFFF00",
+      "gridColor" : "#1A1A1A",
+      "headerTextColor" : "#FFFFFF",
+      "highlightColor" : "#B4B4B4",
+      "keyboardFocusIndicatorColor" : "#1AA9FF a=0.498",
+      "labelColor" : "#FFFFFF a=0.847",
+      "linkColor" : "#419CFF",
+      "placeholderTextColor" : "#FFFFFF a=0.549",
+      "quaternaryLabelColor" : "#FFFFFF a=0.098",
+      "quaternarySystemFill" : "#FFFFFF a=0.027",
+      "quinarySystemFill" : "#FFFFFF a=0.008",
+      "secondaryLabelColor" : "#FFFFFF a=0.549",
+      "secondarySystemFill" : "#FFFFFF a=0.078",
+      "selectedContentBackgroundColor" : "#0059D1",
+      "selectedControlColor" : "#3F638B",
+      "selectedControlTextColor" : "#FFFFFF a=0.847",
+      "selectedMenuItemTextColor" : "#FFFFFF",
+      "selectedTextBackgroundColor" : "#3F638B",
+      "selectedTextColor" : "#FFFFFF",
+      "separatorColor" : "#FFFFFF a=0.098",
+      "shadowColor" : "#000000",
+      "systemBlue" : "#0091FF",
+      "systemBrown" : "#B78A66",
+      "systemCyan" : "#3CD3FE",
+      "systemFill" : "#FFFFFF a=0.098",
+      "systemGray" : "#98989D",
+      "systemGreen" : "#30D158",
+      "systemIndigo" : "#6D7CFF",
+      "systemMint" : "#00DAC3",
+      "systemOrange" : "#FF9230",
+      "systemPink" : "#FF375F",
+      "systemPurple" : "#DB34F2",
+      "systemRed" : "#FF4245",
+      "systemTeal" : "#00D2E0",
+      "systemYellow" : "#FFD600",
+      "tertiaryLabelColor" : "#FFFFFF a=0.247",
+      "tertiarySystemFill" : "#FFFFFF a=0.047",
+      "textBackgroundColor" : "#1E1E1E",
+      "textColor" : "#FFFFFF",
+      "underPageBackgroundColor" : "#282828",
+      "unemphasizedSelectedContentBackgroundColor" : "#464646",
+      "unemphasizedSelectedTextBackgroundColor" : "#464646",
+      "unemphasizedSelectedTextColor" : "#FFFFFF",
+      "windowBackgroundColor" : "#1E1E1E",
+      "windowFrameTextColor" : "#FFFFFF a=0.847"
+    },
+    "light" : {
+      "alternateSelectedControlTextColor" : "#FFFFFF",
+      "controlAccentColor" : "#007AFF",
+      "controlBackgroundColor" : "#FFFFFF",
+      "controlColor" : "#FFFFFF",
+      "controlTextColor" : "#000000 a=0.847",
+      "disabledControlTextColor" : "#000000 a=0.247",
+      "findHighlightColor" : "#FFFF00",
+      "gridColor" : "#E6E6E6",
+      "headerTextColor" : "#000000 a=0.847",
+      "highlightColor" : "#FFFFFF",
+      "keyboardFocusIndicatorColor" : "#0067F4 a=0.498",
+      "labelColor" : "#000000 a=0.847",
+      "linkColor" : "#0068DA",
+      "placeholderTextColor" : "#000000 a=0.498",
+      "quaternaryLabelColor" : "#000000 a=0.098",
+      "quaternarySystemFill" : "#000000 a=0.027",
+      "quinarySystemFill" : "#000000 a=0.008",
+      "secondaryLabelColor" : "#000000 a=0.498",
+      "secondarySystemFill" : "#000000 a=0.078",
+      "selectedContentBackgroundColor" : "#0064E1",
+      "selectedControlColor" : "#B3D7FF",
+      "selectedControlTextColor" : "#000000 a=0.847",
+      "selectedMenuItemTextColor" : "#FFFFFF",
+      "selectedTextBackgroundColor" : "#B3D7FF",
+      "selectedTextColor" : "#000000",
+      "separatorColor" : "#000000 a=0.098",
+      "shadowColor" : "#000000",
+      "systemBlue" : "#0088FF",
+      "systemBrown" : "#AC7F5E",
+      "systemCyan" : "#00C0E8",
+      "systemFill" : "#000000 a=0.098",
+      "systemGray" : "#8E8E93",
+      "systemGreen" : "#34C759",
+      "systemIndigo" : "#6155F5",
+      "systemMint" : "#00C8B3",
+      "systemOrange" : "#FF8D28",
+      "systemPink" : "#FF2D55",
+      "systemPurple" : "#CB30E0",
+      "systemRed" : "#FF383C",
+      "systemTeal" : "#00C3D0",
+      "systemYellow" : "#FFCC00",
+      "tertiaryLabelColor" : "#000000 a=0.259",
+      "tertiarySystemFill" : "#000000 a=0.047",
+      "textBackgroundColor" : "#FFFFFF",
+      "textColor" : "#000000",
+      "underPageBackgroundColor" : "#969696 a=0.898",
+      "unemphasizedSelectedContentBackgroundColor" : "#DCDCDC",
+      "unemphasizedSelectedTextBackgroundColor" : "#DCDCDC",
+      "unemphasizedSelectedTextColor" : "#000000",
+      "windowBackgroundColor" : "#FFFFFF",
+      "windowFrameTextColor" : "#000000 a=0.847"
+    },
+    "lightHC" : {
+      "alternateSelectedControlTextColor" : "#FFFFFF",
+      "controlAccentColor" : "#007AFF",
+      "controlBackgroundColor" : "#FFFFFF",
+      "controlColor" : "#FFFFFF",
+      "controlTextColor" : "#000000 a=0.847",
+      "disabledControlTextColor" : "#000000 a=0.247",
+      "findHighlightColor" : "#FFFF00",
+      "gridColor" : "#E6E6E6",
+      "headerTextColor" : "#000000 a=0.847",
+      "highlightColor" : "#FFFFFF",
+      "keyboardFocusIndicatorColor" : "#0067F4 a=0.498",
+      "labelColor" : "#000000 a=0.847",
+      "linkColor" : "#0068DA",
+      "placeholderTextColor" : "#000000 a=0.498",
+      "quaternaryLabelColor" : "#000000 a=0.098",
+      "quaternarySystemFill" : "#000000 a=0.027",
+      "quinarySystemFill" : "#000000 a=0.008",
+      "secondaryLabelColor" : "#000000 a=0.498",
+      "secondarySystemFill" : "#000000 a=0.078",
+      "selectedContentBackgroundColor" : "#0064E1",
+      "selectedControlColor" : "#B3D7FF",
+      "selectedControlTextColor" : "#000000 a=0.847",
+      "selectedMenuItemTextColor" : "#FFFFFF",
+      "selectedTextBackgroundColor" : "#B3D7FF",
+      "selectedTextColor" : "#000000",
+      "separatorColor" : "#000000 a=0.098",
+      "shadowColor" : "#000000",
+      "systemBlue" : "#0088FF",
+      "systemBrown" : "#AC7F5E",
+      "systemCyan" : "#00C0E8",
+      "systemFill" : "#000000 a=0.098",
+      "systemGray" : "#8E8E93",
+      "systemGreen" : "#34C759",
+      "systemIndigo" : "#6155F5",
+      "systemMint" : "#00C8B3",
+      "systemOrange" : "#FF8D28",
+      "systemPink" : "#FF2D55",
+      "systemPurple" : "#CB30E0",
+      "systemRed" : "#FF383C",
+      "systemTeal" : "#00C3D0",
+      "systemYellow" : "#FFCC00",
+      "tertiaryLabelColor" : "#000000 a=0.259",
+      "tertiarySystemFill" : "#000000 a=0.047",
+      "textBackgroundColor" : "#FFFFFF",
+      "textColor" : "#000000",
+      "underPageBackgroundColor" : "#969696 a=0.898",
+      "unemphasizedSelectedContentBackgroundColor" : "#DCDCDC",
+      "unemphasizedSelectedTextBackgroundColor" : "#DCDCDC",
+      "unemphasizedSelectedTextColor" : "#000000",
+      "windowBackgroundColor" : "#FFFFFF",
+      "windowFrameTextColor" : "#000000 a=0.847"
+    }
+  },
+  "controls" : {
+    "checkbox" : {
+      "extraLarge" : {
+        "fitH" : 18,
+        "fitW" : 65,
+        "font" : 13,
+        "intrH" : 18,
+        "intrW" : 65
+      },
+      "large" : {
+        "fitH" : 18,
+        "fitW" : 65,
+        "font" : 13,
+        "intrH" : 18,
+        "intrW" : 65
+      },
+      "mini" : {
+        "fitH" : 12,
+        "fitW" : 46,
+        "font" : 9,
+        "intrH" : 12,
+        "intrW" : 46
+      },
+      "regular" : {
+        "fitH" : 16,
+        "fitW" : 63,
+        "font" : 13,
+        "intrH" : 16,
+        "intrW" : 63
+      },
+      "small" : {
+        "fitH" : 14,
+        "fitW" : 54,
+        "font" : 11,
+        "intrH" : 14,
+        "intrW" : 54
+      }
+    },
+    "comboBox" : {
+      "extraLarge" : {
+        "fitH" : 36,
+        "fitW" : 0,
+        "font" : 13,
+        "intrH" : 36,
+        "intrW" : -1
+      },
+      "large" : {
+        "fitH" : 28,
+        "fitW" : 0,
+        "font" : 13,
+        "intrH" : 28,
+        "intrW" : -1
+      },
+      "mini" : {
+        "fitH" : 16,
+        "fitW" : 0,
+        "font" : 9,
+        "intrH" : 16,
+        "intrW" : -1
+      },
+      "regular" : {
+        "fitH" : 24,
+        "fitW" : 0,
+        "font" : 13,
+        "intrH" : 24,
+        "intrW" : -1
+      },
+      "small" : {
+        "fitH" : 20,
+        "fitW" : 0,
+        "font" : 11,
+        "intrH" : 20,
+        "intrW" : -1
+      }
+    },
+    "datePicker" : {
+      "extraLarge" : {
+        "fitH" : 38,
+        "fitW" : 170,
+        "font" : 13,
+        "intrH" : 34,
+        "intrW" : 166.5
+      },
+      "large" : {
+        "fitH" : 30,
+        "fitW" : 163,
+        "font" : 13,
+        "intrH" : 26,
+        "intrW" : 159.5
+      },
+      "mini" : {
+        "fitH" : 20,
+        "fitW" : 116,
+        "font" : 9,
+        "intrH" : 20,
+        "intrW" : 113.5
+      },
+      "regular" : {
+        "fitH" : 26,
+        "fitW" : 160,
+        "font" : 13,
+        "intrH" : 22,
+        "intrW" : 156.5
+      },
+      "small" : {
+        "fitH" : 22,
+        "fitW" : 139,
+        "font" : 11,
+        "intrH" : 20,
+        "intrW" : 136.5
+      }
+    },
+    "disclosure" : {
+      "extraLarge" : {
+        "fitH" : 13,
+        "fitW" : 13,
+        "font" : 13,
+        "intrH" : 13,
+        "intrW" : 13
+      },
+      "large" : {
+        "fitH" : 13,
+        "fitW" : 13,
+        "font" : 13,
+        "intrH" : 13,
+        "intrW" : 13
+      },
+      "mini" : {
+        "fitH" : 13,
+        "fitW" : 13,
+        "font" : 9,
+        "intrH" : 13,
+        "intrW" : 13
+      },
+      "regular" : {
+        "fitH" : 13,
+        "fitW" : 13,
+        "font" : 13,
+        "intrH" : 13,
+        "intrW" : 13
+      },
+      "small" : {
+        "fitH" : 13,
+        "fitW" : 13,
+        "font" : 11,
+        "intrH" : 13,
+        "intrW" : 13
+      }
+    },
+    "helpButton" : {
+      "extraLarge" : {
+        "fitH" : 36,
+        "fitW" : 36,
+        "font" : 13,
+        "intrH" : 36,
+        "intrW" : 36
+      },
+      "large" : {
+        "fitH" : 28,
+        "fitW" : 28,
+        "font" : 13,
+        "intrH" : 28,
+        "intrW" : 28
+      },
+      "mini" : {
+        "fitH" : 16,
+        "fitW" : 16,
+        "font" : 9,
+        "intrH" : 16,
+        "intrW" : 16
+      },
+      "regular" : {
+        "fitH" : 24,
+        "fitW" : 24,
+        "font" : 13,
+        "intrH" : 24,
+        "intrW" : 24
+      },
+      "small" : {
+        "fitH" : 20,
+        "fitW" : 20,
+        "font" : 11,
+        "intrH" : 20,
+        "intrW" : 20
+      }
+    },
+    "popUp" : {
+      "extraLarge" : {
+        "fitH" : 36,
+        "fitW" : 111,
+        "font" : 13,
+        "intrH" : 36,
+        "intrW" : 111
+      },
+      "large" : {
+        "fitH" : 28,
+        "fitW" : 97,
+        "font" : 13,
+        "intrH" : 28,
+        "intrW" : 97
+      },
+      "mini" : {
+        "fitH" : 16,
+        "fitW" : 62,
+        "font" : 9,
+        "intrH" : 16,
+        "intrW" : 62
+      },
+      "regular" : {
+        "fitH" : 24,
+        "fitW" : 89,
+        "font" : 13,
+        "intrH" : 24,
+        "intrW" : 89
+      },
+      "small" : {
+        "fitH" : 20,
+        "fitW" : 76,
+        "font" : 11,
+        "intrH" : 20,
+        "intrW" : 76
+      }
+    },
+    "push(Cancel)" : {
+      "extraLarge" : {
+        "fitH" : 36,
+        "fitW" : 78,
+        "font" : 13,
+        "intrH" : 36,
+        "intrW" : 78
+      },
+      "large" : {
+        "fitH" : 28,
+        "fitW" : 70,
+        "font" : 13,
+        "intrH" : 28,
+        "intrW" : 70
+      },
+      "mini" : {
+        "fitH" : 16,
+        "fitW" : 47,
+        "font" : 9,
+        "intrH" : 16,
+        "intrW" : 47
+      },
+      "regular" : {
+        "fitH" : 24,
+        "fitW" : 66,
+        "font" : 13,
+        "intrH" : 24,
+        "intrW" : 66
+      },
+      "small" : {
+        "fitH" : 20,
+        "fitW" : 56,
+        "font" : 11,
+        "intrH" : 20,
+        "intrW" : 56
+      }
+    },
+    "push(OK)" : {
+      "extraLarge" : {
+        "fitH" : 36,
+        "fitW" : 55,
+        "font" : 13,
+        "intrH" : 36,
+        "intrW" : 55
+      },
+      "large" : {
+        "fitH" : 28,
+        "fitW" : 47,
+        "font" : 13,
+        "intrH" : 28,
+        "intrW" : 47
+      },
+      "mini" : {
+        "fitH" : 16,
+        "fitW" : 30,
+        "font" : 9,
+        "intrH" : 16,
+        "intrW" : 30
+      },
+      "regular" : {
+        "fitH" : 24,
+        "fitW" : 43,
+        "font" : 13,
+        "intrH" : 24,
+        "intrW" : 43
+      },
+      "small" : {
+        "fitH" : 20,
+        "fitW" : 36,
+        "font" : 11,
+        "intrH" : 20,
+        "intrW" : 36
+      }
+    },
+    "radio" : {
+      "extraLarge" : {
+        "fitH" : 18,
+        "fitW" : 65,
+        "font" : 13,
+        "intrH" : 18,
+        "intrW" : 65
+      },
+      "large" : {
+        "fitH" : 18,
+        "fitW" : 65,
+        "font" : 13,
+        "intrH" : 18,
+        "intrW" : 65
+      },
+      "mini" : {
+        "fitH" : 12,
+        "fitW" : 46,
+        "font" : 9,
+        "intrH" : 12,
+        "intrW" : 46
+      },
+      "regular" : {
+        "fitH" : 16,
+        "fitW" : 63,
+        "font" : 13,
+        "intrH" : 16,
+        "intrW" : 63
+      },
+      "small" : {
+        "fitH" : 14,
+        "fitW" : 54,
+        "font" : 11,
+        "intrH" : 14,
+        "intrW" : 54
+      }
+    },
+    "searchField" : {
+      "extraLarge" : {
+        "fitH" : 24,
+        "fitW" : 0,
+        "font" : 13,
+        "intrH" : 24,
+        "intrW" : -1
+      },
+      "large" : {
+        "fitH" : 24,
+        "fitW" : 0,
+        "font" : 13,
+        "intrH" : 24,
+        "intrW" : -1
+      },
+      "mini" : {
+        "fitH" : 15,
+        "fitW" : 0,
+        "font" : 9,
+        "intrH" : 15,
+        "intrW" : -1
+      },
+      "regular" : {
+        "fitH" : 24,
+        "fitW" : 0,
+        "font" : 13,
+        "intrH" : 24,
+        "intrW" : -1
+      },
+      "small" : {
+        "fitH" : 22,
+        "fitW" : 0,
+        "font" : 11,
+        "intrH" : 22,
+        "intrW" : -1
+      }
+    },
+    "segmented" : {
+      "extraLarge" : {
+        "fitH" : 36,
+        "fitW" : 184,
+        "font" : 13,
+        "intrH" : 36,
+        "intrW" : 184
+      },
+      "large" : {
+        "fitH" : 28,
+        "fitW" : 160,
+        "font" : 13,
+        "intrH" : 28,
+        "intrW" : 160
+      },
+      "mini" : {
+        "fitH" : 16,
+        "fitW" : 106,
+        "font" : 9,
+        "intrH" : 16,
+        "intrW" : 106
+      },
+      "regular" : {
+        "fitH" : 24,
+        "fitW" : 148,
+        "font" : 13,
+        "intrH" : 24,
+        "intrW" : 148
+      },
+      "small" : {
+        "fitH" : 20,
+        "fitW" : 131,
+        "font" : 11,
+        "intrH" : 20,
+        "intrW" : 131
+      }
+    },
+    "slider" : {
+      "extraLarge" : {
+        "fitH" : 20,
+        "fitW" : 0,
+        "font" : 13,
+        "intrH" : 20,
+        "intrW" : -1
+      },
+      "large" : {
+        "fitH" : 20,
+        "fitW" : 0,
+        "font" : 13,
+        "intrH" : 20,
+        "intrW" : -1
+      },
+      "mini" : {
+        "fitH" : 12,
+        "fitW" : 0,
+        "font" : 9,
+        "intrH" : 12,
+        "intrW" : -1
+      },
+      "regular" : {
+        "fitH" : 16,
+        "fitW" : 0,
+        "font" : 13,
+        "intrH" : 16,
+        "intrW" : -1
+      },
+      "small" : {
+        "fitH" : 14,
+        "fitW" : 0,
+        "font" : 11,
+        "intrH" : 14,
+        "intrW" : -1
+      }
+    },
+    "stepper" : {
+      "extraLarge" : {
+        "fitH" : 38,
+        "fitW" : 30,
+        "font" : 13,
+        "intrH" : 38,
+        "intrW" : 30
+      },
+      "large" : {
+        "fitH" : 30,
+        "fitW" : 23,
+        "font" : 13,
+        "intrH" : 30,
+        "intrW" : 23
+      },
+      "mini" : {
+        "fitH" : 20,
+        "fitW" : 13,
+        "font" : 9,
+        "intrH" : 20,
+        "intrW" : 13
+      },
+      "regular" : {
+        "fitH" : 26,
+        "fitW" : 20,
+        "font" : 13,
+        "intrH" : 26,
+        "intrW" : 20
+      },
+      "small" : {
+        "fitH" : 22,
+        "fitW" : 17,
+        "font" : 11,
+        "intrH" : 22,
+        "intrW" : 17
+      }
+    },
+    "switch" : {
+      "extraLarge" : {
+        "fitH" : 24,
+        "fitW" : 54,
+        "font" : 13,
+        "intrH" : 24,
+        "intrW" : 54
+      },
+      "large" : {
+        "fitH" : 24,
+        "fitW" : 54,
+        "font" : 13,
+        "intrH" : 24,
+        "intrW" : 54
+      },
+      "mini" : {
+        "fitH" : 24,
+        "fitW" : 54,
+        "font" : 9,
+        "intrH" : 24,
+        "intrW" : 54
+      },
+      "regular" : {
+        "fitH" : 24,
+        "fitW" : 54,
+        "font" : 13,
+        "intrH" : 24,
+        "intrW" : 54
+      },
+      "small" : {
+        "fitH" : 24,
+        "fitW" : 54,
+        "font" : 11,
+        "intrH" : 24,
+        "intrW" : 54
+      }
+    },
+    "textField" : {
+      "extraLarge" : {
+        "fitH" : 24,
+        "fitW" : 0,
+        "font" : 13,
+        "intrH" : 24,
+        "intrW" : -1
+      },
+      "large" : {
+        "fitH" : 24,
+        "fitW" : 0,
+        "font" : 13,
+        "intrH" : 24,
+        "intrW" : -1
+      },
+      "mini" : {
+        "fitH" : 19,
+        "fitW" : 0,
+        "font" : 9,
+        "intrH" : 19,
+        "intrW" : -1
+      },
+      "regular" : {
+        "fitH" : 24,
+        "fitW" : 0,
+        "font" : 13,
+        "intrH" : 24,
+        "intrW" : -1
+      },
+      "small" : {
+        "fitH" : 22,
+        "fitW" : 0,
+        "font" : 11,
+        "intrH" : 22,
+        "intrW" : -1
+      }
+    }
+  },
+  "fonts" : {
+    "labelFontSize" : 10,
+    "menuBarFont" : 13,
+    "menuFont" : 13,
+    "messageFont" : 13,
+    "paletteFont" : 11,
+    "smallSystemFontSize" : 11,
+    "systemFontSize" : 13,
+    "systemFontSize.extraLarge" : 13,
+    "systemFontSize.large" : 13,
+    "systemFontSize.mini" : 9,
+    "systemFontSize.regular" : 13,
+    "systemFontSize.small" : 11,
+    "textStyles" : {
+      "body" : {
+        "lineHeight" : 16.010000000000002,
+        "name" : ".SFNS-Regular",
+        "size" : 13,
+        "weight" : 0
+      },
+      "callout" : {
+        "lineHeight" : 15,
+        "name" : ".SFNS-Regular",
+        "size" : 12,
+        "weight" : 0
+      },
+      "caption1" : {
+        "lineHeight" : 13,
+        "name" : ".SFNS-Regular",
+        "size" : 10,
+        "weight" : 0
+      },
+      "caption2" : {
+        "lineHeight" : 13,
+        "name" : ".SFNS-Medium",
+        "size" : 10,
+        "weight" : 0
+      },
+      "footnote" : {
+        "lineHeight" : 13,
+        "name" : ".SFNS-Regular",
+        "size" : 10,
+        "weight" : 0
+      },
+      "headline" : {
+        "lineHeight" : 16,
+        "name" : ".SFNS-Bold",
+        "size" : 13,
+        "weight" : 0.40000000000000002
+      },
+      "largeTitle" : {
+        "lineHeight" : 32,
+        "name" : ".SFNS-Regular",
+        "size" : 26,
+        "weight" : 0
+      },
+      "subheadline" : {
+        "lineHeight" : 14,
+        "name" : ".SFNS-Regular",
+        "size" : 11,
+        "weight" : 0
+      },
+      "title1" : {
+        "lineHeight" : 26,
+        "name" : ".SFNS-Regular",
+        "size" : 22,
+        "weight" : 0
+      },
+      "title2" : {
+        "lineHeight" : 22,
+        "name" : ".SFNS-Regular",
+        "size" : 17,
+        "weight" : 0
+      },
+      "title3" : {
+        "lineHeight" : 20,
+        "name" : ".SFNS-Regular",
+        "size" : 15,
+        "weight" : 0
+      }
+    },
+    "titleBarFont" : 13,
+    "toolTipsFont" : 11
+  },
+  "increaseContrast" : false,
+  "menuBarHeight" : 22,
+  "os" : "Version 26.6.2 (Build 25G83)",
+  "reduceMotion" : false,
+  "reduceTransparency" : false,
+  "screen" : {
+    "backingScale" : 2,
+    "frame" : {
+      "h" : 982,
+      "w" : 1512,
+      "x" : 0,
+      "y" : 0
+    },
+    "safeTop" : 32,
+    "visible" : {
+      "h" : 879,
+      "w" : 1512,
+      "x" : 0,
+      "y" : 70
+    }
+  },
+  "statusBarThickness" : 22,
+  "tables" : {
+    "default" : {
+      "inset.rowHeight" : 24,
+      "outline.indent" : 13,
+      "sourceList.intercell" : {
+        "h" : 0,
+        "w" : 17,
+        "x" : 0,
+        "y" : 0
+      },
+      "sourceList.rowHeight" : 32
+    },
+    "effectiveRowHeight.sourceList.default" : 0,
+    "fullWidth.rowHeight" : 24,
+    "large" : {
+      "inset.rowHeight" : 24,
+      "outline.indent" : 13,
+      "sourceList.intercell" : {
+        "h" : 0,
+        "w" : 17,
+        "x" : 0,
+        "y" : 0
+      },
+      "sourceList.rowHeight" : 40
+    },
+    "medium" : {
+      "inset.rowHeight" : 24,
+      "outline.indent" : 13,
+      "sourceList.intercell" : {
+        "h" : 0,
+        "w" : 17,
+        "x" : 0,
+        "y" : 0
+      },
+      "sourceList.rowHeight" : 32
+    },
+    "plain.rowHeight" : 24,
+    "small" : {
+      "inset.rowHeight" : 24,
+      "outline.indent" : 13,
+      "sourceList.intercell" : {
+        "h" : 0,
+        "w" : 17,
+        "x" : 0,
+        "y" : 0
+      },
+      "sourceList.rowHeight" : 24
+    }
+  },
+  "userAccent" : "default(multicolor\/blue)",
+  "userHighlight" : "default"
+}

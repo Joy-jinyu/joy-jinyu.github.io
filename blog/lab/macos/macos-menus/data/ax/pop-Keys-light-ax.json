@@ -1,0 +1,346 @@
+{
+  "menuAtPoint" : {
+    "frame" : {
+      "h" : 224,
+      "w" : 310,
+      "x" : 240,
+      "y" : 130
+    },
+    "items" : [
+      {
+        "enabled" : true,
+        "frame" : {
+          "h" : 24,
+          "w" : 310,
+          "x" : 240,
+          "y" : 135
+        },
+        "role" : "AXMenuItem",
+        "shortcut" : "⌘K",
+        "title" : "Command Only"
+      },
+      {
+        "enabled" : true,
+        "frame" : {
+          "h" : 24,
+          "w" : 310,
+          "x" : 240,
+          "y" : 159
+        },
+        "role" : "AXMenuItem",
+        "shortcut" : "⇧⌘K",
+        "title" : "Add Shift"
+      },
+      {
+        "enabled" : true,
+        "frame" : {
+          "h" : 24,
+          "w" : 310,
+          "x" : 240,
+          "y" : 183
+        },
+        "role" : "AXMenuItem",
+        "shortcut" : "⌃⌥⇧⌘K",
+        "title" : "All Four Modifiers"
+      },
+      {
+        "enabled" : false,
+        "frame" : {
+          "h" : 11,
+          "w" : 310,
+          "x" : 240,
+          "y" : 207
+        },
+        "role" : "AXMenuItem",
+        "separatorLike" : true,
+        "title" : ""
+      },
+      {
+        "enabled" : true,
+        "frame" : {
+          "h" : 24,
+          "w" : 310,
+          "x" : 240,
+          "y" : 218
+        },
+        "role" : "AXMenuItem",
+        "title" : "Help (Command-?)"
+      },
+      {
+        "enabled" : true,
+        "frame" : {
+          "h" : 24,
+          "w" : 310,
+          "x" : 240,
+          "y" : 242
+        },
+        "role" : "AXMenuItem",
+        "title" : "Shift-Command-Slash"
+      },
+      {
+        "enabled" : true,
+        "frame" : {
+          "h" : 24,
+          "w" : 310,
+          "x" : 240,
+          "y" : 266
+        },
+        "role" : "AXMenuItem",
+        "title" : "Command-? Not Localized"
+      },
+      {
+        "enabled" : true,
+        "frame" : {
+          "h" : 24,
+          "w" : 310,
+          "x" : 240,
+          "y" : 290
+        },
+        "role" : "AXMenuItem",
+        "title" : "Shift-Command-\/ Not Localized"
+      },
+      {
+        "enabled" : false,
+        "frame" : {
+          "h" : 11,
+          "w" : 310,
+          "x" : 240,
+          "y" : 314
+        },
+        "role" : "AXMenuItem",
+        "separatorLike" : true,
+        "title" : ""
+      },
+      {
+        "enabled" : false,
+        "frame" : {
+          "h" : 24,
+          "w" : 310,
+          "x" : 240,
+          "y" : 325
+        },
+        "role" : "AXMenuItem",
+        "title" : "Unavailable Item"
+      }
+    ]
+  },
+  "menuBar" : {
+    "frame" : {
+      "h" : 33,
+      "w" : 1512,
+      "x" : 0,
+      "y" : 0
+    },
+    "items" : [
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 34,
+          "x" : 10,
+          "y" : 0
+        },
+        "title" : "Apple"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 94,
+          "x" : 44,
+          "y" : 0
+        },
+        "title" : "MenuProbe"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 42,
+          "x" : 138,
+          "y" : 0
+        },
+        "title" : "File"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 44,
+          "x" : 180,
+          "y" : 0
+        },
+        "title" : "Edit"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 63,
+          "x" : 224,
+          "y" : 0
+        },
+        "title" : "Format"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 50,
+          "x" : 287,
+          "y" : 0
+        },
+        "title" : "View"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 49,
+          "x" : 337,
+          "y" : 0
+        },
+        "title" : "Keys"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 69,
+          "x" : 386,
+          "y" : 0
+        },
+        "title" : "Window"
+      },
+      {
+        "frame" : {
+          "h" : 33,
+          "w" : 48,
+          "x" : 455,
+          "y" : 0
+        },
+        "title" : "Help"
+      }
+    ]
+  },
+  "openMenuBarMenu" : {
+    "menu" : {
+      "frame" : {
+        "h" : 224,
+        "w" : 310,
+        "x" : 240,
+        "y" : 130
+      },
+      "items" : [
+        {
+          "enabled" : true,
+          "frame" : {
+            "h" : 24,
+            "w" : 310,
+            "x" : 240,
+            "y" : 135
+          },
+          "role" : "AXMenuItem",
+          "shortcut" : "⌘K",
+          "title" : "Command Only"
+        },
+        {
+          "enabled" : true,
+          "frame" : {
+            "h" : 24,
+            "w" : 310,
+            "x" : 240,
+            "y" : 159
+          },
+          "role" : "AXMenuItem",
+          "shortcut" : "⇧⌘K",
+          "title" : "Add Shift"
+        },
+        {
+          "enabled" : true,
+          "frame" : {
+            "h" : 24,
+            "w" : 310,
+            "x" : 240,
+            "y" : 183
+          },
+          "role" : "AXMenuItem",
+          "shortcut" : "⌃⌥⇧⌘K",
+          "title" : "All Four Modifiers"
+        },
+        {
+          "enabled" : false,
+          "frame" : {
+            "h" : 11,
+            "w" : 310,
+            "x" : 240,
+            "y" : 207
+          },
+          "role" : "AXMenuItem",
+          "separatorLike" : true,
+          "title" : ""
+        },
+        {
+          "enabled" : true,
+          "frame" : {
+            "h" : 24,
+            "w" : 310,
+            "x" : 240,
+            "y" : 218
+          },
+          "role" : "AXMenuItem",
+          "title" : "Help (Command-?)"
+        },
+        {
+          "enabled" : true,
+          "frame" : {
+            "h" : 24,
+            "w" : 310,
+            "x" : 240,
+            "y" : 242
+          },
+          "role" : "AXMenuItem",
+          "title" : "Shift-Command-Slash"
+        },
+        {
+          "enabled" : true,
+          "frame" : {
+            "h" : 24,
+            "w" : 310,
+            "x" : 240,
+            "y" : 266
+          },
+          "role" : "AXMenuItem",
+          "title" : "Command-? Not Localized"
+        },
+        {
+          "enabled" : true,
+          "frame" : {
+            "h" : 24,
+            "w" : 310,
+            "x" : 240,
+            "y" : 290
+          },
+          "role" : "AXMenuItem",
+          "title" : "Shift-Command-\/ Not Localized"
+        },
+        {
+          "enabled" : false,
+          "frame" : {
+            "h" : 11,
+            "w" : 310,
+            "x" : 240,
+            "y" : 314
+          },
+          "role" : "AXMenuItem",
+          "separatorLike" : true,
+          "title" : ""
+        },
+        {
+          "enabled" : false,
+          "frame" : {
+            "h" : 24,
+            "w" : 310,
+            "x" : 240,
+            "y" : 325
+          },
+          "role" : "AXMenuItem",
+          "title" : "Unavailable Item"
+        }
+      ]
+    },
+    "title" : "Keys"
+  }
+}

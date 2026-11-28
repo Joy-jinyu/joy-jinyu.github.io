@@ -1,0 +1,126 @@
+{
+  "dark": {
+    "appActive": false,
+    "glass.isKey": false,
+    "glassFill": {
+      "plain-onBlack.fill": "#1B1B1B",
+      "plain-onWhite.fill": "#606060",
+      "tinted-onBlack.fill": "#343434",
+      "tinted-onWhite.fill": "#79797A"
+    },
+    "glassFrames": {
+      "plain-onBlack": {
+        "h": 36,
+        "w": 120,
+        "x": 210,
+        "y": 20
+      },
+      "plain-onWhite": {
+        "h": 36,
+        "w": 120,
+        "x": 30,
+        "y": 20
+      },
+      "tinted-onBlack": {
+        "h": 36,
+        "w": 120,
+        "x": 210,
+        "y": 76
+      },
+      "tinted-onWhite": {
+        "h": 36,
+        "w": 120,
+        "x": 30,
+        "y": 76
+      }
+    },
+    "labels.isKey": false,
+    "swatches.isKey": false,
+    "swatchPixels": {
+      "controlAccentColor": "#007AFF",
+      "controlBackgroundColor": "#1E1F1E",
+      "labelColor": "#DDDEDF",
+      "linkColor": "#419CFE",
+      "quaternaryLabelColor": "#383F43",
+      "secondaryLabelColor": "#9B9FA1",
+      "selectedContentBackgroundColor": "#0058D1",
+      "separatorColor": "#383F43",
+      "systemBlue": "#0391FF",
+      "systemGreen": "#2ED158",
+      "systemRed": "#FF4244",
+      "tertiaryLabelColor": "#595F62",
+      "textBackgroundColor": "#1F1D1E",
+      "underPageBackgroundColor": "#282828",
+      "unemphasizedSelectedContentBackgroundColor": "#464645",
+      "windowBackground(未绘制区)": "#222A30",
+      "windowBackgroundColor": "#1F1E1D"
+    },
+    "symbols.isKey": false,
+    "textstyles.isKey": false,
+    "titlebarHeight": 32
+  },
+  "frontmostAtEnd": "Google Chrome",
+  "light": {
+    "appActive": false,
+    "glass.isKey": false,
+    "glassFill": {
+      "plain-onBlack.fill": "#DCDCDC",
+      "plain-onWhite.fill": "#F9F9F9",
+      "tinted-onBlack.fill": "#C2C2C2",
+      "tinted-onWhite.fill": "#DFDFDF"
+    },
+    "glassFrames": {
+      "plain-onBlack": {
+        "h": 36,
+        "w": 120,
+        "x": 210,
+        "y": 20
+      },
+      "plain-onWhite": {
+        "h": 36,
+        "w": 120,
+        "x": 30,
+        "y": 20
+      },
+      "tinted-onBlack": {
+        "h": 36,
+        "w": 120,
+        "x": 210,
+        "y": 76
+      },
+      "tinted-onWhite": {
+        "h": 36,
+        "w": 120,
+        "x": 30,
+        "y": 76
+      }
+    },
+    "labels.isKey": false,
+    "swatches.isKey": false,
+    "swatchPixels": {
+      "controlAccentColor": "#007AFF",
+      "controlBackgroundColor": "#FFFFFF",
+      "labelColor": "#282828",
+      "linkColor": "#0368D9",
+      "quaternaryLabelColor": "#E6E6E6",
+      "secondaryLabelColor": "#7F7F80",
+      "selectedContentBackgroundColor": "#0064E1",
+      "separatorColor": "#E6E6E6",
+      "systemBlue": "#0688FF",
+      "systemGreen": "#32C759",
+      "systemRed": "#FF373B",
+      "tertiaryLabelColor": "#BDBDBD",
+      "textBackgroundColor": "#FFFEFF",
+      "underPageBackgroundColor": "#A2A2A2",
+      "unemphasizedSelectedContentBackgroundColor": "#DCDCDB",
+      "windowBackground(未绘制区)": "#FFFFFF",
+      "windowBackgroundColor": "#FFFFFE"
+    },
+    "symbols.isKey": false,
+    "textstyles.isKey": false,
+    "titlebarHeight": 32
+  },
+  "_raw": {
+    "swatchPixels": "raw/swatches-light.png 和 raw/swatches-dark.png，探针截图后自己读（像素坐标 = (色块中心 pt + 标题栏 32 pt) × 2，色块位置见 typecolor.swift 的 SwatchView）"
+  }
+}

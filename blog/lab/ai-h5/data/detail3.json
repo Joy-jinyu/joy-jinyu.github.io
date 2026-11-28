@@ -1,0 +1,442 @@
+{
+ "url": "http://localhost:4399/blog/lab/ai-h5/detail3.html",
+ "portrait": {
+  "W": 393,
+  "H": 852,
+  "controls": [
+   {
+    "tag": "button",
+    "name": "返回",
+    "x": 4,
+    "y": 59,
+    "w": 44,
+    "h": 44,
+    "out": [],
+    "fs": 16
+   },
+   {
+    "tag": "button",
+    "name": "分享",
+    "x": 301,
+    "y": 59,
+    "w": 44,
+    "h": 44,
+    "out": [],
+    "fs": 16
+   },
+   {
+    "tag": "button",
+    "name": "更多",
+    "x": 345,
+    "y": 59,
+    "w": 44,
+    "h": 44,
+    "out": [],
+    "fs": 16
+   },
+   {
+    "tag": "button",
+    "name": "下载",
+    "x": 16,
+    "y": 329,
+    "w": 84.3,
+    "h": 64,
+    "out": [],
+    "fs": 13
+   },
+   {
+    "tag": "button",
+    "name": "收藏",
+    "x": 108,
+    "y": 329,
+    "w": 84.3,
+    "h": 64,
+    "out": [],
+    "fs": 13
+   },
+   {
+    "tag": "button",
+    "name": "重命名",
+    "x": 201,
+    "y": 329,
+    "w": 84.3,
+    "h": 64,
+    "out": [],
+    "fs": 13
+   },
+   {
+    "tag": "button",
+    "name": "移动",
+    "x": 293,
+    "y": 329,
+    "w": 84.3,
+    "h": 64,
+    "out": [],
+    "fs": 13
+   },
+   {
+    "tag": "button",
+    "name": "赞5",
+    "x": 329,
+    "y": 465,
+    "w": 56.4,
+    "h": 44,
+    "out": [],
+    "fs": 13
+   },
+   {
+    "tag": "button",
+    "name": "赞2",
+    "x": 329,
+    "y": 559,
+    "w": 56.4,
+    "h": 44,
+    "out": [],
+    "fs": 13
+   },
+   {
+    "tag": "button",
+    "name": "赞0",
+    "x": 329,
+    "y": 630,
+    "w": 56.4,
+    "h": 44,
+    "out": [],
+    "fs": 13
+   },
+   {
+    "tag": "input",
+    "name": "写评论…",
+    "x": 16,
+    "y": 771,
+    "w": 289,
+    "h": 38,
+    "out": [],
+    "fs": 16
+   },
+   {
+    "tag": "button",
+    "name": "发送",
+    "x": 313,
+    "y": 771,
+    "w": 64,
+    "h": 38,
+    "out": [],
+    "fs": 15
+   }
+  ],
+  "bars": [
+   {
+    "tag": "header",
+    "cls": "nav",
+    "top": 0,
+    "h": 104,
+    "pt": "59px",
+    "pb": "0px",
+    "pl": "0px",
+    "pr": "0px"
+   },
+   {
+    "tag": "footer",
+    "cls": "bar",
+    "top": 761,
+    "h": 91,
+    "pt": "0px",
+    "pb": "34px",
+    "pl": "0px",
+    "pr": "0px"
+   }
+  ],
+  "barShare": 22.9
+ },
+ "pressed": [
+  {
+   "name": "返回",
+   "disabled": false,
+   "changes": true,
+   "before": "rgba(0, 0, 0, 0) | rgb(23, 25, 28) | 1 | none | none | none | none",
+   "during": "rgba(0, 0, 0, 0.06) | rgb(23, 25, 28) | 1 | none | none | none | none"
+  },
+  {
+   "name": "分享",
+   "disabled": false,
+   "changes": true,
+   "before": "rgba(0, 0, 0, 0) | rgb(23, 25, 28) | 1 | none | none | none | none",
+   "during": "rgba(0, 0, 0, 0.06) | rgb(23, 25, 28) | 1 | none | none | none | none"
+  },
+  {
+   "name": "更多",
+   "disabled": false,
+   "changes": true,
+   "before": "rgba(0, 0, 0, 0) | rgb(23, 25, 28) | 1 | none | none | none | none",
+   "during": "rgba(0, 0, 0, 0.06) | rgb(23, 25, 28) | 1 | none | none | none | none"
+  },
+  {
+   "name": "下载",
+   "disabled": false,
+   "changes": true,
+   "before": "rgba(0, 0, 0, 0) | rgb(23, 25, 28) | 1 | none | none | none | none",
+   "during": "rgba(0, 0, 0, 0.06) | rgb(23, 25, 28) | 1 | none | none | none | none"
+  },
+  {
+   "name": "收藏",
+   "disabled": false,
+   "changes": true,
+   "before": "rgba(0, 0, 0, 0) | rgb(23, 25, 28) | 1 | none | none | none | none",
+   "during": "rgba(0, 0, 0, 0.06) | rgb(23, 25, 28) | 1 | none | none | none | none"
+  },
+  {
+   "name": "重命名",
+   "disabled": false,
+   "changes": true,
+   "before": "rgba(0, 0, 0, 0) | rgb(23, 25, 28) | 1 | none | none | none | none",
+   "during": "rgba(0, 0, 0, 0.06) | rgb(23, 25, 28) | 1 | none | none | none | none"
+  },
+  {
+   "name": "移动",
+   "disabled": false,
+   "changes": true,
+   "before": "rgba(0, 0, 0, 0) | rgb(23, 25, 28) | 1 | none | none | none | none",
+   "during": "rgba(0, 0, 0, 0.06) | rgb(23, 25, 28) | 1 | none | none | none | none"
+  },
+  {
+   "name": "赞5",
+   "disabled": false,
+   "changes": true,
+   "before": "rgba(0, 0, 0, 0) | rgb(94, 100, 112) | 1 | none | none | none | none",
+   "during": "rgba(0, 0, 0, 0.06) | rgb(94, 100, 112) | 1 | none | none | none | none"
+  },
+  {
+   "name": "赞2",
+   "disabled": false,
+   "changes": true,
+   "before": "rgba(0, 0, 0, 0) | rgb(94, 100, 112) | 1 | none | none | none | none",
+   "during": "rgba(0, 0, 0, 0.06) | rgb(94, 100, 112) | 1 | none | none | none | none"
+  },
+  {
+   "name": "赞0",
+   "disabled": false,
+   "changes": true,
+   "before": "rgba(0, 0, 0, 0) | rgb(94, 100, 112) | 1 | none | none | none | none",
+   "during": "rgba(0, 0, 0, 0.06) | rgb(94, 100, 112) | 1 | none | none | none | none"
+  },
+  {
+   "name": "发送",
+   "disabled": true,
+   "changes": false,
+   "before": "rgb(242, 243, 245) | rgb(94, 100, 112) | 1 | none | none | none | ",
+   "during": "rgb(242, 243, 245) | rgb(94, 100, 112) | 1 | none | none | none | "
+  }
+ ],
+ "taps": [
+  {
+   "name": "收藏",
+   "before": [
+    "rgba(0, 0, 0, 0)",
+    false
+   ],
+   "after": [
+    "rgba(0, 0, 0, 0)",
+    true
+   ]
+  },
+  {
+   "name": "赞5",
+   "before": [
+    "rgba(0, 0, 0, 0)",
+    false
+   ],
+   "after": [
+    "rgba(0, 0, 0, 0)",
+    true
+   ]
+  },
+  {
+   "name": "赞2",
+   "before": [
+    "rgba(0, 0, 0, 0)",
+    false
+   ],
+   "after": [
+    "rgba(0, 0, 0, 0)",
+    true
+   ]
+  },
+  {
+   "name": "赞0",
+   "before": [
+    "rgba(0, 0, 0, 0)",
+    false
+   ],
+   "after": [
+    "rgba(0, 0, 0, 0)",
+    true
+   ]
+  }
+ ],
+ "input": {
+  "fs": 16,
+  "h": 38
+ },
+ "code": {
+  "viewport": "width=device-width, initial-scale=1, viewport-fit=cover",
+  "insets": [
+   "safe-area-inset-top",
+   "safe-area-inset-bottom"
+  ],
+  "visualViewport": false,
+  "interactiveWidget": false,
+  "hoverOutsideMedia": false,
+  "tapHighlight": "transparent",
+  "touchAction": "manipulation"
+ },
+ "landscape": {
+  "W": 852,
+  "H": 393,
+  "controls": [
+   {
+    "tag": "button",
+    "name": "返回",
+    "x": 110,
+    "y": 0,
+    "w": 44,
+    "h": 44,
+    "out": [],
+    "fs": 16
+   },
+   {
+    "tag": "button",
+    "name": "分享",
+    "x": 654,
+    "y": 0,
+    "w": 44,
+    "h": 44,
+    "out": [],
+    "fs": 16
+   },
+   {
+    "tag": "button",
+    "name": "更多",
+    "x": 698,
+    "y": 0,
+    "w": 44,
+    "h": 44,
+    "out": [],
+    "fs": 16
+   },
+   {
+    "tag": "button",
+    "name": "下载",
+    "x": 122,
+    "y": 270,
+    "w": 146,
+    "h": 64,
+    "out": [],
+    "fs": 13
+   },
+   {
+    "tag": "button",
+    "name": "收藏",
+    "x": 276,
+    "y": 270,
+    "w": 146,
+    "h": 64,
+    "out": [],
+    "fs": 13
+   },
+   {
+    "tag": "button",
+    "name": "重命名",
+    "x": 430,
+    "y": 270,
+    "w": 146,
+    "h": 64,
+    "out": [],
+    "fs": 13
+   },
+   {
+    "tag": "button",
+    "name": "移动",
+    "x": 584,
+    "y": 270,
+    "w": 146,
+    "h": 64,
+    "out": [],
+    "fs": 13
+   },
+   {
+    "tag": "button",
+    "name": "赞5",
+    "x": 682,
+    "y": 406,
+    "w": 56.4,
+    "h": 44,
+    "out": [],
+    "fs": 13
+   },
+   {
+    "tag": "button",
+    "name": "赞2",
+    "x": 682,
+    "y": 477,
+    "w": 56.4,
+    "h": 44,
+    "out": [],
+    "fs": 13
+   },
+   {
+    "tag": "button",
+    "name": "赞0",
+    "x": 682,
+    "y": 549,
+    "w": 56.4,
+    "h": 44,
+    "out": [],
+    "fs": 13
+   },
+   {
+    "tag": "input",
+    "name": "写评论…",
+    "x": 122,
+    "y": 325,
+    "w": 536,
+    "h": 38,
+    "out": [],
+    "fs": 16
+   },
+   {
+    "tag": "button",
+    "name": "发送",
+    "x": 666,
+    "y": 325,
+    "w": 64,
+    "h": 38,
+    "out": [],
+    "fs": 15
+   }
+  ],
+  "bars": [
+   {
+    "tag": "header",
+    "cls": "nav",
+    "top": 0,
+    "h": 45,
+    "pt": "0px",
+    "pb": "0px",
+    "pl": "0px",
+    "pr": "0px"
+   },
+   {
+    "tag": "footer",
+    "cls": "bar",
+    "top": 315,
+    "h": 78,
+    "pt": "0px",
+    "pb": "21px",
+    "pl": "0px",
+    "pr": "0px"
+   }
+  ],
+  "barShare": 31.3
+ }
+}

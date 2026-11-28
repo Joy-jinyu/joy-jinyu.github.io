@@ -1,0 +1,3761 @@
+[
+  {
+    "bundle" : "com.apple.finder",
+    "menuBarFrame" : {
+      "h" : 33,
+      "w" : 1512,
+      "x" : 0,
+      "y" : 0
+    },
+    "menuBarTitles" : [
+      "Apple",
+      "访达",
+      "文件",
+      "编辑",
+      "显示",
+      "前往",
+      "窗口",
+      "帮助"
+    ],
+    "menus" : {
+      "帮助" : {
+        "items" : [
+          {
+            "childRoles" : [
+              "AXTextField",
+              "AXTable"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "Mac使用手册"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "Mac使用技巧"
+          }
+        ]
+      },
+      "文件" : {
+        "items" : [
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘N",
+            "title" : "新建访达窗口"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘N",
+            "title" : "新建文件夹"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃⌘N",
+            "title" : "使用“<隐去>”新建文件夹"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "新建智能文件夹"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘T",
+            "title" : "新建标签页"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘O",
+            "title" : "打开"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃⌘O",
+            "title" : "在新标签页中打开"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘O",
+            "title" : "打开并关闭窗口"
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "打开方式"
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "始终以此方式打开"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘W",
+            "title" : "关闭窗口"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘W",
+            "title" : "全部关闭"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘I",
+            "title" : "显示简介"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘I",
+            "title" : "显示检查器"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃⌘I",
+            "title" : "显示摘要信息"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "重新命名"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "压缩"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "压缩“<隐去>”"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘D",
+            "title" : "复制"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⇧⌘D",
+            "title" : "精确复制"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃⌘A",
+            "title" : "制作替身"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘Y",
+            "title" : "快速查看"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘Y",
+            "title" : "幻灯片放映“<隐去>”"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘P",
+            "title" : "打印"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "共享…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "管理共享文件…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘R",
+            "title" : "显示原项目"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃⌘T",
+            "title" : "添加到边栏"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃⇧⌘T",
+            "title" : "添加到程序坞"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘\b",
+            "title" : "移到废纸篓"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘\b",
+            "title" : "立即删除…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘E",
+            "title" : "推出"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃⌘E",
+            "title" : "推出"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘E",
+            "title" : "推出"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXRadioGroup",
+              "AXButton",
+              "AXImage"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘F",
+            "title" : "查找"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃⇧⌘F",
+            "title" : "按名称查找…"
+          }
+        ]
+      },
+      "显示" : {
+        "items" : [
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘1",
+            "title" : "图标视图"
+          },
+          {
+            "enabled" : false,
+            "mark" : "✓",
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘2",
+            "title" : "列表视图"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘3",
+            "title" : "分栏视图"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘4",
+            "title" : "画廊视图"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃⌘0",
+            "title" : "使用叠放"
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "排序方式"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "整理"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "整理所选内容"
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "整理方式"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘T",
+            "title" : "显示标签页栏"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘\\",
+            "title" : "显示所有标签页"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃⌘S",
+            "title" : "隐藏边栏"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘P",
+            "title" : "显示预览"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘T",
+            "title" : "隐藏工具栏"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘P",
+            "title" : "显示路径栏"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘\/",
+            "title" : "显示状态栏"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "自定义工具栏…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘J",
+            "title" : "查看显示选项"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "显示预览选项"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "F",
+            "title" : "进入全屏幕"
+          }
+        ]
+      },
+      "窗口" : {
+        "items" : [
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘M",
+            "title" : "最小化"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘M",
+            "title" : "全部最小化"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "缩放"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "全部缩放"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃F",
+            "title" : "填充"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃C",
+            "title" : "居中"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "移动与调整大小"
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "全屏幕平铺"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "从组中移除窗口"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘`",
+            "title" : "循环显示窗口"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "显示进度窗口"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "前置全部窗口"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "排在前面"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃⇧\t",
+            "title" : "显示上一个标签页"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃\t",
+            "title" : "显示下一个标签页"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "将标签页移到新窗口"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "合并所有窗口"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          }
+        ],
+        "truncatedAtLastSeparator" : true
+      },
+      "编辑" : {
+        "items" : [
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘Z",
+            "title" : "撤销复制“<隐去>”"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘Z",
+            "title" : "重做"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘X",
+            "title" : "剪切"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘C",
+            "title" : "拷贝"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘C",
+            "title" : "将“<隐去>”拷贝为路径名称"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃⌥⌘C",
+            "title" : "拷贝为链接"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘V",
+            "title" : "粘贴"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘V",
+            "title" : "将项目移到这里"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⇧⌘V",
+            "title" : "精确粘贴"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘A",
+            "title" : "全选"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘A",
+            "title" : "取消全选"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "显示剪贴板"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "自动填充"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "🎤",
+            "title" : "开始听写"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "E",
+            "title" : "表情与符号"
+          }
+        ]
+      },
+      "访达" : {
+        "items" : [
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "关于访达"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘,",
+            "title" : "设置…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘\b",
+            "title" : "清倒废纸篓…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⇧⌘\b",
+            "title" : "清倒废纸篓"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "服务"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘H",
+            "title" : "隐藏访达"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘H",
+            "title" : "隐藏其他"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "全部显示"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "bundle" : "com.apple.ScreenContinuity",
+    "menuBarFrame" : {
+      "h" : 33,
+      "w" : 1512,
+      "x" : 0,
+      "y" : 0
+    },
+    "menuBarTitles" : [
+      "Apple",
+      "iPhone镜像",
+      "编辑",
+      "显示",
+      "窗口",
+      "帮助"
+    ],
+    "menus" : {
+      "iPhone镜像" : {
+        "items" : [
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "关于iPhone镜像"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘,",
+            "title" : "设置…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "服务"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘H",
+            "title" : "隐藏iPhone镜像"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘H",
+            "title" : "隐藏其他"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "全部显示"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘Q",
+            "title" : "退出iPhone镜像"
+          }
+        ]
+      },
+      "帮助" : {
+        "items" : [
+          {
+            "childRoles" : [
+              "AXTextField",
+              "AXTable"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "iPhone镜像帮助"
+          }
+        ]
+      },
+      "显示" : {
+        "items" : [
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘1",
+            "title" : "主屏幕"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘2",
+            "title" : "App切换器"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘3",
+            "title" : "聚焦"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘+",
+            "title" : "调大"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘0",
+            "title" : "实际大小"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘-",
+            "title" : "调小"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          }
+        ]
+      },
+      "窗口" : {
+        "items" : [
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘W",
+            "title" : "关闭"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘W",
+            "title" : "全部关闭"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘M",
+            "title" : "最小化"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘M",
+            "title" : "全部最小化"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "缩放"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "全部缩放"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃F",
+            "title" : "填充"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃C",
+            "title" : "居中"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "移动与调整大小"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "全屏幕平铺"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "从组中移除窗口"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          }
+        ],
+        "truncatedAtLastSeparator" : true
+      },
+      "编辑" : {
+        "items" : [
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘Z",
+            "title" : "撤销"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘Z",
+            "title" : "重做"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘X",
+            "title" : "剪切"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘C",
+            "title" : "拷贝"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘V",
+            "title" : "粘贴"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "删除"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘A",
+            "title" : "全选"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "🎤",
+            "title" : "开始听写"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "E",
+            "title" : "表情与符号"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "bundle" : "com.apple.Preview",
+    "menuBarFrame" : {
+      "h" : 33,
+      "w" : 1512,
+      "x" : 0,
+      "y" : 0
+    },
+    "menuBarTitles" : [
+      "Apple",
+      "预览",
+      "文件",
+      "编辑",
+      "显示",
+      "前往",
+      "工具",
+      "窗口",
+      "帮助"
+    ],
+    "menus" : {
+      "帮助" : {
+        "items" : [
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "预览帮助"
+          }
+        ]
+      },
+      "文件" : {
+        "items" : [
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘N",
+            "title" : "从剪贴板新建"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘O",
+            "title" : "打开…"
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "打开最近使用"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘W",
+            "title" : "关闭窗口"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘W",
+            "title" : "全部关闭"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘W",
+            "title" : "关闭选定的图像"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘S",
+            "title" : "保存"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⇧⌘S",
+            "title" : "保存为…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘S",
+            "title" : "复制"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "重新命名…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "移到…"
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "复原到"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "输入密码…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "编辑权限…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "<<Import From Device - unlocalized>>"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "从相机导入…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "从扫描仪导入…"
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "截屏"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "导出…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "导出为PDF…"
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "共享"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘P",
+            "title" : "打印…"
+          }
+        ]
+      },
+      "显示" : {
+        "items" : [
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "显示标签页栏"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘\\",
+            "title" : "显示所有标签页"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "mark" : "✓",
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘1",
+            "title" : "隐藏边栏"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘2",
+            "title" : "缩略图"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘3",
+            "title" : "目录"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘4",
+            "title" : "高亮标记和备注"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘5",
+            "title" : "书签"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘6",
+            "title" : "缩图清单"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘1",
+            "title" : "连续滚动"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘2",
+            "title" : "单页"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘3",
+            "title" : "双页"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "利用描述文件进行软打样"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘B",
+            "title" : "显示图像背景"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘0",
+            "title" : "实际大小"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘0",
+            "title" : "所有项目的实际大小"
+          },
+          {
+            "enabled" : false,
+            "mark" : "✓",
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘9",
+            "title" : "缩放至窗口大小"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘9",
+            "title" : "全部缩放至窗口大小"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘+",
+            "title" : "放大"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘+",
+            "title" : "全部放大"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘-",
+            "title" : "缩小"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘-",
+            "title" : "全部缩小"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘*",
+            "title" : "缩放到所选"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘A",
+            "title" : "显示标记工具栏"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘T",
+            "title" : "隐藏工具栏"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "自定义工具栏…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘F",
+            "title" : "幻灯片放映"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "F",
+            "title" : "进入全屏幕"
+          }
+        ]
+      },
+      "窗口" : {
+        "items" : [
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘M",
+            "title" : "最小化"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘M",
+            "title" : "全部最小化"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "缩放"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "全部缩放"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃F",
+            "title" : "填充"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃C",
+            "title" : "居中"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "移动与调整大小"
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "全屏幕平铺"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "从组中移除窗口"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "前置全部窗口"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "排在前面"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃⇧\t",
+            "title" : "显示上一个标签页"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃\t",
+            "title" : "显示下一个标签页"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "将标签页移到新窗口"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "合并所有窗口"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          }
+        ],
+        "truncatedAtLastSeparator" : true
+      },
+      "编辑" : {
+        "items" : [
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘Z",
+            "title" : "撤销"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘Z",
+            "title" : "重做"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘X",
+            "title" : "剪切"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘C",
+            "title" : "拷贝"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘V",
+            "title" : "粘贴"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "删除"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘A",
+            "title" : "全选"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘I",
+            "title" : "反向选择"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "插入"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘\b",
+            "title" : "将“<隐去>”移到废纸篓"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "查找"
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "拼写和语法"
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "语音"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "自动填充"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "🎤",
+            "title" : "开始听写"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "E",
+            "title" : "表情与符号"
+          }
+        ]
+      },
+      "预览" : {
+        "items" : [
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "关于预览"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘,",
+            "title" : "设置…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "服务"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘H",
+            "title" : "隐藏预览"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘H",
+            "title" : "隐藏其他"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "全部显示"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘Q",
+            "title" : "退出预览"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘Q",
+            "title" : "退出并保留窗口"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "bundle" : "com.apple.Safari",
+    "menuBarFrame" : {
+      "h" : 33,
+      "w" : 1512,
+      "x" : 0,
+      "y" : 0
+    },
+    "menuBarTitles" : [
+      "Apple",
+      "Safari浏览器",
+      "文件",
+      "编辑",
+      "显示",
+      "历史记录",
+      "书签",
+      "开发",
+      "窗口",
+      "帮助"
+    ],
+    "menus" : {
+      "Safari浏览器" : {
+        "items" : [
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "关于Safari浏览器"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "Safari浏览器扩展…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘,",
+            "title" : "设置…"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "隐私报告…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "此网站的设置…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "连接安全性详细信息…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "清除历史记录…"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "清除历史记录但保留网站数据…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "创建用户场景…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "服务"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘H",
+            "title" : "隐藏Safari浏览器"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘H",
+            "title" : "隐藏其他"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "全部显示"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘Q",
+            "title" : "退出Safari浏览器"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘Q",
+            "title" : "退出并保留窗口"
+          }
+        ]
+      },
+      "帮助" : {
+        "items" : [
+          {
+            "childRoles" : [
+              "AXTextField",
+              "AXTable"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘?",
+            "title" : "Safari浏览器帮助"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "版权声明"
+          }
+        ]
+      },
+      "文件" : {
+        "items" : [
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘N",
+            "title" : "新建窗口"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘N",
+            "title" : "新建无痕浏览窗口"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘T",
+            "title" : "新建标签页"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘T",
+            "title" : "在末尾新建标签页"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃⌘N",
+            "title" : "新建空标签页组"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘O",
+            "title" : "打开文件…"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘L",
+            "title" : "打开位置…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘W",
+            "title" : "关闭窗口"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘W",
+            "title" : "关闭窗口"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘W",
+            "title" : "关闭所有窗口"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⇧⌘W",
+            "title" : "关闭所有窗口"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "关闭标签页"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "关闭其他标签页"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃⌘W",
+            "title" : "删除标签页组"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘S",
+            "title" : "保存为…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘S",
+            "title" : "保存为…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "共享…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "导出为PDF…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "添加到程序坞…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "从文件或文件夹导入浏览数据…"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "将浏览数据导出到文件…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘P",
+            "title" : "打印…"
+          }
+        ]
+      },
+      "显示" : {
+        "items" : [
+          {
+            "enabled" : false,
+            "mark" : "✓",
+            "role" : "AXMenuItem",
+            "title" : "始终在全屏幕中显示工具栏"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "自定义工具栏…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "始终显示标签页栏"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘B",
+            "title" : "显示个人收藏栏"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘\/",
+            "title" : "显示状态栏"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘L",
+            "title" : "显示边栏"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃⌘1",
+            "title" : "显示书签边栏"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃⌘2",
+            "title" : "显示阅读列表边栏"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "显示“<隐去>”"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘R",
+            "title" : "显示阅读器"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘\\",
+            "title" : "显示标签页概览"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘L",
+            "title" : "显示下载"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘.",
+            "title" : "停止"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘R",
+            "title" : "重新载入页面"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘R",
+            "title" : "从来源重新载入页面"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "翻译"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘0",
+            "title" : "实际大小"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘+",
+            "title" : "放大"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘+",
+            "title" : "使文本变大"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘-",
+            "title" : "缩小"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘-",
+            "title" : "使文本变小"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "文本编码"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "F",
+            "title" : "进入全屏幕"
+          }
+        ]
+      },
+      "窗口" : {
+        "items" : [
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘M",
+            "title" : "最小化"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘M",
+            "title" : "全部最小化"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "缩放"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "全部缩放"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃F",
+            "title" : "填充"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃C",
+            "title" : "居中"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "移动与调整大小"
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "全屏幕平铺"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "从组中移除窗口"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "标签页排列方式"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃⇧\t",
+            "title" : "显示上一个标签页"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃\t",
+            "title" : "显示下一个标签页"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘",
+            "title" : "前往上一个标签页组"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘",
+            "title" : "前往下一个标签页组"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "固定标签页"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "复制标签页"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "将标签页移到新窗口"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "合并所有窗口"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "静音此标签页"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "静音其他标签页"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "前置全部窗口"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "排在前面"
+          }
+        ],
+        "truncatedAtLastSeparator" : true
+      },
+      "编辑" : {
+        "items" : [
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘Z",
+            "title" : "撤销"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘Z",
+            "title" : "重做"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘X",
+            "title" : "剪切"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘C",
+            "title" : "拷贝"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃⌘C",
+            "title" : "拷贝搜索词"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘V",
+            "title" : "粘贴"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⇧⌘V",
+            "title" : "粘贴并匹配样式"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "删除"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘A",
+            "title" : "全选"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘A",
+            "title" : "自动填充表单"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "干扰控制"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "查找"
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "拼写和语法"
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "替换"
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "转换"
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "语音"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "自动填充"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "🎤",
+            "title" : "开始听写"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "E",
+            "title" : "表情与符号"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "bundle" : "com.apple.QuickTimePlayerX",
+    "menuBarFrame" : {
+      "h" : 33,
+      "w" : 1512,
+      "x" : 0,
+      "y" : 0
+    },
+    "menuBarTitles" : [
+      "Apple",
+      "QuickTime Player",
+      "文件",
+      "编辑",
+      "显示",
+      "窗口",
+      "帮助"
+    ],
+    "menus" : {
+      "QuickTime Player" : {
+        "items" : [
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "关于QuickTime Player"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "服务"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘H",
+            "title" : "隐藏QuickTime Player"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘H",
+            "title" : "隐藏其他"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "全部显示"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘Q",
+            "title" : "退出QuickTime Player"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘Q",
+            "title" : "退出并保留窗口"
+          }
+        ]
+      },
+      "帮助" : {
+        "items" : [
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "QuickTime Player帮助"
+          }
+        ]
+      },
+      "文件" : {
+        "items" : [
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘N",
+            "title" : "新建录影"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘N",
+            "title" : "新建录音"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃⌘N",
+            "title" : "新建录屏"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘O",
+            "title" : "打开文件…"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘L",
+            "title" : "打开位置…"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘O",
+            "title" : "打开图像序列…"
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "打开最近使用"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘W",
+            "title" : "关闭"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘W",
+            "title" : "全部关闭"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘S",
+            "title" : "保存…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⇧⌘S",
+            "title" : "保存为…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘S",
+            "title" : "复制"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "重新命名…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "移到…"
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "导出为"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "共享"
+          }
+        ]
+      },
+      "显示" : {
+        "items" : [
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "显示标签页栏"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘\\",
+            "title" : "显示所有标签页"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "F",
+            "title" : "进入全屏幕"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "浮动在最前面"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "mark" : "✓",
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘0",
+            "title" : "实际大小"
+          },
+          {
+            "enabled" : false,
+            "mark" : "✓",
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘9",
+            "title" : "缩放至窗口大小"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘+",
+            "title" : "放大"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘-",
+            "title" : "缩小"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "播放速度"
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "音频"
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "语言"
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "字幕"
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "时间显示"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘",
+            "title" : "下一章节"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘",
+            "title" : "上一章节"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘E",
+            "title" : "显示剪辑"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘U",
+            "title" : "显示音轨"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘L",
+            "title" : "循环"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "空间视频"
+          }
+        ]
+      },
+      "窗口" : {
+        "items" : [
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘M",
+            "title" : "最小化"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘M",
+            "title" : "全部最小化"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "缩放"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "全部缩放"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃F",
+            "title" : "填充"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃C",
+            "title" : "居中"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "移动与调整大小"
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "全屏幕平铺"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "从组中移除窗口"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘1",
+            "title" : "原始大小"
+          },
+          {
+            "enabled" : false,
+            "mark" : "✓",
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘3",
+            "title" : "适合于屏幕"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘4",
+            "title" : "充满屏幕"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘5",
+            "title" : "全景"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘]",
+            "title" : "增大大小"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘[",
+            "title" : "缩小大小"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃⇧\t",
+            "title" : "显示上一个标签页"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃\t",
+            "title" : "显示下一个标签页"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "将标签页移到新窗口"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "合并所有窗口"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘I",
+            "title" : "显示影片检查器"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘P",
+            "title" : "显示导出进度"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "前置全部窗口"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "排在前面"
+          }
+        ],
+        "truncatedAtLastSeparator" : true
+      },
+      "编辑" : {
+        "items" : [
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘Z",
+            "title" : "撤销"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘Z",
+            "title" : "重做"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘X",
+            "title" : "剪切"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘C",
+            "title" : "拷贝"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘V",
+            "title" : "粘贴"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "删除"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘A",
+            "title" : "全选"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘L",
+            "title" : "向左旋转"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘R",
+            "title" : "向右旋转"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘H",
+            "title" : "水平翻转"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘V",
+            "title" : "垂直翻转"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "剪辑对齐"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘Y",
+            "title" : "分离剪辑"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "将剪辑添加到结尾…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "将剪辑添加到开头…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "移除音频"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "移除视频"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘T",
+            "title" : "修剪…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "自动填充"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "🎤",
+            "title" : "开始听写"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "E",
+            "title" : "表情与符号"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "bundle" : "com.apple.Chess",
+    "menuBarFrame" : {
+      "h" : 33,
+      "w" : 1512,
+      "x" : 0,
+      "y" : 0
+    },
+    "menuBarTitles" : [
+      "Apple",
+      "国际象棋",
+      "游戏",
+      "编辑",
+      "显示",
+      "棋步",
+      "窗口",
+      "帮助"
+    ],
+    "menus" : {
+      "国际象棋" : {
+        "items" : [
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "关于国际象棋"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘,",
+            "title" : "设置…"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "服务"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘H",
+            "title" : "隐藏国际象棋"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘H",
+            "title" : "隐藏其他"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "全部显示"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘Q",
+            "title" : "退出国际象棋"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘Q",
+            "title" : "退出并保留窗口"
+          }
+        ]
+      },
+      "帮助" : {
+        "items" : [
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘?",
+            "title" : "国际象棋帮助"
+          }
+        ]
+      },
+      "显示" : {
+        "items" : [
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "边缘记法"
+          }
+        ]
+      },
+      "窗口" : {
+        "items" : [
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘W",
+            "title" : "关闭"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘M",
+            "title" : "最小化"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌥⌘M",
+            "title" : "全部最小化"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "缩放"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "全部缩放"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃F",
+            "title" : "填充"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌃C",
+            "title" : "居中"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "移动与调整大小"
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "全屏幕平铺"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "从组中移除窗口"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "F",
+            "title" : "进入全屏幕"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "前置全部窗口"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "排在前面"
+          }
+        ],
+        "truncatedAtLastSeparator" : true
+      },
+      "编辑" : {
+        "items" : [
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘Z",
+            "title" : "撤销"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⇧⌘Z",
+            "title" : "重做"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘X",
+            "title" : "剪切"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘C",
+            "title" : "拷贝"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘V",
+            "title" : "粘贴"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "title" : "删除"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "⌘A",
+            "title" : "全选"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "separatorLike" : true,
+            "title" : ""
+          },
+          {
+            "childRoles" : [
+              "AXMenu"
+            ],
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "title" : "自动填充"
+          },
+          {
+            "enabled" : false,
+            "role" : "AXMenuItem",
+            "shortcut" : "🎤",
+            "title" : "开始听写"
+          },
+          {
+            "enabled" : true,
+            "role" : "AXMenuItem",
+            "shortcut" : "E",
+            "title" : "表情与符号"
+          }
+        ]
+      }
+    }
+  }
+]

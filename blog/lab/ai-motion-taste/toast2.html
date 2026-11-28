@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>通知演示</title>
+<style>
+  :root {
+    --bg: #f5f5f3;
+    --surface: #ffffff;
+    --text: #1c1c1e;
+    --text-2: #6b6b70;
+    --border: rgba(0, 0, 0, 0.08);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.10);
+    --btn-bg: #ffffff;
+    --btn-hover: #fafaf9;
+    --success: #1f9d55;
+    --danger: #d64545;
+    --info: #2f6fde;
+    --focus: #2f6fde;
+    --radius: 12px;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141416;
+      --surface: #222226;
+      --text: #f2f2f4;
+      --text-2: #a1a1a8;
+      --border: rgba(255, 255, 255, 0.08);
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 10px 30px rgba(0, 0, 0, 0.45);
+      --btn-bg: #222226;
+      --btn-hover: #2a2a2f;
+      --success: #3ccf7f;
+      --danger: #f07070;
+      --info: #6c9cf5;
+      --focus: #6c9cf5;
+      color-scheme: dark;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    padding: 24px 16px;
+    background: var(--bg);
+    color: var(--text);
+    font: 15px/1.5 -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  main { width: 100%; max-width: 520px; text-align: center; }
+  h1 { margin: 0 0 6px; font-size: 22px; font-weight: 600; letter-spacing: 0.01em; }
+  .lead { margin: 0 0 28px; color: var(--text-2); font-size: 14px; }
+
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    min-height: 40px; padding: 0 16px;
+    border: 1px solid var(--border); border-radius: 10px;
+    background: var(--btn-bg); color: var(--text);
+    font: inherit; font-size: 14px; font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    transition: background-color 150ms ease, transform 120ms ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn:hover { background: var(--btn-hover); }
+  .btn:active { transform: scale(0.97); }
+  .btn:focus-visible, .toast-close:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  .btn[data-type="success"] .dot { color: var(--success); }
+  .btn[data-type="error"] .dot { color: var(--danger); }
+  .btn[data-type="message"] .dot { color: var(--info); }
+
+  /* 通知容器：桌面右下角，新的贴着角落，旧的往上推 */
+  .toaster {
+    position: fixed; z-index: 1000;
+    right: 24px; bottom: 24px;
+    width: 360px; max-width: calc(100vw - 32px);
+    margin: 0; padding: 0; list-style: none;
+    display: flex; flex-direction: column;
+    pointer-events: none;
+  }
+  .toast-item {
+    padding: 5px 0;
+    pointer-events: auto;
+  }
+  .toast-item[data-state="leaving"] { pointer-events: none; z-index: -1; }
+
+  .toast {
+    position: relative;
+    display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: start;
+    padding: 14px 12px 14px 14px;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    text-align: left;
+    transform-origin: 50% 100%;
+  }
+  .toast-icon {
+    position: relative;
+    width: 22px; height: 22px; margin-top: 1px;
+    border-radius: 50%;
+    display: grid; place-items: center;
+    color: #fff; font-size: 13px; font-weight: 700; line-height: 1;
+  }
+  .toast[data-type="success"] .toast-icon { background: var(--success); }
+  .toast[data-type="success"] .toast-icon::after {
+    content: ""; width: 9px; height: 5px; margin-top: -2px;
+    border: 2px solid #fff; border-top: 0; border-right: 0;
+    transform: rotate(-45deg);
+  }
+  .toast[data-type="error"] .toast-icon { background: var(--danger); }
+  .toast[data-type="message"] .toast-icon { background: var(--info); font-size: 12px; font-weight: 600; }
+
+  .toast-title { margin: 0; font-size: 14px; font-weight: 600; }
+  .toast-desc { margin: 2px 0 0; font-size: 13px; color: var(--text-2); }
+
+  .toast-close {
+    position: relative;
+    width: 28px; height: 28px; margin: -4px -2px 0 0;
+    border: 0; border-radius: 8px; padding: 0;
+    background: transparent; color: var(--text-2);
+    cursor: pointer;
+    transition: background-color 150ms ease, color 150ms ease;
+  }
+  .toast-close:hover { background: var(--border); color: var(--text); }
+  .toast-close::before, .toast-close::after {
+    content: ""; position: absolute; left: 50%; top: 50%;
+    width: 12px; height: 1.5px; border-radius: 1px;
+    background: currentColor;
+  }
+  .toast-close::before { transform: translate(-50%, -50%) rotate(45deg); }
+  .toast-close::after { transform: translate(-50%, -50%) rotate(-45deg); }
+
+  /* 剩余时间条，同时充当 4 秒计时器 */
+  .toast-bar {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    height: 2px;
+    background: currentColor; opacity: 0.35;
+    transform-origin: 0 50%;
+  }
+  .toast[data-type="success"] .toast-bar { color: var(--success); }
+  .toast[data-type="error"] .toast-bar { color: var(--danger); }
+  .toast[data-type="message"] .toast-bar { color: var(--info); }
+
+  /* 手机：顶部，新的贴着顶边，旧的往下推 */
+  @media (max-width: 640px) {
+    .toaster {
+      top: calc(env(safe-area-inset-top, 0px) + 8px);
+      bottom: auto; left: 12px; right: 12px;
+      width: auto; max-width: none;
+      flex-direction: column-reverse;
+    }
+    .toast { transform-origin: 50% 0; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>通知演示</h1>
+  <p class="lead">点按钮弹出通知。4 秒后自动消失，鼠标悬停时暂停计时。</p>
+  <div class="actions">
+    <button class="btn" type="button" data-type="success"><span class="dot" aria-hidden="true"></span>保存成功</button>
+    <button class="btn" type="button" data-type="error"><span class="dot" aria-hidden="true"></span>上传失败</button>
+    <button class="btn" type="button" data-type="message"><span class="dot" aria-hidden="true"></span>新消息</button>
+  </div>
+</main>
+
+<ol class="toaster" id="toaster" aria-live="polite" aria-label="通知"></ol>
+
+<script>
+(() => {
+  const toaster = document.getElementById('toaster');
+  const mqMobile = matchMedia('(max-width: 640px)');
+  const mqReduce = matchMedia('(prefers-reduced-motion: reduce)');
+
+  const LIFETIME = 4000;
+  const MAX_VISIBLE = 5;
+  const EASE_OUT = 'cubic-bezier(0.22, 1, 0.36, 1)';
+  const EASE_IN = 'cubic-bezier(0.4, 0, 1, 1)';
+  const EASE_IN_OUT = 'cubic-bezier(0.65, 0, 0.35, 1)';
+
+  const TYPES = {
+    success: { icon: '', title: '已保存', desc: '更改已同步到云端。' },
+    error: { icon: '!', title: '上传失败', desc: '文件超过 20 MB，请压缩后重试。' },
+    message: { icon: '林', title: '林夏发来新消息', desc: '下午的评审改到 3 点，记得带上稿子。' },
+  };
+
+  let lastTrigger = null;
+
+  /** 记录每条通知当前的视觉位置（包含进行中的位移动画） */
+  const snapshot = () => new Map(
+    [...toaster.children].map((el) => [el, el.getBoundingClientRect().top])
+  );
+
+  /** FLIP：布局变化后，让其余通知从旧位置平滑滑到新位置，而不是瞬间跳过去 */
+  const flip = (first) => {
+    const duration = mqReduce.matches ? 0 : 380;
+    first.forEach((top, el) => {
+      if (!el.isConnected) return;
+      el._flip?.cancel();
+      const dy = top - el.getBoundingClientRect().top;
+      if (Math.abs(dy) < 0.5 || duration === 0) return;
+      el._flip = el.animate(
+        [{ transform: `translateY(${dy}px)` }, { transform: 'translateY(0)' }],
+        { duration, easing: EASE_OUT }
+      );
+    });
+  };
+
+  const build = (type) => {
+    const t = TYPES[type];
+    const item = document.createElement('li');
+    item.className = 'toast-item';
+    item.dataset.state = 'open';
+    if (type === 'error') item.setAttribute('role', 'alert');
+
+    const card = document.createElement('div');
+    card.className = 'toast';
+    card.dataset.type = type;
+
+    const icon = document.createElement('span');
+    icon.className = 'toast-icon';
+    icon.setAttribute('aria-hidden', 'true');
+    icon.textContent = t.icon;
+
+    const body = document.createElement('div');
+    const title = document.createElement('p');
+    title.className = 'toast-title';
+    title.textContent = t.title;
+    const desc = document.createElement('p');
+    desc.className = 'toast-desc';
+    desc.textContent = t.desc;
+    body.append(title, desc);
+
+    const close = document.createElement('button');
+    close.className = 'toast-close';
+    close.type = 'button';
+    close.setAttribute('aria-label', '关闭通知');
+    close.addEventListener('click', () => dismiss(item));
+
+    const bar = document.createElement('span');
+    bar.className = 'toast-bar';
+    bar.setAttribute('aria-hidden', 'true');
+
+    card.append(icon, body, close, bar);
+    item.append(card);
+    return item;
+  };
+
+  const enter = (item) => {
+    const card = item.firstElementChild;
+    if (mqReduce.matches) {
+      card._motion = card.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 180, easing: 'ease-out' });
+      return;
+    }
+    const from = mqMobile.matches ? 'translateY(-18px) scale(0.96)' : 'translateY(18px) scale(0.96)';
+    card._motion = card.animate(
+      [{ opacity: 0, transform: from }, { opacity: 1, transform: 'translateY(0) scale(1)' }],
+      { duration: 420, easing: EASE_OUT }
+    );
+  };
+
+  /** 计时器就是底部进度条的动画：暂停进度条即暂停计时，播完即关闭 */
+  const startTimer = (item) => {
+    const bar = item.querySelector('.toast-bar');
+    const timer = bar.animate(
+      [{ transform: 'scaleX(1)' }, { transform: 'scaleX(0)' }],
+      { duration: LIFETIME, easing: 'linear', fill: 'forwards' }
+    );
+    timer.onfinish = () => dismiss(item);
+    item._timer = timer;
+
+    const pause = () => { if (item.dataset.state === 'open') timer.pause(); };
+    const resume = () => {
+      if (item.dataset.state !== 'open') return;
+      if (item.matches(':hover') || item.contains(document.activeElement)) return;
+      timer.play();
+    };
+    item.addEventListener('pointerenter', pause);
+    item.addEventListener('pointerleave', resume);
+    item.addEventListener('focusin', pause);
+    item.addEventListener('focusout', (e) => { if (!item.contains(e.relatedTarget)) requestAnimationFrame(resume); });
+  };
+
+  function dismiss(item) {
+    if (item.dataset.state !== 'open') return;
+    item.dataset.state = 'leaving';
+    item._timer?.pause();
+
+    if (item.contains(document.activeElement)) lastTrigger?.focus({ preventScroll: true });
+
+    const card = item.firstElementChild;
+    // 从当前画面状态起退场，进场没播完就被关掉时也不会跳帧
+    const cs = getComputedStyle(card);
+    const fromOpacity = cs.opacity;
+    const fromTransform = cs.transform === 'none' ? 'translateY(0) scale(1)' : cs.transform;
+    card._motion?.cancel();
+
+    const reduce = mqReduce.matches;
+    const to = reduce
+      ? fromTransform
+      : mqMobile.matches ? 'translateY(-10px) scale(0.97)' : 'translateX(28px) scale(0.97)';
+
+    card.animate(
+      [{ opacity: fromOpacity, transform: fromTransform }, { opacity: 0, transform: to }],
+      { duration: reduce ? 150 : 200, easing: EASE_IN, fill: 'forwards' }
+    );
+
+    // 高度和间距一起收起，下面（或上面）的通知顺势补位
+    const h = item.getBoundingClientRect().height;
+    const pad = getComputedStyle(item).paddingTop;
+    const collapse = item.animate(
+      [
+        { height: `${h}px`, paddingTop: pad, paddingBottom: pad },
+        { height: '0px', paddingTop: '0px', paddingBottom: '0px' },
+      ],
+      { duration: reduce ? 0 : 280, delay: reduce ? 150 : 80, easing: EASE_IN_OUT, fill: 'forwards' }
+    );
+    collapse.onfinish = () => item.remove();
+  }
+
+  const show = (type) => {
+    const first = snapshot();
+    const item = build(type);
+    toaster.append(item);
+    flip(first);
+    enter(item);
+    startTimer(item);
+
+    const open = [...toaster.children].filter((el) => el.dataset.state === 'open');
+    if (open.length > MAX_VISIBLE) dismiss(open[0]);
+  };
+
+  document.querySelectorAll('.btn[data-type]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      lastTrigger = btn;
+      show(btn.dataset.type);
+    });
+  });
+})();
+</script>
+</body>
+</html>

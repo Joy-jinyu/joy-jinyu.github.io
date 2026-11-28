@@ -1,0 +1,562 @@
+[
+ {
+  "name": "load-slow",
+  "at400ms": {
+   "text": "文件\n搜索文件\n文件列表\n正在加载文件…\n上传文件",
+   "focus": "body",
+   "busy": 1,
+   "live": [],
+   "skeleton": 13,
+   "rows": 0,
+   "dialog": []
+  },
+  "counts": {
+   "list": 1,
+   "del": 0,
+   "up": 0
+  },
+  "errors": []
+ },
+ {
+  "name": "load-fast-flash",
+  "after": {
+   "text": "文件\n搜索文件\n文件列表\n4 个文件\nPDF\n2026Q3 报告.pdf\n2.4 MB · 10月28日\n删除\nDOCX\n团队周会纪要.docx\n86 KB · 10月27日\n删除\nKEY\n产品路线图.key\n18.2 MB · 10月25日\n删除\nFIG\n设计稿-v3.fig\n42.7 MB · 10月22日\n删除\n上传文件",
+   "focus": "body",
+   "busy": 0,
+   "live": [],
+   "skeleton": 0,
+   "rows": 4,
+   "dialog": []
+  },
+  "loadingVisibleMs": 71,
+  "counts": {
+   "list": 1,
+   "del": 0,
+   "up": 0
+  },
+  "errors": []
+ },
+ {
+  "name": "empty",
+  "snap": {
+   "text": "文件\n搜索文件\n文件列表\n还没有文件\n上传的文件会显示在这里。\n上传文件",
+   "focus": "body",
+   "busy": 0,
+   "live": [],
+   "skeleton": 0,
+   "rows": 0,
+   "dialog": []
+  },
+  "counts": {
+   "list": 1,
+   "del": 0,
+   "up": 0
+  },
+  "errors": []
+ },
+ {
+  "name": "error-500",
+  "snap": {
+   "text": "文件\n搜索文件\n文件列表\n没能加载文件\n服务暂时出了问题，请稍后重试。\n重试\n上传文件\n没能加载文件。服务暂时出了问题，请稍后重试。",
+   "focus": "body",
+   "busy": 0,
+   "live": [
+    "live:没能加载文件。服务暂时出了问题，请稍后重试。"
+   ],
+   "skeleton": 0,
+   "rows": 0,
+   "dialog": []
+  },
+  "counts": {
+   "list": 1,
+   "del": 0,
+   "up": 0
+  },
+  "errors": []
+ },
+ {
+  "name": "error-403",
+  "snap": {
+   "text": "文件\n搜索文件\n文件列表\n没能加载文件\n你没有查看这些文件的权限。\n重试\n上传文件\n没能加载文件。你没有查看这些文件的权限。",
+   "focus": "body",
+   "busy": 0,
+   "live": [
+    "live:没能加载文件。你没有查看这些文件的权限。"
+   ],
+   "skeleton": 0,
+   "rows": 0,
+   "dialog": []
+  },
+  "counts": {
+   "list": 1,
+   "del": 0,
+   "up": 0
+  },
+  "errors": []
+ },
+ {
+  "name": "error-network",
+  "snap": {
+   "text": "文件\n搜索文件\n文件列表\n没能加载文件\n请检查网络后重试。\n重试\n上传文件\n没能加载文件。请检查网络后重试。",
+   "focus": "body",
+   "busy": 0,
+   "live": [
+    "live:没能加载文件。请检查网络后重试。"
+   ],
+   "skeleton": 0,
+   "rows": 0,
+   "dialog": []
+  },
+  "counts": {
+   "list": 1,
+   "del": 0,
+   "up": 0
+  },
+  "errors": []
+ },
+ {
+  "name": "error-badshape",
+  "snap": {
+   "text": "文件\n搜索文件\n文件列表\n没能加载文件\n服务暂时出了问题，请稍后重试。\n重试\n上传文件\n没能加载文件。服务暂时出了问题，请稍后重试。",
+   "focus": "body",
+   "busy": 0,
+   "live": [
+    "live:没能加载文件。服务暂时出了问题，请稍后重试。"
+   ],
+   "skeleton": 0,
+   "rows": 0,
+   "dialog": []
+  },
+  "counts": {
+   "list": 1,
+   "del": 0,
+   "up": 0
+  },
+  "errors": []
+ },
+ {
+  "name": "hang-20s",
+  "at3s": {
+   "text": "文件\n搜索文件\n文件列表\n正在加载文件…\n上传文件",
+   "focus": "body",
+   "busy": 1,
+   "live": [],
+   "skeleton": 13,
+   "rows": 0,
+   "dialog": []
+  },
+  "at20s": {
+   "text": "文件\n搜索文件\n文件列表\n没能加载文件\n等了很久没有响应，请稍后重试。\n重试\n上传文件\n没能加载文件。等了很久没有响应，请稍后重试。",
+   "focus": "body",
+   "busy": 0,
+   "live": [
+    "live:没能加载文件。等了很久没有响应，请稍后重试。"
+   ],
+   "skeleton": 0,
+   "rows": 0,
+   "dialog": []
+  },
+  "counts": {
+   "list": 1,
+   "del": 0,
+   "up": 0
+  },
+  "errors": []
+ },
+ {
+  "name": "search-none",
+  "snap": {
+   "text": "文件\n搜索文件\n文件列表\n没有找到「zzzz」\n清除搜索\n上传文件",
+   "focus": "input「搜索文件」",
+   "busy": 0,
+   "live": [],
+   "skeleton": 0,
+   "rows": 0,
+   "dialog": []
+  },
+  "counts": {
+   "list": 1,
+   "del": 0,
+   "up": 0
+  },
+  "errors": []
+ },
+ {
+  "name": "delete-ok",
+  "dialog": {
+   "text": "文件\n搜索文件\n文件列表\n4 个文件\nPDF\n2026Q3 报告.pdf\n2.4 MB · 10月28日\n删除\nDOCX\n团队周会纪要.docx\n86 KB · 10月27日\n删除\nKEY\n产品路线图.key\n18.2 MB · 10月25日\n删除\nFIG\n设计稿-v3.fig\n42.7 MB · 10月22日\n删除\n上传文件\n删除「团队周会纪要.docx」？\n删除后无法恢复。\n取消\n删除",
+   "focus": "button「取消」",
+   "busy": 0,
+   "live": [],
+   "skeleton": 0,
+   "rows": 4,
+   "dialog": [
+    "删除「团队周会纪要.docx」？ 删除后无法恢复。 取消 删除"
+   ]
+  },
+  "after": {
+   "text": "文件\n搜索文件\n文件列表\n3 个文件\nPDF\n2026Q3 报告.pdf\n2.4 MB · 10月28日\n删除\nKEY\n产品路线图.key\n18.2 MB · 10月25日\n删除\nFIG\n设计稿-v3.fig\n42.7 MB · 10月22日\n删除\n上传文件\n已删除「团队周会纪要.docx」",
+   "focus": "button「删除」",
+   "busy": 0,
+   "live": [
+    "live:已删除「团队周会纪要.docx」"
+   ],
+   "skeleton": 0,
+   "rows": 3,
+   "dialog": []
+  },
+  "counts": {
+   "list": 1,
+   "del": 1,
+   "up": 0
+  },
+  "errors": []
+ },
+ {
+  "name": "delete-slow",
+  "inflight": {
+   "text": "文件\n搜索文件\n文件列表\n4 个文件\nPDF\n2026Q3 报告.pdf\n2.4 MB · 10月28日\n删除\nDOCX\n团队周会纪要.docx\n86 KB · 10月27日\n删除中…\nKEY\n产品路线图.key\n18.2 MB · 10月25日\n删除\nFIG\n设计稿-v3.fig\n42.7 MB · 10月22日\n删除\n上传文件",
+   "focus": "button「删除中…」",
+   "busy": 1,
+   "live": [],
+   "skeleton": 0,
+   "rows": 4,
+   "dialog": []
+  },
+  "secondClick": "blocked: TimeoutError: locator.click: Timeout 1000ms exceeded.\nCall l",
+  "afterSecond": {
+   "text": "文件\n搜索文件\n文件列表\n4 个文件\nPDF\n2026Q3 报告.pdf\n2.4 MB · 10月28日\n删除\nDOCX\n团队周会纪要.docx\n86 KB · 10月27日\n删除中…\nKEY\n产品路线图.key\n18.2 MB · 10月25日\n删除\nFIG\n设计稿-v3.fig\n42.7 MB · 10月22日\n删除\n上传文件",
+   "focus": "button「删除中…」",
+   "busy": 1,
+   "live": [],
+   "skeleton": 0,
+   "rows": 4,
+   "dialog": []
+  },
+  "done": {
+   "text": "文件\n搜索文件\n文件列表\n3 个文件\nPDF\n2026Q3 报告.pdf\n2.4 MB · 10月28日\n删除\nKEY\n产品路线图.key\n18.2 MB · 10月25日\n删除\nFIG\n设计稿-v3.fig\n42.7 MB · 10月22日\n删除\n上传文件\n已删除「团队周会纪要.docx」",
+   "focus": "button「删除」",
+   "busy": 0,
+   "live": [
+    "live:已删除「团队周会纪要.docx」"
+   ],
+   "skeleton": 0,
+   "rows": 3,
+   "dialog": []
+  },
+  "counts": {
+   "list": 1,
+   "del": 1,
+   "up": 0
+  },
+  "errors": []
+ },
+ {
+  "name": "delete-500",
+  "after": {
+   "text": "文件\n搜索文件\n文件列表\n4 个文件\nPDF\n2026Q3 报告.pdf\n2.4 MB · 10月28日\n删除\nDOCX\n团队周会纪要.docx\n86 KB · 10月27日\n没能删除。服务暂时出了问题，请稍后重试。\n删除\nKEY\n产品路线图.key\n18.2 MB · 10月25日\n删除\nFIG\n设计稿-v3.fig\n42.7 MB · 10月22日\n删除\n上传文件\n没能删除「团队周会纪要.docx」。服务暂时出了问题，请稍后重试。",
+   "focus": "button「删除」",
+   "busy": 0,
+   "live": [
+    "live:没能删除「团队周会纪要.docx」。服务暂时出了问题，请稍后重试。"
+   ],
+   "skeleton": 0,
+   "rows": 4,
+   "dialog": []
+  },
+  "counts": {
+   "list": 1,
+   "del": 1,
+   "up": 0
+  },
+  "errors": []
+ },
+ {
+  "name": "upload-double",
+  "inflight": {
+   "text": "文件\n搜索文件\n文件列表\n4 个文件\nPDF\n2026Q3 报告.pdf\n2.4 MB · 10月28日\n删除\nDOCX\n团队周会纪要.docx\n86 KB · 10月27日\n删除\nKEY\n产品路线图.key\n18.2 MB · 10月25日\n删除\nFIG\n设计稿-v3.fig\n42.7 MB · 10月22日\n删除\n上传中…",
+   "focus": "button「上传中…」",
+   "busy": 0,
+   "live": [],
+   "skeleton": 0,
+   "rows": 4,
+   "dialog": []
+  },
+  "done": {
+   "text": "文件\n搜索文件\n文件列表\n5 个文件\nPDF\n新上传的文件.pdf\n1.1 MB · 刚刚\n删除\nPDF\n2026Q3 报告.pdf\n2.4 MB · 10月28日\n删除\nDOCX\n团队周会纪要.docx\n86 KB · 10月27日\n删除\nKEY\n产品路线图.key\n18.2 MB · 10月25日\n删除\nFIG\n设计稿-v3.fig\n42.7 MB · 10月22日\n删除\n上传文件\n已上传「新上传的文件.pdf」",
+   "focus": "button「上传文件」",
+   "busy": 0,
+   "live": [
+    "live:已上传「新上传的文件.pdf」"
+   ],
+   "skeleton": 0,
+   "rows": 5,
+   "dialog": []
+  },
+  "counts": {
+   "list": 1,
+   "del": 0,
+   "up": 1
+  },
+  "errors": []
+ },
+ {
+  "name": "upload-500",
+  "after": {
+   "text": "文件\n搜索文件\n文件列表\n4 个文件\nPDF\n2026Q3 报告.pdf\n2.4 MB · 10月28日\n删除\nDOCX\n团队周会纪要.docx\n86 KB · 10月27日\n删除\nKEY\n产品路线图.key\n18.2 MB · 10月25日\n删除\nFIG\n设计稿-v3.fig\n42.7 MB · 10月22日\n删除\n没能上传。服务暂时出了问题，请稍后重试。\n上传文件\n没能上传。服务暂时出了问题，请稍后重试。",
+   "focus": "button「上传文件」",
+   "busy": 0,
+   "live": [
+    "live:没能上传。服务暂时出了问题，请稍后重试。"
+   ],
+   "skeleton": 0,
+   "rows": 4,
+   "dialog": []
+  },
+  "counts": {
+   "list": 1,
+   "del": 0,
+   "up": 1
+  },
+  "errors": []
+ },
+ {
+  "name": "offline",
+  "offline": {
+   "text": "文件\n搜索文件\n文件列表\n4 个文件\nPDF\n2026Q3 报告.pdf\n2.4 MB · 10月28日\n删除\nDOCX\n团队周会纪要.docx\n86 KB · 10月27日\n删除\nKEY\n产品路线图.key\n18.2 MB · 10月25日\n删除\nFIG\n设计稿-v3.fig\n42.7 MB · 10月22日\n删除\n上传文件",
+   "focus": "body",
+   "busy": 0,
+   "live": [],
+   "skeleton": 0,
+   "rows": 4,
+   "dialog": []
+  },
+  "afterUploadOffline": {
+   "text": "文件\n搜索文件\n文件列表\n5 个文件\nPDF\n新上传的文件.pdf\n1.1 MB · 刚刚\n删除\nPDF\n2026Q3 报告.pdf\n2.4 MB · 10月28日\n删除\nDOCX\n团队周会纪要.docx\n86 KB · 10月27日\n删除\nKEY\n产品路线图.key\n18.2 MB · 10月25日\n删除\nFIG\n设计稿-v3.fig\n42.7 MB · 10月22日\n删除\n上传文件\n已上传「新上传的文件.pdf」",
+   "focus": "button「上传文件」",
+   "busy": 0,
+   "live": [
+    "live:已上传「新上传的文件.pdf」"
+   ],
+   "skeleton": 0,
+   "rows": 5,
+   "dialog": []
+  },
+  "online": {
+   "text": "文件\n搜索文件\n文件列表\n5 个文件\nPDF\n新上传的文件.pdf\n1.1 MB · 刚刚\n删除\nPDF\n2026Q3 报告.pdf\n2.4 MB · 10月28日\n删除\nDOCX\n团队周会纪要.docx\n86 KB · 10月27日\n删除\nKEY\n产品路线图.key\n18.2 MB · 10月25日\n删除\nFIG\n设计稿-v3.fig\n42.7 MB · 10月22日\n删除\n上传文件\n已上传「新上传的文件.pdf」",
+   "focus": "button「上传文件」",
+   "busy": 0,
+   "live": [
+    "live:已上传「新上传的文件.pdf」"
+   ],
+   "skeleton": 0,
+   "rows": 5,
+   "dialog": []
+  },
+  "counts": {
+   "list": 1,
+   "del": 0,
+   "up": 1
+  },
+  "errors": []
+ },
+ {
+  "name": "delete-hang",
+  "at3s": {
+   "text": "文件\n搜索文件\n文件列表\n4 个文件\nPDF\n2026Q3 报告.pdf\n2.4 MB · 10月28日\n删除\nDOCX\n团队周会纪要.docx\n86 KB · 10月27日\n删除中…\nKEY\n产品路线图.key\n18.2 MB · 10月25日\n删除\nFIG\n设计稿-v3.fig\n42.7 MB · 10月22日\n删除\n上传文件",
+   "focus": "button「删除中…」",
+   "busy": 1,
+   "live": [],
+   "skeleton": 0,
+   "rows": 4,
+   "dialog": []
+  },
+  "at30s": {
+   "text": "文件\n搜索文件\n文件列表\n4 个文件\nPDF\n2026Q3 报告.pdf\n2.4 MB · 10月28日\n删除\nDOCX\n团队周会纪要.docx\n86 KB · 10月27日\n没能删除。等了很久没有响应，请稍后重试。\n删除\nKEY\n产品路线图.key\n18.2 MB · 10月25日\n删除\nFIG\n设计稿-v3.fig\n42.7 MB · 10月22日\n删除\n上传文件\n没能删除「团队周会纪要.docx」。等了很久没有响应，请稍后重试。",
+   "focus": "button「删除」",
+   "busy": 0,
+   "live": [
+    "live:没能删除「团队周会纪要.docx」。等了很久没有响应，请稍后重试。"
+   ],
+   "skeleton": 0,
+   "rows": 4,
+   "dialog": []
+  },
+  "counts": {
+   "list": 1,
+   "del": 1,
+   "up": 0
+  },
+  "errors": []
+ },
+ {
+  "name": "upload-hang",
+  "at3s": {
+   "text": "文件\n搜索文件\n文件列表\n4 个文件\nPDF\n2026Q3 报告.pdf\n2.4 MB · 10月28日\n删除\nDOCX\n团队周会纪要.docx\n86 KB · 10月27日\n删除\nKEY\n产品路线图.key\n18.2 MB · 10月25日\n删除\nFIG\n设计稿-v3.fig\n42.7 MB · 10月22日\n删除\n上传中…",
+   "focus": "button「上传中…」",
+   "busy": 0,
+   "live": [],
+   "skeleton": 0,
+   "rows": 4,
+   "dialog": []
+  },
+  "at30s": {
+   "text": "文件\n搜索文件\n文件列表\n4 个文件\nPDF\n2026Q3 报告.pdf\n2.4 MB · 10月28日\n删除\nDOCX\n团队周会纪要.docx\n86 KB · 10月27日\n删除\nKEY\n产品路线图.key\n18.2 MB · 10月25日\n删除\nFIG\n设计稿-v3.fig\n42.7 MB · 10月22日\n删除\n没能上传。等了很久没有响应，请稍后重试。\n上传文件\n没能上传。等了很久没有响应，请稍后重试。",
+   "focus": "button「上传文件」",
+   "busy": 0,
+   "live": [
+    "live:没能上传。等了很久没有响应，请稍后重试。"
+   ],
+   "skeleton": 0,
+   "rows": 4,
+   "dialog": []
+  },
+  "counts": {
+   "list": 1,
+   "del": 0,
+   "up": 1
+  },
+  "errors": []
+ },
+ {
+  "name": "delete-last",
+  "after": {
+   "text": "文件\n搜索文件\n文件列表\n3 个文件\nPDF\n2026Q3 报告.pdf\n2.4 MB · 10月28日\n删除\nDOCX\n团队周会纪要.docx\n86 KB · 10月27日\n删除\nKEY\n产品路线图.key\n18.2 MB · 10月25日\n删除\n上传文件\n已删除「设计稿-v3.fig」",
+   "focus": "button「删除」",
+   "busy": 0,
+   "live": [
+    "live:已删除「设计稿-v3.fig」"
+   ],
+   "skeleton": 0,
+   "rows": 3,
+   "dialog": []
+  },
+  "counts": {
+   "list": 1,
+   "del": 1,
+   "up": 0
+  },
+  "errors": []
+ },
+ {
+  "name": "delete-all",
+  "after": {
+   "text": "文件\n搜索文件\n文件列表\n还没有文件\n上传的文件会显示在这里。\n上传文件\n已删除「设计稿-v3.fig」",
+   "focus": "button「上传文件」",
+   "busy": 0,
+   "live": [
+    "live:已删除「设计稿-v3.fig」"
+   ],
+   "skeleton": 0,
+   "rows": 0,
+   "dialog": []
+  },
+  "counts": {
+   "list": 1,
+   "del": 4,
+   "up": 0
+  },
+  "errors": []
+ },
+ {
+  "name": "dialog-cancel",
+  "after": {
+   "text": "文件\n搜索文件\n文件列表\n4 个文件\nPDF\n2026Q3 报告.pdf\n2.4 MB · 10月28日\n删除\nDOCX\n团队周会纪要.docx\n86 KB · 10月27日\n删除\nKEY\n产品路线图.key\n18.2 MB · 10月25日\n删除\nFIG\n设计稿-v3.fig\n42.7 MB · 10月22日\n删除\n上传文件",
+   "focus": "button「删除」",
+   "busy": 0,
+   "live": [],
+   "skeleton": 0,
+   "rows": 4,
+   "dialog": []
+  },
+  "counts": {
+   "list": 1,
+   "del": 0,
+   "up": 0
+  },
+  "errors": []
+ },
+ {
+  "name": "retry",
+  "retrying": {
+   "text": "文件\n搜索文件\n文件列表\n正在加载文件…\n上传文件\n没能加载文件。服务暂时出了问题，请稍后重试。",
+   "focus": "section「文件列表\n      0 个文件\n\n  」",
+   "busy": 1,
+   "live": [
+    "live:没能加载文件。服务暂时出了问题，请稍后重试。"
+   ],
+   "skeleton": 13,
+   "rows": 0,
+   "dialog": []
+  },
+  "after": {
+   "text": "文件\n搜索文件\n文件列表\n4 个文件\nPDF\n2026Q3 报告.pdf\n2.4 MB · 10月28日\n删除\nDOCX\n团队周会纪要.docx\n86 KB · 10月27日\n删除\nKEY\n产品路线图.key\n18.2 MB · 10月25日\n删除\nFIG\n设计稿-v3.fig\n42.7 MB · 10月22日\n删除\n上传文件\n没能加载文件。服务暂时出了问题，请稍后重试。",
+   "focus": "section「文件列表\n      4 个文件\n\n  」",
+   "busy": 0,
+   "live": [
+    "live:没能加载文件。服务暂时出了问题，请稍后重试。"
+   ],
+   "skeleton": 0,
+   "rows": 4,
+   "dialog": []
+  },
+  "counts": {
+   "list": 1,
+   "del": 0,
+   "up": 0
+  },
+  "errors": []
+ },
+ {
+  "name": "upload-while-search",
+  "after": {
+   "text": "文件\n搜索文件\n文件列表\n5 个文件\nPDF\n新上传的文件.pdf\n1.1 MB · 刚刚\n删除\nPDF\n2026Q3 报告.pdf\n2.4 MB · 10月28日\n删除\nDOCX\n团队周会纪要.docx\n86 KB · 10月27日\n删除\nKEY\n产品路线图.key\n18.2 MB · 10月25日\n删除\nFIG\n设计稿-v3.fig\n42.7 MB · 10月22日\n删除\n上传文件\n找到 1 个文件",
+   "focus": "button「上传文件」",
+   "busy": 0,
+   "live": [
+    "live:找到 1 个文件"
+   ],
+   "skeleton": 0,
+   "rows": 5,
+   "dialog": []
+  },
+  "counts": {
+   "list": 1,
+   "del": 0,
+   "up": 1
+  },
+  "errors": []
+ },
+ {
+  "name": "pseudo-states",
+  "states": {
+   "upload": {
+    "normal": "rgb(37, 99, 235) | rgb(255, 255, 255) | outline none 3px rgb(255, 255, 255) | shadow none | none",
+    "hover": "rgb(37, 99, 235) | rgb(255, 255, 255) | outline none 3px rgb(255, 255, 255) | shadow none | none",
+    "active": "rgb(29, 78, 216) | rgb(255, 255, 255) | outline none 3px rgb(255, 255, 255) | shadow none | none",
+    "focus": "rgb(37, 99, 235) | rgb(255, 255, 255) | outline solid 2px rgb(37, 99, 235) | shadow none | none"
+   },
+   "delete": {
+    "normal": "rgba(0, 0, 0, 0) | rgb(28, 28, 30) | outline none 3px rgb(28, 28, 30) | shadow none | none",
+    "hover": "rgba(0, 0, 0, 0) | rgb(28, 28, 30) | outline none 3px rgb(28, 28, 30) | shadow none | none",
+    "active": "rgb(229, 229, 234) | rgb(28, 28, 30) | outline none 3px rgb(28, 28, 30) | shadow none | none",
+    "focus": "rgba(0, 0, 0, 0) | rgb(28, 28, 30) | outline solid 2px rgb(37, 99, 235) | shadow none | none"
+   },
+   "search": {
+    "normal": "rgb(255, 255, 255) | rgb(28, 28, 30) | outline none 3px rgb(28, 28, 30) | shadow none | none",
+    "hover": "rgb(255, 255, 255) | rgb(28, 28, 30) | outline none 3px rgb(28, 28, 30) | shadow none | none",
+    "active": "rgb(255, 255, 255) | rgb(28, 28, 30) | outline none 3px rgb(28, 28, 30) | shadow none | none",
+    "focus": "rgb(255, 255, 255) | rgb(28, 28, 30) | outline solid 2px rgb(37, 99, 235) | shadow none | none"
+   }
+  },
+  "css": {
+   "hoverRules": 5,
+   "hoverInMedia": true,
+   "active": 5,
+   "focusVisible": 1,
+   "disabled": 10,
+   "tapHighlight": "transparent",
+   "reducedMotion": true
+  }
+ }
+]

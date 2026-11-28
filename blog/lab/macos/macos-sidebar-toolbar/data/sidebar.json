@@ -1,0 +1,5013 @@
+{
+  "codeBuiltOutline" : {
+    "effectiveRowSizeStyle" : 0,
+    "rowHeight" : 24,
+    "rowSizeStyle" : 0
+  },
+  "heroL" : {
+    "chrome" : [
+      {
+        "class" : "NSTitlebarBackgroundView",
+        "depth" : 3,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 720,
+          "x" : 0
+        }
+      },
+      {
+        "class" : "NSTitlebarBackgroundView",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 148,
+          "x" : 0
+        }
+      },
+      {
+        "class" : "NSContainerConcentricGlassEffectView",
+        "depth" : 4,
+        "frame" : {
+          "h" : 384,
+          "top" : 8,
+          "w" : 140,
+          "x" : 8
+        }
+      },
+      {
+        "class" : "NSButtonImageView",
+        "depth" : 12,
+        "frame" : {
+          "h" : 8,
+          "top" : 57.5,
+          "w" : 13,
+          "x" : 124
+        }
+      },
+      {
+        "class" : "NSButtonImageView",
+        "depth" : 12,
+        "frame" : {
+          "h" : 8,
+          "top" : 249.5,
+          "w" : 13,
+          "x" : 124
+        }
+      },
+      {
+        "class" : "NSTitlebarContainerView",
+        "depth" : 1,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 720,
+          "x" : 0
+        }
+      },
+      {
+        "class" : "NSTitlebarView",
+        "depth" : 2,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 720,
+          "x" : 0
+        }
+      },
+      {
+        "class" : "NSToolbarView",
+        "depth" : 3,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 720,
+          "x" : 0
+        }
+      },
+      {
+        "class" : "NSGlassContainerView",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 720,
+          "x" : 0
+        }
+      },
+      {
+        "class" : "NSToolbarPlatterView",
+        "depth" : 6,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 37,
+          "x" : 675
+        }
+      },
+      {
+        "class" : "NSGlassEffectView",
+        "depth" : 7,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 37,
+          "x" : 675
+        }
+      },
+      {
+        "class" : "NSToolbarPlatterView",
+        "depth" : 6,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 70,
+          "x" : 595
+        }
+      },
+      {
+        "class" : "NSGlassEffectView",
+        "depth" : 7,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 70,
+          "x" : 595
+        }
+      },
+      {
+        "class" : "NSToolbarPlatterView",
+        "depth" : 6,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 107,
+          "x" : 468
+        }
+      },
+      {
+        "class" : "NSGlassEffectView",
+        "depth" : 7,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 107,
+          "x" : 468
+        }
+      },
+      {
+        "class" : "NSToolbarItemViewer",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 45,
+          "x" : 671
+        }
+      },
+      {
+        "class" : "NSSearchToolbarItemView",
+        "depth" : 5,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 37,
+          "x" : 675
+        }
+      },
+      {
+        "class" : "_NSCoreHostingView<AppKitSearchField>",
+        "depth" : 7,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 37,
+          "x" : 675
+        }
+      },
+      {
+        "class" : "NSCorePlatformViewHost<PlatformViewRepresentableAdaptor<SearchFieldAccessoryButtonRepresentable>>",
+        "depth" : 8,
+        "frame" : {
+          "h" : 9,
+          "top" : 22,
+          "w" : 16,
+          "x" : 670.5
+        }
+      },
+      {
+        "class" : "NSButton",
+        "depth" : 9,
+        "frame" : {
+          "h" : 15,
+          "top" : 18.5,
+          "w" : 16,
+          "x" : 670.5
+        }
+      },
+      {
+        "class" : "NSButtonImageView",
+        "depth" : 10,
+        "frame" : {
+          "h" : 15,
+          "top" : 18.5,
+          "w" : 16,
+          "x" : 670.5
+        }
+      },
+      {
+        "class" : "NSCorePlatformViewHost<PlatformViewRepresentableAdaptor<SearchFieldAccessoryButtonRepresentable>>",
+        "depth" : 8,
+        "frame" : {
+          "h" : 9,
+          "top" : 22,
+          "w" : 15.5,
+          "x" : 701
+        }
+      },
+      {
+        "class" : "NSButtonImageView",
+        "depth" : 10,
+        "frame" : {
+          "h" : 16,
+          "top" : 18,
+          "w" : 16,
+          "x" : 701
+        }
+      },
+      {
+        "class" : "NSButton",
+        "depth" : 6,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36.5,
+          "x" : 675.5
+        }
+      },
+      {
+        "class" : "_NSCoreHostingView<AppKitButton>",
+        "depth" : 7,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36.5,
+          "x" : 675.5
+        }
+      },
+      {
+        "class" : "NSToolbarItemViewer",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 41,
+          "x" : 630
+        }
+      },
+      {
+        "class" : "NSToolbarButton",
+        "depth" : 5,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36,
+          "x" : 629
+        }
+      },
+      {
+        "class" : "_NSCoreHostingView<AppKitButton>",
+        "depth" : 6,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36,
+          "x" : 629
+        }
+      },
+      {
+        "class" : "NSToolbarItemViewer",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 41,
+          "x" : 589
+        }
+      },
+      {
+        "class" : "NSToolbarButton",
+        "depth" : 5,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36,
+          "x" : 595
+        }
+      },
+      {
+        "class" : "_NSCoreHostingView<AppKitButton>",
+        "depth" : 6,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36,
+          "x" : 595
+        }
+      },
+      {
+        "class" : "NSToolbarItemViewer",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 8,
+          "x" : 581
+        }
+      },
+      {
+        "class" : "_NSToolbarSpace",
+        "depth" : 5,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 8,
+          "x" : 581
+        }
+      },
+      {
+        "class" : "NSToolbarItemViewer",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 41,
+          "x" : 540
+        }
+      },
+      {
+        "class" : "NSToolbarButton",
+        "depth" : 5,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36,
+          "x" : 539
+        }
+      },
+      {
+        "class" : "_NSCoreHostingView<AppKitButton>",
+        "depth" : 6,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36,
+          "x" : 539
+        }
+      },
+      {
+        "class" : "NSToolbarItemViewer",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 37,
+          "x" : 503
+        }
+      },
+      {
+        "class" : "NSToolbarButton",
+        "depth" : 5,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36,
+          "x" : 503.5
+        }
+      },
+      {
+        "class" : "_NSCoreHostingView<AppKitButton>",
+        "depth" : 6,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36,
+          "x" : 503.5
+        }
+      },
+      {
+        "class" : "NSToolbarItemViewer",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 41,
+          "x" : 462
+        }
+      },
+      {
+        "class" : "NSToolbarButton",
+        "depth" : 5,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36.5,
+          "x" : 468
+        }
+      },
+      {
+        "class" : "_NSCoreHostingView<AppKitButton>",
+        "depth" : 6,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36.5,
+          "x" : 468
+        }
+      },
+      {
+        "class" : "NSToolbarItemViewer",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 8,
+          "x" : 454
+        }
+      },
+      {
+        "class" : "_NSToolbarFlexibleSpace",
+        "depth" : 5,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 8,
+          "x" : 454
+        }
+      },
+      {
+        "class" : "NSToolbarTitleView",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 302,
+          "x" : 152
+        }
+      },
+      {
+        "class" : "NSToolbarTitleStackView",
+        "depth" : 5,
+        "frame" : {
+          "h" : 19,
+          "top" : 16.5,
+          "w" : 282,
+          "x" : 168
+        }
+      },
+      {
+        "class" : "NSToolbarPrimaryTitleContainerView",
+        "depth" : 6,
+        "frame" : {
+          "h" : 19,
+          "top" : 16.5,
+          "w" : 282,
+          "x" : 168
+        }
+      },
+      {
+        "class" : "_NSToolbarTitleField",
+        "depth" : 8,
+        "font" : {
+          "name" : ".SFNS-Semibold",
+          "size" : 15,
+          "weight" : 0.40000000000000002
+        },
+        "frame" : {
+          "h" : 19,
+          "top" : 16.5,
+          "w" : 54.5,
+          "x" : 166
+        },
+        "string" : "Photos"
+      },
+      {
+        "class" : "NSToolbarItemViewer",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 44,
+          "x" : 92
+        }
+      },
+      {
+        "class" : "NSButton",
+        "depth" : 5,
+        "frame" : {
+          "h" : 28,
+          "top" : 12,
+          "w" : 33.5,
+          "x" : 97.5
+        }
+      },
+      {
+        "class" : "_NSCoreHostingView<AppKitButton>",
+        "depth" : 6,
+        "frame" : {
+          "h" : 28,
+          "top" : 12,
+          "w" : 33.5,
+          "x" : 97.5
+        }
+      },
+      {
+        "class" : "_NSTitlebarDecorationView",
+        "depth" : 2,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 720,
+          "x" : 0
+        }
+      },
+      {
+        "class" : "NSTitlebarContainerBlockingView",
+        "depth" : 2,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 5,
+          "x" : 145.5
+        }
+      }
+    ],
+    "contentView" : {
+      "h" : 400,
+      "top" : 0,
+      "w" : 572,
+      "x" : 148
+    },
+    "frame" : {
+      "h" : 400,
+      "w" : 720,
+      "x" : 40,
+      "y" : 520
+    },
+    "outline" : {
+      "effectiveRowSizeStyle" : 2,
+      "effectiveStyle" : 3,
+      "frame" : {
+        "h" : 340,
+        "top" : 52,
+        "w" : 140,
+        "x" : 8
+      },
+      "indentationPerLevel" : 13,
+      "intercellSpacing" : {
+        "h" : 0,
+        "w" : 3,
+        "x" : 0,
+        "y" : 0
+      },
+      "rowHeight" : 32,
+      "rowSizeStyle" : -1
+    },
+    "outlineRows" : [
+      {
+        "cell" : {
+          "h" : 19,
+          "top" : 52,
+          "w" : 124,
+          "x" : 22
+        },
+        "font" : {
+          "name" : ".SFNS-Regular",
+          "size" : 11,
+          "weight" : 0
+        },
+        "item" : "Library",
+        "rect" : {
+          "h" : 19,
+          "w" : 140,
+          "x" : 0,
+          "y" : 0
+        },
+        "rowView" : {
+          "h" : 19,
+          "top" : 52,
+          "w" : 140,
+          "x" : 8
+        },
+        "text" : {
+          "h" : 14,
+          "top" : 54.5,
+          "w" : 43,
+          "x" : 22
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      {
+        "cell" : {
+          "h" : 32,
+          "top" : 71,
+          "w" : 108,
+          "x" : 24
+        },
+        "contentTintColor" : "nil",
+        "font" : {
+          "name" : ".SFNS-Regular",
+          "size" : 13,
+          "weight" : 0
+        },
+        "image" : {
+          "h" : 18,
+          "top" : 77.5,
+          "w" : 24,
+          "x" : 26
+        },
+        "imageSize" : {
+          "h" : 13,
+          "w" : 18
+        },
+        "item" : "Inbox",
+        "rect" : {
+          "h" : 32,
+          "w" : 140,
+          "x" : 0,
+          "y" : 19
+        },
+        "rowView" : {
+          "h" : 32,
+          "top" : 71,
+          "w" : 140,
+          "x" : 8
+        },
+        "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb1907c0a0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+        "text" : {
+          "h" : 16,
+          "top" : 79,
+          "w" : 37,
+          "x" : 53.5
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      {
+        "cell" : {
+          "h" : 32,
+          "top" : 103,
+          "w" : 108,
+          "x" : 24
+        },
+        "contentTintColor" : "nil",
+        "font" : {
+          "name" : ".SFNS-Regular",
+          "size" : 13,
+          "weight" : 0
+        },
+        "image" : {
+          "h" : 21,
+          "top" : 108,
+          "w" : 18,
+          "x" : 26
+        },
+        "imageSize" : {
+          "h" : 16,
+          "w" : 14
+        },
+        "item" : "Drafts",
+        "rect" : {
+          "h" : 32,
+          "w" : 140,
+          "x" : 0,
+          "y" : 51
+        },
+        "rowView" : {
+          "h" : 32,
+          "top" : 103,
+          "w" : 140,
+          "x" : 8
+        },
+        "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb1907c0a0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+        "text" : {
+          "h" : 16,
+          "top" : 111,
+          "w" : 41.5,
+          "x" : 48
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      {
+        "cell" : {
+          "h" : 32,
+          "top" : 135,
+          "w" : 108,
+          "x" : 24
+        },
+        "contentTintColor" : "nil",
+        "font" : {
+          "name" : ".SFNS-Regular",
+          "size" : 13,
+          "weight" : 0
+        },
+        "image" : {
+          "h" : 21,
+          "top" : 140.5,
+          "w" : 21,
+          "x" : 26
+        },
+        "imageSize" : {
+          "h" : 16,
+          "w" : 16
+        },
+        "item" : "Sent",
+        "rect" : {
+          "h" : 32,
+          "w" : 140,
+          "x" : 0,
+          "y" : 83
+        },
+        "rowView" : {
+          "h" : 32,
+          "top" : 135,
+          "w" : 140,
+          "x" : 8
+        },
+        "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb1907c0a0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+        "text" : {
+          "h" : 16,
+          "top" : 143,
+          "w" : 32,
+          "x" : 51
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      {
+        "cell" : {
+          "h" : 32,
+          "top" : 167,
+          "w" : 108,
+          "x" : 24
+        },
+        "contentTintColor" : "nil",
+        "font" : {
+          "name" : ".SFNS-Regular",
+          "size" : 13,
+          "weight" : 0
+        },
+        "image" : {
+          "h" : 19,
+          "top" : 173,
+          "w" : 21,
+          "x" : 26
+        },
+        "imageSize" : {
+          "h" : 14,
+          "w" : 16
+        },
+        "item" : "Archive",
+        "rect" : {
+          "h" : 32,
+          "w" : 140,
+          "x" : 0,
+          "y" : 115
+        },
+        "rowView" : {
+          "h" : 32,
+          "top" : 167,
+          "w" : 140,
+          "x" : 8
+        },
+        "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb1907c0a0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+        "text" : {
+          "h" : 16,
+          "top" : 175,
+          "w" : 49.5,
+          "x" : 50.5
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      {
+        "cell" : {
+          "h" : 32,
+          "top" : 199,
+          "w" : 108,
+          "x" : 24
+        },
+        "contentTintColor" : "nil",
+        "font" : {
+          "name" : ".SFNS-Regular",
+          "size" : 13,
+          "weight" : 0
+        },
+        "image" : {
+          "h" : 22,
+          "top" : 203,
+          "w" : 19,
+          "x" : 26
+        },
+        "imageSize" : {
+          "h" : 17,
+          "w" : 15
+        },
+        "item" : "Trash",
+        "rect" : {
+          "h" : 32,
+          "w" : 140,
+          "x" : 0,
+          "y" : 147
+        },
+        "rowView" : {
+          "h" : 32,
+          "top" : 199,
+          "w" : 140,
+          "x" : 8
+        },
+        "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb1907c0a0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+        "text" : {
+          "h" : 16,
+          "top" : 207,
+          "w" : 37.5,
+          "x" : 49
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      {
+        "cell" : {
+          "h" : 19,
+          "top" : 244,
+          "w" : 124,
+          "x" : 22
+        },
+        "font" : {
+          "name" : ".SFNS-Regular",
+          "size" : 11,
+          "weight" : 0
+        },
+        "item" : "Tags",
+        "rect" : {
+          "h" : 19,
+          "w" : 140,
+          "x" : 0,
+          "y" : 192
+        },
+        "rowView" : {
+          "h" : 19,
+          "top" : 244,
+          "w" : 140,
+          "x" : 8
+        },
+        "text" : {
+          "h" : 14,
+          "top" : 246.5,
+          "w" : 30,
+          "x" : 22
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      {
+        "cell" : {
+          "h" : 32,
+          "top" : 263,
+          "w" : 108,
+          "x" : 24
+        },
+        "contentTintColor" : "nil",
+        "font" : {
+          "name" : ".SFNS-Regular",
+          "size" : 13,
+          "weight" : 0
+        },
+        "image" : {
+          "h" : 22,
+          "top" : 268.5,
+          "w" : 23,
+          "x" : 26
+        },
+        "imageSize" : {
+          "h" : 17,
+          "w" : 17
+        },
+        "item" : "Work",
+        "rect" : {
+          "h" : 32,
+          "w" : 140,
+          "x" : 0,
+          "y" : 211
+        },
+        "rowView" : {
+          "h" : 32,
+          "top" : 263,
+          "w" : 140,
+          "x" : 8
+        },
+        "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb1907c0a0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+        "text" : {
+          "h" : 16,
+          "top" : 271,
+          "w" : 35.5,
+          "x" : 52.5
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      {
+        "cell" : {
+          "h" : 32,
+          "top" : 295,
+          "w" : 108,
+          "x" : 24
+        },
+        "contentTintColor" : "nil",
+        "font" : {
+          "name" : ".SFNS-Regular",
+          "size" : 13,
+          "weight" : 0
+        },
+        "image" : {
+          "h" : 22,
+          "top" : 300.5,
+          "w" : 23,
+          "x" : 26
+        },
+        "imageSize" : {
+          "h" : 17,
+          "w" : 17
+        },
+        "item" : "Home",
+        "rect" : {
+          "h" : 32,
+          "w" : 140,
+          "x" : 0,
+          "y" : 243
+        },
+        "rowView" : {
+          "h" : 32,
+          "top" : 295,
+          "w" : 140,
+          "x" : 8
+        },
+        "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb1907c0a0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+        "text" : {
+          "h" : 16,
+          "top" : 303,
+          "w" : 40,
+          "x" : 52.5
+        },
+        "textColor" : "Catalog color: System labelColor"
+      }
+    ],
+    "search" : {
+      "controlSize" : 4,
+      "field" : {
+        "h" : 36,
+        "top" : 8,
+        "w" : 37,
+        "x" : 675
+      },
+      "font" : {
+        "name" : ".AppleSystemUIFont",
+        "size" : 13,
+        "weight" : 0
+      },
+      "preferredWidthForSearchField" : 240
+    },
+    "sidebarCollapsed" : false,
+    "sidebarView" : {
+      "h" : 384,
+      "top" : 8,
+      "w" : 140,
+      "x" : 8
+    },
+    "split" : {
+      "dividerStyle" : 2,
+      "dividerThickness" : 1
+    },
+    "titlebarPlusToolbar" : 52,
+    "toolbarItems" : [
+      "NSToolbarToggleSidebarItem",
+      "NSToolbarSidebarTrackingSeparatorItemIdentifier",
+      "NSToolbarFlexibleSpaceItem",
+      "add",
+      "flag",
+      "trash",
+      "NSToolbarSpaceItem",
+      "share",
+      "info",
+      "search"
+    ],
+    "toolbarVisibleItems" : [
+      "NSToolbarToggleSidebarItem",
+      "NSToolbarFlexibleSpaceItem",
+      "add",
+      "flag",
+      "trash",
+      "NSToolbarSpaceItem",
+      "share",
+      "info",
+      "search"
+    ]
+  },
+  "mainL" : {
+    "chrome" : [
+      {
+        "class" : "NSTitlebarBackgroundView",
+        "depth" : 3,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 860,
+          "x" : 0
+        }
+      },
+      {
+        "class" : "NSTitlebarBackgroundView",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 148,
+          "x" : 0
+        }
+      },
+      {
+        "class" : "NSContainerConcentricGlassEffectView",
+        "depth" : 4,
+        "frame" : {
+          "h" : 444,
+          "top" : 8,
+          "w" : 140,
+          "x" : 8
+        }
+      },
+      {
+        "class" : "NSButtonImageView",
+        "depth" : 12,
+        "frame" : {
+          "h" : 8,
+          "top" : 57.5,
+          "w" : 13,
+          "x" : 124
+        }
+      },
+      {
+        "class" : "NSButtonImageView",
+        "depth" : 12,
+        "frame" : {
+          "h" : 8,
+          "top" : 249.5,
+          "w" : 13,
+          "x" : 124
+        }
+      },
+      {
+        "class" : "NSTitlebarContainerView",
+        "depth" : 1,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 860,
+          "x" : 0
+        }
+      },
+      {
+        "class" : "NSTitlebarView",
+        "depth" : 2,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 860,
+          "x" : 0
+        }
+      },
+      {
+        "class" : "NSToolbarView",
+        "depth" : 3,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 860,
+          "x" : 0
+        }
+      },
+      {
+        "class" : "NSGlassContainerView",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 860,
+          "x" : 0
+        }
+      },
+      {
+        "class" : "NSToolbarPlatterView",
+        "depth" : 6,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 264,
+          "x" : 588
+        }
+      },
+      {
+        "class" : "NSGlassEffectView",
+        "depth" : 7,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 264,
+          "x" : 588
+        }
+      },
+      {
+        "class" : "NSToolbarPlatterView",
+        "depth" : 6,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 70,
+          "x" : 508
+        }
+      },
+      {
+        "class" : "NSGlassEffectView",
+        "depth" : 7,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 70,
+          "x" : 508
+        }
+      },
+      {
+        "class" : "NSToolbarPlatterView",
+        "depth" : 6,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 107,
+          "x" : 381
+        }
+      },
+      {
+        "class" : "NSGlassEffectView",
+        "depth" : 7,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 107,
+          "x" : 381
+        }
+      },
+      {
+        "class" : "NSToolbarItemViewer",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 272,
+          "x" : 584
+        }
+      },
+      {
+        "class" : "NSSearchToolbarItemView",
+        "depth" : 5,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 264,
+          "x" : 588
+        }
+      },
+      {
+        "class" : "NSSearchField",
+        "depth" : 6,
+        "font" : {
+          "name" : ".AppleSystemUIFont",
+          "size" : 13,
+          "weight" : 0
+        },
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 264,
+          "x" : 588
+        },
+        "string" : ""
+      },
+      {
+        "class" : "_NSCoreHostingView<AppKitSearchField>",
+        "depth" : 7,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 264,
+          "x" : 588
+        }
+      },
+      {
+        "class" : "NSCorePlatformViewHost<PlatformViewRepresentableAdaptor<SearchFieldAccessoryButtonRepresentable>>",
+        "depth" : 8,
+        "frame" : {
+          "h" : 9,
+          "top" : 22,
+          "w" : 16,
+          "x" : 598
+        }
+      },
+      {
+        "class" : "NSButton",
+        "depth" : 9,
+        "frame" : {
+          "h" : 15,
+          "top" : 18.5,
+          "w" : 16,
+          "x" : 598
+        }
+      },
+      {
+        "class" : "NSButtonImageView",
+        "depth" : 10,
+        "frame" : {
+          "h" : 15,
+          "top" : 18.5,
+          "w" : 16,
+          "x" : 598
+        }
+      },
+      {
+        "class" : "NSCorePlatformViewHost<PlatformViewRepresentableAdaptor<SearchFieldAccessoryButtonRepresentable>>",
+        "depth" : 8,
+        "frame" : {
+          "h" : 9,
+          "top" : 22,
+          "w" : 15.5,
+          "x" : 826
+        }
+      },
+      {
+        "class" : "NSButtonImageView",
+        "depth" : 10,
+        "frame" : {
+          "h" : 16,
+          "top" : 18,
+          "w" : 16,
+          "x" : 826
+        }
+      },
+      {
+        "class" : "_NSCoreHostingView<AppKitButton>",
+        "depth" : 7,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36.5,
+          "x" : 815.5
+        }
+      },
+      {
+        "class" : "NSToolbarItemViewer",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 41,
+          "x" : 543
+        }
+      },
+      {
+        "class" : "NSToolbarButton",
+        "depth" : 5,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36,
+          "x" : 542
+        }
+      },
+      {
+        "class" : "_NSCoreHostingView<AppKitButton>",
+        "depth" : 6,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36,
+          "x" : 542
+        }
+      },
+      {
+        "class" : "NSToolbarItemViewer",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 41,
+          "x" : 502
+        }
+      },
+      {
+        "class" : "NSToolbarButton",
+        "depth" : 5,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36,
+          "x" : 508
+        }
+      },
+      {
+        "class" : "_NSCoreHostingView<AppKitButton>",
+        "depth" : 6,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36,
+          "x" : 508
+        }
+      },
+      {
+        "class" : "NSToolbarItemViewer",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 8,
+          "x" : 494
+        }
+      },
+      {
+        "class" : "_NSToolbarSpace",
+        "depth" : 5,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 8,
+          "x" : 494
+        }
+      },
+      {
+        "class" : "NSToolbarItemViewer",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 41,
+          "x" : 453
+        }
+      },
+      {
+        "class" : "NSToolbarButton",
+        "depth" : 5,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36,
+          "x" : 452
+        }
+      },
+      {
+        "class" : "_NSCoreHostingView<AppKitButton>",
+        "depth" : 6,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36,
+          "x" : 452
+        }
+      },
+      {
+        "class" : "NSToolbarItemViewer",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 37,
+          "x" : 416
+        }
+      },
+      {
+        "class" : "NSToolbarButton",
+        "depth" : 5,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36,
+          "x" : 416.5
+        }
+      },
+      {
+        "class" : "_NSCoreHostingView<AppKitButton>",
+        "depth" : 6,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36,
+          "x" : 416.5
+        }
+      },
+      {
+        "class" : "NSToolbarItemViewer",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 41,
+          "x" : 375
+        }
+      },
+      {
+        "class" : "NSToolbarButton",
+        "depth" : 5,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36.5,
+          "x" : 381
+        }
+      },
+      {
+        "class" : "_NSCoreHostingView<AppKitButton>",
+        "depth" : 6,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36.5,
+          "x" : 381
+        }
+      },
+      {
+        "class" : "NSToolbarItemViewer",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 8,
+          "x" : 367
+        }
+      },
+      {
+        "class" : "_NSToolbarFlexibleSpace",
+        "depth" : 5,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 8,
+          "x" : 367
+        }
+      },
+      {
+        "class" : "NSToolbarTitleView",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 215,
+          "x" : 152
+        }
+      },
+      {
+        "class" : "NSToolbarTitleStackView",
+        "depth" : 5,
+        "frame" : {
+          "h" : 19,
+          "top" : 16.5,
+          "w" : 195,
+          "x" : 168
+        }
+      },
+      {
+        "class" : "NSToolbarPrimaryTitleContainerView",
+        "depth" : 6,
+        "frame" : {
+          "h" : 19,
+          "top" : 16.5,
+          "w" : 195,
+          "x" : 168
+        }
+      },
+      {
+        "class" : "_NSToolbarTitleField",
+        "depth" : 8,
+        "font" : {
+          "name" : ".SFNS-Semibold",
+          "size" : 15,
+          "weight" : 0.40000000000000002
+        },
+        "frame" : {
+          "h" : 19,
+          "top" : 16.5,
+          "w" : 43.5,
+          "x" : 166
+        },
+        "string" : "Inbox"
+      },
+      {
+        "class" : "NSToolbarItemViewer",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 44,
+          "x" : 92
+        }
+      },
+      {
+        "class" : "NSButton",
+        "depth" : 5,
+        "frame" : {
+          "h" : 28,
+          "top" : 12,
+          "w" : 33.5,
+          "x" : 97.5
+        }
+      },
+      {
+        "class" : "_NSCoreHostingView<AppKitButton>",
+        "depth" : 6,
+        "frame" : {
+          "h" : 28,
+          "top" : 12,
+          "w" : 33.5,
+          "x" : 97.5
+        }
+      },
+      {
+        "class" : "_NSTitlebarDecorationView",
+        "depth" : 2,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 860,
+          "x" : 0
+        }
+      },
+      {
+        "class" : "NSTitlebarContainerBlockingView",
+        "depth" : 2,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 5,
+          "x" : 145.5
+        }
+      }
+    ],
+    "contentView" : {
+      "h" : 460,
+      "top" : 0,
+      "w" : 712,
+      "x" : 148
+    },
+    "frame" : {
+      "h" : 460,
+      "w" : 860,
+      "x" : 88,
+      "y" : 412
+    },
+    "outline" : {
+      "effectiveRowSizeStyle" : 2,
+      "effectiveStyle" : 3,
+      "frame" : {
+        "h" : 400,
+        "top" : 52,
+        "w" : 140,
+        "x" : 8
+      },
+      "indentationPerLevel" : 13,
+      "intercellSpacing" : {
+        "h" : 0,
+        "w" : 3,
+        "x" : 0,
+        "y" : 0
+      },
+      "rowHeight" : 32,
+      "rowSizeStyle" : -1
+    },
+    "outlineRows" : [
+      {
+        "cell" : {
+          "h" : 19,
+          "top" : 52,
+          "w" : 124,
+          "x" : 22
+        },
+        "font" : {
+          "name" : ".SFNS-Regular",
+          "size" : 11,
+          "weight" : 0
+        },
+        "item" : "Library",
+        "rect" : {
+          "h" : 19,
+          "w" : 140,
+          "x" : 0,
+          "y" : 0
+        },
+        "rowView" : {
+          "h" : 19,
+          "top" : 52,
+          "w" : 140,
+          "x" : 8
+        },
+        "text" : {
+          "h" : 14,
+          "top" : 54.5,
+          "w" : 43,
+          "x" : 22
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      {
+        "cell" : {
+          "h" : 32,
+          "top" : 71,
+          "w" : 108,
+          "x" : 24
+        },
+        "contentTintColor" : "nil",
+        "font" : {
+          "name" : ".SFNS-Regular",
+          "size" : 13,
+          "weight" : 0
+        },
+        "image" : {
+          "h" : 18,
+          "top" : 77.5,
+          "w" : 24,
+          "x" : 26
+        },
+        "imageSize" : {
+          "h" : 13,
+          "w" : 18
+        },
+        "item" : "Inbox",
+        "rect" : {
+          "h" : 32,
+          "w" : 140,
+          "x" : 0,
+          "y" : 19
+        },
+        "rowView" : {
+          "h" : 32,
+          "top" : 71,
+          "w" : 140,
+          "x" : 8
+        },
+        "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb1907c0a0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+        "text" : {
+          "h" : 16,
+          "top" : 79,
+          "w" : 37,
+          "x" : 53.5
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      {
+        "cell" : {
+          "h" : 32,
+          "top" : 103,
+          "w" : 108,
+          "x" : 24
+        },
+        "contentTintColor" : "nil",
+        "font" : {
+          "name" : ".SFNS-Regular",
+          "size" : 13,
+          "weight" : 0
+        },
+        "image" : {
+          "h" : 21,
+          "top" : 108,
+          "w" : 18,
+          "x" : 26
+        },
+        "imageSize" : {
+          "h" : 16,
+          "w" : 14
+        },
+        "item" : "Drafts",
+        "rect" : {
+          "h" : 32,
+          "w" : 140,
+          "x" : 0,
+          "y" : 51
+        },
+        "rowView" : {
+          "h" : 32,
+          "top" : 103,
+          "w" : 140,
+          "x" : 8
+        },
+        "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb1907c0a0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+        "text" : {
+          "h" : 16,
+          "top" : 111,
+          "w" : 41.5,
+          "x" : 48
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      {
+        "cell" : {
+          "h" : 32,
+          "top" : 135,
+          "w" : 108,
+          "x" : 24
+        },
+        "contentTintColor" : "nil",
+        "font" : {
+          "name" : ".SFNS-Regular",
+          "size" : 13,
+          "weight" : 0
+        },
+        "image" : {
+          "h" : 21,
+          "top" : 140.5,
+          "w" : 21,
+          "x" : 26
+        },
+        "imageSize" : {
+          "h" : 16,
+          "w" : 16
+        },
+        "item" : "Sent",
+        "rect" : {
+          "h" : 32,
+          "w" : 140,
+          "x" : 0,
+          "y" : 83
+        },
+        "rowView" : {
+          "h" : 32,
+          "top" : 135,
+          "w" : 140,
+          "x" : 8
+        },
+        "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb1907c0a0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+        "text" : {
+          "h" : 16,
+          "top" : 143,
+          "w" : 32,
+          "x" : 51
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      {
+        "cell" : {
+          "h" : 32,
+          "top" : 167,
+          "w" : 108,
+          "x" : 24
+        },
+        "contentTintColor" : "nil",
+        "font" : {
+          "name" : ".SFNS-Regular",
+          "size" : 13,
+          "weight" : 0
+        },
+        "image" : {
+          "h" : 19,
+          "top" : 173,
+          "w" : 21,
+          "x" : 26
+        },
+        "imageSize" : {
+          "h" : 14,
+          "w" : 16
+        },
+        "item" : "Archive",
+        "rect" : {
+          "h" : 32,
+          "w" : 140,
+          "x" : 0,
+          "y" : 115
+        },
+        "rowView" : {
+          "h" : 32,
+          "top" : 167,
+          "w" : 140,
+          "x" : 8
+        },
+        "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb1907c0a0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+        "text" : {
+          "h" : 16,
+          "top" : 175,
+          "w" : 49.5,
+          "x" : 50.5
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      {
+        "cell" : {
+          "h" : 32,
+          "top" : 199,
+          "w" : 108,
+          "x" : 24
+        },
+        "contentTintColor" : "nil",
+        "font" : {
+          "name" : ".SFNS-Regular",
+          "size" : 13,
+          "weight" : 0
+        },
+        "image" : {
+          "h" : 22,
+          "top" : 203,
+          "w" : 19,
+          "x" : 26
+        },
+        "imageSize" : {
+          "h" : 17,
+          "w" : 15
+        },
+        "item" : "Trash",
+        "rect" : {
+          "h" : 32,
+          "w" : 140,
+          "x" : 0,
+          "y" : 147
+        },
+        "rowView" : {
+          "h" : 32,
+          "top" : 199,
+          "w" : 140,
+          "x" : 8
+        },
+        "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb1907c0a0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+        "text" : {
+          "h" : 16,
+          "top" : 207,
+          "w" : 37.5,
+          "x" : 49
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      {
+        "cell" : {
+          "h" : 19,
+          "top" : 244,
+          "w" : 124,
+          "x" : 22
+        },
+        "font" : {
+          "name" : ".SFNS-Regular",
+          "size" : 11,
+          "weight" : 0
+        },
+        "item" : "Tags",
+        "rect" : {
+          "h" : 19,
+          "w" : 140,
+          "x" : 0,
+          "y" : 192
+        },
+        "rowView" : {
+          "h" : 19,
+          "top" : 244,
+          "w" : 140,
+          "x" : 8
+        },
+        "text" : {
+          "h" : 14,
+          "top" : 246.5,
+          "w" : 30,
+          "x" : 22
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      {
+        "cell" : {
+          "h" : 32,
+          "top" : 263,
+          "w" : 108,
+          "x" : 24
+        },
+        "contentTintColor" : "nil",
+        "font" : {
+          "name" : ".SFNS-Regular",
+          "size" : 13,
+          "weight" : 0
+        },
+        "image" : {
+          "h" : 22,
+          "top" : 268.5,
+          "w" : 23,
+          "x" : 26
+        },
+        "imageSize" : {
+          "h" : 17,
+          "w" : 17
+        },
+        "item" : "Work",
+        "rect" : {
+          "h" : 32,
+          "w" : 140,
+          "x" : 0,
+          "y" : 211
+        },
+        "rowView" : {
+          "h" : 32,
+          "top" : 263,
+          "w" : 140,
+          "x" : 8
+        },
+        "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb1907c0a0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+        "text" : {
+          "h" : 16,
+          "top" : 271,
+          "w" : 35.5,
+          "x" : 52.5
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      {
+        "cell" : {
+          "h" : 32,
+          "top" : 295,
+          "w" : 108,
+          "x" : 24
+        },
+        "contentTintColor" : "nil",
+        "font" : {
+          "name" : ".SFNS-Regular",
+          "size" : 13,
+          "weight" : 0
+        },
+        "image" : {
+          "h" : 22,
+          "top" : 300.5,
+          "w" : 23,
+          "x" : 26
+        },
+        "imageSize" : {
+          "h" : 17,
+          "w" : 17
+        },
+        "item" : "Home",
+        "rect" : {
+          "h" : 32,
+          "w" : 140,
+          "x" : 0,
+          "y" : 243
+        },
+        "rowView" : {
+          "h" : 32,
+          "top" : 295,
+          "w" : 140,
+          "x" : 8
+        },
+        "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb1907c0a0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+        "text" : {
+          "h" : 16,
+          "top" : 303,
+          "w" : 40,
+          "x" : 52.5
+        },
+        "textColor" : "Catalog color: System labelColor"
+      }
+    ],
+    "search" : {
+      "controlSize" : 4,
+      "field" : {
+        "h" : 36,
+        "top" : 8,
+        "w" : 264,
+        "x" : 588
+      },
+      "font" : {
+        "name" : ".AppleSystemUIFont",
+        "size" : 13,
+        "weight" : 0
+      },
+      "preferredWidthForSearchField" : 240
+    },
+    "sidebarCollapsed" : false,
+    "sidebarView" : {
+      "h" : 444,
+      "top" : 8,
+      "w" : 140,
+      "x" : 8
+    },
+    "split" : {
+      "dividerStyle" : 2,
+      "dividerThickness" : 1
+    },
+    "table" : {
+      "automaticallyAdjustsContentInsets" : true,
+      "contentInsets" : {
+        "left" : 0,
+        "top" : 52
+      },
+      "effectiveStyle" : 2,
+      "headerHeight" : 28,
+      "intercellSpacing" : {
+        "h" : 0,
+        "w" : 17,
+        "x" : 0,
+        "y" : 0
+      },
+      "row0" : {
+        "cell" : {
+          "h" : 24,
+          "top" : 25,
+          "w" : 150,
+          "x" : 164
+        },
+        "font" : {
+          "name" : ".AppleSystemUIFont",
+          "size" : 13,
+          "weight" : 0
+        },
+        "rect" : {
+          "h" : 24,
+          "w" : 712,
+          "x" : 0,
+          "y" : 5
+        },
+        "rowView" : {
+          "h" : 24,
+          "top" : 25,
+          "w" : 712,
+          "x" : 148
+        },
+        "text" : {
+          "h" : 16,
+          "top" : 29,
+          "w" : 68,
+          "x" : 164
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      "rowHeight" : 24,
+      "scrollFrame" : {
+        "h" : 460,
+        "top" : 0,
+        "w" : 712,
+        "x" : 148
+      },
+      "style" : 0
+    },
+    "titlebarPlusToolbar" : 52,
+    "toolbarItems" : [
+      "NSToolbarToggleSidebarItem",
+      "NSToolbarSidebarTrackingSeparatorItemIdentifier",
+      "NSToolbarFlexibleSpaceItem",
+      "add",
+      "flag",
+      "trash",
+      "NSToolbarSpaceItem",
+      "share",
+      "info",
+      "search"
+    ],
+    "toolbarVisibleItems" : [
+      "NSToolbarToggleSidebarItem",
+      "NSToolbarFlexibleSpaceItem",
+      "add",
+      "flag",
+      "trash",
+      "NSToolbarSpaceItem",
+      "share",
+      "info",
+      "search"
+    ]
+  },
+  "narrow" : {
+    "chrome" : [
+      {
+        "class" : "NSTitlebarBackgroundView",
+        "depth" : 3,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 520,
+          "x" : 0
+        }
+      },
+      {
+        "class" : "NSTitlebarBackgroundView",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 148,
+          "x" : 0
+        }
+      },
+      {
+        "class" : "NSContainerConcentricGlassEffectView",
+        "depth" : 4,
+        "frame" : {
+          "h" : 444,
+          "top" : 8,
+          "w" : 140,
+          "x" : 8
+        }
+      },
+      {
+        "class" : "NSButtonImageView",
+        "depth" : 12,
+        "frame" : {
+          "h" : 8,
+          "top" : 57.5,
+          "w" : 13,
+          "x" : 124
+        }
+      },
+      {
+        "class" : "NSButtonImageView",
+        "depth" : 12,
+        "frame" : {
+          "h" : 8,
+          "top" : 249.5,
+          "w" : 13,
+          "x" : 124
+        }
+      },
+      {
+        "class" : "NSTitlebarContainerView",
+        "depth" : 1,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 520,
+          "x" : 0
+        }
+      },
+      {
+        "class" : "NSTitlebarView",
+        "depth" : 2,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 520,
+          "x" : 0
+        }
+      },
+      {
+        "class" : "NSToolbarView",
+        "depth" : 3,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 520,
+          "x" : 0
+        }
+      },
+      {
+        "class" : "NSGlassContainerView",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 520,
+          "x" : 0
+        }
+      },
+      {
+        "class" : "NSToolbarPlatterView",
+        "depth" : 6,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36,
+          "x" : 431
+        }
+      },
+      {
+        "class" : "NSGlassEffectView",
+        "depth" : 7,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36,
+          "x" : 431
+        }
+      },
+      {
+        "class" : "NSToolbarPlatterView",
+        "depth" : 6,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 37,
+          "x" : 475
+        }
+      },
+      {
+        "class" : "NSGlassEffectView",
+        "depth" : 7,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 37,
+          "x" : 475
+        }
+      },
+      {
+        "class" : "NSToolbarPlatterView",
+        "depth" : 6,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 70,
+          "x" : 326
+        }
+      },
+      {
+        "class" : "NSGlassEffectView",
+        "depth" : 7,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 70,
+          "x" : 326
+        }
+      },
+      {
+        "class" : "NSToolbarItemViewer",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 45,
+          "x" : 471
+        }
+      },
+      {
+        "class" : "NSSearchToolbarItemView",
+        "depth" : 5,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 37,
+          "x" : 475
+        }
+      },
+      {
+        "class" : "_NSCoreHostingView<AppKitSearchField>",
+        "depth" : 7,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 37,
+          "x" : 475
+        }
+      },
+      {
+        "class" : "NSCorePlatformViewHost<PlatformViewRepresentableAdaptor<SearchFieldAccessoryButtonRepresentable>>",
+        "depth" : 8,
+        "frame" : {
+          "h" : 9,
+          "top" : 22,
+          "w" : 16,
+          "x" : 470.5
+        }
+      },
+      {
+        "class" : "NSButton",
+        "depth" : 9,
+        "frame" : {
+          "h" : 15,
+          "top" : 18.5,
+          "w" : 16,
+          "x" : 470.5
+        }
+      },
+      {
+        "class" : "NSButtonImageView",
+        "depth" : 10,
+        "frame" : {
+          "h" : 15,
+          "top" : 18.5,
+          "w" : 16,
+          "x" : 470.5
+        }
+      },
+      {
+        "class" : "NSCorePlatformViewHost<PlatformViewRepresentableAdaptor<SearchFieldAccessoryButtonRepresentable>>",
+        "depth" : 8,
+        "frame" : {
+          "h" : 9,
+          "top" : 22,
+          "w" : 15.5,
+          "x" : 501
+        }
+      },
+      {
+        "class" : "NSButtonImageView",
+        "depth" : 10,
+        "frame" : {
+          "h" : 16,
+          "top" : 18,
+          "w" : 16,
+          "x" : 501
+        }
+      },
+      {
+        "class" : "NSButton",
+        "depth" : 6,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36.5,
+          "x" : 475.5
+        }
+      },
+      {
+        "class" : "_NSCoreHostingView<AppKitButton>",
+        "depth" : 7,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36.5,
+          "x" : 475.5
+        }
+      },
+      {
+        "class" : "NSToolbarItemViewer",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 41,
+          "x" : 361
+        }
+      },
+      {
+        "class" : "NSToolbarButton",
+        "depth" : 5,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36,
+          "x" : 360
+        }
+      },
+      {
+        "class" : "_NSCoreHostingView<AppKitButton>",
+        "depth" : 6,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36,
+          "x" : 360
+        }
+      },
+      {
+        "class" : "NSToolbarItemViewer",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 41,
+          "x" : 320
+        }
+      },
+      {
+        "class" : "NSToolbarButton",
+        "depth" : 5,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36.5,
+          "x" : 326
+        }
+      },
+      {
+        "class" : "_NSCoreHostingView<AppKitButton>",
+        "depth" : 6,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 36.5,
+          "x" : 326
+        }
+      },
+      {
+        "class" : "NSToolbarItemViewer",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 8,
+          "x" : 312
+        }
+      },
+      {
+        "class" : "_NSToolbarFlexibleSpace",
+        "depth" : 5,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 8,
+          "x" : 312
+        }
+      },
+      {
+        "class" : "NSToolbarClippedItemsIndicatorViewer",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 44,
+          "x" : 427
+        }
+      },
+      {
+        "class" : "NSToolbarClippedItemsIndicator",
+        "depth" : 5,
+        "frame" : {
+          "h" : 36,
+          "top" : 8,
+          "w" : 41,
+          "x" : 426
+        }
+      },
+      {
+        "class" : "NSButtonImageView",
+        "depth" : 6,
+        "frame" : {
+          "h" : 18,
+          "top" : 17,
+          "w" : 20,
+          "x" : 439
+        }
+      },
+      {
+        "class" : "NSToolbarTitleView",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 160,
+          "x" : 152
+        }
+      },
+      {
+        "class" : "NSToolbarTitleStackView",
+        "depth" : 5,
+        "frame" : {
+          "h" : 19,
+          "top" : 16.5,
+          "w" : 140,
+          "x" : 168
+        }
+      },
+      {
+        "class" : "NSToolbarPrimaryTitleContainerView",
+        "depth" : 6,
+        "frame" : {
+          "h" : 19,
+          "top" : 16.5,
+          "w" : 140,
+          "x" : 168
+        }
+      },
+      {
+        "class" : "_NSToolbarTitleField",
+        "depth" : 8,
+        "font" : {
+          "name" : ".SFNS-Semibold",
+          "size" : 15,
+          "weight" : 0.40000000000000002
+        },
+        "frame" : {
+          "h" : 19,
+          "top" : 16.5,
+          "w" : 43.5,
+          "x" : 166
+        },
+        "string" : "Inbox"
+      },
+      {
+        "class" : "NSToolbarItemViewer",
+        "depth" : 4,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 44,
+          "x" : 92
+        }
+      },
+      {
+        "class" : "NSButton",
+        "depth" : 5,
+        "frame" : {
+          "h" : 28,
+          "top" : 12,
+          "w" : 33.5,
+          "x" : 97.5
+        }
+      },
+      {
+        "class" : "_NSCoreHostingView<AppKitButton>",
+        "depth" : 6,
+        "frame" : {
+          "h" : 28,
+          "top" : 12,
+          "w" : 33.5,
+          "x" : 97.5
+        }
+      },
+      {
+        "class" : "_NSTitlebarDecorationView",
+        "depth" : 2,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 520,
+          "x" : 0
+        }
+      },
+      {
+        "class" : "NSTitlebarContainerBlockingView",
+        "depth" : 2,
+        "frame" : {
+          "h" : 52,
+          "top" : 0,
+          "w" : 5,
+          "x" : 145.5
+        }
+      }
+    ],
+    "contentView" : {
+      "h" : 460,
+      "top" : 0,
+      "w" : 372,
+      "x" : 148
+    },
+    "frame" : {
+      "h" : 460,
+      "w" : 520,
+      "x" : 88,
+      "y" : 412
+    },
+    "outline" : {
+      "effectiveRowSizeStyle" : 2,
+      "effectiveStyle" : 3,
+      "frame" : {
+        "h" : 400,
+        "top" : 52,
+        "w" : 140,
+        "x" : 8
+      },
+      "indentationPerLevel" : 13,
+      "intercellSpacing" : {
+        "h" : 0,
+        "w" : 3,
+        "x" : 0,
+        "y" : 0
+      },
+      "rowHeight" : 32,
+      "rowSizeStyle" : -1
+    },
+    "outlineRows" : [
+      {
+        "cell" : {
+          "h" : 19,
+          "top" : 52,
+          "w" : 124,
+          "x" : 22
+        },
+        "font" : {
+          "name" : ".SFNS-Regular",
+          "size" : 11,
+          "weight" : 0
+        },
+        "item" : "Library",
+        "rect" : {
+          "h" : 19,
+          "w" : 140,
+          "x" : 0,
+          "y" : 0
+        },
+        "rowView" : {
+          "h" : 19,
+          "top" : 52,
+          "w" : 140,
+          "x" : 8
+        },
+        "text" : {
+          "h" : 14,
+          "top" : 54.5,
+          "w" : 43,
+          "x" : 22
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      {
+        "cell" : {
+          "h" : 32,
+          "top" : 71,
+          "w" : 108,
+          "x" : 24
+        },
+        "contentTintColor" : "nil",
+        "font" : {
+          "name" : ".SFNS-Regular",
+          "size" : 13,
+          "weight" : 0
+        },
+        "image" : {
+          "h" : 18,
+          "top" : 77.5,
+          "w" : 24,
+          "x" : 26
+        },
+        "imageSize" : {
+          "h" : 13,
+          "w" : 18
+        },
+        "item" : "Inbox",
+        "rect" : {
+          "h" : 32,
+          "w" : 140,
+          "x" : 0,
+          "y" : 19
+        },
+        "rowView" : {
+          "h" : 32,
+          "top" : 71,
+          "w" : 140,
+          "x" : 8
+        },
+        "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb19f8e1c0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+        "text" : {
+          "h" : 16,
+          "top" : 79,
+          "w" : 37,
+          "x" : 53.5
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      {
+        "cell" : {
+          "h" : 32,
+          "top" : 103,
+          "w" : 108,
+          "x" : 24
+        },
+        "contentTintColor" : "nil",
+        "font" : {
+          "name" : ".SFNS-Regular",
+          "size" : 13,
+          "weight" : 0
+        },
+        "image" : {
+          "h" : 21,
+          "top" : 108,
+          "w" : 18,
+          "x" : 26
+        },
+        "imageSize" : {
+          "h" : 16,
+          "w" : 14
+        },
+        "item" : "Drafts",
+        "rect" : {
+          "h" : 32,
+          "w" : 140,
+          "x" : 0,
+          "y" : 51
+        },
+        "rowView" : {
+          "h" : 32,
+          "top" : 103,
+          "w" : 140,
+          "x" : 8
+        },
+        "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb19f8e1c0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+        "text" : {
+          "h" : 16,
+          "top" : 111,
+          "w" : 41.5,
+          "x" : 48
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      {
+        "cell" : {
+          "h" : 32,
+          "top" : 135,
+          "w" : 108,
+          "x" : 24
+        },
+        "contentTintColor" : "nil",
+        "font" : {
+          "name" : ".SFNS-Regular",
+          "size" : 13,
+          "weight" : 0
+        },
+        "image" : {
+          "h" : 21,
+          "top" : 140.5,
+          "w" : 21,
+          "x" : 26
+        },
+        "imageSize" : {
+          "h" : 16,
+          "w" : 16
+        },
+        "item" : "Sent",
+        "rect" : {
+          "h" : 32,
+          "w" : 140,
+          "x" : 0,
+          "y" : 83
+        },
+        "rowView" : {
+          "h" : 32,
+          "top" : 135,
+          "w" : 140,
+          "x" : 8
+        },
+        "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb19f8e1c0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+        "text" : {
+          "h" : 16,
+          "top" : 143,
+          "w" : 32,
+          "x" : 51
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      {
+        "cell" : {
+          "h" : 32,
+          "top" : 167,
+          "w" : 108,
+          "x" : 24
+        },
+        "contentTintColor" : "nil",
+        "font" : {
+          "name" : ".SFNS-Regular",
+          "size" : 13,
+          "weight" : 0
+        },
+        "image" : {
+          "h" : 19,
+          "top" : 173,
+          "w" : 21,
+          "x" : 26
+        },
+        "imageSize" : {
+          "h" : 14,
+          "w" : 16
+        },
+        "item" : "Archive",
+        "rect" : {
+          "h" : 32,
+          "w" : 140,
+          "x" : 0,
+          "y" : 115
+        },
+        "rowView" : {
+          "h" : 32,
+          "top" : 167,
+          "w" : 140,
+          "x" : 8
+        },
+        "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb19f8e1c0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+        "text" : {
+          "h" : 16,
+          "top" : 175,
+          "w" : 49.5,
+          "x" : 50.5
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      {
+        "cell" : {
+          "h" : 32,
+          "top" : 199,
+          "w" : 108,
+          "x" : 24
+        },
+        "contentTintColor" : "nil",
+        "font" : {
+          "name" : ".SFNS-Regular",
+          "size" : 13,
+          "weight" : 0
+        },
+        "image" : {
+          "h" : 22,
+          "top" : 203,
+          "w" : 19,
+          "x" : 26
+        },
+        "imageSize" : {
+          "h" : 17,
+          "w" : 15
+        },
+        "item" : "Trash",
+        "rect" : {
+          "h" : 32,
+          "w" : 140,
+          "x" : 0,
+          "y" : 147
+        },
+        "rowView" : {
+          "h" : 32,
+          "top" : 199,
+          "w" : 140,
+          "x" : 8
+        },
+        "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb19f8e1c0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+        "text" : {
+          "h" : 16,
+          "top" : 207,
+          "w" : 37.5,
+          "x" : 49
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      {
+        "cell" : {
+          "h" : 19,
+          "top" : 244,
+          "w" : 124,
+          "x" : 22
+        },
+        "font" : {
+          "name" : ".SFNS-Regular",
+          "size" : 11,
+          "weight" : 0
+        },
+        "item" : "Tags",
+        "rect" : {
+          "h" : 19,
+          "w" : 140,
+          "x" : 0,
+          "y" : 192
+        },
+        "rowView" : {
+          "h" : 19,
+          "top" : 244,
+          "w" : 140,
+          "x" : 8
+        },
+        "text" : {
+          "h" : 14,
+          "top" : 246.5,
+          "w" : 30,
+          "x" : 22
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      {
+        "cell" : {
+          "h" : 32,
+          "top" : 263,
+          "w" : 108,
+          "x" : 24
+        },
+        "contentTintColor" : "nil",
+        "font" : {
+          "name" : ".SFNS-Regular",
+          "size" : 13,
+          "weight" : 0
+        },
+        "image" : {
+          "h" : 22,
+          "top" : 268.5,
+          "w" : 23,
+          "x" : 26
+        },
+        "imageSize" : {
+          "h" : 17,
+          "w" : 17
+        },
+        "item" : "Work",
+        "rect" : {
+          "h" : 32,
+          "w" : 140,
+          "x" : 0,
+          "y" : 211
+        },
+        "rowView" : {
+          "h" : 32,
+          "top" : 263,
+          "w" : 140,
+          "x" : 8
+        },
+        "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb19f8e1c0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+        "text" : {
+          "h" : 16,
+          "top" : 271,
+          "w" : 35.5,
+          "x" : 52.5
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      {
+        "cell" : {
+          "h" : 32,
+          "top" : 295,
+          "w" : 108,
+          "x" : 24
+        },
+        "contentTintColor" : "nil",
+        "font" : {
+          "name" : ".SFNS-Regular",
+          "size" : 13,
+          "weight" : 0
+        },
+        "image" : {
+          "h" : 22,
+          "top" : 300.5,
+          "w" : 23,
+          "x" : 26
+        },
+        "imageSize" : {
+          "h" : 17,
+          "w" : 17
+        },
+        "item" : "Home",
+        "rect" : {
+          "h" : 32,
+          "w" : 140,
+          "x" : 0,
+          "y" : 243
+        },
+        "rowView" : {
+          "h" : 32,
+          "top" : 295,
+          "w" : 140,
+          "x" : 8
+        },
+        "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb19f8e1c0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+        "text" : {
+          "h" : 16,
+          "top" : 303,
+          "w" : 40,
+          "x" : 52.5
+        },
+        "textColor" : "Catalog color: System labelColor"
+      }
+    ],
+    "search" : {
+      "controlSize" : 4,
+      "field" : {
+        "h" : 36,
+        "top" : 8,
+        "w" : 37,
+        "x" : 475
+      },
+      "font" : {
+        "name" : ".AppleSystemUIFont",
+        "size" : 13,
+        "weight" : 0
+      },
+      "preferredWidthForSearchField" : 240
+    },
+    "sidebarCollapsed" : false,
+    "sidebarView" : {
+      "h" : 444,
+      "top" : 8,
+      "w" : 140,
+      "x" : 8
+    },
+    "split" : {
+      "dividerStyle" : 2,
+      "dividerThickness" : 1
+    },
+    "table" : {
+      "automaticallyAdjustsContentInsets" : true,
+      "contentInsets" : {
+        "left" : 0,
+        "top" : 52
+      },
+      "effectiveStyle" : 2,
+      "headerHeight" : 28,
+      "intercellSpacing" : {
+        "h" : 0,
+        "w" : 17,
+        "x" : 0,
+        "y" : 0
+      },
+      "row0" : {
+        "cell" : {
+          "h" : 24,
+          "top" : 25,
+          "w" : 150,
+          "x" : 164
+        },
+        "font" : {
+          "name" : ".AppleSystemUIFont",
+          "size" : 13,
+          "weight" : 0
+        },
+        "rect" : {
+          "h" : 24,
+          "w" : 372,
+          "x" : 0,
+          "y" : 5
+        },
+        "rowView" : {
+          "h" : 24,
+          "top" : 25,
+          "w" : 372,
+          "x" : 148
+        },
+        "text" : {
+          "h" : 16,
+          "top" : 29,
+          "w" : 68,
+          "x" : 164
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      "rowHeight" : 24,
+      "scrollFrame" : {
+        "h" : 460,
+        "top" : 0,
+        "w" : 372,
+        "x" : 148
+      },
+      "style" : 0
+    },
+    "titlebarPlusToolbar" : 52,
+    "toolbarItems" : [
+      "NSToolbarToggleSidebarItem",
+      "NSToolbarSidebarTrackingSeparatorItemIdentifier",
+      "NSToolbarFlexibleSpaceItem",
+      "add",
+      "flag",
+      "trash",
+      "NSToolbarSpaceItem",
+      "share",
+      "info",
+      "search"
+    ],
+    "toolbarVisibleItems" : [
+      "NSToolbarToggleSidebarItem",
+      "NSToolbarFlexibleSpaceItem",
+      "add",
+      "flag",
+      "search"
+    ]
+  },
+  "os" : "Version 26.6.2 (Build 25G83)",
+  "rowSizes" : {
+    "default" : {
+      "effectiveRowSizeStyle" : 2,
+      "rowHeight" : 32,
+      "rows" : [
+        {
+          "cell" : {
+            "h" : 19,
+            "top" : 52,
+            "w" : 124,
+            "x" : 22
+          },
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 11,
+            "weight" : 0
+          },
+          "rect" : {
+            "h" : 19,
+            "w" : 140,
+            "x" : 0,
+            "y" : 0
+          },
+          "rowView" : {
+            "h" : 19,
+            "top" : 52,
+            "w" : 140,
+            "x" : 8
+          },
+          "text" : {
+            "h" : 14,
+            "top" : 54.5,
+            "w" : 43,
+            "x" : 22
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 32,
+            "top" : 71,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 13,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 18,
+            "top" : 77.5,
+            "w" : 24,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 13,
+            "w" : 18
+          },
+          "rect" : {
+            "h" : 32,
+            "w" : 140,
+            "x" : 0,
+            "y" : 19
+          },
+          "rowView" : {
+            "h" : 32,
+            "top" : 71,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb19d8d5e0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 16,
+            "top" : 79,
+            "w" : 37,
+            "x" : 53.5
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 32,
+            "top" : 103,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 13,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 21,
+            "top" : 108,
+            "w" : 18,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 16,
+            "w" : 14
+          },
+          "rect" : {
+            "h" : 32,
+            "w" : 140,
+            "x" : 0,
+            "y" : 51
+          },
+          "rowView" : {
+            "h" : 32,
+            "top" : 103,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb19d8d5e0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 16,
+            "top" : 111,
+            "w" : 41.5,
+            "x" : 48
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 32,
+            "top" : 135,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 13,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 21,
+            "top" : 140.5,
+            "w" : 21,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 16,
+            "w" : 16
+          },
+          "rect" : {
+            "h" : 32,
+            "w" : 140,
+            "x" : 0,
+            "y" : 83
+          },
+          "rowView" : {
+            "h" : 32,
+            "top" : 135,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb19d8d5e0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 16,
+            "top" : 143,
+            "w" : 32,
+            "x" : 51
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 32,
+            "top" : 167,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 13,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 19,
+            "top" : 173,
+            "w" : 21,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 14,
+            "w" : 16
+          },
+          "rect" : {
+            "h" : 32,
+            "w" : 140,
+            "x" : 0,
+            "y" : 115
+          },
+          "rowView" : {
+            "h" : 32,
+            "top" : 167,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb19d8d5e0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 16,
+            "top" : 175,
+            "w" : 49.5,
+            "x" : 50.5
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 32,
+            "top" : 199,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 13,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 22,
+            "top" : 203,
+            "w" : 19,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 17,
+            "w" : 15
+          },
+          "rect" : {
+            "h" : 32,
+            "w" : 140,
+            "x" : 0,
+            "y" : 147
+          },
+          "rowView" : {
+            "h" : 32,
+            "top" : 199,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb19d8d5e0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 16,
+            "top" : 207,
+            "w" : 37.5,
+            "x" : 49
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 19,
+            "top" : 244,
+            "w" : 124,
+            "x" : 22
+          },
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 11,
+            "weight" : 0
+          },
+          "rect" : {
+            "h" : 19,
+            "w" : 140,
+            "x" : 0,
+            "y" : 192
+          },
+          "rowView" : {
+            "h" : 19,
+            "top" : 244,
+            "w" : 140,
+            "x" : 8
+          },
+          "text" : {
+            "h" : 14,
+            "top" : 246.5,
+            "w" : 30,
+            "x" : 22
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 32,
+            "top" : 263,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 13,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 22,
+            "top" : 268.5,
+            "w" : 23,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 17,
+            "w" : 17
+          },
+          "rect" : {
+            "h" : 32,
+            "w" : 140,
+            "x" : 0,
+            "y" : 211
+          },
+          "rowView" : {
+            "h" : 32,
+            "top" : 263,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb19d8d5e0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 16,
+            "top" : 271,
+            "w" : 35.5,
+            "x" : 52.5
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 32,
+            "top" : 295,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 13,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 22,
+            "top" : 300.5,
+            "w" : 23,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 17,
+            "w" : 17
+          },
+          "rect" : {
+            "h" : 32,
+            "w" : 140,
+            "x" : 0,
+            "y" : 243
+          },
+          "rowView" : {
+            "h" : 32,
+            "top" : 295,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb19d8d5e0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 16,
+            "top" : 303,
+            "w" : 40,
+            "x" : 52.5
+          },
+          "textColor" : "Catalog color: System labelColor"
+        }
+      ],
+      "rowSizeStyle" : -1
+    },
+    "large" : {
+      "effectiveRowSizeStyle" : 3,
+      "rowHeight" : 40,
+      "rows" : [
+        {
+          "cell" : {
+            "h" : 19,
+            "top" : 52,
+            "w" : 124,
+            "x" : 22
+          },
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 11,
+            "weight" : 0
+          },
+          "rect" : {
+            "h" : 19,
+            "w" : 140,
+            "x" : 0,
+            "y" : 0
+          },
+          "rowView" : {
+            "h" : 19,
+            "top" : 52,
+            "w" : 140,
+            "x" : 8
+          },
+          "text" : {
+            "h" : 14,
+            "top" : 54.5,
+            "w" : 43,
+            "x" : 22
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 40,
+            "top" : 71,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 15,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 20,
+            "top" : 80.5,
+            "w" : 28,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 13,
+            "w" : 18
+          },
+          "rect" : {
+            "h" : 40,
+            "w" : 140,
+            "x" : 0,
+            "y" : 19
+          },
+          "rowView" : {
+            "h" : 40,
+            "top" : 71,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb1678aa80> pointSize: 15.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 19,
+            "top" : 81.5,
+            "w" : 41.5,
+            "x" : 57.5
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 40,
+            "top" : 111,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 15,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 24,
+            "top" : 118.5,
+            "w" : 22,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 16,
+            "w" : 14
+          },
+          "rect" : {
+            "h" : 40,
+            "w" : 140,
+            "x" : 0,
+            "y" : 59
+          },
+          "rowView" : {
+            "h" : 40,
+            "top" : 111,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb1678aa80> pointSize: 15.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 19,
+            "top" : 121.5,
+            "w" : 46.5,
+            "x" : 51.5
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 40,
+            "top" : 151,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 15,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 23,
+            "top" : 159.5,
+            "w" : 24,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 16,
+            "w" : 16
+          },
+          "rect" : {
+            "h" : 40,
+            "w" : 140,
+            "x" : 0,
+            "y" : 99
+          },
+          "rowView" : {
+            "h" : 40,
+            "top" : 151,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb1678aa80> pointSize: 15.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 19,
+            "top" : 161.5,
+            "w" : 35.5,
+            "x" : 54
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 40,
+            "top" : 191,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 15,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 21,
+            "top" : 200,
+            "w" : 24,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 14,
+            "w" : 16
+          },
+          "rect" : {
+            "h" : 40,
+            "w" : 140,
+            "x" : 0,
+            "y" : 139
+          },
+          "rowView" : {
+            "h" : 40,
+            "top" : 191,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb1678aa80> pointSize: 15.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 19,
+            "top" : 201.5,
+            "w" : 55.5,
+            "x" : 54
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 40,
+            "top" : 231,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 15,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 25,
+            "top" : 237,
+            "w" : 22,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 17,
+            "w" : 15
+          },
+          "rect" : {
+            "h" : 40,
+            "w" : 140,
+            "x" : 0,
+            "y" : 179
+          },
+          "rowView" : {
+            "h" : 40,
+            "top" : 231,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb1678aa80> pointSize: 15.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 19,
+            "top" : 241.5,
+            "w" : 42,
+            "x" : 51.5
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 19,
+            "top" : 284,
+            "w" : 124,
+            "x" : 22
+          },
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 11,
+            "weight" : 0
+          },
+          "rect" : {
+            "h" : 19,
+            "w" : 140,
+            "x" : 0,
+            "y" : 232
+          },
+          "rowView" : {
+            "h" : 19,
+            "top" : 284,
+            "w" : 140,
+            "x" : 8
+          },
+          "text" : {
+            "h" : 14,
+            "top" : 286.5,
+            "w" : 30,
+            "x" : 22
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 40,
+            "top" : 303,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 15,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 25,
+            "top" : 311,
+            "w" : 26,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 17,
+            "w" : 17
+          },
+          "rect" : {
+            "h" : 40,
+            "w" : 140,
+            "x" : 0,
+            "y" : 251
+          },
+          "rowView" : {
+            "h" : 40,
+            "top" : 303,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb1678aa80> pointSize: 15.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 19,
+            "top" : 313.5,
+            "w" : 40,
+            "x" : 56
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 40,
+            "top" : 343,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 15,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 25,
+            "top" : 351,
+            "w" : 26,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 17,
+            "w" : 17
+          },
+          "rect" : {
+            "h" : 40,
+            "w" : 140,
+            "x" : 0,
+            "y" : 291
+          },
+          "rowView" : {
+            "h" : 40,
+            "top" : 343,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb1678aa80> pointSize: 15.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 19,
+            "top" : 353.5,
+            "w" : 45,
+            "x" : 56
+          },
+          "textColor" : "Catalog color: System labelColor"
+        }
+      ],
+      "rowSizeStyle" : 3
+    },
+    "medium" : {
+      "effectiveRowSizeStyle" : 2,
+      "rowHeight" : 32,
+      "rows" : [
+        {
+          "cell" : {
+            "h" : 19,
+            "top" : 52,
+            "w" : 124,
+            "x" : 22
+          },
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 11,
+            "weight" : 0
+          },
+          "rect" : {
+            "h" : 19,
+            "w" : 140,
+            "x" : 0,
+            "y" : 0
+          },
+          "rowView" : {
+            "h" : 19,
+            "top" : 52,
+            "w" : 140,
+            "x" : 8
+          },
+          "text" : {
+            "h" : 14,
+            "top" : 54.5,
+            "w" : 43,
+            "x" : 22
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 32,
+            "top" : 71,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 13,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 18,
+            "top" : 77.5,
+            "w" : 24,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 13,
+            "w" : 18
+          },
+          "rect" : {
+            "h" : 32,
+            "w" : 140,
+            "x" : 0,
+            "y" : 19
+          },
+          "rowView" : {
+            "h" : 32,
+            "top" : 71,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb19e683c0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 16,
+            "top" : 79,
+            "w" : 37,
+            "x" : 53.5
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 32,
+            "top" : 103,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 13,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 21,
+            "top" : 108,
+            "w" : 18,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 16,
+            "w" : 14
+          },
+          "rect" : {
+            "h" : 32,
+            "w" : 140,
+            "x" : 0,
+            "y" : 51
+          },
+          "rowView" : {
+            "h" : 32,
+            "top" : 103,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb19e683c0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 16,
+            "top" : 111,
+            "w" : 41.5,
+            "x" : 48
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 32,
+            "top" : 135,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 13,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 21,
+            "top" : 140.5,
+            "w" : 21,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 16,
+            "w" : 16
+          },
+          "rect" : {
+            "h" : 32,
+            "w" : 140,
+            "x" : 0,
+            "y" : 83
+          },
+          "rowView" : {
+            "h" : 32,
+            "top" : 135,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb19e683c0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 16,
+            "top" : 143,
+            "w" : 32,
+            "x" : 51
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 32,
+            "top" : 167,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 13,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 19,
+            "top" : 173,
+            "w" : 21,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 14,
+            "w" : 16
+          },
+          "rect" : {
+            "h" : 32,
+            "w" : 140,
+            "x" : 0,
+            "y" : 115
+          },
+          "rowView" : {
+            "h" : 32,
+            "top" : 167,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb19e683c0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 16,
+            "top" : 175,
+            "w" : 49.5,
+            "x" : 50.5
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 32,
+            "top" : 199,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 13,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 22,
+            "top" : 203,
+            "w" : 19,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 17,
+            "w" : 15
+          },
+          "rect" : {
+            "h" : 32,
+            "w" : 140,
+            "x" : 0,
+            "y" : 147
+          },
+          "rowView" : {
+            "h" : 32,
+            "top" : 199,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb19e683c0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 16,
+            "top" : 207,
+            "w" : 37.5,
+            "x" : 49
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 19,
+            "top" : 244,
+            "w" : 124,
+            "x" : 22
+          },
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 11,
+            "weight" : 0
+          },
+          "rect" : {
+            "h" : 19,
+            "w" : 140,
+            "x" : 0,
+            "y" : 192
+          },
+          "rowView" : {
+            "h" : 19,
+            "top" : 244,
+            "w" : 140,
+            "x" : 8
+          },
+          "text" : {
+            "h" : 14,
+            "top" : 246.5,
+            "w" : 30,
+            "x" : 22
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 32,
+            "top" : 263,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 13,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 22,
+            "top" : 268.5,
+            "w" : 23,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 17,
+            "w" : 17
+          },
+          "rect" : {
+            "h" : 32,
+            "w" : 140,
+            "x" : 0,
+            "y" : 211
+          },
+          "rowView" : {
+            "h" : 32,
+            "top" : 263,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb19e683c0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 16,
+            "top" : 271,
+            "w" : 35.5,
+            "x" : 52.5
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 32,
+            "top" : 295,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 13,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 22,
+            "top" : 300.5,
+            "w" : 23,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 17,
+            "w" : 17
+          },
+          "rect" : {
+            "h" : 32,
+            "w" : 140,
+            "x" : 0,
+            "y" : 243
+          },
+          "rowView" : {
+            "h" : 32,
+            "top" : 295,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb19e683c0> pointSize: 13.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 16,
+            "top" : 303,
+            "w" : 40,
+            "x" : 52.5
+          },
+          "textColor" : "Catalog color: System labelColor"
+        }
+      ],
+      "rowSizeStyle" : 2
+    },
+    "small" : {
+      "effectiveRowSizeStyle" : 1,
+      "rowHeight" : 24,
+      "rows" : [
+        {
+          "cell" : {
+            "h" : 19,
+            "top" : 52,
+            "w" : 124,
+            "x" : 22
+          },
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 11,
+            "weight" : 0
+          },
+          "rect" : {
+            "h" : 19,
+            "w" : 140,
+            "x" : 0,
+            "y" : 0
+          },
+          "rowView" : {
+            "h" : 19,
+            "top" : 52,
+            "w" : 140,
+            "x" : 8
+          },
+          "text" : {
+            "h" : 14,
+            "top" : 54.5,
+            "w" : 43,
+            "x" : 22
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 24,
+            "top" : 71,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 11,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 14,
+            "top" : 76,
+            "w" : 21,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 13,
+            "w" : 18
+          },
+          "rect" : {
+            "h" : 24,
+            "w" : 140,
+            "x" : 0,
+            "y" : 19
+          },
+          "rowView" : {
+            "h" : 24,
+            "top" : 71,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb183ee530> pointSize: 11.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 14,
+            "top" : 76,
+            "w" : 32.5,
+            "x" : 50.5
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 24,
+            "top" : 95,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 11,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 17,
+            "top" : 98.5,
+            "w" : 16,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 16,
+            "w" : 14
+          },
+          "rect" : {
+            "h" : 24,
+            "w" : 140,
+            "x" : 0,
+            "y" : 43
+          },
+          "rowView" : {
+            "h" : 24,
+            "top" : 95,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb183ee530> pointSize: 11.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 14,
+            "top" : 100,
+            "w" : 36.5,
+            "x" : 46
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 24,
+            "top" : 119,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 11,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 17,
+            "top" : 123,
+            "w" : 18,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 16,
+            "w" : 16
+          },
+          "rect" : {
+            "h" : 24,
+            "w" : 140,
+            "x" : 0,
+            "y" : 67
+          },
+          "rowView" : {
+            "h" : 24,
+            "top" : 119,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb183ee530> pointSize: 11.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 14,
+            "top" : 124,
+            "w" : 28,
+            "x" : 48
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 24,
+            "top" : 143,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 11,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 15,
+            "top" : 147.5,
+            "w" : 18,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 14,
+            "w" : 16
+          },
+          "rect" : {
+            "h" : 24,
+            "w" : 140,
+            "x" : 0,
+            "y" : 91
+          },
+          "rowView" : {
+            "h" : 24,
+            "top" : 143,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb183ee530> pointSize: 11.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 14,
+            "top" : 148,
+            "w" : 43.5,
+            "x" : 48
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 24,
+            "top" : 167,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 11,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 18,
+            "top" : 169.5,
+            "w" : 16,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 17,
+            "w" : 15
+          },
+          "rect" : {
+            "h" : 24,
+            "w" : 140,
+            "x" : 0,
+            "y" : 115
+          },
+          "rowView" : {
+            "h" : 24,
+            "top" : 167,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb183ee530> pointSize: 11.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 14,
+            "top" : 172,
+            "w" : 33,
+            "x" : 46
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 19,
+            "top" : 204,
+            "w" : 124,
+            "x" : 22
+          },
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 11,
+            "weight" : 0
+          },
+          "rect" : {
+            "h" : 19,
+            "w" : 140,
+            "x" : 0,
+            "y" : 152
+          },
+          "rowView" : {
+            "h" : 19,
+            "top" : 204,
+            "w" : 140,
+            "x" : 8
+          },
+          "text" : {
+            "h" : 14,
+            "top" : 206.5,
+            "w" : 30,
+            "x" : 22
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 24,
+            "top" : 223,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 11,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 18,
+            "top" : 226.5,
+            "w" : 19,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 17,
+            "w" : 17
+          },
+          "rect" : {
+            "h" : 24,
+            "w" : 140,
+            "x" : 0,
+            "y" : 171
+          },
+          "rowView" : {
+            "h" : 24,
+            "top" : 223,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb183ee530> pointSize: 11.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 14,
+            "top" : 228,
+            "w" : 31.5,
+            "x" : 49
+          },
+          "textColor" : "Catalog color: System labelColor"
+        },
+        {
+          "cell" : {
+            "h" : 24,
+            "top" : 247,
+            "w" : 108,
+            "x" : 24
+          },
+          "contentTintColor" : "nil",
+          "font" : {
+            "name" : ".SFNS-Regular",
+            "size" : 11,
+            "weight" : 0
+          },
+          "image" : {
+            "h" : 18,
+            "top" : 250.5,
+            "w" : 19,
+            "x" : 26
+          },
+          "imageSize" : {
+            "h" : 17,
+            "w" : 17
+          },
+          "rect" : {
+            "h" : 24,
+            "w" : 140,
+            "x" : 0,
+            "y" : 195
+          },
+          "rowView" : {
+            "h" : 24,
+            "top" : 247,
+            "w" : 140,
+            "x" : 8
+          },
+          "symbolConfiguration" : "<NSImageSymbolConfiguration: 0xb183ee530> pointSize: 11.00, weight: 0.23, scale: (default(=Medium)), rendering style: Automatic, colors: (null), prefers multicolor: NO, variable value mode: Automatic, color rendering mode: Automatic",
+          "text" : {
+            "h" : 14,
+            "top" : 252,
+            "w" : 35,
+            "x" : 49
+          },
+          "textColor" : "Catalog color: System labelColor"
+        }
+      ],
+      "rowSizeStyle" : 1
+    }
+  },
+  "shots" : {
+    "hero-dark-key" : {
+      "appActive" : true,
+      "firstResponder" : "NSOutlineView",
+      "key" : true,
+      "main" : true,
+      "ok" : true
+    },
+    "hero-light-key" : {
+      "appActive" : true,
+      "firstResponder" : "NSOutlineView",
+      "key" : true,
+      "main" : true,
+      "ok" : true
+    },
+    "main-dark-inactive" : {
+      "appActive" : true,
+      "firstResponder" : "NSOutlineView",
+      "key" : false,
+      "main" : false,
+      "ok" : true
+    },
+    "main-dark-key" : {
+      "appActive" : true,
+      "firstResponder" : "NSOutlineView",
+      "key" : true,
+      "main" : true,
+      "ok" : true
+    },
+    "main-dark-tablefocus" : {
+      "appActive" : true,
+      "firstResponder" : "NSTableView",
+      "key" : true,
+      "main" : true,
+      "ok" : true
+    },
+    "main-light-inactive" : {
+      "appActive" : true,
+      "firstResponder" : "NSOutlineView",
+      "key" : false,
+      "main" : false,
+      "ok" : true
+    },
+    "main-light-key" : {
+      "appActive" : true,
+      "firstResponder" : "NSOutlineView",
+      "key" : true,
+      "main" : true,
+      "ok" : true
+    },
+    "main-light-narrow" : {
+      "appActive" : true,
+      "firstResponder" : "NSOutlineView",
+      "key" : true,
+      "main" : true,
+      "ok" : true
+    },
+    "main-light-tablefocus" : {
+      "appActive" : true,
+      "firstResponder" : "NSTableView",
+      "key" : true,
+      "main" : true,
+      "ok" : true
+    },
+    "rowsize-large-light" : {
+      "appActive" : true,
+      "firstResponder" : "NSOutlineView",
+      "key" : true,
+      "main" : true,
+      "ok" : true
+    },
+    "rowsize-medium-light" : {
+      "appActive" : true,
+      "firstResponder" : "NSOutlineView",
+      "key" : true,
+      "main" : true,
+      "ok" : true
+    },
+    "rowsize-small-light" : {
+      "appActive" : true,
+      "firstResponder" : "NSOutlineView",
+      "key" : true,
+      "main" : true,
+      "ok" : true
+    },
+    "tables-dark-key" : {
+      "appActive" : true,
+      "firstResponder" : "NSTableView",
+      "key" : true,
+      "main" : true,
+      "ok" : true
+    },
+    "tables-light-key" : {
+      "appActive" : true,
+      "firstResponder" : "NSTableView",
+      "key" : true,
+      "main" : true,
+      "ok" : true
+    }
+  },
+  "sidebarCollapseOnResize" : [
+    {
+      "collapsed" : false,
+      "contentMin" : 400,
+      "sidebar" : 140,
+      "window" : 700
+    },
+    {
+      "collapsed" : false,
+      "contentMin" : 400,
+      "sidebar" : 140,
+      "window" : 560
+    },
+    {
+      "collapsed" : false,
+      "contentMin" : 400,
+      "sidebar" : 140,
+      "window" : 500
+    }
+  ],
+  "sidebarDrag" : [
+    {
+      "asked" : 100,
+      "sidebar" : 140
+    },
+    {
+      "asked" : 400,
+      "sidebar" : 392
+    },
+    {
+      "asked" : 700,
+      "sidebar" : 692
+    }
+  ],
+  "sidebarInitialWidth" : [
+    {
+      "sidebar" : 140,
+      "window" : 700
+    },
+    {
+      "sidebar" : 140,
+      "window" : 1000
+    },
+    {
+      "sidebar" : 140,
+      "window" : 1400
+    },
+    {
+      "sidebar" : 140,
+      "window" : 1800
+    },
+    {
+      "sidebar" : 140,
+      "window" : 2200
+    }
+  ],
+  "splitViewItemDefaults" : {
+    "contentList" : {
+      "automaticMaximumThickness" : 576,
+      "canCollapse" : false,
+      "canCollapseFromWindowResize" : false,
+      "holdingPriority" : 255,
+      "maximumThickness" : -1,
+      "minimumThickness" : 200,
+      "preferredThicknessFraction" : 0.33000000000000002,
+      "titlebarSeparatorStyle" : 0
+    },
+    "inspector" : {
+      "automaticMaximumThickness" : -1,
+      "canCollapse" : true,
+      "canCollapseFromWindowResize" : false,
+      "holdingPriority" : 261,
+      "maximumThickness" : 270,
+      "minimumThickness" : 270,
+      "preferredThicknessFraction" : -1,
+      "titlebarSeparatorStyle" : 0
+    },
+    "plain" : {
+      "automaticMaximumThickness" : -1,
+      "canCollapse" : false,
+      "canCollapseFromWindowResize" : false,
+      "holdingPriority" : 250,
+      "maximumThickness" : -1,
+      "minimumThickness" : -1,
+      "preferredThicknessFraction" : -1,
+      "titlebarSeparatorStyle" : 0
+    },
+    "sidebar" : {
+      "automaticMaximumThickness" : 250,
+      "canCollapse" : true,
+      "canCollapseFromWindowResize" : true,
+      "holdingPriority" : 260,
+      "maximumThickness" : -1,
+      "minimumThickness" : 140,
+      "preferredThicknessFraction" : 0.14999999999999999,
+      "titlebarSeparatorStyle" : 0
+    }
+  },
+  "tables" : {
+    "fullWidth" : {
+      "effectiveStyle" : 1,
+      "headerHeight" : 28,
+      "intercellSpacing" : {
+        "h" : 0,
+        "w" : 17,
+        "x" : 0,
+        "y" : 0
+      },
+      "row0" : {
+        "cell" : {
+          "h" : 24,
+          "top" : 70,
+          "w" : 150,
+          "x" : 16
+        },
+        "font" : {
+          "name" : ".AppleSystemUIFont",
+          "size" : 13,
+          "weight" : 0
+        },
+        "rect" : {
+          "h" : 24,
+          "w" : 326,
+          "x" : 0,
+          "y" : 0
+        },
+        "rowView" : {
+          "h" : 24,
+          "top" : 70,
+          "w" : 326,
+          "x" : 10
+        },
+        "text" : {
+          "h" : 16,
+          "top" : 74,
+          "w" : 68,
+          "x" : 16
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      "row1" : {
+        "cell" : {
+          "h" : 24,
+          "top" : 94,
+          "w" : 150,
+          "x" : 16
+        },
+        "font" : {
+          "name" : ".AppleSystemUIFont",
+          "size" : 13,
+          "weight" : 0
+        },
+        "rect" : {
+          "h" : 24,
+          "w" : 326,
+          "x" : 0,
+          "y" : 24
+        },
+        "rowView" : {
+          "h" : 24,
+          "top" : 94,
+          "w" : 326,
+          "x" : 10
+        },
+        "text" : {
+          "h" : 16,
+          "top" : 98,
+          "w" : 70,
+          "x" : 16
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      "rowHeight" : 24,
+      "scrollFrame" : {
+        "h" : 280,
+        "top" : 42,
+        "w" : 305,
+        "x" : 10
+      }
+    },
+    "inset" : {
+      "effectiveStyle" : 2,
+      "headerHeight" : 28,
+      "intercellSpacing" : {
+        "h" : 0,
+        "w" : 17,
+        "x" : 0,
+        "y" : 0
+      },
+      "row0" : {
+        "cell" : {
+          "h" : 24,
+          "top" : 75,
+          "w" : 150,
+          "x" : 341
+        },
+        "font" : {
+          "name" : ".AppleSystemUIFont",
+          "size" : 13,
+          "weight" : 0
+        },
+        "rect" : {
+          "h" : 24,
+          "w" : 346,
+          "x" : 0,
+          "y" : 5
+        },
+        "rowView" : {
+          "h" : 24,
+          "top" : 75,
+          "w" : 346,
+          "x" : 325
+        },
+        "text" : {
+          "h" : 16,
+          "top" : 79,
+          "w" : 68,
+          "x" : 341
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      "row1" : {
+        "cell" : {
+          "h" : 24,
+          "top" : 99,
+          "w" : 150,
+          "x" : 341
+        },
+        "font" : {
+          "name" : ".AppleSystemUIFont",
+          "size" : 13,
+          "weight" : 0
+        },
+        "rect" : {
+          "h" : 24,
+          "w" : 346,
+          "x" : 0,
+          "y" : 29
+        },
+        "rowView" : {
+          "h" : 24,
+          "top" : 99,
+          "w" : 346,
+          "x" : 325
+        },
+        "text" : {
+          "h" : 16,
+          "top" : 103,
+          "w" : 70,
+          "x" : 341
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      "rowHeight" : 24,
+      "scrollFrame" : {
+        "h" : 280,
+        "top" : 42,
+        "w" : 305,
+        "x" : 325
+      }
+    },
+    "plain" : {
+      "effectiveStyle" : 4,
+      "headerHeight" : 28,
+      "intercellSpacing" : {
+        "h" : 0,
+        "w" : 17,
+        "x" : 0,
+        "y" : 0
+      },
+      "row0" : {
+        "cell" : {
+          "h" : 24,
+          "top" : 70,
+          "w" : 150,
+          "x" : 648
+        },
+        "font" : {
+          "name" : ".AppleSystemUIFont",
+          "size" : 13,
+          "weight" : 0
+        },
+        "rect" : {
+          "h" : 24,
+          "w" : 331,
+          "x" : 0,
+          "y" : 0
+        },
+        "rowView" : {
+          "h" : 24,
+          "top" : 70,
+          "w" : 331,
+          "x" : 640
+        },
+        "text" : {
+          "h" : 16,
+          "top" : 74,
+          "w" : 68,
+          "x" : 648
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      "row1" : {
+        "cell" : {
+          "h" : 24,
+          "top" : 94,
+          "w" : 150,
+          "x" : 648
+        },
+        "font" : {
+          "name" : ".AppleSystemUIFont",
+          "size" : 13,
+          "weight" : 0
+        },
+        "rect" : {
+          "h" : 24,
+          "w" : 331,
+          "x" : 0,
+          "y" : 24
+        },
+        "rowView" : {
+          "h" : 24,
+          "top" : 94,
+          "w" : 331,
+          "x" : 640
+        },
+        "text" : {
+          "h" : 16,
+          "top" : 98,
+          "w" : 70,
+          "x" : 648
+        },
+        "textColor" : "Catalog color: System labelColor"
+      },
+      "rowHeight" : 24,
+      "scrollFrame" : {
+        "h" : 280,
+        "top" : 42,
+        "w" : 305,
+        "x" : 640
+      }
+    }
+  }
+}

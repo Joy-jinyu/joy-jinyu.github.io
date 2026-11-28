@@ -1,0 +1,3 @@
+不覆盖安全区时，Chrome 157.0.8103.79（Playwright，852×393 手机视口，viewport-fit=cover）里 env(safe-area-inset-*) 的计算值，2026-11-18：
+top 0px，right 0px，bottom 0px，left 0px
+量法：一个 div 的四个 padding 分别写成 env(safe-area-inset-top/right/bottom/left)，读 getComputedStyle。

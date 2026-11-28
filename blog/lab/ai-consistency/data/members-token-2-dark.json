@@ -1,0 +1,211 @@
+{
+ "file": "members-token-2.html",
+ "scheme": "dark",
+ "bag": {
+  "bg": {
+   "#ffffff": {
+    "n": 4,
+    "who": [
+     "header.nav「团队成员 邀请」",
+     "input",
+     "ul.card「晓林晓所有者刚刚活跃⋯鸣陈一」",
+     "ul.card「hanmei@example」"
+    ]
+   },
+   "#f4f4f1": {
+    "n": 6,
+    "who": [
+     "span.avatar「晓」",
+     "span.avatar「鸣」",
+     "span.avatar「桐」",
+     "span.avatar「浩」"
+    ]
+   },
+   "#b65a3c": {
+    "n": 1,
+    "who": [
+     "span.tag「所有者」"
+    ]
+   }
+  },
+  "border": {
+   "1px #e7e6e1": {
+    "n": 25,
+    "who": [
+     "header.nav「团队成员 邀请」",
+     "input",
+     "input",
+     "input"
+    ]
+   },
+   "1px #b65a3c": {
+    "n": 12,
+    "who": [
+     "span.tag「所有者」",
+     "span.tag「所有者」",
+     "span.tag「所有者」",
+     "span.tag「所有者」"
+    ]
+   }
+  },
+  "radius": {
+   "10": {
+    "n": 17,
+    "who": [
+     "button.nav-back「返回」",
+     "button.nav-invite「邀请」",
+     "input",
+     "span.tag「所有者」"
+    ]
+   },
+   "16": {
+    "n": 2,
+    "who": [
+     "ul.card「晓林晓所有者刚刚活跃⋯鸣陈一」",
+     "ul.card「hanmei@example」"
+    ]
+   },
+   "pill": {
+    "n": 6,
+    "who": [
+     "span.avatar「晓」",
+     "span.avatar「鸣」",
+     "span.avatar「桐」",
+     "span.avatar「浩」"
+    ]
+   }
+  },
+  "controlHeight": {
+   "36": {
+    "n": 2,
+    "who": [
+     "button.withdraw-btn「撤回发给 hanmei@ex」",
+     "button.withdraw-btn「撤回发给 liu.yang.」"
+    ]
+   },
+   "44": {
+    "n": 9,
+    "who": [
+     "button.nav-back「返回」",
+     "button.nav-invite「邀请」",
+     "input",
+     "button.more-btn「更多操作：林晓」"
+    ]
+   }
+  },
+  "text": {
+   "#1c1c1a": {
+    "n": 11,
+    "who": [
+     "h1「团队成员」",
+     "span.name「林晓」",
+     "span.name「陈一鸣」",
+     "span.name「周雨桐」"
+    ]
+   },
+   "#b65a3c": {
+    "n": 3,
+    "who": [
+     "button.nav-invite「邀请」",
+     "span.tag「管理员」",
+     "span.tag「管理员」"
+    ]
+   },
+   "#5f5e59": {
+    "n": 29,
+    "who": [
+     "h2「成员 · 6」",
+     "span「6」",
+     "span.avatar「晓」",
+     "div.meta「刚刚活跃」"
+    ]
+   },
+   "#ffffff": {
+    "n": 1,
+    "who": [
+     "span.tag「所有者」"
+    ]
+   }
+  },
+  "fontSize": {
+   "13": {
+    "n": 22,
+    "who": [
+     "h2「成员 · 6」",
+     "span「6」",
+     "span.tag「所有者」",
+     "div.meta「刚刚活跃」"
+    ]
+   },
+   "15": {
+    "n": 15,
+    "who": [
+     "button.nav-invite「邀请」",
+     "span.avatar「晓」",
+     "span.name「林晓」",
+     "span.avatar「鸣」"
+    ]
+   },
+   "18": {
+    "n": 7,
+    "who": [
+     "h1「团队成员」",
+     "button.more-btn「更多操作：林晓」",
+     "button.more-btn「更多操作：陈一鸣」",
+     "button.more-btn「更多操作：周雨桐」"
+    ]
+   }
+  },
+  "fontWeight": {
+   "400": {
+    "n": 26,
+    "who": [
+     "span.tag「所有者」",
+     "div.meta「刚刚活跃」",
+     "button.more-btn「更多操作：林晓」",
+     "span.tag「管理员」"
+    ]
+   },
+   "500": {
+    "n": 4,
+    "who": [
+     "h2「成员 · 6」",
+     "span「6」",
+     "h2「待接受的邀请 · 2」",
+     "span「2」"
+    ]
+   },
+   "600": {
+    "n": 14,
+    "who": [
+     "h1「团队成员」",
+     "button.nav-invite「邀请」",
+     "span.avatar「晓」",
+     "span.name「林晓」"
+    ]
+   }
+  }
+ },
+ "vars": {
+  "--color-accent": "#b65a3c",
+  "--color-on-accent": "#ffffff",
+  "--color-text": "#1c1c1a",
+  "--color-text-2": "#5f5e59",
+  "--color-line": "#e7e6e1",
+  "--color-bg": "#f4f4f1",
+  "--color-card": "#ffffff",
+  "--radius-card": "16px",
+  "--radius-control": "10px",
+  "--font-sm": "13px",
+  "--font-md": "15px",
+  "--font-lg": "18px",
+  "--space-1": "4px",
+  "--space-2": "8px",
+  "--space-3": "12px",
+  "--space-4": "16px",
+  "--space-5": "24px"
+ },
+ "darkRule": false,
+ "literalColorsOutsideRoot": 0,
+ "errors": []
+}

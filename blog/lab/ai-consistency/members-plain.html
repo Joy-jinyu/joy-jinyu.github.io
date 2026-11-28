@@ -1,0 +1,1025 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>团队成员</title>
+<style>
+  :root {
+    color-scheme: light dark;
+
+    /* 间距阶梯：每档对应一种关系，见 ui-conventions spatial.md */
+    --space-0-5: 2px;
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-6: 24px;
+    --space-8: 32px;
+
+    --size-touch: 44px;
+    --size-control-compact: 32px;
+    --size-field: 40px;
+    --size-nav: 48px;
+    --size-avatar: 2.5rem;
+    --size-icon: 16px;
+
+    --radius-s: 4px;
+    --radius-m: 10px;
+    --radius-l: 14px;
+
+    --font-title: 1.0625rem;
+    --font-body: 1rem;
+    --font-sub: 0.8125rem;
+    --font-caption: 0.75rem;
+
+    --duration-fast: 120ms;
+
+    /* 行布局：分隔线内缩与图标按钮外扩都从这几个值推出，改一处即可 */
+    --row-pad-x: var(--space-4);
+    --row-gap: var(--space-3);
+    --row-text-inset: calc(var(--row-pad-x) + var(--size-avatar) + var(--row-gap));
+    --icon-btn-bleed: calc((var(--size-touch) - var(--size-icon)) / 2);
+
+    --color-page: #f2f3f5;
+    --color-surface: #ffffff;
+    --color-surface-raised: #ffffff;
+    --color-text: #16181d;
+    --color-text-secondary: #5b6270;
+    --color-text-disabled: #a3a8b1;
+    --color-separator: #e3e5e9;
+    --color-field-border: #d5d8de;
+    --color-border-strong: #c4c8cf;
+    --color-fill: #edeef1;
+    --color-hover: rgb(22 24 29 / 0.05);
+    --color-pressed: rgb(22 24 29 / 0.1);
+    --color-accent: #1f5ad6;
+    --color-on-accent: #ffffff;
+    --color-danger: #c42b1c;
+    --color-on-danger: #ffffff;
+    --color-focus: #1f5ad6;
+    --color-backdrop: rgb(15 17 21 / 0.45);
+    --shadow-popover: 0 8px 24px rgb(15 17 21 / 0.12), 0 1px 3px rgb(15 17 21 / 0.08);
+
+    --tag-owner-bg: #fff0db;
+    --tag-owner-fg: #8a4b00;
+    --tag-admin-bg: #e6eeff;
+    --tag-admin-fg: #1d4fbf;
+    --tag-member-bg: #eef0f3;
+    --tag-member-fg: #4a5160;
+
+    --avatar-1-bg: #dce7ff;
+    --avatar-1-fg: #24479e;
+    --avatar-2-bg: #ddf3e6;
+    --avatar-2-fg: #1f6b3f;
+    --avatar-3-bg: #fce4d6;
+    --avatar-3-fg: #9a4317;
+    --avatar-4-bg: #ebe2fb;
+    --avatar-4-fg: #5b33a8;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-page: #0e1014;
+      --color-surface: #191c21;
+      --color-surface-raised: #23272e;
+      --color-text: #eceef1;
+      --color-text-secondary: #a1a8b3;
+      --color-text-disabled: #6b717b;
+      --color-separator: #2c3038;
+      --color-field-border: #3a3f48;
+      --color-border-strong: #4a505a;
+      --color-fill: #2a2e35;
+      --color-hover: rgb(255 255 255 / 0.06);
+      --color-pressed: rgb(255 255 255 / 0.12);
+      --color-accent: #7aa5ff;
+      --color-on-accent: #0e1014;
+      --color-danger: #ff7a6e;
+      --color-on-danger: #1a0d0b;
+      --color-focus: #7aa5ff;
+      --color-backdrop: rgb(0 0 0 / 0.6);
+      --shadow-popover: 0 8px 24px rgb(0 0 0 / 0.5);
+
+      --tag-owner-bg: #3a2a12;
+      --tag-owner-fg: #f5b66b;
+      --tag-admin-bg: #1c2b4a;
+      --tag-admin-fg: #8db3ff;
+      --tag-member-bg: #2a2e35;
+      --tag-member-fg: #c2c8d0;
+
+      --avatar-1-bg: #22345c;
+      --avatar-1-fg: #a9c2ff;
+      --avatar-2-bg: #1d3b2a;
+      --avatar-2-fg: #8fd6aa;
+      --avatar-3-bg: #4a2a1a;
+      --avatar-3-fg: #f3b48e;
+      --avatar-4-bg: #35285a;
+      --avatar-4-fg: #c9b5f5;
+    }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--color-page);
+    color: var(--color-text);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+    font-size: var(--font-body);
+    line-height: 1.5;
+  }
+
+  button, input { font: inherit; color: inherit; }
+  button { -webkit-tap-highlight-color: transparent; cursor: pointer; }
+
+  :focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .app {
+    max-width: 480px;
+    min-height: 100dvh;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 顶部导航 */
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    min-height: calc(var(--size-nav) + env(safe-area-inset-top));
+    padding: env(safe-area-inset-top) var(--space-1) 0;
+    background: var(--color-page);
+    border-bottom: 1px solid var(--color-separator);
+  }
+
+  .navbar-title {
+    margin: 0;
+    font-size: var(--font-title);
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .icon-btn {
+    display: grid;
+    place-items: center;
+    width: var(--size-touch);
+    height: var(--size-touch);
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-m);
+    background: transparent;
+    color: var(--color-text-secondary);
+  }
+
+  .icon-btn:focus-visible,
+  .text-btn:focus-visible,
+  .menu-item:focus-visible { outline-offset: -2px; }
+
+  .icon-btn--back {
+    justify-self: start;
+    justify-items: start;
+    padding-inline-start: var(--space-3);
+    color: var(--color-text);
+  }
+
+  .text-btn {
+    justify-self: end;
+    min-height: var(--size-touch);
+    padding: 0 var(--space-3);
+    border: 0;
+    border-radius: var(--radius-m);
+    background: transparent;
+    color: var(--color-accent);
+    font-weight: 500;
+  }
+
+  .icon-back {
+    width: 10px;
+    height: 10px;
+    /* 旋转 45° 后外接框向左外扩约 2px，补回来让尖角落在 16px 脊柱上 */
+    margin-inline-start: var(--space-0-5);
+    border-left: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+  }
+
+  .icon-more {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: -6px 0 currentColor, 6px 0 currentColor;
+  }
+
+  .icon-search {
+    position: relative;
+    flex: none;
+    width: 12px;
+    height: 12px;
+    margin-inline-end: var(--space-0-5);
+    border: 2px solid currentColor;
+    border-radius: 50%;
+  }
+
+  .icon-search::after {
+    content: "";
+    position: absolute;
+    right: -4px;
+    bottom: -5px;
+    width: 2px;
+    height: 6px;
+    border-radius: 1px;
+    background: currentColor;
+    transform: rotate(-45deg);
+  }
+
+  /* 搜索 */
+  .search { margin: var(--space-3) var(--row-pad-x) 0; }
+
+  .search-field {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--size-field);
+    padding: 0 var(--space-3);
+    border: 1px solid var(--color-field-border);
+    border-radius: var(--radius-m);
+    background: var(--color-surface);
+    color: var(--color-text-secondary);
+  }
+
+  .search-field:focus-within { outline: 2px solid var(--color-focus); outline-offset: -1px; }
+
+  .search-input {
+    flex: 1;
+    min-width: 0;
+    padding: var(--space-2) 0;
+    border: 0;
+    background: transparent;
+    color: var(--color-text);
+    font-size: var(--font-body);
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  /* 外层 .search-field 已经画了同等可见的焦点环 */
+  .search-input:focus-visible { outline: none; }
+  .search-input::placeholder { color: var(--color-text-secondary); opacity: 1; }
+  .search-input::-webkit-search-decoration { -webkit-appearance: none; }
+
+  /* 分组 */
+  .section { margin-top: var(--space-6); }
+
+  .section-title {
+    margin: 0 0 var(--space-2);
+    padding: 0 var(--row-pad-x);
+    color: var(--color-text-secondary);
+    font-size: var(--font-sub);
+    font-weight: 500;
+  }
+
+  .surface-block {
+    background: var(--color-surface);
+    border-block: 1px solid var(--color-separator);
+  }
+
+  .list { margin: 0; padding: 0; list-style: none; }
+
+  .empty {
+    margin: 0;
+    padding: var(--space-8) var(--row-pad-x);
+    color: var(--color-text-secondary);
+    font-size: var(--font-sub);
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+
+  /* 行 */
+  .row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--row-gap);
+    padding: var(--space-3) var(--row-pad-x);
+  }
+
+  .row + .row::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: var(--row-text-inset);
+    height: 1px;
+    background: var(--color-separator);
+  }
+
+  .avatar {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: var(--size-avatar);
+    height: var(--size-avatar);
+    border-radius: 50%;
+    font-weight: 600;
+  }
+
+  .avatar[data-tone="1"] { background: var(--avatar-1-bg); color: var(--avatar-1-fg); }
+  .avatar[data-tone="2"] { background: var(--avatar-2-bg); color: var(--avatar-2-fg); }
+  .avatar[data-tone="3"] { background: var(--avatar-3-bg); color: var(--avatar-3-fg); }
+  .avatar[data-tone="4"] { background: var(--avatar-4-bg); color: var(--avatar-4-fg); }
+
+  .avatar--pending {
+    border: 1px dashed var(--color-border-strong);
+    color: var(--color-text-secondary);
+    font-weight: 500;
+  }
+
+  .row-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .row-title {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: var(--space-2);
+    row-gap: var(--space-1);
+    line-height: 1.375;
+  }
+
+  .name { font-weight: 500; overflow-wrap: anywhere; }
+
+  .tag {
+    padding: 0 var(--space-1);
+    border-radius: var(--radius-s);
+    font-size: var(--font-caption);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .tag[data-role="owner"] { background: var(--tag-owner-bg); color: var(--tag-owner-fg); }
+  .tag[data-role="admin"] { background: var(--tag-admin-bg); color: var(--tag-admin-fg); }
+  .tag[data-role="member"] { background: var(--tag-member-bg); color: var(--tag-member-fg); }
+
+  .row-meta {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: var(--font-sub);
+    line-height: 1.4;
+  }
+
+  .row.is-revoked .name { color: var(--color-text-secondary); text-decoration: line-through; }
+
+  /* 尾部操作：图标视觉边缘对齐右侧 16px 脊柱，热区向外溢出 */
+  .row-action {
+    position: relative;
+    flex: none;
+    margin-inline-end: calc(-1 * var(--icon-btn-bleed));
+  }
+
+  .compact-btn {
+    position: relative;
+    flex: none;
+    min-height: var(--size-control-compact);
+    padding: 0 var(--space-3);
+    border: 0;
+    border-radius: var(--radius-m);
+    /* 描边用内阴影而非 border：border 会让 ::before 的定位基准内缩 1px，热区凑不满 44px */
+    box-shadow: inset 0 0 0 1px var(--color-border-strong);
+    background: var(--color-surface);
+    font-size: var(--font-sub);
+    font-weight: 500;
+  }
+
+  /* 视觉高度 32px，热区补足到 44px */
+  .compact-btn::before {
+    content: "";
+    position: absolute;
+    inset: calc((var(--size-control-compact) - var(--size-touch)) / 2) 0;
+  }
+
+  /* 菜单 */
+  .menu {
+    position: absolute;
+    top: calc(100% + var(--space-1));
+    right: var(--icon-btn-bleed);
+    z-index: 5;
+    min-width: 200px;
+    margin: 0;
+    padding: var(--space-1) 0;
+    list-style: none;
+    border: 1px solid var(--color-separator);
+    border-radius: var(--radius-m);
+    background: var(--color-surface-raised);
+    box-shadow: var(--shadow-popover);
+    transform-origin: top right;
+    animation: pop-in var(--duration-fast) ease-out;
+  }
+
+  .menu--up {
+    top: auto;
+    bottom: calc(100% + var(--space-1));
+    transform-origin: bottom right;
+  }
+
+  .menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    min-height: var(--size-touch);
+    padding: var(--space-2) var(--space-4);
+    border: 0;
+    background: transparent;
+    text-align: start;
+  }
+
+  .menu-item--danger { color: var(--color-danger); }
+
+  .menu-item[aria-disabled="true"] { color: var(--color-text-disabled); cursor: not-allowed; }
+
+  .menu-item-hint { color: var(--color-text-secondary); font-size: var(--font-caption); }
+
+  .menu-separator { height: 1px; margin: var(--space-1) 0; background: var(--color-separator); }
+
+  /* 按钮 */
+  .btn {
+    flex: 1;
+    min-height: var(--size-touch);
+    padding: 0 var(--space-4);
+    border: 0;
+    border-radius: var(--radius-m);
+    font-weight: 500;
+  }
+
+  .btn--default { background: var(--color-fill); color: var(--color-text); }
+  .btn--primary { background: var(--color-accent); color: var(--color-on-accent); }
+  .btn--danger { background: var(--color-danger); color: var(--color-on-danger); }
+
+  /* 交互反馈：hover 只给有指针的设备，按下态所有设备都有 */
+  @media (hover: hover) {
+    .icon-btn:hover,
+    .text-btn:hover,
+    .menu-item:not([aria-disabled="true"]):hover { background: var(--color-hover); }
+    .compact-btn:hover { background: var(--color-fill); }
+    .btn:hover { filter: brightness(0.96); }
+  }
+
+  .icon-btn:active,
+  .text-btn:active,
+  .icon-btn[aria-expanded="true"],
+  .menu-item:not([aria-disabled="true"]):active { background: var(--color-pressed); }
+  .icon-btn[aria-expanded="true"] { color: var(--color-text); }
+  .compact-btn:active { background: var(--color-pressed); }
+  .btn:active { filter: brightness(0.9); }
+
+  /* 页脚 */
+  .footnote {
+    margin: 0;
+    padding: var(--space-6) var(--row-pad-x) calc(var(--space-8) + env(safe-area-inset-bottom));
+    color: var(--color-text-secondary);
+    font-size: var(--font-caption);
+  }
+
+  /* 弹窗 */
+  .dialog {
+    width: min(calc(100% - 2 * var(--space-8)), 20rem);
+    max-width: none;
+    padding: var(--space-6);
+    border: 0;
+    border-radius: var(--radius-l);
+    background: var(--color-surface-raised);
+    color: var(--color-text);
+    box-shadow: var(--shadow-popover);
+  }
+
+  .dialog[open] { animation: pop-in var(--duration-fast) ease-out; }
+  .dialog::backdrop { background: var(--color-backdrop); }
+
+  .dialog-title { margin: 0; font-size: var(--font-title); font-weight: 600; overflow-wrap: anywhere; }
+
+  .dialog-desc { margin: var(--space-2) 0 0; color: var(--color-text-secondary); font-size: var(--font-sub); }
+
+  .dialog-actions { display: flex; gap: var(--space-2); margin-top: var(--space-6); }
+
+  .field-label { display: block; margin-top: var(--space-4); font-size: var(--font-sub); font-weight: 500; }
+
+  .field {
+    width: 100%;
+    min-height: var(--size-field);
+    margin-top: var(--space-2);
+    padding: 0 var(--space-3);
+    border: 1px solid var(--color-field-border);
+    border-radius: var(--radius-m);
+    background: var(--color-surface);
+    font-size: var(--font-body);
+  }
+
+  .field:focus-visible { outline-offset: -1px; }
+  .field[aria-invalid="true"] { border-color: var(--color-danger); }
+
+  .field-error { margin: 0; color: var(--color-danger); font-size: var(--font-sub); }
+  .field-error:not(:empty) { margin-top: var(--space-1); }
+
+  @keyframes pop-in {
+    from { opacity: 0; transform: scale(0.97); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .menu, .dialog[open] { animation: none; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="navbar">
+    <button class="icon-btn icon-btn--back" id="back" type="button" aria-label="返回" title="返回">
+      <span class="icon-back" aria-hidden="true"></span>
+    </button>
+    <h1 class="navbar-title">团队成员</h1>
+    <button class="text-btn" id="invite-open" type="button">邀请</button>
+  </header>
+
+  <main>
+    <form class="search" id="search-form" role="search">
+      <label class="search-field">
+        <span class="icon-search" aria-hidden="true"></span>
+        <span class="sr-only">搜索成员</span>
+        <input class="search-input" id="search" type="search" placeholder="搜索成员" autocomplete="off" enterkeyhint="search">
+      </label>
+    </form>
+
+    <section class="section" aria-labelledby="members-title">
+      <h2 class="section-title" id="members-title">成员 · <span id="member-count">6</span></h2>
+      <ul class="list surface-block" id="member-list"></ul>
+      <p class="empty surface-block" id="member-empty" hidden></p>
+    </section>
+
+    <section class="section" aria-labelledby="invites-title">
+      <h2 class="section-title" id="invites-title">待接受的邀请 · <span id="invite-count">2</span></h2>
+      <ul class="list surface-block" id="invite-list"></ul>
+    </section>
+  </main>
+
+  <footer>
+    <p class="footnote">Pro 套餐最多 <span id="seat-limit">10</span> 人，已用 <span id="seat-used">6</span> 个名额</p>
+  </footer>
+</div>
+
+<p class="sr-only" id="announcer" role="status" aria-live="polite"></p>
+
+<template id="member-row">
+  <li class="row">
+    <span class="avatar" aria-hidden="true"></span>
+    <div class="row-body">
+      <p class="row-title"><span class="name"></span><span class="tag"></span></p>
+      <p class="row-meta"></p>
+    </div>
+    <div class="row-action">
+      <button class="icon-btn" type="button" data-menu-trigger aria-haspopup="menu" aria-expanded="false" title="更多">
+        <span class="icon-more" aria-hidden="true"></span>
+      </button>
+      <ul class="menu" role="menu" hidden>
+        <li role="none">
+          <button class="menu-item" type="button" role="menuitem" tabindex="-1" data-action="toggle-admin">
+            <span class="menu-item-label"></span>
+            <span class="menu-item-hint"></span>
+          </button>
+        </li>
+        <li class="menu-separator" role="separator"></li>
+        <li role="none">
+          <button class="menu-item menu-item--danger" type="button" role="menuitem" tabindex="-1" data-action="remove">
+            <span class="menu-item-label"></span>
+            <span class="menu-item-hint"></span>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </li>
+</template>
+
+<template id="invite-row">
+  <li class="row">
+    <span class="avatar avatar--pending" aria-hidden="true">@</span>
+    <div class="row-body">
+      <p class="row-title"><span class="name"></span></p>
+      <p class="row-meta"></p>
+    </div>
+    <button class="compact-btn" type="button"></button>
+  </li>
+</template>
+
+<dialog class="dialog" id="remove-dialog" role="alertdialog" aria-labelledby="remove-title" aria-describedby="remove-desc">
+  <form method="dialog">
+    <h2 class="dialog-title" id="remove-title"></h2>
+    <p class="dialog-desc" id="remove-desc">对方会立即失去团队内容的访问权限，之后需要重新邀请才能加入。</p>
+    <div class="dialog-actions">
+      <button class="btn btn--default" value="cancel" autofocus>取消</button>
+      <button class="btn btn--danger" value="confirm">移出</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog class="dialog" id="invite-dialog" aria-labelledby="invite-title">
+  <form id="invite-form" novalidate>
+    <h2 class="dialog-title" id="invite-title">邀请成员</h2>
+    <label class="field-label" for="invite-email">邮箱</label>
+    <input class="field" id="invite-email" type="email" inputmode="email" autocomplete="email" required autofocus>
+    <p class="field-error" id="invite-error" aria-live="assertive"></p>
+    <div class="dialog-actions">
+      <button class="btn btn--default" type="button" data-close>取消</button>
+      <button class="btn btn--primary" type="submit">发送邀请</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+(() => {
+  'use strict';
+
+  const SEAT_LIMIT = 10; // Pro 套餐人数上限
+  const AVATAR_TONE_COUNT = 4; // 对应 :root 里 --avatar-1 ~ --avatar-4
+  const SEARCH_ANNOUNCE_DELAY_MS = 500; // 停止输入后再播报结果数，避免逐字打断读屏
+  const MENU_VIEWPORT_GAP = 8; // 菜单底边离视口不足这么多就改为向上展开
+
+  const ROLE_LABEL = { owner: '所有者', admin: '管理员', member: '成员' };
+
+  let state = {
+    query: '',
+    members: [
+      { id: 'm1', name: '林知远', role: 'owner', activity: '刚刚活跃' },
+      { id: 'm2', name: '周可欣', role: 'admin', activity: '2 小时前活跃' },
+      { id: 'm3', name: '陈默', role: 'member', activity: '昨天活跃' },
+      { id: 'm4', name: 'Alexandra Whitfield', role: 'member', activity: '3 天前活跃' },
+      { id: 'm5', name: '王一帆', role: 'member', activity: '5 天前活跃' },
+      { id: 'm6', name: '赵思琪', role: 'member', activity: '2 周前活跃' },
+    ],
+    invites: [
+      { id: 'i1', email: 'lucas.chen@example.com', sent: '3 天前发出', revoked: false },
+      { id: 'i2', email: 'mia.zhang@northstudio.design', sent: '5 天前发出', revoked: false },
+    ],
+  };
+
+  const byId = (id) => document.getElementById(id);
+  const els = {
+    back: byId('back'),
+    inviteOpen: byId('invite-open'),
+    searchForm: byId('search-form'),
+    search: byId('search'),
+    memberList: byId('member-list'),
+    memberEmpty: byId('member-empty'),
+    memberCount: byId('member-count'),
+    inviteList: byId('invite-list'),
+    inviteCount: byId('invite-count'),
+    seatLimit: byId('seat-limit'),
+    seatUsed: byId('seat-used'),
+    announcer: byId('announcer'),
+    memberTpl: byId('member-row'),
+    inviteTpl: byId('invite-row'),
+    removeDialog: byId('remove-dialog'),
+    removeTitle: byId('remove-title'),
+    inviteDialog: byId('invite-dialog'),
+    inviteForm: byId('invite-form'),
+    inviteEmail: byId('invite-email'),
+    inviteError: byId('invite-error'),
+  };
+
+  /* ---------- 状态与渲染 ---------- */
+
+  function setState(patch) {
+    state = { ...state, ...patch };
+    render();
+  }
+
+  function visibleMembers() {
+    const query = state.query.trim().toLowerCase();
+    return state.members.filter((m) => m.name.toLowerCase().includes(query));
+  }
+
+  function render() {
+    const visible = visibleMembers();
+    els.memberList.replaceChildren(...visible.map(createMemberRow));
+    els.memberList.hidden = visible.length === 0;
+    els.memberEmpty.hidden = visible.length > 0;
+    els.memberEmpty.textContent = `没有名字包含「${state.query.trim()}」的成员`;
+    els.inviteList.replaceChildren(...state.invites.map(createInviteRow));
+
+    els.memberCount.textContent = String(state.members.length);
+    els.inviteCount.textContent = String(state.invites.filter((i) => !i.revoked).length);
+    els.seatLimit.textContent = String(SEAT_LIMIT);
+    els.seatUsed.textContent = String(state.members.length);
+  }
+
+  function avatarTone(id) {
+    const sum = [...id].reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+    return String((sum % AVATAR_TONE_COUNT) + 1);
+  }
+
+  function createMemberRow(member) {
+    const row = els.memberTpl.content.firstElementChild.cloneNode(true);
+    const isOwner = member.role === 'owner';
+    row.dataset.id = member.id;
+
+    const avatar = row.querySelector('.avatar');
+    avatar.textContent = [...member.name][0].toUpperCase();
+    avatar.dataset.tone = avatarTone(member.id);
+
+    row.querySelector('.name').textContent = member.name;
+    const tag = row.querySelector('.tag');
+    tag.textContent = ROLE_LABEL[member.role];
+    tag.dataset.role = member.role;
+    row.querySelector('.row-meta').textContent = member.activity;
+
+    const trigger = row.querySelector('[data-menu-trigger]');
+    const menu = row.querySelector('[role="menu"]');
+    trigger.id = `more-${member.id}`;
+    trigger.setAttribute('aria-label', `更多：${member.name}`);
+    trigger.setAttribute('aria-controls', `menu-${member.id}`);
+    menu.id = `menu-${member.id}`;
+    menu.setAttribute('aria-labelledby', trigger.id);
+
+    fillMenuItem(
+      menu.querySelector('[data-action="toggle-admin"]'),
+      member.role === 'admin' ? '取消管理员' : '设为管理员',
+      isOwner ? '所有者已拥有全部权限' : '',
+    );
+    fillMenuItem(menu.querySelector('[data-action="remove"]'), '移出团队', isOwner ? '所有者不能被移出' : '');
+    return row;
+  }
+
+  function fillMenuItem(item, label, disabledReason) {
+    item.querySelector('.menu-item-label').textContent = label;
+    const hint = item.querySelector('.menu-item-hint');
+    hint.textContent = disabledReason;
+    hint.hidden = !disabledReason;
+    if (disabledReason) item.setAttribute('aria-disabled', 'true');
+  }
+
+  /** 在 @ 之后、每个 . 之前留换行点，长邮箱优先在这些位置折行，而不是在任意字母中间断开 */
+  function withEmailBreaks(email) {
+    return email.split(/(?<=@)|(?=\.)/).flatMap((part, i) => (i === 0 ? [part] : [document.createElement('wbr'), part]));
+  }
+
+  function createInviteRow(invite) {
+    const row = els.inviteTpl.content.firstElementChild.cloneNode(true);
+    row.dataset.id = invite.id;
+    row.classList.toggle('is-revoked', invite.revoked);
+
+    const email = row.querySelector('.name');
+    email.id = `invite-email-${invite.id}`;
+    email.replaceChildren(...withEmailBreaks(invite.email));
+    row.querySelector('.row-meta').textContent = invite.revoked ? '已撤回' : invite.sent;
+
+    const button = row.querySelector('button');
+    button.id = `invite-action-${invite.id}`;
+    button.textContent = invite.revoked ? '恢复' : '撤回';
+    button.setAttribute('aria-describedby', email.id);
+    return row;
+  }
+
+  function announce(message) {
+    els.announcer.textContent = '';
+    requestAnimationFrame(() => { els.announcer.textContent = message; });
+  }
+
+  /* ---------- 「更多」菜单 ---------- */
+
+  let openMenu = null;
+
+  function menuItems(menu) {
+    return [...menu.querySelectorAll('[role="menuitem"]')];
+  }
+
+  function focusMenuItem(menu, index) {
+    const items = menuItems(menu);
+    items[(index + items.length) % items.length].focus();
+  }
+
+  function showMenu(trigger, focusIndex) {
+    closeMenu();
+    const menu = byId(trigger.getAttribute('aria-controls'));
+    menu.hidden = false;
+    menu.classList.remove('menu--up');
+    const fitsBelow = menu.getBoundingClientRect().bottom <= window.innerHeight - MENU_VIEWPORT_GAP;
+    menu.classList.toggle('menu--up', !fitsBelow);
+    trigger.setAttribute('aria-expanded', 'true');
+    openMenu = { trigger, menu };
+    focusMenuItem(menu, focusIndex);
+  }
+
+  function closeMenu({ restoreFocus = false } = {}) {
+    if (!openMenu) return;
+    const { trigger, menu } = openMenu;
+    openMenu = null;
+    menu.hidden = true;
+    trigger.setAttribute('aria-expanded', 'false');
+    if (restoreFocus) trigger.focus();
+  }
+
+  function isInsideOpenMenu(target) {
+    return openMenu && (openMenu.menu.contains(target) || openMenu.trigger.contains(target));
+  }
+
+  function handleMenuKey(event) {
+    const { menu } = openMenu;
+    const items = menuItems(menu);
+    const index = items.indexOf(document.activeElement);
+    const moves = { ArrowDown: index + 1, ArrowUp: index - 1, Home: 0, End: items.length - 1 };
+    if (event.key in moves) {
+      event.preventDefault();
+      focusMenuItem(menu, moves[event.key]);
+    } else if (event.key === 'Tab') {
+      closeMenu({ restoreFocus: true });
+    }
+  }
+
+  function activateMenuItem(item) {
+    if (item.getAttribute('aria-disabled') === 'true') return;
+    const member = state.members.find((m) => m.id === item.closest('.row').dataset.id);
+    closeMenu({ restoreFocus: true });
+    if (item.dataset.action === 'toggle-admin') toggleAdmin(member);
+    if (item.dataset.action === 'remove') confirmRemove(member);
+  }
+
+  /* ---------- 成员操作 ---------- */
+
+  function toggleAdmin(member) {
+    const nextRole = member.role === 'admin' ? 'member' : 'admin';
+    setState({ members: state.members.map((m) => (m.id === member.id ? { ...m, role: nextRole } : m)) });
+    byId(`more-${member.id}`).focus();
+    announce(nextRole === 'admin' ? `已将 ${member.name} 设为管理员` : `已取消 ${member.name} 的管理员`);
+  }
+
+  let pendingRemovalId = null;
+
+  function confirmRemove(member) {
+    pendingRemovalId = member.id;
+    els.removeTitle.textContent = `将「${member.name}」移出团队？`;
+    els.removeDialog.returnValue = '';
+    els.removeDialog.showModal();
+  }
+
+  function removeMember(member) {
+    const visible = visibleMembers();
+    const index = visible.findIndex((m) => m.id === member.id);
+    const neighbour = visible[index + 1] ?? visible[index - 1];
+    setState({ members: state.members.filter((m) => m.id !== member.id) });
+    (neighbour ? byId(`more-${neighbour.id}`) : els.search).focus();
+    announce(`已将 ${member.name} 移出团队`);
+  }
+
+  /* ---------- 邀请 ---------- */
+
+  function validateInviteEmail(email) {
+    if (!email || !els.inviteEmail.checkValidity()) return '请输入有效的邮箱地址';
+    const taken = state.invites.some((i) => !i.revoked && i.email.toLowerCase() === email.toLowerCase());
+    return taken ? '这个邮箱已有一条待接受的邀请' : '';
+  }
+
+  function setInviteError(message) {
+    els.inviteError.textContent = message;
+    if (message) {
+      els.inviteEmail.setAttribute('aria-invalid', 'true');
+      els.inviteEmail.setAttribute('aria-describedby', els.inviteError.id);
+    } else {
+      els.inviteEmail.removeAttribute('aria-invalid');
+      els.inviteEmail.removeAttribute('aria-describedby');
+    }
+  }
+
+  function submitInvite(event) {
+    event.preventDefault();
+    const email = els.inviteEmail.value.trim();
+    const error = validateInviteEmail(email);
+    setInviteError(error);
+    if (error) {
+      els.inviteEmail.focus();
+      return;
+    }
+    const invite = { id: `i${Date.now()}`, email, sent: '刚刚发出', revoked: false };
+    setState({ invites: [invite, ...state.invites] });
+    els.inviteDialog.close();
+    announce(`已向 ${email} 发出邀请`);
+  }
+
+  function toggleInviteRevoked(id) {
+    const invite = state.invites.find((i) => i.id === id);
+    const revoked = !invite.revoked;
+    setState({ invites: state.invites.map((i) => (i.id === id ? { ...i, revoked } : i)) });
+    byId(`invite-action-${id}`).focus();
+    announce(revoked ? `已撤回 ${invite.email} 的邀请` : `已恢复 ${invite.email} 的邀请`);
+  }
+
+  /* ---------- 事件 ---------- */
+
+  let announceTimer = 0;
+
+  els.search.addEventListener('input', () => {
+    closeMenu();
+    setState({ query: els.search.value });
+    clearTimeout(announceTimer);
+    announceTimer = setTimeout(() => {
+      if (!state.query.trim()) return;
+      const count = visibleMembers().length;
+      announce(count ? `找到 ${count} 位成员` : els.memberEmpty.textContent);
+    }, SEARCH_ANNOUNCE_DELAY_MS);
+  });
+
+  els.searchForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    els.search.blur();
+  });
+
+  els.memberList.addEventListener('click', (event) => {
+    const trigger = event.target.closest('[data-menu-trigger]');
+    if (trigger) {
+      if (openMenu?.trigger === trigger) closeMenu();
+      else showMenu(trigger, 0);
+      return;
+    }
+    const item = event.target.closest('[role="menuitem"]');
+    if (item) activateMenuItem(item);
+  });
+
+  els.memberList.addEventListener('keydown', (event) => {
+    const trigger = event.target.closest('[data-menu-trigger]');
+    if (trigger && (event.key === 'ArrowDown' || event.key === 'ArrowUp')) {
+      event.preventDefault();
+      showMenu(trigger, event.key === 'ArrowDown' ? 0 : -1);
+      return;
+    }
+    if (openMenu && openMenu.menu.contains(event.target)) handleMenuKey(event);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && openMenu) {
+      event.preventDefault();
+      closeMenu({ restoreFocus: true });
+    }
+  });
+
+  document.addEventListener('pointerdown', (event) => {
+    if (openMenu && !isInsideOpenMenu(event.target)) closeMenu();
+  });
+
+  document.addEventListener('focusin', (event) => {
+    if (openMenu && !isInsideOpenMenu(event.target)) closeMenu();
+  });
+
+  els.removeDialog.addEventListener('close', () => {
+    const member = state.members.find((m) => m.id === pendingRemovalId);
+    pendingRemovalId = null;
+    if (!member) return;
+    if (els.removeDialog.returnValue === 'confirm') removeMember(member);
+    else byId(`more-${member.id}`).focus();
+  });
+
+  els.inviteOpen.addEventListener('click', () => {
+    els.inviteForm.reset();
+    setInviteError('');
+    els.inviteDialog.showModal();
+  });
+
+  els.inviteForm.addEventListener('submit', submitInvite);
+  els.inviteDialog.querySelector('[data-close]').addEventListener('click', () => els.inviteDialog.close());
+  els.inviteDialog.addEventListener('close', () => els.inviteOpen.focus());
+
+  els.inviteList.addEventListener('click', (event) => {
+    const button = event.target.closest('button');
+    if (button) toggleInviteRevoked(button.closest('.row').dataset.id);
+  });
+
+  els.back.addEventListener('click', () => {
+    if (history.length > 1) history.back();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+{
+ "light": {
+  "group": {
+   "fs": 13,
+   "fw": "400",
+   "color": "#5f5e59",
+   "ls": "normal",
+   "tt": "none"
+  },
+  "title": {
+   "fs": 15,
+   "fw": "600",
+   "color": "#1c1c1a",
+   "ls": "normal",
+   "tt": "none"
+  },
+  "channels": [
+   "fw",
+   "color"
+  ],
+  "autospace": "no-autospace",
+  "trimmed": 0,
+  "outside": [],
+  "lowContrast": [],
+  "bodyBg": "#f4f4f1",
+  "hoverOutside": 0,
+  "timeoutInCode": false,
+  "errors": []
+ },
+ "dark": {
+  "group": {
+   "fs": 13,
+   "fw": "400",
+   "color": "#a3a199",
+   "ls": "normal",
+   "tt": "none"
+  },
+  "title": {
+   "fs": 15,
+   "fw": "600",
+   "color": "#f0efea",
+   "ls": "normal",
+   "tt": "none"
+  },
+  "channels": [
+   "fw",
+   "color"
+  ],
+  "autospace": "no-autospace",
+  "trimmed": 0,
+  "outside": [],
+  "lowContrast": [],
+  "bodyBg": "#141413",
+  "hoverOutside": 0,
+  "timeoutInCode": false,
+  "errors": []
+ },
+ "listHang": {
+  "firstError": null,
+  "stuck": true,
+  "end": "通知 全部已读 正在加载… 通知设置",
+  "escaped": false
+ },
+ "readHang": {
+  "firstError": null,
+  "stuck": true,
+  "end": "通知 全部已读 今天 未读， 林晓在《2026Q3报告.pdf》里评论了你 10:24 第6页的营收同比口径和上季度不一致，建议在脚注里说明一下。 未读， 上传完成 09:12 你用Claude Code上传的3个文件（共2.4GB）已处理完成。 周子航邀请你加入「设计评审」 08:30 邀请7天内有效，接受后可以查看",
+  "escaped": false
+ },
+ "retryFocus": {
+  "after": "body",
+  "nextTab": "button「未读，林晓在《2026Q3报告.」",
+  "ok": false
+ },
+ "landscape": [],
+ "portrait": []
+}

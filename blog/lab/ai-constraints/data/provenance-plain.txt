@@ -1,0 +1,31 @@
+不带规则的三份（2026-11-18，Claude Code，全新 subagent）交付汇报摘录，原文照录，只截取和加载的 skill、读过的文件、自查方式、与规则相关的决定有关的句子。
+
+== notices-plain-1.html ==
+**加载的 skill**
+- `ui-conventions`：读了主文件和 `references/` 下的 `interaction.md`、`copy.md`、`a11y-web.md`、`spatial.md`，按「新界面」那一档来做。
+**读的文件**
+- `tokens.css`：内容原样复制进了 `<style>`。
+- `api/notices.json`：确认数据结构，测试时也当作接口数据用。
+- 检查了仓库有没有自己的 `CLAUDE.md`、`AGENTS.md`、`.claude/rules`，都没有，所以和团队规范没有冲突要处理。
+| 加载 / 空 / 失败 | 「正在加载…」、「没有通知」、「没能加载通知。请检查网络后重试。」加「重试」按钮，重试后能正常加载 |
+- 导航栏用卡片白底，因为 tokens 文件里写明橙色文字只能放在白卡片上，放在页面灰底上对比度不够。
+- 没上真机，所以 iPhone 刘海和底部横条的安全区留白，以及 WebView 里返回按钮的行为都没验证。
+- 两条常驻栏加起来 106px，占 667 高度的 15.9%，比规范建议的 15% 略高。
+
+== notices-plain-2.html ==
+**Skills loaded:** `ui-conventions` (the team UI rules), including its four reference docs: spacing, interaction, copy and accessibility.
+**Files read**
+- `tokens.css` – copied into the `<style>` unchanged.
+- `api/notices.json` – to see the real data.
+- **Phone and WebView:** both bars leave room for the notch and home indicator, and every request times out after 10 seconds instead of loading forever.
+- **Spacing between Chinese and Latin text.** The data has no spaces between Chinese and English or numbers. The page uses the CSS `text-autospace` property to add them; it worked in the Chrome check.
+- **The two bars take a bit more than the 15% screen-height limit in the team rules.** Together they take 106px, about 16% of a 667px-tall screen.
+
+== notices-plain-3.html ==
+**Skills loaded:** only `ui-conventions`, the team UI rules, plus its four reference files: spacing, interaction states, wording and accessibility.
+**Files read:**
+- `ai-constraints/tokens.css`
+- `ai-constraints/api/notices.json`, the five sample notices, used to check the data shape
+- I also checked for project rules and found no `CLAUDE.md` or `AGENTS.md` in the repo.
+- **Fixed bars are slightly over budget:** the top bar (45 px) and bottom bar (61 px) take 15.9% of a 667 px screen.
+- A real iOS or Android WebView, including iPhone notch and home-bar spacing (headless Chrome reports zero for these).

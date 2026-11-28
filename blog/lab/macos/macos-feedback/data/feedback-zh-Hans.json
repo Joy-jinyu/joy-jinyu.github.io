@@ -1,0 +1,859 @@
+{
+  "appMenu" : [
+    {
+      "action" : "orderFrontStandardAboutPanel:",
+      "enabled" : true,
+      "key" : "",
+      "mods" : [
+
+      ],
+      "separator" : false,
+      "title" : "关于FeedbackProbe"
+    },
+    {
+      "action" : "",
+      "enabled" : false,
+      "key" : "",
+      "mods" : [
+        "cmd"
+      ],
+      "separator" : true,
+      "title" : ""
+    },
+    {
+      "action" : "menuAction:",
+      "enabled" : true,
+      "key" : ",",
+      "mods" : [
+        "cmd"
+      ],
+      "separator" : false,
+      "title" : "设置…"
+    },
+    {
+      "action" : "",
+      "enabled" : false,
+      "key" : "",
+      "mods" : [
+        "cmd"
+      ],
+      "separator" : true,
+      "title" : ""
+    },
+    {
+      "action" : "submenuAction:",
+      "enabled" : true,
+      "key" : "",
+      "mods" : [
+        "cmd"
+      ],
+      "separator" : false,
+      "title" : "服务"
+    },
+    {
+      "action" : "",
+      "enabled" : false,
+      "key" : "",
+      "mods" : [
+        "cmd"
+      ],
+      "separator" : true,
+      "title" : ""
+    },
+    {
+      "action" : "hide:",
+      "enabled" : true,
+      "key" : "h",
+      "mods" : [
+        "cmd"
+      ],
+      "separator" : false,
+      "title" : "隐藏FeedbackProbe"
+    },
+    {
+      "action" : "hideOtherApplications:",
+      "enabled" : true,
+      "key" : "h",
+      "mods" : [
+        "cmd",
+        "option"
+      ],
+      "separator" : false,
+      "title" : "隐藏其他"
+    },
+    {
+      "action" : "unhideAllApplications:",
+      "enabled" : true,
+      "key" : "",
+      "mods" : [
+
+      ],
+      "separator" : false,
+      "title" : "全部显示"
+    },
+    {
+      "action" : "",
+      "enabled" : false,
+      "key" : "",
+      "mods" : [
+        "cmd"
+      ],
+      "separator" : true,
+      "title" : ""
+    },
+    {
+      "action" : "terminate:",
+      "enabled" : true,
+      "key" : "q",
+      "mods" : [
+        "cmd"
+      ],
+      "separator" : false,
+      "title" : "退出FeedbackProbe"
+    }
+  ],
+  "documents" : {
+    "autosave" : {
+      "after" : {
+        "editMenu" : [
+          {
+            "action" : "undo:",
+            "enabled" : true,
+            "key" : "z",
+            "mods" : [
+              "cmd"
+            ],
+            "separator" : false,
+            "title" : "撤销键入"
+          },
+          {
+            "action" : "redo:",
+            "enabled" : false,
+            "key" : "z",
+            "mods" : [
+              "cmd",
+              "shift"
+            ],
+            "separator" : false,
+            "title" : "重做"
+          },
+          {
+            "action" : "",
+            "enabled" : false,
+            "key" : "",
+            "mods" : [
+              "cmd"
+            ],
+            "separator" : true,
+            "title" : ""
+          }
+        ],
+        "hasUnautosavedChanges" : false,
+        "isDocumentEdited" : false,
+        "sameUndoManager" : true,
+        "subtitle" : "",
+        "title" : "未命名",
+        "titlebar" : [
+          "未命名"
+        ]
+      },
+      "afterUpdateChangeCount" : {
+        "isDocumentEdited" : false,
+        "title" : "未命名",
+        "titlebar" : [
+          "未命名",
+          "已编辑",
+          "—"
+        ]
+      },
+      "before" : {
+        "isDocumentEdited" : false,
+        "title" : "未命名",
+        "titlebar" : [
+          "未命名"
+        ]
+      },
+      "displayName" : "未命名"
+    },
+    "manual" : {
+      "after" : {
+        "editMenu" : [
+          {
+            "action" : "undo:",
+            "enabled" : true,
+            "key" : "z",
+            "mods" : [
+              "cmd"
+            ],
+            "separator" : false,
+            "title" : "撤销键入"
+          },
+          {
+            "action" : "redo:",
+            "enabled" : false,
+            "key" : "z",
+            "mods" : [
+              "cmd",
+              "shift"
+            ],
+            "separator" : false,
+            "title" : "重做"
+          },
+          {
+            "action" : "",
+            "enabled" : false,
+            "key" : "",
+            "mods" : [
+              "cmd"
+            ],
+            "separator" : true,
+            "title" : ""
+          }
+        ],
+        "hasUnautosavedChanges" : false,
+        "isDocumentEdited" : false,
+        "sameUndoManager" : true,
+        "subtitle" : "",
+        "title" : "未命名",
+        "titlebar" : [
+          "未命名"
+        ]
+      },
+      "afterUpdateChangeCount" : {
+        "isDocumentEdited" : true,
+        "title" : "未命名",
+        "titlebar" : [
+          "未命名"
+        ]
+      },
+      "before" : {
+        "isDocumentEdited" : false,
+        "title" : "未命名",
+        "titlebar" : [
+          "未命名"
+        ]
+      },
+      "displayName" : "未命名"
+    }
+  },
+  "finish" : "ok",
+  "lang" : [
+    "zh-Hans"
+  ],
+  "menuTitles" : [
+    "FeedbackProbe",
+    "编辑",
+    "显示",
+    "窗口",
+    "帮助"
+  ],
+  "mode" : "shots",
+  "motion" : {
+    "animationContextDefaultDuration" : 0.25,
+    "reduceMotion" : false,
+    "windowAnimationResizeTime" : {
+      "+50pt" : 0.097852246090103678,
+      "+150pt" : 0.22113149662562945,
+      "+300pt" : 0.33455903915026691,
+      "+600pt" : 0.34999999999999998
+    }
+  },
+  "progress" : {
+    "extraLarge" : {
+      "bar" : {
+        "fitting" : {
+          "h" : 20,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : -1
+        }
+      },
+      "barIndeterminate" : {
+        "fitting" : {
+          "h" : 20,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : -1
+        }
+      },
+      "circular" : {
+        "fitting" : {
+          "h" : 32,
+          "w" : 32
+        },
+        "intrinsic" : {
+          "h" : 32,
+          "w" : 32
+        }
+      },
+      "spinner" : {
+        "fitting" : {
+          "h" : 32,
+          "w" : 32
+        },
+        "intrinsic" : {
+          "h" : 32,
+          "w" : 32
+        }
+      }
+    },
+    "laidOutFrames" : {
+      "extraLarge.bar" : {
+        "h" : 20,
+        "w" : 140,
+        "x" : 85,
+        "y" : 6
+      },
+      "extraLarge.barIndeterminate" : {
+        "h" : 20,
+        "w" : 140,
+        "x" : 245,
+        "y" : 6
+      },
+      "extraLarge.circular" : {
+        "h" : 32,
+        "w" : 32,
+        "x" : 405,
+        "y" : 0
+      },
+      "extraLarge.spinner" : {
+        "h" : 32,
+        "w" : 32,
+        "x" : 483,
+        "y" : 0
+      },
+      "large.bar" : {
+        "h" : 20,
+        "w" : 140,
+        "x" : 85,
+        "y" : 52
+      },
+      "large.barIndeterminate" : {
+        "h" : 20,
+        "w" : 140,
+        "x" : 245,
+        "y" : 52
+      },
+      "large.circular" : {
+        "h" : 32,
+        "w" : 32,
+        "x" : 405,
+        "y" : 46
+      },
+      "large.spinner" : {
+        "h" : 32,
+        "w" : 32,
+        "x" : 483,
+        "y" : 46
+      },
+      "mini.bar" : {
+        "h" : 12,
+        "w" : 140,
+        "x" : 85,
+        "y" : 170
+      },
+      "mini.barIndeterminate" : {
+        "h" : 12,
+        "w" : 140,
+        "x" : 245,
+        "y" : 170
+      },
+      "mini.circular" : {
+        "h" : 16,
+        "w" : 16,
+        "x" : 405,
+        "y" : 168
+      },
+      "mini.spinner" : {
+        "h" : 10,
+        "w" : 10,
+        "x" : 483,
+        "y" : 171
+      },
+      "regular.bar" : {
+        "h" : 20,
+        "w" : 140,
+        "x" : 85,
+        "y" : 98
+      },
+      "regular.barIndeterminate" : {
+        "h" : 20,
+        "w" : 140,
+        "x" : 245,
+        "y" : 98
+      },
+      "regular.circular" : {
+        "h" : 32,
+        "w" : 32,
+        "x" : 405,
+        "y" : 92
+      },
+      "regular.spinner" : {
+        "h" : 32,
+        "w" : 32,
+        "x" : 483,
+        "y" : 92
+      },
+      "small.bar" : {
+        "h" : 12,
+        "w" : 140,
+        "x" : 85,
+        "y" : 140
+      },
+      "small.barIndeterminate" : {
+        "h" : 12,
+        "w" : 140,
+        "x" : 245,
+        "y" : 140
+      },
+      "small.circular" : {
+        "h" : 16,
+        "w" : 16,
+        "x" : 405,
+        "y" : 138
+      },
+      "small.spinner" : {
+        "h" : 16,
+        "w" : 16,
+        "x" : 483,
+        "y" : 138
+      }
+    },
+    "large" : {
+      "bar" : {
+        "fitting" : {
+          "h" : 20,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : -1
+        }
+      },
+      "barIndeterminate" : {
+        "fitting" : {
+          "h" : 20,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : -1
+        }
+      },
+      "circular" : {
+        "fitting" : {
+          "h" : 32,
+          "w" : 32
+        },
+        "intrinsic" : {
+          "h" : 32,
+          "w" : 32
+        }
+      },
+      "spinner" : {
+        "fitting" : {
+          "h" : 32,
+          "w" : 32
+        },
+        "intrinsic" : {
+          "h" : 32,
+          "w" : 32
+        }
+      }
+    },
+    "mini" : {
+      "bar" : {
+        "fitting" : {
+          "h" : 12,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 12,
+          "w" : -1
+        }
+      },
+      "barIndeterminate" : {
+        "fitting" : {
+          "h" : 12,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 12,
+          "w" : -1
+        }
+      },
+      "circular" : {
+        "fitting" : {
+          "h" : 16,
+          "w" : 16
+        },
+        "intrinsic" : {
+          "h" : 16,
+          "w" : 16
+        }
+      },
+      "spinner" : {
+        "fitting" : {
+          "h" : 10,
+          "w" : 10
+        },
+        "intrinsic" : {
+          "h" : 10,
+          "w" : 10
+        }
+      }
+    },
+    "regular" : {
+      "bar" : {
+        "fitting" : {
+          "h" : 20,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : -1
+        }
+      },
+      "barIndeterminate" : {
+        "fitting" : {
+          "h" : 20,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : -1
+        }
+      },
+      "circular" : {
+        "fitting" : {
+          "h" : 32,
+          "w" : 32
+        },
+        "intrinsic" : {
+          "h" : 32,
+          "w" : 32
+        }
+      },
+      "spinner" : {
+        "fitting" : {
+          "h" : 32,
+          "w" : 32
+        },
+        "intrinsic" : {
+          "h" : 32,
+          "w" : 32
+        }
+      }
+    },
+    "small" : {
+      "bar" : {
+        "fitting" : {
+          "h" : 12,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 12,
+          "w" : -1
+        }
+      },
+      "barIndeterminate" : {
+        "fitting" : {
+          "h" : 12,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 12,
+          "w" : -1
+        }
+      },
+      "circular" : {
+        "fitting" : {
+          "h" : 16,
+          "w" : 16
+        },
+        "intrinsic" : {
+          "h" : 16,
+          "w" : 16
+        }
+      },
+      "spinner" : {
+        "fitting" : {
+          "h" : 16,
+          "w" : 16
+        },
+        "intrinsic" : {
+          "h" : 16,
+          "w" : 16
+        }
+      }
+    },
+    "usesThreadedAnimation" : true
+  },
+  "settings" : {
+    "first" : {
+      "buttons" : {
+        "close" : {
+          "enabled" : true,
+          "hidden" : false
+        },
+        "miniaturize" : {
+          "enabled" : false,
+          "hidden" : false
+        },
+        "zoom" : {
+          "enabled" : false,
+          "hidden" : false
+        }
+      },
+      "contentLayoutRect" : {
+        "h" : 169,
+        "w" : 420,
+        "x" : 0,
+        "y" : 0
+      },
+      "frame" : {
+        "h" : 257,
+        "w" : 420,
+        "x" : 700,
+        "y" : 603
+      },
+      "frameAutosaveName" : "com_apple_SwiftUI_Settings_window",
+      "identifier" : "com_apple_SwiftUI_Settings_window",
+      "miniaturizableMask" : false,
+      "resizableMask" : false,
+      "title" : "高级",
+      "titlebarPlusToolbar" : 88,
+      "toolbar" : {
+        "allowsUserCustomization" : false,
+        "displayModeRaw" : 1,
+        "isVisible" : true,
+        "items" : [
+          {
+            "id" : "1FF3DB84-F01A-48E2-BD97-10FD0D5BC2F6",
+            "label" : "通用"
+          },
+          {
+            "id" : "4B9DC5DE-9C9F-4735-B739-52444D9C90CE",
+            "label" : "高级"
+          }
+        ],
+        "selected" : "4B9DC5DE-9C9F-4735-B739-52444D9C90CE"
+      },
+      "toolbarStyleIsPreference" : true,
+      "toolbarStyleRaw" : 2
+    },
+    "menuItem" : "设置…",
+    "second" : {
+      "buttons" : {
+        "close" : {
+          "enabled" : true,
+          "hidden" : false
+        },
+        "miniaturize" : {
+          "enabled" : false,
+          "hidden" : false
+        },
+        "zoom" : {
+          "enabled" : false,
+          "hidden" : false
+        }
+      },
+      "contentLayoutRect" : {
+        "h" : 79,
+        "w" : 420,
+        "x" : 0,
+        "y" : 0
+      },
+      "frame" : {
+        "h" : 167,
+        "w" : 420,
+        "x" : 700,
+        "y" : 693
+      },
+      "frameAutosaveName" : "com_apple_SwiftUI_Settings_window",
+      "identifier" : "com_apple_SwiftUI_Settings_window",
+      "miniaturizableMask" : false,
+      "resizableMask" : false,
+      "title" : "通用",
+      "titlebarPlusToolbar" : 88,
+      "toolbar" : {
+        "allowsUserCustomization" : false,
+        "displayModeRaw" : 1,
+        "isVisible" : true,
+        "items" : [
+          {
+            "id" : "1FF3DB84-F01A-48E2-BD97-10FD0D5BC2F6",
+            "label" : "通用"
+          },
+          {
+            "id" : "4B9DC5DE-9C9F-4735-B739-52444D9C90CE",
+            "label" : "高级"
+          }
+        ],
+        "selected" : "1FF3DB84-F01A-48E2-BD97-10FD0D5BC2F6"
+      },
+      "toolbarStyleIsPreference" : true,
+      "toolbarStyleRaw" : 2
+    },
+    "sendActionReturnedAfter" : 0,
+    "switchSamples" : [
+      {
+        "h" : 257,
+        "t" : 0
+      },
+      {
+        "h" : 257,
+        "t" : 0.02
+      },
+      {
+        "h" : 167,
+        "t" : 0.040000000000000001
+      },
+      {
+        "h" : 167,
+        "t" : 0.059999999999999998
+      },
+      {
+        "h" : 167,
+        "t" : 0.070000000000000007
+      },
+      {
+        "h" : 167,
+        "t" : 0.089999999999999997
+      },
+      {
+        "h" : 167,
+        "t" : 0.11
+      },
+      {
+        "h" : 167,
+        "t" : 0.12
+      },
+      {
+        "h" : 167,
+        "t" : 0.14000000000000001
+      },
+      {
+        "h" : 167,
+        "t" : 0.16
+      },
+      {
+        "h" : 167,
+        "t" : 0.17000000000000001
+      },
+      {
+        "h" : 167,
+        "t" : 0.19
+      },
+      {
+        "h" : 167,
+        "t" : 0.20999999999999999
+      },
+      {
+        "h" : 167,
+        "t" : 0.22
+      },
+      {
+        "h" : 167,
+        "t" : 0.23999999999999999
+      },
+      {
+        "h" : 167,
+        "t" : 0.26000000000000001
+      },
+      {
+        "h" : 167,
+        "t" : 0.27000000000000002
+      },
+      {
+        "h" : 167,
+        "t" : 0.28999999999999998
+      },
+      {
+        "h" : 167,
+        "t" : 0.31
+      },
+      {
+        "h" : 167,
+        "t" : 0.32000000000000001
+      },
+      {
+        "h" : 167,
+        "t" : 0.34000000000000002
+      },
+      {
+        "h" : 167,
+        "t" : 0.35999999999999999
+      },
+      {
+        "h" : 167,
+        "t" : 0.37
+      },
+      {
+        "h" : 167,
+        "t" : 0.39000000000000001
+      },
+      {
+        "h" : 167,
+        "t" : 0.40999999999999998
+      },
+      {
+        "h" : 167,
+        "t" : 0.41999999999999998
+      },
+      {
+        "h" : 167,
+        "t" : 0.44
+      },
+      {
+        "h" : 167,
+        "t" : 0.46000000000000002
+      },
+      {
+        "h" : 167,
+        "t" : 0.46999999999999997
+      },
+      {
+        "h" : 167,
+        "t" : 0.48999999999999999
+      },
+      {
+        "h" : 167,
+        "t" : 0.51000000000000001
+      },
+      {
+        "h" : 167,
+        "t" : 0.52000000000000002
+      },
+      {
+        "h" : 167,
+        "t" : 0.54000000000000004
+      },
+      {
+        "h" : 167,
+        "t" : 0.56000000000000005
+      },
+      {
+        "h" : 167,
+        "t" : 0.56999999999999995
+      },
+      {
+        "h" : 167,
+        "t" : 0.58999999999999997
+      }
+    ]
+  },
+  "shotLog" : [
+    "progress-light active=true key=true appearance=NSAppearanceNameAqua",
+    "settings-1-light active=true key=true appearance=NSAppearanceNameAqua",
+    "settings-2-light active=true key=true appearance=NSAppearanceNameAqua",
+    "settings-2-dark active=true key=true appearance=NSAppearanceNameDarkAqua",
+    "progress-dark active=true key=true appearance=NSAppearanceNameDarkAqua",
+    "doc-autosave-light active=true key=true appearance=NSAppearanceNameAqua",
+    "doc-manual-light active=true key=true appearance=NSAppearanceNameAqua"
+  ]
+}

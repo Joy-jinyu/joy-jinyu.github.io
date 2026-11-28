@@ -1,0 +1,478 @@
+{
+  "appMenu" : [
+    {
+      "action" : "orderFrontStandardAboutPanel:",
+      "enabled" : true,
+      "key" : "",
+      "mods" : [
+
+      ],
+      "separator" : false,
+      "title" : "关于FeedbackProbe"
+    },
+    {
+      "action" : "",
+      "enabled" : false,
+      "key" : "",
+      "mods" : [
+        "cmd"
+      ],
+      "separator" : true,
+      "title" : ""
+    },
+    {
+      "action" : "menuAction:",
+      "enabled" : true,
+      "key" : ",",
+      "mods" : [
+        "cmd"
+      ],
+      "separator" : false,
+      "title" : "设置…"
+    },
+    {
+      "action" : "",
+      "enabled" : false,
+      "key" : "",
+      "mods" : [
+        "cmd"
+      ],
+      "separator" : true,
+      "title" : ""
+    },
+    {
+      "action" : "submenuAction:",
+      "enabled" : true,
+      "key" : "",
+      "mods" : [
+        "cmd"
+      ],
+      "separator" : false,
+      "title" : "服务"
+    },
+    {
+      "action" : "",
+      "enabled" : false,
+      "key" : "",
+      "mods" : [
+        "cmd"
+      ],
+      "separator" : true,
+      "title" : ""
+    },
+    {
+      "action" : "hide:",
+      "enabled" : true,
+      "key" : "h",
+      "mods" : [
+        "cmd"
+      ],
+      "separator" : false,
+      "title" : "隐藏FeedbackProbe"
+    },
+    {
+      "action" : "hideOtherApplications:",
+      "enabled" : true,
+      "key" : "h",
+      "mods" : [
+        "cmd",
+        "option"
+      ],
+      "separator" : false,
+      "title" : "隐藏其他"
+    },
+    {
+      "action" : "unhideAllApplications:",
+      "enabled" : true,
+      "key" : "",
+      "mods" : [
+
+      ],
+      "separator" : false,
+      "title" : "全部显示"
+    },
+    {
+      "action" : "",
+      "enabled" : false,
+      "key" : "",
+      "mods" : [
+        "cmd"
+      ],
+      "separator" : true,
+      "title" : ""
+    },
+    {
+      "action" : "terminate:",
+      "enabled" : true,
+      "key" : "q",
+      "mods" : [
+        "cmd"
+      ],
+      "separator" : false,
+      "title" : "退出FeedbackProbe"
+    }
+  ],
+  "finish" : "ok",
+  "lang" : [
+    "zh-Hans"
+  ],
+  "menuTitles" : [
+    "FeedbackProbe",
+    "编辑",
+    "显示",
+    "窗口",
+    "帮助"
+  ],
+  "mode" : "progress",
+  "motion" : {
+    "animationContextDefaultDuration" : 0.25,
+    "reduceMotion" : false,
+    "windowAnimationResizeTime" : {
+      "+50pt" : 0.097852246090103678,
+      "+150pt" : 0.22113149662562945,
+      "+300pt" : 0.33455903915026691,
+      "+600pt" : 0.34999999999999998,
+      "+900pt" : 0.34999999999999998,
+      "+1200pt" : 0.34999999999999998
+    }
+  },
+  "progress" : {
+    "extraLarge" : {
+      "bar" : {
+        "fitting" : {
+          "h" : 20,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : -1
+        }
+      },
+      "barIndeterminate" : {
+        "fitting" : {
+          "h" : 20,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : -1
+        }
+      },
+      "circular" : {
+        "fitting" : {
+          "h" : 32,
+          "w" : 32
+        },
+        "intrinsic" : {
+          "h" : 32,
+          "w" : 32
+        }
+      },
+      "spinner" : {
+        "fitting" : {
+          "h" : 32,
+          "w" : 32
+        },
+        "intrinsic" : {
+          "h" : 32,
+          "w" : 32
+        }
+      }
+    },
+    "laidOutFrames" : {
+      "extraLarge.bar" : {
+        "h" : 20,
+        "w" : 140,
+        "x" : 85,
+        "y" : 6
+      },
+      "extraLarge.barIndeterminate" : {
+        "h" : 20,
+        "w" : 140,
+        "x" : 245,
+        "y" : 6
+      },
+      "extraLarge.circular" : {
+        "h" : 32,
+        "w" : 32,
+        "x" : 405,
+        "y" : 0
+      },
+      "extraLarge.spinner" : {
+        "h" : 32,
+        "w" : 32,
+        "x" : 483,
+        "y" : 0
+      },
+      "large.bar" : {
+        "h" : 20,
+        "w" : 140,
+        "x" : 85,
+        "y" : 52
+      },
+      "large.barIndeterminate" : {
+        "h" : 20,
+        "w" : 140,
+        "x" : 245,
+        "y" : 52
+      },
+      "large.circular" : {
+        "h" : 32,
+        "w" : 32,
+        "x" : 405,
+        "y" : 46
+      },
+      "large.spinner" : {
+        "h" : 32,
+        "w" : 32,
+        "x" : 483,
+        "y" : 46
+      },
+      "mini.bar" : {
+        "h" : 12,
+        "w" : 140,
+        "x" : 85,
+        "y" : 170
+      },
+      "mini.barIndeterminate" : {
+        "h" : 12,
+        "w" : 140,
+        "x" : 245,
+        "y" : 170
+      },
+      "mini.circular" : {
+        "h" : 16,
+        "w" : 16,
+        "x" : 405,
+        "y" : 168
+      },
+      "mini.spinner" : {
+        "h" : 10,
+        "w" : 10,
+        "x" : 483,
+        "y" : 171
+      },
+      "regular.bar" : {
+        "h" : 20,
+        "w" : 140,
+        "x" : 85,
+        "y" : 98
+      },
+      "regular.barIndeterminate" : {
+        "h" : 20,
+        "w" : 140,
+        "x" : 245,
+        "y" : 98
+      },
+      "regular.circular" : {
+        "h" : 32,
+        "w" : 32,
+        "x" : 405,
+        "y" : 92
+      },
+      "regular.spinner" : {
+        "h" : 32,
+        "w" : 32,
+        "x" : 483,
+        "y" : 92
+      },
+      "small.bar" : {
+        "h" : 12,
+        "w" : 140,
+        "x" : 85,
+        "y" : 140
+      },
+      "small.barIndeterminate" : {
+        "h" : 12,
+        "w" : 140,
+        "x" : 245,
+        "y" : 140
+      },
+      "small.circular" : {
+        "h" : 16,
+        "w" : 16,
+        "x" : 405,
+        "y" : 138
+      },
+      "small.spinner" : {
+        "h" : 16,
+        "w" : 16,
+        "x" : 483,
+        "y" : 138
+      }
+    },
+    "large" : {
+      "bar" : {
+        "fitting" : {
+          "h" : 20,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : -1
+        }
+      },
+      "barIndeterminate" : {
+        "fitting" : {
+          "h" : 20,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : -1
+        }
+      },
+      "circular" : {
+        "fitting" : {
+          "h" : 32,
+          "w" : 32
+        },
+        "intrinsic" : {
+          "h" : 32,
+          "w" : 32
+        }
+      },
+      "spinner" : {
+        "fitting" : {
+          "h" : 32,
+          "w" : 32
+        },
+        "intrinsic" : {
+          "h" : 32,
+          "w" : 32
+        }
+      }
+    },
+    "mini" : {
+      "bar" : {
+        "fitting" : {
+          "h" : 12,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 12,
+          "w" : -1
+        }
+      },
+      "barIndeterminate" : {
+        "fitting" : {
+          "h" : 12,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 12,
+          "w" : -1
+        }
+      },
+      "circular" : {
+        "fitting" : {
+          "h" : 16,
+          "w" : 16
+        },
+        "intrinsic" : {
+          "h" : 16,
+          "w" : 16
+        }
+      },
+      "spinner" : {
+        "fitting" : {
+          "h" : 10,
+          "w" : 10
+        },
+        "intrinsic" : {
+          "h" : 10,
+          "w" : 10
+        }
+      }
+    },
+    "regular" : {
+      "bar" : {
+        "fitting" : {
+          "h" : 20,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : -1
+        }
+      },
+      "barIndeterminate" : {
+        "fitting" : {
+          "h" : 20,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 20,
+          "w" : -1
+        }
+      },
+      "circular" : {
+        "fitting" : {
+          "h" : 32,
+          "w" : 32
+        },
+        "intrinsic" : {
+          "h" : 32,
+          "w" : 32
+        }
+      },
+      "spinner" : {
+        "fitting" : {
+          "h" : 32,
+          "w" : 32
+        },
+        "intrinsic" : {
+          "h" : 32,
+          "w" : 32
+        }
+      }
+    },
+    "small" : {
+      "bar" : {
+        "fitting" : {
+          "h" : 12,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 12,
+          "w" : -1
+        }
+      },
+      "barIndeterminate" : {
+        "fitting" : {
+          "h" : 12,
+          "w" : 140
+        },
+        "intrinsic" : {
+          "h" : 12,
+          "w" : -1
+        }
+      },
+      "circular" : {
+        "fitting" : {
+          "h" : 16,
+          "w" : 16
+        },
+        "intrinsic" : {
+          "h" : 16,
+          "w" : 16
+        }
+      },
+      "spinner" : {
+        "fitting" : {
+          "h" : 16,
+          "w" : 16
+        },
+        "intrinsic" : {
+          "h" : 16,
+          "w" : 16
+        }
+      }
+    },
+    "usesThreadedAnimation" : true
+  },
+  "shotLog" : [
+    "progress-light active=true key=true appearance=NSAppearanceNameAqua",
+    "progress-dark active=true key=true appearance=NSAppearanceNameDarkAqua"
+  ]
+}

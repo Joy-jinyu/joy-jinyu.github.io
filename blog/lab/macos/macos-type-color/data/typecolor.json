@@ -1,0 +1,332 @@
+{
+  "accent" : {
+    "AppleAccentColor" : null,
+    "AppleHighlightColor" : null,
+    "dark" : {
+      "controlAccentColor" : "#007AFF",
+      "keyboardFocusIndicatorColor" : "#1AA9FF a=0.498",
+      "linkColor" : "#419CFF",
+      "selectedContentBackgroundColor" : "#0059D1",
+      "selectedTextBackgroundColor" : "#3F638B",
+      "systemBlue" : "#0091FF"
+    },
+    "light" : {
+      "controlAccentColor" : "#007AFF",
+      "keyboardFocusIndicatorColor" : "#0067F4 a=0.498",
+      "linkColor" : "#0068DA",
+      "selectedContentBackgroundColor" : "#0064E1",
+      "selectedTextBackgroundColor" : "#B3D7FF",
+      "systemBlue" : "#0088FF"
+    }
+  },
+  "symbols13pt" : {
+    "folder" : {
+      "large" : {
+        "alignmentRect" : {
+          "h" : 9,
+          "w" : 22.5,
+          "x" : 0,
+          "y" : 4.5
+        },
+        "h" : 18,
+        "w" : 23
+      },
+      "medium" : {
+        "alignmentRect" : {
+          "h" : 9,
+          "w" : 17.5,
+          "x" : 0,
+          "y" : 2
+        },
+        "h" : 14,
+        "w" : 18
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 9,
+          "w" : 14.5,
+          "x" : 0,
+          "y" : 1
+        },
+        "h" : 12,
+        "w" : 15
+      }
+    },
+    "gearshape" : {
+      "large" : {
+        "alignmentRect" : {
+          "h" : 9,
+          "w" : 20.5,
+          "x" : 0,
+          "y" : 5.5
+        },
+        "h" : 21,
+        "w" : 21
+      },
+      "medium" : {
+        "alignmentRect" : {
+          "h" : 9,
+          "w" : 16,
+          "x" : 0,
+          "y" : 3
+        },
+        "h" : 16,
+        "w" : 16
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 9,
+          "w" : 13,
+          "x" : 0,
+          "y" : 2
+        },
+        "h" : 13,
+        "w" : 13
+      }
+    },
+    "magnifyingglass" : {
+      "large" : {
+        "alignmentRect" : {
+          "h" : 9,
+          "w" : 20,
+          "x" : 0,
+          "y" : 5
+        },
+        "h" : 20,
+        "w" : 20
+      },
+      "medium" : {
+        "alignmentRect" : {
+          "h" : 9,
+          "w" : 15.5,
+          "x" : 0,
+          "y" : 2.5
+        },
+        "h" : 15,
+        "w" : 16
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 9,
+          "w" : 12,
+          "x" : 0,
+          "y" : 1.5
+        },
+        "h" : 12,
+        "w" : 12
+      }
+    },
+    "square.and.arrow.up" : {
+      "large" : {
+        "alignmentRect" : {
+          "h" : 9,
+          "w" : 18.5,
+          "x" : 0,
+          "y" : 5.5
+        },
+        "h" : 23,
+        "w" : 19
+      },
+      "medium" : {
+        "alignmentRect" : {
+          "h" : 9,
+          "w" : 14.5,
+          "x" : 0,
+          "y" : 3
+        },
+        "h" : 18,
+        "w" : 15
+      },
+      "small" : {
+        "alignmentRect" : {
+          "h" : 9,
+          "w" : 12,
+          "x" : 0,
+          "y" : 1.5
+        },
+        "h" : 15,
+        "w" : 12
+      }
+    }
+  },
+  "systemFont13" : {
+    "ascender" : 12.57,
+    "capHeight" : 9.1600000000000001,
+    "descender" : -2.7400000000000002,
+    "familyName" : ".AppleSystemUIFont",
+    "fontName" : ".AppleSystemUIFont",
+    "xHeight" : 6.8399999999999999
+  },
+  "textStyles" : {
+    "body" : {
+      "emphasizedName" : ".SFNS-Semibold",
+      "lineHeight" : 16.010000000000002,
+      "size" : 13,
+      "weight" : "regular"
+    },
+    "callout" : {
+      "emphasizedName" : ".SFNS-Semibold",
+      "lineHeight" : 15,
+      "size" : 12,
+      "weight" : "regular"
+    },
+    "caption1" : {
+      "emphasizedName" : ".SFNS-Medium",
+      "lineHeight" : 13,
+      "size" : 10,
+      "weight" : "regular"
+    },
+    "caption2" : {
+      "emphasizedName" : ".SFNS-Semibold",
+      "lineHeight" : 13,
+      "size" : 10,
+      "weight" : "regular"
+    },
+    "footnote" : {
+      "emphasizedName" : ".SFNS-Semibold",
+      "lineHeight" : 13,
+      "size" : 10,
+      "weight" : "regular"
+    },
+    "headline" : {
+      "emphasizedName" : ".SFNS-Heavy",
+      "lineHeight" : 16,
+      "size" : 13,
+      "weight" : "bold"
+    },
+    "largeTitle" : {
+      "emphasizedName" : ".SFNS-Bold",
+      "lineHeight" : 32,
+      "size" : 26,
+      "weight" : "regular"
+    },
+    "subheadline" : {
+      "emphasizedName" : ".SFNS-Semibold",
+      "lineHeight" : 14,
+      "size" : 11,
+      "weight" : "regular"
+    },
+    "title1" : {
+      "emphasizedName" : ".SFNS-Bold",
+      "lineHeight" : 26,
+      "size" : 22,
+      "weight" : "regular"
+    },
+    "title2" : {
+      "emphasizedName" : ".SFNS-Bold",
+      "lineHeight" : 22,
+      "size" : 17,
+      "weight" : "regular"
+    },
+    "title3" : {
+      "emphasizedName" : ".SFNS-Semibold",
+      "lineHeight" : 20,
+      "size" : 15,
+      "weight" : "regular"
+    }
+  },
+  "tracking" : [
+    {
+      "emWidth" : 17.710000000000001,
+      "opsz" : 17,
+      "size" : 6,
+      "vs12Per1000em" : 40
+    },
+    {
+      "emWidth" : 17.482900000000001,
+      "opsz" : 17,
+      "size" : 7,
+      "vs12Per1000em" : 32.700000000000003
+    },
+    {
+      "emWidth" : 17.2559,
+      "opsz" : 17,
+      "size" : 8,
+      "vs12Per1000em" : 25.399999999999999
+    },
+    {
+      "emWidth" : 17.043900000000001,
+      "opsz" : 17,
+      "size" : 9,
+      "vs12Per1000em" : 18.600000000000001
+    },
+    {
+      "emWidth" : 16.832000000000001,
+      "opsz" : 17,
+      "size" : 10,
+      "vs12Per1000em" : 11.699999999999999
+    },
+    {
+      "emWidth" : 16.650400000000001,
+      "opsz" : 17,
+      "size" : 11,
+      "vs12Per1000em" : 5.9000000000000004
+    },
+    {
+      "emWidth" : 16.468800000000002,
+      "opsz" : 17,
+      "size" : 12,
+      "vs12Per1000em" : 0
+    },
+    {
+      "emWidth" : 16.287099999999999,
+      "opsz" : 17,
+      "size" : 13,
+      "vs12Per1000em" : -5.9000000000000004
+    },
+    {
+      "emWidth" : 16.1357,
+      "opsz" : 17,
+      "size" : 14,
+      "vs12Per1000em" : -10.699999999999999
+    },
+    {
+      "emWidth" : 15.984400000000001,
+      "opsz" : 17,
+      "size" : 15,
+      "vs12Per1000em" : -15.6
+    },
+    {
+      "emWidth" : 15.863300000000001,
+      "opsz" : 17,
+      "size" : 16,
+      "vs12Per1000em" : -19.5
+    },
+    {
+      "emWidth" : 15.6816,
+      "opsz" : 17,
+      "size" : 17,
+      "vs12Per1000em" : -25.399999999999999
+    },
+    {
+      "emWidth" : 15.324,
+      "opsz" : 20,
+      "size" : 20,
+      "vs12Per1000em" : -36.899999999999999
+    },
+    {
+      "emWidth" : 15.105,
+      "opsz" : 22,
+      "size" : 22,
+      "vs12Per1000em" : -44
+    },
+    {
+      "emWidth" : 15.001099999999999,
+      "opsz" : 26,
+      "size" : 26,
+      "vs12Per1000em" : -47.299999999999997
+    },
+    {
+      "emWidth" : 14.9194,
+      "opsz" : 34,
+      "size" : 34,
+      "vs12Per1000em" : -50
+    },
+    {
+      "emWidth" : 14.798299999999999,
+      "opsz" : 48,
+      "size" : 48,
+      "vs12Per1000em" : -53.899999999999999
+    }
+  ]
+}

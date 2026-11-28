@@ -1,0 +1,58 @@
+<!doctype html>
+<!--
+  分享卡片（Open Graph / Twitter）的源文件：1200×630，截图后存为 site/og.png。
+  重新生成：在 site/ 起一个静态服务，然后
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --hide-scrollbars \
+      --window-size=1200,630 --virtual-time-budget=4000 --screenshot=site/og.png http://localhost:<端口>/og.html
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="robots" content="noindex" />
+<title>Joy · 分享卡片</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@500;600;700&family=Geist+Mono:wght@500&display=block" rel="stylesheet" />
+<style>
+  html, body { margin: 0; }
+  body {
+    width: 1200px; height: 630px; overflow: hidden; position: relative; box-sizing: border-box;
+    padding: 84px 96px; display: flex; align-items: center; gap: 72px;
+    color: #c3c9d4; font-family: "Geist", "PingFang SC", "Hiragino Sans GB", sans-serif;
+    background:
+      radial-gradient(760px 420px at 86% -8%, rgba(0, 184, 184, 0.26), transparent 62%),
+      radial-gradient(620px 360px at -6% 108%, rgba(94, 234, 212, 0.12), transparent 60%),
+      #07090f;
+  }
+  /* 和简历页 hero 一样的网格底纹，向右上渐隐 */
+  body::before {
+    content: ""; position: absolute; inset: 0;
+    background:
+      linear-gradient(rgba(255, 255, 255, .05) 1px, transparent 1px) -1px -1px / 32px 32px,
+      linear-gradient(90deg, rgba(255, 255, 255, .05) 1px, transparent 1px) -1px -1px / 32px 32px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 90% at 75% 20%, #000 15%, transparent 72%);
+    mask-image: radial-gradient(ellipse 70% 90% at 75% 20%, #000 15%, transparent 72%);
+  }
+  .mark { position: relative; width: 260px; height: 260px; flex: none; border-radius: 56px; box-shadow: 0 24px 80px -16px rgba(0, 184, 184, 0.55); }
+  .mark img { width: 100%; height: 100%; border-radius: inherit; display: block; }
+  .txt { position: relative; }
+  .eyebrow { font: 500 20px/1 "Geist Mono", monospace; letter-spacing: 0.24em; color: #5eead4; display: flex; align-items: center; gap: 14px; }
+  .eyebrow::before { content: ""; width: 36px; height: 2px; background: #5eead4; }
+  h1 { margin: 22px 0 0; font: 700 132px/0.95 "Geist", sans-serif; letter-spacing: -0.03em;
+    background: linear-gradient(110deg, #ffffff 30%, #a7f3e9 60%, #00b8b8 95%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .role { margin-top: 18px; font-size: 40px; font-weight: 600; color: #f3f5f9; }
+  .role::before { content: "❯ "; color: #00b8b8; }
+  .chips { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 10px; }
+  .chips span { padding: 8px 14px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.04); font-size: 19px; color: #dfe4ec; }
+  .url { position: absolute; right: 96px; bottom: 56px; font: 500 22px/1 "Geist Mono", monospace; color: #7d8596; letter-spacing: 0.04em; }
+</style>
+</head>
+<body>
+  <div class="mark"><img src="/joy-mark.png" alt="" /></div>
+  <div class="txt">
+    <div class="eyebrow">AI APPLICATION FRONTEND ENGINEER</div>
+    <h1>Joy</h1>
+    <div class="role">AI 应用前端工程师</div>
+    <div class="chips"><span>9 年 Web 前端</span><span>金融 AI Agent 平台</span><span>React · TypeScript</span><span>全栈交付</span></div>
+  </div>
+  <div class="url">www.pairwise.site</div>
+</body>
+</html>

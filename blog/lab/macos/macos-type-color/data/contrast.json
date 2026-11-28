@@ -1,0 +1,547 @@
+{
+  "method": "WCAG 2.x 相对亮度；带透明度的前景先叠在底色上",
+  "text": {
+    "light": {
+      "windowBackgroundColor": {
+        "labelColor": {
+          "value": "#000000 a=0.847",
+          "composited": "#272727",
+          "ratio": 14.94
+        },
+        "secondaryLabelColor": {
+          "value": "#000000 a=0.498",
+          "composited": "#808080",
+          "ratio": 3.95
+        },
+        "tertiaryLabelColor": {
+          "value": "#000000 a=0.259",
+          "composited": "#BDBDBD",
+          "ratio": 1.88
+        },
+        "quaternaryLabelColor": {
+          "value": "#000000 a=0.098",
+          "composited": "#E6E6E6",
+          "ratio": 1.25
+        },
+        "placeholderTextColor": {
+          "value": "#000000 a=0.498",
+          "composited": "#808080",
+          "ratio": 3.95
+        },
+        "linkColor": {
+          "value": "#0068DA",
+          "composited": "#0068DA",
+          "ratio": 5.26
+        },
+        "controlAccentColor": {
+          "value": "#007AFF",
+          "composited": "#007AFF",
+          "ratio": 4.02
+        }
+      },
+      "controlBackgroundColor": {
+        "labelColor": {
+          "value": "#000000 a=0.847",
+          "composited": "#272727",
+          "ratio": 14.94
+        },
+        "secondaryLabelColor": {
+          "value": "#000000 a=0.498",
+          "composited": "#808080",
+          "ratio": 3.95
+        },
+        "tertiaryLabelColor": {
+          "value": "#000000 a=0.259",
+          "composited": "#BDBDBD",
+          "ratio": 1.88
+        },
+        "quaternaryLabelColor": {
+          "value": "#000000 a=0.098",
+          "composited": "#E6E6E6",
+          "ratio": 1.25
+        },
+        "placeholderTextColor": {
+          "value": "#000000 a=0.498",
+          "composited": "#808080",
+          "ratio": 3.95
+        },
+        "linkColor": {
+          "value": "#0068DA",
+          "composited": "#0068DA",
+          "ratio": 5.26
+        },
+        "controlAccentColor": {
+          "value": "#007AFF",
+          "composited": "#007AFF",
+          "ratio": 4.02
+        }
+      },
+      "measuredWindowBackground": {
+        "background": "#FFFFFF",
+        "labelColor": {
+          "composited": "#272727",
+          "ratio": 14.94
+        },
+        "secondaryLabelColor": {
+          "composited": "#808080",
+          "ratio": 3.95
+        },
+        "tertiaryLabelColor": {
+          "composited": "#BDBDBD",
+          "ratio": 1.88
+        },
+        "quaternaryLabelColor": {
+          "composited": "#E6E6E6",
+          "ratio": 1.25
+        },
+        "placeholderTextColor": {
+          "composited": "#808080",
+          "ratio": 3.95
+        },
+        "linkColor": {
+          "composited": "#0068DA",
+          "ratio": 5.26
+        },
+        "controlAccentColor": {
+          "composited": "#007AFF",
+          "ratio": 4.02
+        }
+      }
+    },
+    "dark": {
+      "windowBackgroundColor": {
+        "labelColor": {
+          "value": "#FFFFFF a=0.847",
+          "composited": "#DDDDDD",
+          "ratio": 12.27
+        },
+        "secondaryLabelColor": {
+          "value": "#FFFFFF a=0.549",
+          "composited": "#9A9A9A",
+          "ratio": 5.92
+        },
+        "tertiaryLabelColor": {
+          "value": "#FFFFFF a=0.247",
+          "composited": "#565656",
+          "ratio": 2.27
+        },
+        "quaternaryLabelColor": {
+          "value": "#FFFFFF a=0.098",
+          "composited": "#343434",
+          "ratio": 1.34
+        },
+        "placeholderTextColor": {
+          "value": "#FFFFFF a=0.549",
+          "composited": "#9A9A9A",
+          "ratio": 5.92
+        },
+        "linkColor": {
+          "value": "#419CFF",
+          "composited": "#419CFF",
+          "ratio": 5.89
+        },
+        "controlAccentColor": {
+          "value": "#007AFF",
+          "composited": "#007AFF",
+          "ratio": 4.15
+        }
+      },
+      "controlBackgroundColor": {
+        "labelColor": {
+          "value": "#FFFFFF a=0.847",
+          "composited": "#DDDDDD",
+          "ratio": 12.27
+        },
+        "secondaryLabelColor": {
+          "value": "#FFFFFF a=0.549",
+          "composited": "#9A9A9A",
+          "ratio": 5.92
+        },
+        "tertiaryLabelColor": {
+          "value": "#FFFFFF a=0.247",
+          "composited": "#565656",
+          "ratio": 2.27
+        },
+        "quaternaryLabelColor": {
+          "value": "#FFFFFF a=0.098",
+          "composited": "#343434",
+          "ratio": 1.34
+        },
+        "placeholderTextColor": {
+          "value": "#FFFFFF a=0.549",
+          "composited": "#9A9A9A",
+          "ratio": 5.92
+        },
+        "linkColor": {
+          "value": "#419CFF",
+          "composited": "#419CFF",
+          "ratio": 5.89
+        },
+        "controlAccentColor": {
+          "value": "#007AFF",
+          "composited": "#007AFF",
+          "ratio": 4.15
+        }
+      },
+      "measuredWindowBackground": {
+        "background": "#222A30",
+        "labelColor": {
+          "composited": "#DDDEDF",
+          "ratio": 10.81
+        },
+        "secondaryLabelColor": {
+          "composited": "#9B9FA2",
+          "ratio": 5.46
+        },
+        "tertiaryLabelColor": {
+          "composited": "#595F63",
+          "ratio": 2.25
+        },
+        "quaternaryLabelColor": {
+          "composited": "#383F44",
+          "ratio": 1.36
+        },
+        "placeholderTextColor": {
+          "composited": "#9B9FA2",
+          "ratio": 5.46
+        },
+        "linkColor": {
+          "composited": "#419CFF",
+          "ratio": 5.15
+        },
+        "controlAccentColor": {
+          "composited": "#007AFF",
+          "ratio": 3.63
+        }
+      }
+    }
+  },
+  "accentText": {
+    "multicolor": {
+      "light": {
+        "controlAccentColor": "#007AFF",
+        "whiteOnAccent": 4.02,
+        "blackOnAccent": 5.23,
+        "selectedContentBackgroundColor": "#0064E1",
+        "whiteOnSelected": 5.37
+      },
+      "dark": {
+        "controlAccentColor": "#007AFF",
+        "whiteOnAccent": 4.02,
+        "blackOnAccent": 5.23,
+        "selectedContentBackgroundColor": "#0059D1",
+        "whiteOnSelected": 6.27
+      }
+    },
+    "blue": {
+      "light": {
+        "controlAccentColor": "#007AFF",
+        "whiteOnAccent": 4.02,
+        "blackOnAccent": 5.23,
+        "selectedContentBackgroundColor": "#0064E1",
+        "whiteOnSelected": 5.37
+      },
+      "dark": {
+        "controlAccentColor": "#007AFF",
+        "whiteOnAccent": 4.02,
+        "blackOnAccent": 5.23,
+        "selectedContentBackgroundColor": "#0059D1",
+        "whiteOnSelected": 6.27
+      }
+    },
+    "purple": {
+      "light": {
+        "controlAccentColor": "#953D96",
+        "whiteOnAccent": 6.2,
+        "blackOnAccent": 3.39,
+        "selectedContentBackgroundColor": "#7D2A7E",
+        "whiteOnSelected": 8.39
+      },
+      "dark": {
+        "controlAccentColor": "#A550A7",
+        "whiteOnAccent": 4.88,
+        "blackOnAccent": 4.31,
+        "selectedContentBackgroundColor": "#803482",
+        "whiteOnSelected": 7.69
+      }
+    },
+    "pink": {
+      "light": {
+        "controlAccentColor": "#F74F9E",
+        "whiteOnAccent": 3.2,
+        "blackOnAccent": 6.57,
+        "selectedContentBackgroundColor": "#D93B86",
+        "whiteOnSelected": 4.27
+      },
+      "dark": {
+        "controlAccentColor": "#F74F9E",
+        "whiteOnAccent": 3.2,
+        "blackOnAccent": 6.57,
+        "selectedContentBackgroundColor": "#C93379",
+        "whiteOnSelected": 4.96
+      }
+    },
+    "red": {
+      "light": {
+        "controlAccentColor": "#E0383E",
+        "whiteOnAccent": 4.37,
+        "blackOnAccent": 4.8,
+        "selectedContentBackgroundColor": "#C4262B",
+        "whiteOnSelected": 5.74
+      },
+      "dark": {
+        "controlAccentColor": "#FF5257",
+        "whiteOnAccent": 3.18,
+        "blackOnAccent": 6.6,
+        "selectedContentBackgroundColor": "#D13539",
+        "whiteOnSelected": 4.91
+      }
+    },
+    "orange": {
+      "light": {
+        "controlAccentColor": "#F7821B",
+        "whiteOnAccent": 2.57,
+        "blackOnAccent": 8.16,
+        "selectedContentBackgroundColor": "#D96B0A",
+        "whiteOnSelected": 3.47
+      },
+      "dark": {
+        "controlAccentColor": "#F7821B",
+        "whiteOnAccent": 2.57,
+        "blackOnAccent": 8.16,
+        "selectedContentBackgroundColor": "#C96003",
+        "whiteOnSelected": 4.07
+      }
+    },
+    "yellow": {
+      "light": {
+        "controlAccentColor": "#FFC726",
+        "whiteOnAccent": 1.56,
+        "blackOnAccent": 13.45,
+        "selectedContentBackgroundColor": "#E1AC15",
+        "whiteOnSelected": 2.08
+      },
+      "dark": {
+        "controlAccentColor": "#FFC600",
+        "whiteOnAccent": 1.58,
+        "blackOnAccent": 13.33,
+        "selectedContentBackgroundColor": "#D19E00",
+        "whiteOnSelected": 2.44
+      }
+    },
+    "green": {
+      "light": {
+        "controlAccentColor": "#62BA46",
+        "whiteOnAccent": 2.43,
+        "blackOnAccent": 8.63,
+        "selectedContentBackgroundColor": "#4DA033",
+        "whiteOnSelected": 3.29
+      },
+      "dark": {
+        "controlAccentColor": "#62BA46",
+        "whiteOnAccent": 2.43,
+        "blackOnAccent": 8.63,
+        "selectedContentBackgroundColor": "#43932A",
+        "whiteOnSelected": 3.86
+      }
+    },
+    "graphite": {
+      "light": {
+        "controlAccentColor": "#989898",
+        "whiteOnAccent": 2.88,
+        "blackOnAccent": 7.28,
+        "selectedContentBackgroundColor": "#808080",
+        "whiteOnSelected": 3.95
+      },
+      "dark": {
+        "controlAccentColor": "#8C8C8C",
+        "whiteOnAccent": 3.36,
+        "blackOnAccent": 6.25,
+        "selectedContentBackgroundColor": "#696969",
+        "whiteOnSelected": 5.49
+      }
+    }
+  },
+  "measured": {
+    "default-dark": {
+      "png": "raw/accent-default-dark.png",
+      "okButton": {
+        "fill": "#007AFF",
+        "text": "#FFFFFF",
+        "ratio": 4.02
+      },
+      "selectedRow": {
+        "fill": "#005AD1",
+        "text": "#FFFFFF",
+        "ratio": 6.21
+      },
+      "checkbox": {
+        "fill": "#0F7EFF",
+        "text": "#242A2F",
+        "ratio": 3.76
+      }
+    },
+    "default-light": {
+      "png": "raw/accent-default-light.png",
+      "okButton": {
+        "fill": "#007AFF",
+        "text": "#FFFFFF",
+        "ratio": 4.02
+      },
+      "selectedRow": {
+        "fill": "#0064E1",
+        "text": "#FFFFFF",
+        "ratio": 5.37
+      },
+      "checkbox": {
+        "fill": "#0277F8",
+        "text": "#FFFFFF",
+        "ratio": 4.2
+      }
+    },
+    "graphite-light": {
+      "png": "raw/accent-graphite-light.png",
+      "okButton": {
+        "fill": "#989898",
+        "text": "#FFFFFF",
+        "ratio": 2.88
+      },
+      "selectedRow": {
+        "fill": "#808080",
+        "text": "#FFFFFF",
+        "ratio": 3.95
+      },
+      "checkbox": {
+        "fill": "#949494",
+        "text": "#FFFFFF",
+        "ratio": 3.03
+      }
+    },
+    "green-light": {
+      "png": "raw/accent-green-light.png",
+      "okButton": {
+        "fill": "#62BA46",
+        "text": "#FFFFFF",
+        "ratio": 2.43
+      },
+      "selectedRow": {
+        "fill": "#4CA032",
+        "text": "#FFFFFF",
+        "ratio": 3.29
+      },
+      "checkbox": {
+        "fill": "#60B544",
+        "text": "#FFFFFF",
+        "ratio": 2.56
+      }
+    },
+    "orange-light": {
+      "png": "raw/accent-orange-light.png",
+      "okButton": {
+        "fill": "#F7821B",
+        "text": "#FFFFFF",
+        "ratio": 2.57
+      },
+      "selectedRow": {
+        "fill": "#D96B0A",
+        "text": "#FFFFFF",
+        "ratio": 3.47
+      },
+      "checkbox": {
+        "fill": "#F17E1A",
+        "text": "#FFFFFF",
+        "ratio": 2.71
+      }
+    },
+    "pink-light": {
+      "png": "raw/accent-pink-light.png",
+      "okButton": {
+        "fill": "#F74F9E",
+        "text": "#FFFFFF",
+        "ratio": 3.2
+      },
+      "selectedRow": {
+        "fill": "#D93B86",
+        "text": "#FFFFFF",
+        "ratio": 4.27
+      },
+      "checkbox": {
+        "fill": "#F14C9B",
+        "text": "#FFFFFF",
+        "ratio": 3.36
+      }
+    },
+    "purple-dark": {
+      "png": "raw/accent-purple-dark.png",
+      "okButton": {
+        "fill": "#A550A7",
+        "text": "#FFFFFF",
+        "ratio": 4.88
+      },
+      "selectedRow": {
+        "fill": "#803482",
+        "text": "#FFFFFF",
+        "ratio": 7.69
+      },
+      "checkbox": {
+        "fill": "#A855A9",
+        "text": "#FFFFFF",
+        "ratio": 4.63
+      }
+    },
+    "purple-light": {
+      "png": "raw/accent-purple-light.png",
+      "okButton": {
+        "fill": "#953D96",
+        "text": "#FFFFFF",
+        "ratio": 6.2
+      },
+      "selectedRow": {
+        "fill": "#7D2B7E",
+        "text": "#FFFFFF",
+        "ratio": 8.34
+      },
+      "checkbox": {
+        "fill": "#913C92",
+        "text": "#FFFFFF",
+        "ratio": 6.43
+      }
+    },
+    "red-light": {
+      "png": "raw/accent-red-light.png",
+      "okButton": {
+        "fill": "#E0383E",
+        "text": "#FFFFFF",
+        "ratio": 4.37
+      },
+      "selectedRow": {
+        "fill": "#C4262C",
+        "text": "#FFFFFF",
+        "ratio": 5.74
+      },
+      "checkbox": {
+        "fill": "#DA373C",
+        "text": "#FFFFFF",
+        "ratio": 4.57
+      }
+    },
+    "yellow-light": {
+      "png": "raw/accent-yellow-light.png",
+      "okButton": {
+        "fill": "#FFC726",
+        "text": "#000000",
+        "ratio": 13.45
+      },
+      "selectedRow": {
+        "fill": "#E1AC16",
+        "text": "#FFFFFF",
+        "ratio": 2.08
+      },
+      "checkbox": {
+        "fill": "#F9C225",
+        "text": "#000000",
+        "ratio": 12.77
+      }
+    }
+  }
+}

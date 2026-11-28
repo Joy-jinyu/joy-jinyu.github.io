@@ -1,0 +1,1352 @@
+[
+  {
+    "after": "light-focus-textField.png",
+    "bandPt": {
+      "left": 3.5,
+      "top": 3.5
+    },
+    "bboxPt": {
+      "h": 30,
+      "top": 65,
+      "w": 186,
+      "x": 17
+    },
+    "before": "light-none.png",
+    "diffPixels": 7759,
+    "leftBandPixels": [
+      {
+        "after": "#90B6FC",
+        "before": "#FFFFFF",
+        "px": 34
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 35
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 36
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 37
+      },
+      {
+        "after": "#87AEF6",
+        "before": "#F3F3F3",
+        "px": 38
+      },
+      {
+        "after": "#87AEF6",
+        "before": "#F3F3F3",
+        "px": 39
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 40
+      },
+      {
+        "after": "#FFFFFF",
+        "before": "#FFFFFF",
+        "px": 41
+      },
+      {
+        "after": "#FFFFFF",
+        "before": "#FFFFFF",
+        "px": 42
+      }
+    ],
+    "name": "focus:light:textField",
+    "outsetPt": {
+      "bottom": 3,
+      "left": 3,
+      "right": 3,
+      "top": 3
+    }
+  },
+  {
+    "after": "light-focus-searchField.png",
+    "bandPt": {
+      "left": 3.5,
+      "top": 3.5
+    },
+    "bboxPt": {
+      "h": 30,
+      "top": 65,
+      "w": 186,
+      "x": 217
+    },
+    "before": "light-none.png",
+    "diffPixels": 5844,
+    "leftBandPixels": [
+      {
+        "after": "#90B6FC",
+        "before": "#FFFFFF",
+        "px": 434
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 435
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 436
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 437
+      },
+      {
+        "after": "#87AEF6",
+        "before": "#F3F3F3",
+        "px": 438
+      },
+      {
+        "after": "#87AEF6",
+        "before": "#F3F3F3",
+        "px": 439
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 440
+      },
+      {
+        "after": "#F9FBFF",
+        "before": "#FFFFFF",
+        "px": 441
+      },
+      {
+        "after": "#FFFFFF",
+        "before": "#FFFFFF",
+        "px": 442
+      }
+    ],
+    "name": "focus:light:searchField",
+    "outsetPt": {
+      "bottom": 3,
+      "left": 3,
+      "right": 3,
+      "top": 3
+    }
+  },
+  {
+    "after": "light-focus-pushOK.png",
+    "bandPt": {
+      "left": 3.5,
+      "top": 3.5
+    },
+    "bboxPt": {
+      "h": 30,
+      "top": 105,
+      "w": 49,
+      "x": 17
+    },
+    "before": "light-none.png",
+    "diffPixels": 1939,
+    "leftBandPixels": [
+      {
+        "after": "#90B6FC",
+        "before": "#FFFFFF",
+        "px": 34
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 35
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 36
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 37
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 38
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 39
+      },
+      {
+        "after": "#83AAF2",
+        "before": "#ECECEC",
+        "px": 40
+      },
+      {
+        "after": "#ECECEC",
+        "before": "#ECECEC",
+        "px": 41
+      },
+      {
+        "after": "#ECECEC",
+        "before": "#ECECEC",
+        "px": 42
+      }
+    ],
+    "name": "focus:light:pushOK",
+    "outsetPt": {
+      "bottom": 3,
+      "left": 3,
+      "right": 3,
+      "top": 3
+    }
+  },
+  {
+    "after": "light-focus-table.png",
+    "bandPt": {
+      "left": 180,
+      "top": 24
+    },
+    "bboxPt": {
+      "h": 24,
+      "top": 222,
+      "w": 180,
+      "x": 30
+    },
+    "before": "light-none.png",
+    "diffPixels": 17104,
+    "leftBandPixels": [
+      {
+        "after": "#0965E3",
+        "before": "#DCDCDE",
+        "px": 60
+      },
+      {
+        "after": "#0364E2",
+        "before": "#DCDCDD",
+        "px": 61
+      },
+      {
+        "after": "#0064E1",
+        "before": "#DCDCDC",
+        "px": 62
+      },
+      {
+        "after": "#0065E1",
+        "before": "#DCDDDC",
+        "px": 63
+      },
+      {
+        "after": "#0065E0",
+        "before": "#DCDCDB",
+        "px": 64
+      },
+      {
+        "after": "#0064E1",
+        "before": "#DCDCDC",
+        "px": 65
+      },
+      {
+        "after": "#0065E1",
+        "before": "#DCDDDC",
+        "px": 66
+      },
+      {
+        "after": "#0364E1",
+        "before": "#DCDCDC",
+        "px": 67
+      },
+      {
+        "after": "#0064E2",
+        "before": "#DCDBDD",
+        "px": 68
+      },
+      {
+        "after": "#0064E1",
+        "before": "#DCDCDC",
+        "px": 69
+      },
+      {
+        "after": "#0065E0",
+        "before": "#DCDDDB",
+        "px": 70
+      },
+      {
+        "after": "#0364E1",
+        "before": "#DCDCDC",
+        "px": 71
+      },
+      {
+        "after": "#0364E1",
+        "before": "#DCDCDC",
+        "px": 72
+      },
+      {
+        "after": "#0364E1",
+        "before": "#DDDCDC",
+        "px": 73
+      },
+      {
+        "after": "#0364E1",
+        "before": "#DDDCDC",
+        "px": 74
+      },
+      {
+        "after": "#0364E1",
+        "before": "#DCDCDC",
+        "px": 75
+      }
+    ],
+    "name": "focus:light:table",
+    "outsetPt": {
+      "bottom": -62,
+      "left": -10,
+      "right": -10,
+      "top": -34
+    }
+  },
+  {
+    "after": "dark-focus-textField.png",
+    "bandPt": {
+      "left": 3.5,
+      "top": 3.5
+    },
+    "bboxPt": {
+      "h": 30,
+      "top": 65,
+      "w": 186,
+      "x": 17
+    },
+    "before": "dark-none.png",
+    "diffPixels": 7760,
+    "leftBandPixels": [
+      {
+        "after": "#276792",
+        "before": "#222828",
+        "px": 34
+      },
+      {
+        "after": "#276994",
+        "before": "#222828",
+        "px": 35
+      },
+      {
+        "after": "#276994",
+        "before": "#222828",
+        "px": 36
+      },
+      {
+        "after": "#276994",
+        "before": "#222828",
+        "px": 37
+      },
+      {
+        "after": "#2B6E99",
+        "before": "#2B3131",
+        "px": 38
+      },
+      {
+        "after": "#2B6E99",
+        "before": "#2B3131",
+        "px": 39
+      },
+      {
+        "after": "#276994",
+        "before": "#222828",
+        "px": 40
+      },
+      {
+        "after": "#222828",
+        "before": "#222828",
+        "px": 41
+      },
+      {
+        "after": "#222828",
+        "before": "#222828",
+        "px": 42
+      }
+    ],
+    "name": "focus:dark:textField",
+    "outsetPt": {
+      "bottom": 3,
+      "left": 3,
+      "right": 3,
+      "top": 3
+    }
+  },
+  {
+    "after": "dark-focus-searchField.png",
+    "bandPt": {
+      "left": 3.5,
+      "top": 3.5
+    },
+    "bboxPt": {
+      "h": 30,
+      "top": 65,
+      "w": 186,
+      "x": 217
+    },
+    "before": "dark-none.png",
+    "diffPixels": 5844,
+    "leftBandPixels": [
+      {
+        "after": "#276792",
+        "before": "#222828",
+        "px": 434
+      },
+      {
+        "after": "#276994",
+        "before": "#222828",
+        "px": 435
+      },
+      {
+        "after": "#276994",
+        "before": "#222828",
+        "px": 436
+      },
+      {
+        "after": "#276994",
+        "before": "#222828",
+        "px": 437
+      },
+      {
+        "after": "#2B6E99",
+        "before": "#2B3131",
+        "px": 438
+      },
+      {
+        "after": "#2B6E99",
+        "before": "#2B3131",
+        "px": 439
+      },
+      {
+        "after": "#276994",
+        "before": "#222728",
+        "px": 440
+      },
+      {
+        "after": "#222B2E",
+        "before": "#222828",
+        "px": 441
+      },
+      {
+        "after": "#222828",
+        "before": "#222828",
+        "px": 442
+      }
+    ],
+    "name": "focus:dark:searchField",
+    "outsetPt": {
+      "bottom": 3,
+      "left": 3,
+      "right": 3,
+      "top": 3
+    }
+  },
+  {
+    "after": "dark-focus-pushOK.png",
+    "bandPt": {
+      "left": 3.5,
+      "top": 3.5
+    },
+    "bboxPt": {
+      "h": 30,
+      "top": 105,
+      "w": 49,
+      "x": 17
+    },
+    "before": "dark-none.png",
+    "diffPixels": 1940,
+    "leftBandPixels": [
+      {
+        "after": "#276792",
+        "before": "#222828",
+        "px": 34
+      },
+      {
+        "after": "#276994",
+        "before": "#222828",
+        "px": 35
+      },
+      {
+        "after": "#276994",
+        "before": "#222828",
+        "px": 36
+      },
+      {
+        "after": "#276994",
+        "before": "#222828",
+        "px": 37
+      },
+      {
+        "after": "#276994",
+        "before": "#222828",
+        "px": 38
+      },
+      {
+        "after": "#276994",
+        "before": "#222828",
+        "px": 39
+      },
+      {
+        "after": "#31719C",
+        "before": "#323838",
+        "px": 40
+      },
+      {
+        "after": "#323838",
+        "before": "#323838",
+        "px": 41
+      },
+      {
+        "after": "#323838",
+        "before": "#323838",
+        "px": 42
+      }
+    ],
+    "name": "focus:dark:pushOK",
+    "outsetPt": {
+      "bottom": 3,
+      "left": 3,
+      "right": 3,
+      "top": 3
+    }
+  },
+  {
+    "after": "dark-focus-table.png",
+    "bandPt": {
+      "left": 180,
+      "top": 24
+    },
+    "bboxPt": {
+      "h": 24,
+      "top": 222,
+      "w": 180,
+      "x": 30
+    },
+    "before": "dark-none.png",
+    "diffPixels": 17104,
+    "leftBandPixels": [
+      {
+        "after": "#0057CF",
+        "before": "#444547",
+        "px": 60
+      },
+      {
+        "after": "#0058D1",
+        "before": "#464647",
+        "px": 61
+      },
+      {
+        "after": "#0058D0",
+        "before": "#464645",
+        "px": 62
+      },
+      {
+        "after": "#005AD0",
+        "before": "#464646",
+        "px": 63
+      },
+      {
+        "after": "#005AD0",
+        "before": "#464645",
+        "px": 64
+      },
+      {
+        "after": "#0058D0",
+        "before": "#464646",
+        "px": 65
+      },
+      {
+        "after": "#005AD0",
+        "before": "#464645",
+        "px": 66
+      },
+      {
+        "after": "#005AD0",
+        "before": "#464645",
+        "px": 67
+      },
+      {
+        "after": "#0058D1",
+        "before": "#464546",
+        "px": 68
+      },
+      {
+        "after": "#0058D1",
+        "before": "#464646",
+        "px": 69
+      },
+      {
+        "after": "#005AD0",
+        "before": "#464745",
+        "px": 70
+      },
+      {
+        "after": "#0458D1",
+        "before": "#464646",
+        "px": 71
+      },
+      {
+        "after": "#0058D1",
+        "before": "#464646",
+        "px": 72
+      },
+      {
+        "after": "#0458D0",
+        "before": "#464646",
+        "px": 73
+      },
+      {
+        "after": "#0458D1",
+        "before": "#464646",
+        "px": 74
+      },
+      {
+        "after": "#005AD1",
+        "before": "#464646",
+        "px": 75
+      }
+    ],
+    "name": "focus:dark:table",
+    "outsetPt": {
+      "bottom": -62,
+      "left": -10,
+      "right": -10,
+      "top": -34
+    }
+  },
+  {
+    "after": "controls-focus-pushOK.png",
+    "bandPt": {
+      "left": 3.5,
+      "top": 3.5
+    },
+    "bboxPt": {
+      "h": 30,
+      "top": 105,
+      "w": 49,
+      "x": 17
+    },
+    "before": "controls-none.png",
+    "diffPixels": 1939,
+    "leftBandPixels": [
+      {
+        "after": "#90B6FC",
+        "before": "#FFFFFF",
+        "px": 34
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 35
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 36
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 37
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 38
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 39
+      },
+      {
+        "after": "#83AAF2",
+        "before": "#ECECEC",
+        "px": 40
+      },
+      {
+        "after": "#ECECEC",
+        "before": "#ECECEC",
+        "px": 41
+      },
+      {
+        "after": "#ECECEC",
+        "before": "#ECECEC",
+        "px": 42
+      }
+    ],
+    "name": "focus:controls:pushOK",
+    "outsetPt": {
+      "bottom": 3,
+      "left": 3,
+      "right": 3,
+      "top": 3
+    }
+  },
+  {
+    "after": "controls-focus-checkbox.png",
+    "bandPt": {
+      "left": 3.5,
+      "top": 3.5
+    },
+    "bboxPt": {
+      "h": 22,
+      "top": 107,
+      "w": 22,
+      "x": 187
+    },
+    "before": "controls-none.png",
+    "diffPixels": 968,
+    "leftBandPixels": [
+      {
+        "after": "#90B6FC",
+        "before": "#FFFFFF",
+        "px": 374
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 375
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 376
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 377
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 378
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 379
+      },
+      {
+        "after": "#80A7EF",
+        "before": "#E6E6E6",
+        "px": 380
+      },
+      {
+        "after": "#E6E6E6",
+        "before": "#E6E6E6",
+        "px": 381
+      },
+      {
+        "after": "#E6E6E6",
+        "before": "#E6E6E6",
+        "px": 382
+      }
+    ],
+    "name": "focus:controls:checkbox",
+    "outsetPt": {
+      "bottom": 3,
+      "left": 3,
+      "right": -91,
+      "top": 3
+    }
+  },
+  {
+    "after": "controls-focus-segmented.png",
+    "bandPt": {
+      "left": 3.5,
+      "top": 3.5
+    },
+    "bboxPt": {
+      "h": 30,
+      "top": 145,
+      "w": 49.5,
+      "x": 17
+    },
+    "before": "controls-none.png",
+    "diffPixels": 1893,
+    "leftBandPixels": [
+      {
+        "after": "#90B6FC",
+        "before": "#FFFFFF",
+        "px": 34
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 35
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 36
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 37
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 38
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 39
+      },
+      {
+        "after": "#0070F7",
+        "before": "#0277F8",
+        "px": 40
+      },
+      {
+        "after": "#0277F8",
+        "before": "#0277F8",
+        "px": 41
+      },
+      {
+        "after": "#0277F8",
+        "before": "#0277F8",
+        "px": 42
+      }
+    ],
+    "name": "focus:controls:segmented",
+    "outsetPt": {
+      "bottom": 3,
+      "left": 3,
+      "right": -112.5,
+      "top": 3
+    }
+  },
+  {
+    "after": "controls-focus-popUp.png",
+    "bandPt": {
+      "left": 3.5,
+      "top": 3.5
+    },
+    "bboxPt": {
+      "h": 30,
+      "top": 145,
+      "w": 103,
+      "x": 217
+    },
+    "before": "controls-none.png",
+    "diffPixels": 3451,
+    "leftBandPixels": [
+      {
+        "after": "#90B6FC",
+        "before": "#FFFFFF",
+        "px": 434
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 435
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 436
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 437
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 438
+      },
+      {
+        "after": "#8DB4FC",
+        "before": "#FFFFFF",
+        "px": 439
+      },
+      {
+        "after": "#83AAF2",
+        "before": "#ECECEC",
+        "px": 440
+      },
+      {
+        "after": "#ECECEC",
+        "before": "#ECECEC",
+        "px": 441
+      },
+      {
+        "after": "#ECECEC",
+        "before": "#ECECEC",
+        "px": 442
+      }
+    ],
+    "name": "focus:controls:popUp",
+    "outsetPt": {
+      "bottom": 3,
+      "left": 3,
+      "right": 3,
+      "top": 3
+    }
+  },
+  {
+    "after": "light-hover-after.png",
+    "before": "light-hover-before.png",
+    "diffPixels": 0,
+    "name": "hover:light:pushOK"
+  },
+  {
+    "after": "light-hover-after.png",
+    "before": "light-hover-before.png",
+    "diffPixels": 0,
+    "name": "hover:light:pushCancel"
+  },
+  {
+    "after": "light-hover-after.png",
+    "before": "light-hover-before.png",
+    "diffPixels": 0,
+    "name": "hover:light:checkbox"
+  },
+  {
+    "after": "light-hover-after.png",
+    "bandPt": {
+      "left": 83,
+      "top": 24
+    },
+    "bboxPt": {
+      "h": 24,
+      "top": 110,
+      "w": 83,
+      "x": 330
+    },
+    "before": "light-hover-before.png",
+    "diffPixels": 7860,
+    "leftBandPixels": [
+      {
+        "after": "#ECECEC",
+        "before": "#FFFFFF",
+        "px": 660
+      },
+      {
+        "after": "#ECECEC",
+        "before": "#FFFFFF",
+        "px": 661
+      },
+      {
+        "after": "#ECECEC",
+        "before": "#FFFFFF",
+        "px": 662
+      },
+      {
+        "after": "#ECECEC",
+        "before": "#FFFFFF",
+        "px": 663
+      },
+      {
+        "after": "#ECECEC",
+        "before": "#FFFFFF",
+        "px": 664
+      },
+      {
+        "after": "#ECECEC",
+        "before": "#FFFFFF",
+        "px": 665
+      },
+      {
+        "after": "#ECECEC",
+        "before": "#FFFFFF",
+        "px": 666
+      },
+      {
+        "after": "#ECECEC",
+        "before": "#FFFFFF",
+        "px": 667
+      },
+      {
+        "after": "#ECECEC",
+        "before": "#FFFFFF",
+        "px": 668
+      },
+      {
+        "after": "#ECECEC",
+        "before": "#FFFFFF",
+        "px": 669
+      },
+      {
+        "after": "#ECECEC",
+        "before": "#FFFFFF",
+        "px": 670
+      },
+      {
+        "after": "#ECECEC",
+        "before": "#FFFFFF",
+        "px": 671
+      },
+      {
+        "after": "#ECECEC",
+        "before": "#FFFFFF",
+        "px": 672
+      },
+      {
+        "after": "#ECECEC",
+        "before": "#FFFFFF",
+        "px": 673
+      },
+      {
+        "after": "#ECECEC",
+        "before": "#FFFFFF",
+        "px": 674
+      },
+      {
+        "after": "#ECECEC",
+        "before": "#FFFFFF",
+        "px": 675
+      }
+    ],
+    "name": "hover:light:recessed",
+    "outsetPt": {
+      "bottom": 0,
+      "left": 0,
+      "right": 0,
+      "top": 0
+    }
+  },
+  {
+    "after": "light-hover-after.png",
+    "bandPt": {
+      "left": 11,
+      "top": 11
+    },
+    "bboxPt": {
+      "h": 36,
+      "top": 8,
+      "w": 36,
+      "x": 388
+    },
+    "before": "light-hover-before.png",
+    "diffPixels": 3915,
+    "leftBandPixels": [
+      {
+        "after": "#F2F2F2",
+        "before": "#FFFFFF",
+        "px": 776
+      },
+      {
+        "after": "#F2F2F2",
+        "before": "#FFFFFF",
+        "px": 777
+      },
+      {
+        "after": "#F2F2F2",
+        "before": "#FFFFFF",
+        "px": 778
+      },
+      {
+        "after": "#F2F2F2",
+        "before": "#FFFFFF",
+        "px": 779
+      },
+      {
+        "after": "#F2F2F2",
+        "before": "#FFFFFF",
+        "px": 780
+      },
+      {
+        "after": "#F2F2F2",
+        "before": "#FFFFFF",
+        "px": 781
+      },
+      {
+        "after": "#F2F2F2",
+        "before": "#FFFFFF",
+        "px": 782
+      },
+      {
+        "after": "#F2F2F2",
+        "before": "#FFFFFF",
+        "px": 783
+      },
+      {
+        "after": "#F2F2F2",
+        "before": "#FFFFFF",
+        "px": 784
+      },
+      {
+        "after": "#F2F2F2",
+        "before": "#FFFFFF",
+        "px": 785
+      },
+      {
+        "after": "#F2F2F2",
+        "before": "#FFFFFF",
+        "px": 786
+      },
+      {
+        "after": "#F2F2F2",
+        "before": "#FFFFFF",
+        "px": 787
+      },
+      {
+        "after": "#F2F2F2",
+        "before": "#FFFFFF",
+        "px": 788
+      },
+      {
+        "after": "#F2F2F2",
+        "before": "#FFFFFF",
+        "px": 789
+      },
+      {
+        "after": "#F2F2F2",
+        "before": "#FFFFFF",
+        "px": 790
+      },
+      {
+        "after": "#F2F2F2",
+        "before": "#FFFFFF",
+        "px": 791
+      }
+    ],
+    "name": "hover:light:toolbarButton",
+    "outsetPt": {
+      "bottom": 0,
+      "left": 0,
+      "right": 0,
+      "top": 0
+    }
+  },
+  {
+    "after": "dark-hover-after.png",
+    "before": "dark-hover-before.png",
+    "diffPixels": 0,
+    "name": "hover:dark:pushOK"
+  },
+  {
+    "after": "dark-hover-after.png",
+    "before": "dark-hover-before.png",
+    "diffPixels": 0,
+    "name": "hover:dark:pushCancel"
+  },
+  {
+    "after": "dark-hover-after.png",
+    "before": "dark-hover-before.png",
+    "diffPixels": 0,
+    "name": "hover:dark:checkbox"
+  },
+  {
+    "after": "dark-hover-after.png",
+    "bandPt": {
+      "left": 83,
+      "top": 24
+    },
+    "bboxPt": {
+      "h": 24,
+      "top": 110,
+      "w": 83,
+      "x": 330
+    },
+    "before": "dark-hover-before.png",
+    "diffPixels": 7852,
+    "leftBandPixels": [
+      {
+        "after": "#323838",
+        "before": "#222828",
+        "px": 660
+      },
+      {
+        "after": "#323838",
+        "before": "#222828",
+        "px": 661
+      },
+      {
+        "after": "#323838",
+        "before": "#222828",
+        "px": 662
+      },
+      {
+        "after": "#323838",
+        "before": "#222828",
+        "px": 663
+      },
+      {
+        "after": "#323838",
+        "before": "#222828",
+        "px": 664
+      },
+      {
+        "after": "#323838",
+        "before": "#222828",
+        "px": 665
+      },
+      {
+        "after": "#323838",
+        "before": "#222828",
+        "px": 666
+      },
+      {
+        "after": "#323838",
+        "before": "#222828",
+        "px": 667
+      },
+      {
+        "after": "#323838",
+        "before": "#222828",
+        "px": 668
+      },
+      {
+        "after": "#323838",
+        "before": "#222828",
+        "px": 669
+      },
+      {
+        "after": "#323838",
+        "before": "#222828",
+        "px": 670
+      },
+      {
+        "after": "#323838",
+        "before": "#222828",
+        "px": 671
+      },
+      {
+        "after": "#323838",
+        "before": "#222828",
+        "px": 672
+      },
+      {
+        "after": "#323838",
+        "before": "#222828",
+        "px": 673
+      },
+      {
+        "after": "#323838",
+        "before": "#222828",
+        "px": 674
+      },
+      {
+        "after": "#323838",
+        "before": "#222828",
+        "px": 675
+      }
+    ],
+    "name": "hover:dark:recessed",
+    "outsetPt": {
+      "bottom": 0,
+      "left": 0,
+      "right": 0,
+      "top": 0
+    }
+  },
+  {
+    "after": "dark-hover-after.png",
+    "bandPt": {
+      "left": 11,
+      "top": 11
+    },
+    "bboxPt": {
+      "h": 36,
+      "top": 8,
+      "w": 36,
+      "x": 388
+    },
+    "before": "dark-hover-before.png",
+    "diffPixels": 3983,
+    "leftBandPixels": [
+      {
+        "after": "#4F6362",
+        "before": "#3B4F4E",
+        "px": 776
+      },
+      {
+        "after": "#475353",
+        "before": "#323F3F",
+        "px": 777
+      },
+      {
+        "after": "#374040",
+        "before": "#232C2C",
+        "px": 778
+      },
+      {
+        "after": "#374040",
+        "before": "#232C2C",
+        "px": 779
+      },
+      {
+        "after": "#374040",
+        "before": "#232C2C",
+        "px": 780
+      },
+      {
+        "after": "#374040",
+        "before": "#232C2C",
+        "px": 781
+      },
+      {
+        "after": "#374040",
+        "before": "#232C2C",
+        "px": 782
+      },
+      {
+        "after": "#374040",
+        "before": "#232C2C",
+        "px": 783
+      },
+      {
+        "after": "#374040",
+        "before": "#232C2C",
+        "px": 784
+      },
+      {
+        "after": "#374040",
+        "before": "#232C2C",
+        "px": 785
+      },
+      {
+        "after": "#374040",
+        "before": "#232C2C",
+        "px": 786
+      },
+      {
+        "after": "#374040",
+        "before": "#232C2C",
+        "px": 787
+      },
+      {
+        "after": "#374040",
+        "before": "#232C2C",
+        "px": 788
+      },
+      {
+        "after": "#374040",
+        "before": "#232C2C",
+        "px": 789
+      },
+      {
+        "after": "#374040",
+        "before": "#232C2C",
+        "px": 790
+      },
+      {
+        "after": "#374040",
+        "before": "#232C2C",
+        "px": 791
+      }
+    ],
+    "name": "hover:dark:toolbarButton",
+    "outsetPt": {
+      "bottom": 0,
+      "left": 0,
+      "right": 0,
+      "top": 0
+    }
+  }
+]

@@ -1,0 +1,35 @@
+{
+  "activeLog" : [
+    "unified-key-dark: active=true key=true",
+    "plain-key-dark: active=true key=true"
+  ],
+  "screen" : {
+    "frame" : {
+      "h" : 982,
+      "w" : 1512,
+      "x" : 0,
+      "y" : 0
+    },
+    "safeAreaTop" : 32,
+    "visibleFrame" : {
+      "h" : 884,
+      "w" : 1512,
+      "x" : 0,
+      "y" : 65
+    }
+  },
+  "titleColors" : {
+    "plain-key-dark" : {
+      "alphaValue" : 1,
+      "catalogName" : "windowFrameTextColor",
+      "description" : "Catalog color: System windowFrameTextColor",
+      "sRGB" : "#FFFFFF a=0.847"
+    },
+    "unified-key-dark" : {
+      "alphaValue" : 1,
+      "catalogName" : "labelColor",
+      "description" : "Catalog color: System labelColor",
+      "sRGB" : "#FFFFFF a=0.847"
+    }
+  }
+}

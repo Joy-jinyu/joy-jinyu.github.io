@@ -1,0 +1,211 @@
+[
+  {
+    "hotSpot" : [
+      5,
+      5
+    ],
+    "name" : "arrow",
+    "size" : [
+      28,
+      40
+    ]
+  },
+  {
+    "hotSpot" : [
+      12,
+      11
+    ],
+    "size" : [
+      23,
+      22
+    ],
+    "name" : "iBeam"
+  },
+  {
+    "hotSpot" : [
+      13,
+      8
+    ],
+    "name" : "pointingHand",
+    "size" : [
+      32,
+      32
+    ]
+  },
+  {
+    "name" : "openHand",
+    "hotSpot" : [
+      16,
+      17
+    ],
+    "size" : [
+      32,
+      32
+    ]
+  },
+  {
+    "size" : [
+      32,
+      32
+    ],
+    "hotSpot" : [
+      16,
+      17
+    ],
+    "name" : "closedHand"
+  },
+  {
+    "name" : "crosshair",
+    "size" : [
+      24,
+      24
+    ],
+    "hotSpot" : [
+      11,
+      11
+    ]
+  },
+  {
+    "size" : [
+      28,
+      40
+    ],
+    "hotSpot" : [
+      5,
+      5
+    ],
+    "name" : "contextualMenu"
+  },
+  {
+    "size" : [
+      28,
+      40
+    ],
+    "hotSpot" : [
+      5,
+      5
+    ],
+    "name" : "dragCopy"
+  },
+  {
+    "name" : "dragLink",
+    "size" : [
+      16,
+      21
+    ],
+    "hotSpot" : [
+      11,
+      3
+    ]
+  },
+  {
+    "hotSpot" : [
+      5,
+      5
+    ],
+    "name" : "operationNotAllowed",
+    "size" : [
+      28,
+      40
+    ]
+  },
+  {
+    "hotSpot" : [
+      5,
+      5
+    ],
+    "size" : [
+      28,
+      40
+    ],
+    "name" : "disappearingItem"
+  },
+  {
+    "size" : [
+      22,
+      21
+    ],
+    "name" : "iBeamVertical",
+    "hotSpot" : [
+      11,
+      10
+    ]
+  },
+  {
+    "hotSpot" : [
+      15,
+      12
+    ],
+    "size" : [
+      30,
+      24
+    ],
+    "name" : "columnResize"
+  },
+  {
+    "hotSpot" : [
+      12,
+      14
+    ],
+    "name" : "rowResize",
+    "size" : [
+      24,
+      28
+    ]
+  },
+  {
+    "size" : [
+      24,
+      24
+    ],
+    "hotSpot" : [
+      12,
+      12
+    ],
+    "name" : "columnResize(left)"
+  },
+  {
+    "hotSpot" : [
+      12,
+      9
+    ],
+    "name" : "frameResize(right)",
+    "size" : [
+      24,
+      18
+    ]
+  },
+  {
+    "hotSpot" : [
+      11,
+      11
+    ],
+    "name" : "frameResize(corner)",
+    "size" : [
+      22,
+      22
+    ]
+  },
+  {
+    "name" : "zoomIn",
+    "size" : [
+      28,
+      26
+    ],
+    "hotSpot" : [
+      12,
+      11
+    ]
+  },
+  {
+    "size" : [
+      28,
+      26
+    ],
+    "name" : "zoomOut",
+    "hotSpot" : [
+      12,
+      11
+    ]
+  }
+]

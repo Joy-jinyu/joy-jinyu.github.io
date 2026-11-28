@@ -1,0 +1,204 @@
+{
+  "default-dark": {
+    "png": "raw/accent-default-dark.png",
+    "okButton": {
+      "fill": "#007AFF",
+      "darkest": "#007AFF",
+      "lightest": "#FFFFFF"
+    },
+    "selectedRow": {
+      "fill": "#005AD1",
+      "darkest": "#242A2F",
+      "lightest": "#FFFFFF"
+    },
+    "checkbox": {
+      "fill": "#0F7EFF",
+      "darkest": "#242A2F",
+      "lightest": "#FFFFFF"
+    }
+  },
+  "default-light": {
+    "png": "raw/accent-default-light.png",
+    "okButton": {
+      "fill": "#007AFF",
+      "darkest": "#007AFF",
+      "lightest": "#FFFFFF"
+    },
+    "selectedRow": {
+      "fill": "#0064E1",
+      "darkest": "#0163E1",
+      "lightest": "#FFFFFF"
+    },
+    "checkbox": {
+      "fill": "#0277F8",
+      "darkest": "#0277F8",
+      "lightest": "#FFFFFF"
+    }
+  },
+  "graphite-light": {
+    "png": "raw/accent-graphite-light.png",
+    "okButton": {
+      "fill": "#989898",
+      "darkest": "#989898",
+      "lightest": "#FFFFFF"
+    },
+    "selectedRow": {
+      "fill": "#808080",
+      "darkest": "#7F7F7F",
+      "lightest": "#FFFFFF"
+    },
+    "checkbox": {
+      "fill": "#949494",
+      "darkest": "#949494",
+      "lightest": "#FFFFFF"
+    }
+  },
+  "green-light": {
+    "png": "raw/accent-green-light.png",
+    "okButton": {
+      "fill": "#62BA46",
+      "darkest": "#62BA46",
+      "lightest": "#FFFFFF"
+    },
+    "selectedRow": {
+      "fill": "#4CA032",
+      "darkest": "#4D9F33",
+      "lightest": "#FFFFFF"
+    },
+    "checkbox": {
+      "fill": "#60B544",
+      "darkest": "#60B544",
+      "lightest": "#FFFFFF"
+    }
+  },
+  "orange-light": {
+    "png": "raw/accent-orange-light.png",
+    "okButton": {
+      "fill": "#F7821B",
+      "darkest": "#F7821B",
+      "lightest": "#FFFFFF"
+    },
+    "selectedRow": {
+      "fill": "#D96B0A",
+      "darkest": "#D86A07",
+      "lightest": "#FFFFFF"
+    },
+    "checkbox": {
+      "fill": "#F17E1A",
+      "darkest": "#F17E1A",
+      "lightest": "#FFFFFF"
+    }
+  },
+  "pink-light": {
+    "png": "raw/accent-pink-light.png",
+    "okButton": {
+      "fill": "#F74F9E",
+      "darkest": "#F74F9E",
+      "lightest": "#FFFFFF"
+    },
+    "selectedRow": {
+      "fill": "#D93B86",
+      "darkest": "#D83987",
+      "lightest": "#FFFFFF"
+    },
+    "checkbox": {
+      "fill": "#F14C9B",
+      "darkest": "#F14C9B",
+      "lightest": "#FFFFFF"
+    }
+  },
+  "purple-dark": {
+    "png": "raw/accent-purple-dark.png",
+    "okButton": {
+      "fill": "#A550A7",
+      "darkest": "#A550A7",
+      "lightest": "#FFFFFF"
+    },
+    "selectedRow": {
+      "fill": "#803482",
+      "darkest": "#242A2F",
+      "lightest": "#FFFFFF"
+    },
+    "checkbox": {
+      "fill": "#A855A9",
+      "darkest": "#242A2F",
+      "lightest": "#FFFFFF"
+    }
+  },
+  "purple-light": {
+    "png": "raw/accent-purple-light.png",
+    "okButton": {
+      "fill": "#953D96",
+      "darkest": "#953D96",
+      "lightest": "#FFFFFF"
+    },
+    "selectedRow": {
+      "fill": "#7D2B7E",
+      "darkest": "#7D297D",
+      "lightest": "#FFFFFF"
+    },
+    "checkbox": {
+      "fill": "#913C92",
+      "darkest": "#913C92",
+      "lightest": "#FFFFFF"
+    }
+  },
+  "red-light": {
+    "png": "raw/accent-red-light.png",
+    "okButton": {
+      "fill": "#E0383E",
+      "darkest": "#E0383E",
+      "lightest": "#FFFFFF"
+    },
+    "selectedRow": {
+      "fill": "#C4262C",
+      "darkest": "#C3242A",
+      "lightest": "#FFFFFF"
+    },
+    "checkbox": {
+      "fill": "#DA373C",
+      "darkest": "#DB363C",
+      "lightest": "#FFFFFF"
+    }
+  },
+  "yellow-light": {
+    "png": "raw/accent-yellow-light.png",
+    "okButton": {
+      "fill": "#FFC726",
+      "darkest": "#000000",
+      "lightest": "#FFC726"
+    },
+    "selectedRow": {
+      "fill": "#E1AC16",
+      "darkest": "#E0AB13",
+      "lightest": "#FFFFFF"
+    },
+    "checkbox": {
+      "fill": "#F9C225",
+      "darkest": "#000000",
+      "lightest": "#FFFFFF"
+    }
+  },
+  "_regions": {
+    "unit": "px（2x 截图，左上为原点）",
+    "okButton": [
+      244,
+      100,
+      380,
+      140
+    ],
+    "selectedRow": [
+      64,
+      284,
+      696,
+      326
+    ],
+    "checkbox": [
+      440,
+      106,
+      472,
+      136
+    ],
+    "tool": "region.swift"
+  }
+}

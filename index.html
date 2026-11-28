@@ -1,0 +1,787 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script>
+  // 主题：?theme= 参数优先，其次是与简历、博客、笔记站共用的 starlight-theme 记忆，默认深色（同 resume/index.html）
+  (function () {
+    var q = new URLSearchParams(location.search).get("theme"), s = "";
+    try { s = localStorage.getItem("starlight-theme") || ""; } catch (e) {}
+    document.documentElement.dataset.theme = q === "light" || q === "dark" ? q : s === "light" ? "light" : "dark";
+  })();
+</script>
+<title>Pairwise · Joy｜AI 时代的设计与前端</title>
+<!-- SEO：描述、规范网址、分享卡片（og.png 由 og.html 渲染而来）、结构化数据 -->
+<meta name="description" content="Pairwise 是 Joy 的个人站：AI 时代的设计与前端。这里有 AI 应用开发博客、前端技术笔记和简历。" />
+<meta name="author" content="Joy" />
+<meta name="theme-color" content="#050608" />
+<link rel="canonical" href="https://www.pairwise.site/" />
+<link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+<link rel="alternate" type="application/rss+xml" title="Pairwise 博客" href="/blog/rss.xml" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Pairwise" />
+<meta property="og:locale" content="zh_CN" />
+<meta property="og:url" content="https://www.pairwise.site/" />
+<meta property="og:title" content="Pairwise · Joy" />
+<meta property="og:description" content="Pairwise 是 Joy 的个人站：AI 时代的设计与前端。这里有 AI 应用开发博客、前端技术笔记和简历。" />
+<meta property="og:image" content="https://www.pairwise.site/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Pairwise · Joy" />
+<meta name="twitter:description" content="Pairwise 是 Joy 的个人站：AI 时代的设计与前端。这里有 AI 应用开发博客、前端技术笔记和简历。" />
+<meta name="twitter:image" content="https://www.pairwise.site/og.png" />
+<!-- WebSite 的 name 决定 Google 搜索结果里显示的站点名；Person 描述页面主人 -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+  {
+    "@type": "WebSite",
+    "@id": "https://www.pairwise.site/#website",
+    "name": "Pairwise",
+    "alternateName": ["Pairwise AI", "pairwise.site", "Pairwise · Joy"],
+    "description": "Joy 的个人站：AI 应用前端工程简历、AI 应用开发博客和前端技术笔记。",
+    "url": "https://www.pairwise.site/",
+    "inLanguage": "zh-CN",
+    "publisher": { "@id": "https://www.pairwise.site/#joy" }
+  },
+  {
+  "@type": "Person",
+  "@id": "https://www.pairwise.site/#joy",
+  "name": "Joy",
+  "jobTitle": "AI 应用前端工程师",
+  "description": "9 年 Web 前端经验，负责金融 AI Agent 平台的前端基建与对话核心链路。",
+  "url": "https://www.pairwise.site/",
+  "image": "https://www.pairwise.site/joy-mark.png",
+  "alumniOf": { "@type": "CollegeOrUniversity", "name": "成都东软学院" },
+  "knowsAbout": ["React", "TypeScript", "Next.js", "Vue", "AI Agent", "LLM 应用前端", "前端工程化", "性能优化"],
+  "sameAs": ["https://t.me/joy_jinyu", "https://github.com/Joy-jinyu"]
+  },
+  {
+  "@type": "WebApplication",
+  "@id": "https://markdown.pairwise.site/#app",
+  "name": "Pairdown",
+  "url": "https://markdown.pairwise.site/",
+  "description": "Joy 做的所见即所得 Markdown 编辑器：文档保持纯 .md 文件，支持表格、公式、Mermaid 图，可选 GitHub 同步。",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": { "@id": "https://www.pairwise.site/#joy" }
+  }
+  ]
+}
+</script>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<!-- Cloudflare Web Analytics：域名是 DNS only 不走代理，后台的自动注入不生效，只能手动放脚本；同一段还在 resume、博客 Base.astro、笔记 astro.config.mjs 里 -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "cfd1847ac0c347a4a677b092214a258d"}'></script>
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #050608; --ink: #eef0f3; --ink-rgb: 238, 240, 243;
+    --soft: rgba(var(--ink-rgb), 0.52); --ghost: rgba(var(--ink-rgb), 0.24); --line: rgba(var(--ink-rgb), 0.12);
+    --ai: #3ee6d2; --ai-ink: #00231f;
+    --you: #f4f4ef; --you-ink: #0b0c0e; --chip: rgba(255, 255, 255, 0.03); --panel: rgba(10, 12, 14, 0.85); --shadow: rgba(0, 0, 0, 0.55);
+    --sans: "Geist", "PingFang SC", -apple-system, sans-serif;
+    --serif: "Instrument Serif", serif;
+    --mono: "Geist Mono", "SF Mono", Menlo, monospace;
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  /* 浅色：米白纸面 + 墨色粒子。--ai 比画布 PAL.light.ai 更深，是为了文字 / 链接在米白底上达到 4.5:1；画布上的青色只用于图形 */
+  :root[data-theme="light"] {
+    --bg: #f6f6f3; --ink: #0d0e11; --ink-rgb: 13, 14, 17;
+    --soft: rgba(var(--ink-rgb), 0.62); --ghost: rgba(var(--ink-rgb), 0.26); --line: rgba(var(--ink-rgb), 0.12);
+    --ai: #08776d; --ai-ink: #ffffff;
+    --you: #0d0e11; --you-ink: #f6f6f3; --chip: rgba(255, 255, 255, 0.6); --panel: rgba(255, 255, 255, 0.92); --shadow: rgba(0, 0, 0, 0.18);
+  }
+  /* 明暗切换的圆形扩散：关掉默认的交叉淡入，新画面由脚本用 clip-path 从点击处展开 */
+  .theme-reveal::view-transition-old(root),
+  .theme-reveal::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { min-height: 100svh; overflow: hidden; background: var(--bg); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+  @media (pointer: fine) { html.own-cursor, html.own-cursor * { cursor: none !important; } }
+  canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  .sign { position: fixed; left: clamp(20px, 4vw, 56px); bottom: clamp(24px, 4vw, 52px); display: grid; gap: 10px; }
+  .sign b { font: 500 clamp(22px, 2.2vw, 28px)/1 var(--sans); letter-spacing: -0.03em; }
+  .sign .tag { font: italic 400 clamp(19px, 1.9vw, 24px)/1.2 var(--serif); color: var(--soft); }
+
+  /* 入口是 AI 的补全：交互之前不出现；出现时是灰色衬线斜体，Tab / 点击接受后才变成可点的链接 */
+  /* 光标绝对定位在行首，补全整体右移让出光标的位置；接受后滑回行首，和上面两行左对齐 */
+  .suggest { position: relative; display: flex; align-items: center; gap: 12px; min-height: 30px; margin-top: 8px; font: italic 400 clamp(19px, 1.9vw, 24px)/1 var(--serif); }
+  .caret { position: absolute; left: 0; top: 50%; width: 2px; height: 0.95em; margin-top: -0.475em; border-radius: 1px; background: var(--ai); opacity: 0; }
+  .suggest.typing .caret, .suggest.ready .caret { opacity: 1; animation: blink 1.05s steps(1) infinite; }
+  .suggest.done .caret { opacity: 0; animation: none; transition: opacity 0.3s; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .suggest > nav, .suggest > .hint { translate: 10px 0; transition: translate 0.5s var(--ease); }
+  .suggest.done > nav { translate: 0 0; }
+  nav { display: flex; gap: 0.2em; letter-spacing: -0.01em; }
+  /* 打字机：没打到的部分仍在 DOM 里，只是隐藏，排版不跳、搜索引擎能读全文 */
+  .tag .rest { visibility: hidden; }
+  .tag .tc { display: inline-block; width: 2px; height: 0.9em; margin: 0 1px 0 2px; vertical-align: -0.1em; border-radius: 1px; background: var(--ai); }
+  .tag .tc.blink { animation: blink 1.05s steps(1) infinite; }
+  .tag .tc.gone { opacity: 0; transition: opacity 0.3s; animation: none; }
+  .gh, .theme { position: fixed; right: clamp(20px, 4vw, 56px); bottom: clamp(24px, 4vw, 52px); display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid var(--line); border-radius: 50%; color: var(--soft); transition: color 0.25s var(--ease), border-color 0.25s var(--ease), background 0.25s var(--ease); }
+  .theme { top: clamp(20px, 3.2vw, 40px); bottom: auto; background: none; cursor: pointer; font: inherit; }
+  .theme svg { width: 17px; height: 17px; }
+  .theme .moon, :root[data-theme="light"] .theme .sun { display: none; }
+  :root[data-theme="light"] .theme .moon { display: block; }
+  .gh:hover, .gh:focus-visible, .theme:hover, .theme:focus-visible { color: var(--ink); border-color: rgba(var(--ink-rgb), 0.3); background: rgba(var(--ink-rgb), 0.04); outline: none; }
+  .gh svg { width: 18px; height: 18px; }
+  nav a {
+    position: relative; padding: 2px 0; color: transparent;
+    background: linear-gradient(90deg, var(--ai) 0 var(--p, 0%), var(--ghost) var(--p, 0%) 100%);
+    -webkit-background-clip: text; background-clip: text;
+    opacity: 0; filter: blur(8px); transform: translateX(-6px);
+    transition: opacity 0.5s var(--ease), filter 0.5s var(--ease), transform 0.5s var(--ease);
+    transition-delay: calc(var(--i) * 70ms);
+  }
+  nav a + a::before { content: "·"; margin-right: 0.2em; color: var(--ghost); -webkit-text-fill-color: var(--ghost); }
+  .suggest.ready nav a, .suggest.done nav a { opacity: 1; filter: none; transform: none; }
+  .suggest:not(.done) nav a { cursor: pointer; }
+  .suggest.done nav a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: -2px; height: 1px; background: var(--ai); transition: right 0.35s var(--ease); }
+  .suggest.done nav a:hover::after, .suggest.done nav a:focus-visible::after { right: 0; }
+  .suggest.done nav a:focus-visible { outline: none; }
+  .hint {
+    display: inline-flex; align-items: center; gap: 8px; padding: 5px 6px 5px 10px; border: 1px solid var(--line); border-radius: 999px;
+    font: 400 11px/1 var(--mono); letter-spacing: 0.02em; color: var(--soft); background: var(--chip); backdrop-filter: blur(8px);
+    opacity: 0; transform: translateX(-4px); transition: opacity 0.4s var(--ease) 0.3s, transform 0.4s var(--ease) 0.3s; pointer-events: none;
+  }
+  .hint kbd { padding: 3px 6px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; color: var(--ink); font: 500 10px/1 var(--mono); }
+  .suggest.ready .hint { opacity: 1; transform: none; pointer-events: auto; cursor: pointer; }
+  .suggest.done .hint { opacity: 0; transition-delay: 0s; }
+  @media (hover: none) { .hint kbd { display: none; } }
+
+  /* 两个光标：Joy 是访客的指针，AI 跟着它结对 */
+  .cursor { position: fixed; left: 0; top: 0; z-index: 10; pointer-events: none; will-change: transform; opacity: 0; transition: opacity 0.3s var(--ease); }
+  .cursor.on { opacity: 1; }
+  /* 访客一动 AI 就要立刻不见：只淡入，不淡出 */
+  .cursor.ai:not(.on) { transition: none; }
+  .cursor svg { display: block; width: 17px; height: 17px; overflow: visible; filter: drop-shadow(0 3px 8px var(--shadow)); transform-origin: 2px 2px; transition: transform 0.2s var(--ease); }
+  .cursor b { position: absolute; left: 13px; top: 15px; padding: 4px 8px 5px; border-radius: 3px 999px 999px 999px; font: 500 11px/1 var(--sans); letter-spacing: 0.01em; white-space: nowrap; transition: transform 0.25s var(--ease); transform-origin: 0 0; }
+  .cursor.you b { background: var(--you); color: var(--you-ink); }
+  .cursor.you path { fill: var(--you); stroke: var(--you-ink); }
+  .cursor.ai path { fill: var(--ai); stroke: var(--ai-ink); }
+  .cursor.ai b { background: var(--ai); color: var(--ai-ink); }
+  .cursor.you.press svg { transform: scale(0.86); }
+  .cursor.you.link b { transform: scale(1.08); }
+  .cursor .say { position: absolute; left: 44px; top: 14px; padding: 5px 8px; border-radius: 6px; border: 1px solid var(--line); background: var(--panel); color: var(--soft); font: 400 10.5px/1 var(--mono); white-space: nowrap; opacity: 0; transform: translateX(-4px); transition: opacity 0.3s var(--ease), transform 0.3s var(--ease); }
+  .cursor .say.on { opacity: 1; transform: none; }
+  @media (max-width: 640px) { .sign { right: 76px; } .suggest { flex-wrap: wrap; } }
+</style>
+</head>
+<body>
+<canvas id="c" aria-hidden="true"></canvas>
+<h1 class="sr">Pairwise</h1>
+<div class="sign">
+  <b>Joy</b>
+  <span class="tag" id="tag">designing &amp; building interfaces for the AI era</span>
+  <div class="suggest" id="suggest">
+    <i class="caret" aria-hidden="true"></i>
+    <nav aria-label="站点导航" id="nav">
+      <a href="/blog/" style="--i: 0" tabindex="-1">blog</a>
+      <a href="/notes/" style="--i: 1" tabindex="-1">notes</a>
+      <a href="/resume/" style="--i: 2" tabindex="-1">resume</a>
+      <a href="https://markdown.pairwise.site/lp/" style="--i: 3" tabindex="-1">pairdown</a>
+    </nav>
+    <span class="hint" id="hint"><span>accept</span><kbd>Tab</kbd></span>
+  </div>
+</div>
+<button class="theme" id="theme" type="button" aria-label="切换明暗"><svg class="sun" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg><svg class="moon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4a8.2 8.2 0 1 0 10.6 10.6z"/></svg></button>
+<a class="gh" href="https://github.com/Joy-jinyu" aria-label="GitHub" rel="me"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg></a>
+<div class="cursor you" id="you"><svg viewBox="0 0 17 17"><path d="M2 1.6 15 7.8 8.9 9.4 6.6 15.4z" fill="#f4f4ef" stroke="#0b0c0e" stroke-width="1.1" stroke-linejoin="round"/></svg><b>Joy</b></div>
+<div class="cursor ai" id="ai"><svg viewBox="0 0 17 17"><path d="M2 1.6 15 7.8 8.9 9.4 6.6 15.4z" fill="#3ee6d2" stroke="#00231f" stroke-width="1.1" stroke-linejoin="round"/></svg><b>AI</b><span class="say" id="say"></span></div>
+<script>
+  const cv = document.getElementById('c'), ctx = cv.getContext('2d')
+  const youEl = document.getElementById('you'), aiEl = document.getElementById('ai'), say = document.getElementById('say')
+  const suggest = document.getElementById('suggest'), nav = document.getElementById('nav'), hint = document.getElementById('hint')
+  const links = [...nav.querySelectorAll('a')]
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
+  const fine = matchMedia('(pointer: fine)').matches
+  let W, H, dpr, P = [], step, t0, wordBox = { x: 0, y: 0, w: 0, h: 0 }
+  // 画布颜色，和 CSS 的 :root / [data-theme="light"] 对应；浅色下粒子用深墨色、高不透明度，否则在米白底上发灰
+  const PAL = {
+    dark: { bg: '#050608', dot: '238,240,243', dotA: 0.9, ai: '62,230,210', you: '244,244,239', glow: '215,235,240', cool: '120,200,255',
+      lilac: '185,158,255', aqua: '116,225,219',
+    },
+    light: { bg: '#f6f6f3', dot: '13,14,17', dotA: 0.88, ai: '10,156,144', you: '13,14,17', glow: '255,255,255', cool: '20,110,150',
+      lilac: '99,63,155', aqua: '20,116,111',
+    },
+  }
+  const pal = () => PAL[document.documentElement.dataset.theme === 'light' ? 'light' : 'dark']
+
+  /*
+   * 相机：字在 z=0 的竖直平面上（z 朝屏幕里为正），镜头绕字中心极慢地小幅环绕，鼠标带一点视差。
+   * 平时粒子留在字标平面上，散开时沿深度轴翻卷；光标仍反投影到字标平面
+   */
+  const camS = { yaw: 0, pitch: 0, F: 650, ox: 0, oy: 0, m: null }
+  function updateCam(t, dt) {
+    const k = reduce ? 0 : t
+    let ty = Math.sin(k * 0.00011) * 0.42, tp = -0.18 + Math.sin(k * 0.00007) * 0.16
+    if (you.live && !reduce) { ty += (you.x / W - 0.5) * 0.08; tp += (you.y / H - 0.5) * 0.06 }
+    const e = reduce || !camS.m ? 1 : 1 - Math.pow(0.04, dt)
+    camS.yaw += (ty - camS.yaw) * e; camS.pitch += (tp - camS.pitch) * e
+    const cy = Math.cos(camS.yaw), sy = Math.sin(camS.yaw), cp = Math.cos(camS.pitch), sp = Math.sin(camS.pitch)
+    camS.m = [cy, 0, sy, sp * sy, cp, -sp * cy, -cp * sy, sp, cp * cy]
+    camS.ox = wordBox.x + wordBox.w / 2; camS.oy = wordBox.y + wordBox.h / 2
+  }
+  function toS(x, y, z = 0) {
+    const m = camS.m, X = x - camS.ox, Y = y - camS.oy
+    const cx = m[0] * X + m[1] * Y + m[2] * z, cyy = m[3] * X + m[4] * Y + m[5] * z, cz = m[6] * X + m[7] * Y + m[8] * z
+    const s = camS.F / Math.max(80, camS.F + cz)
+    return { x: camS.ox + cx * s, y: camS.oy + cyy * s, s, z: cz }
+  }
+  function toP(sx, sy) {
+    const m = camS.m, a = sx - camS.ox, b = sy - camS.oy, F = camS.F
+    const A1 = a * m[6] - F * m[0], B1 = a * m[7] - F * m[1], A2 = b * m[6] - F * m[3], B2 = b * m[7] - F * m[4], det = A1 * B2 - A2 * B1
+    if (Math.abs(det) < 1e-6) return null
+    const u = (-a * F * B2 + b * F * B1) / det, v = (-b * F * A1 + a * F * A2) / det
+    // 超宽屏上屏幕点可能在地平线之外，反投影会落到相机背后，这时这个点不参与交互
+    if (camS.F + m[6] * u + m[7] * v <= 0) return null
+    return { x: camS.ox + u, y: camS.oy + v }
+  }
+
+  // 三点布光（主光左上、冷色补光右侧、背光在字后），以字中心为原点；粒子按到各光源的距离取亮度
+  function lights(C0) {
+    const w = wordBox.w, h = wordBox.h
+    return [
+      { x: -w * 0.45, y: -h * 1.0, z: -300, r: w * 0.5, c: C0.glow, glow: 0.12, gr: 0.4 },
+      { x: w * 0.6, y: -h * 0.2, z: -380, r: w * 0.45, c: C0.cool, glow: 0.05, gr: 0.3 },
+      { x: 0, y: -h * 0.4, z: 320, r: w * 0.35, c: C0.glow, glow: 0.12, gr: 0.45 },
+    ]
+  }
+  function lit(p, LT) {
+    let sum = 0
+    const X = p.x - camS.ox, Y = p.y - camS.oy
+    for (const L of LT) sum += 1 / (1 + ((X - L.x) ** 2 + (Y - L.y) ** 2 + (p.z - L.z) ** 2 * 0.35) / (L.r * L.r))
+    // 1.05 / 0.5 来自实测：三盏灯在字上的叠加值落在 1.10~1.55，映射到 0~1 才有明暗，直接截断会全部饱和成一样亮
+    return Math.max(0, Math.min(1, (sum - 1.05) / 0.5))
+  }
+  function drawLightGlow(LT, C0) {
+    const light = C0 === PAL.light
+    // 深色下光晕用加色混合才像在发光；浅色下用白色高光，再压一圈极淡的暗角托出层次
+    ctx.globalCompositeOperation = light ? 'source-over' : 'lighter'
+    for (const L of LT) {
+      const c = toS(camS.ox + L.x, camS.oy + L.y, L.z), r = wordBox.w * L.gr * c.s
+      const g = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, r)
+      g.addColorStop(0, `rgba(${L.c},${light ? L.glow * 1.7 : L.glow})`); g.addColorStop(1, `rgba(${L.c},0)`)
+      ctx.fillStyle = g; ctx.fillRect(c.x - r, c.y - r, r * 2, r * 2)
+    }
+    ctx.globalCompositeOperation = 'source-over'
+    if (light) {
+      const v = ctx.createRadialGradient(W / 2, H * 0.45, Math.min(W, H) * 0.3, W / 2, H * 0.45, Math.max(W, H) * 0.75)
+      v.addColorStop(0, 'rgba(13,14,17,0)'); v.addColorStop(1, 'rgba(13,14,17,0.05)')
+      ctx.fillStyle = v; ctx.fillRect(0, 0, W, H)
+    }
+  }
+
+  // 雾带和远处微星按视口与主题缓存，只逐帧绘制前方的动效。
+  const galaxyLayers = new Map()
+  function makeGalaxy(C0) {
+    const light = C0 === PAL.light
+    const layer = document.createElement('canvas')
+    const w = layer.width = Math.max(1, Math.ceil(W / 2))
+    const h = layer.height = Math.max(1, Math.ceil(H / 2))
+    const g = layer.getContext('2d')
+    const span = Math.min(w, h)
+    const axis = x => h * (0.74 - x * 0.54 + Math.sin(x * 6.2 - 0.7) * 0.085)
+    let seed = 67291
+    const random = () => {
+      seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0
+      return seed / 4294967296
+    }
+    const nebula = [C0.ai, C0.aqua]
+
+    function mist(x, y, rx, ry, angle, color, alpha) {
+      g.save()
+      g.translate(x, y)
+      g.rotate(angle)
+      g.scale(rx, ry)
+      const fill = g.createRadialGradient(0, 0, 0, 0, 0, 1)
+      fill.addColorStop(0, `rgba(${color},${alpha})`)
+      fill.addColorStop(0.46, `rgba(${color},${alpha * 0.43})`)
+      fill.addColorStop(1, `rgba(${color},0)`)
+      g.fillStyle = fill
+      g.fillRect(-1, -1, 2, 2)
+      g.restore()
+    }
+
+    mist(w * 0.23, h * 0.31, w * 0.66, h * 0.66, -0.24, C0.ai, light ? 0.45 : 0.39)
+    mist(w * 0.76, h * 0.62, w * 0.61, h * 0.6, -0.31, C0.aqua, light ? 0.32 : 0.27)
+    mist(w * 0.81, h * 0.16, w * 0.55, h * 0.48, -0.4, C0.ai, light ? 0.33 : 0.27)
+
+    const angle = Math.atan2(-h * 0.54, w)
+    for (let i = 0; i < 55; i++) {
+      const u = i / 54 * 1.34 - 0.17
+      const cross = (random() + random() - 1) * span * 0.5
+      const rx = span * (0.12 + random() * 0.4)
+      const ry = span * (0.04 + random() * 0.18)
+      const color = nebula[Math.floor(random() * nebula.length)]
+      mist(u * w, axis(u) + cross, rx, ry, angle + (random() - 0.5) * 0.7, color,
+        (light ? 0.17 : 0.23) * (0.4 + random() * 0.6))
+    }
+
+    // 在雾带内积一层不闪烁的微光，密度从中轴向两边逐渐消退。
+    const ink = [C0.cool, C0.lilac, C0.aqua, C0.ai, C0.dot]
+    const count = Math.max(780, Math.min(3000, Math.round(w * h / 135)))
+    for (let i = 0; i < count; i++) {
+      const u = random()
+      const cross = random() + random() + random() - 1.5
+      const x = u * w, y = axis(u) + cross * span * 0.27
+      const size = 0.24 + random() ** 3 * 0.78
+      const alpha = (light ? 0.27 : 0.34) * (0.75 - Math.min(0.67, Math.abs(cross) * 0.51))
+      g.fillStyle = particleColor(ink[i % ink.length], alpha)
+      g.fillRect(x, y, size, size)
+    }
+    return layer
+  }
+
+  function drawGalaxy(C0) {
+    if (!galaxyLayers.has(C0)) galaxyLayers.set(C0, makeGalaxy(C0))
+    ctx.drawImage(galaxyLayers.get(C0), 0, 0, W, H)
+  }
+
+  /*
+   * 空间：字前后不同深度的浮尘，加上离镜头最近的一层虚化光斑（前景虚焦），镜头一动就有纵深。
+   * 都是低对比度的装饰，不能比字显眼
+   */
+  let dust = [], bokeh = []
+  function initSpace() {
+    dust = Array.from({ length: 150 }, () => ({ x: (Math.random() - 0.5) * W * 2.2, y: (Math.random() - 0.5) * H * 1.6, z: -450 + Math.random() * 1900, ph: Math.random() * 6.28 }))
+    bokeh = Array.from({ length: 14 }, () => ({ x: (Math.random() - 0.5) * W * 1.4, y: (Math.random() - 0.5) * H * 1.2, z: -420 - Math.random() * 120, r: 10 + Math.random() * 26, ph: Math.random() * 6.28 }))
+  }
+  // 远处星光留在字标后面。每颗星有独立的亮度和呼吸周期。
+  const stars = Array.from({ length: 104 }, (_, i) => ({
+    x: Math.random(),
+    y: Math.random(),
+    phase: Math.random() * Math.PI * 2,
+    period: 3.6 + Math.random() * 4.4,
+    size: 0.45 + Math.random() * 0.65,
+    flare: i % 9 === 0,
+    reticle: i % 27 === 0,
+    tint: i % 4,
+  }))
+
+  function drawStars(t, C0) {
+    const light = C0 === PAL.light
+    const count = Math.min(stars.length, 2 * Math.max(24, Math.round(W * H / 24000)))
+    for (let i = 0; i < count; i++) {
+      const star = stars[i]
+      const x = 12 + star.x * (W - 24), y = 12 + star.y * (H - 24)
+      const phase = star.phase + (reduce ? 0 : t * Math.PI * 2 / (star.period * 1000))
+      const pulse = ((1 + Math.sin(phase)) / 2) ** 2
+      const alpha = light ? 0.12 + pulse * 0.26 : 0.19 + pulse * 0.46
+      const color = star.tint === 0 ? C0.ai : star.flare || star.tint === 1 ? C0.cool : C0.dot
+
+      if (star.flare) {
+        const reach = 2.5 + pulse * 2.5
+        ctx.strokeStyle = `rgba(${color},${alpha * 0.58})`
+        ctx.lineWidth = 0.7
+        ctx.beginPath()
+        ctx.moveTo(x - reach, y); ctx.lineTo(x - 1.4, y)
+        ctx.moveTo(x + 1.4, y); ctx.lineTo(x + reach, y)
+        ctx.moveTo(x, y - reach); ctx.lineTo(x, y - 1.4)
+        ctx.moveTo(x, y + 1.4); ctx.lineTo(x, y + reach)
+        ctx.stroke()
+
+        if (star.reticle) {
+          const ring = reach + 2.6, angle = star.phase
+          ctx.strokeStyle = `rgba(${color},${alpha * 0.3})`
+          ctx.beginPath(); ctx.arc(x, y, ring, angle, angle + Math.PI * 0.4); ctx.stroke()
+          ctx.beginPath(); ctx.arc(x, y, ring, angle + Math.PI, angle + Math.PI * 1.4); ctx.stroke()
+        }
+      }
+
+      ctx.fillStyle = `rgba(${color},${alpha})`
+      ctx.beginPath()
+      ctx.arc(x, y, star.size + pulse * 0.25, 0, Math.PI * 2)
+      ctx.fill()
+    }
+  }
+
+  function drawSpace(t, C0, front) {
+    const light = C0 === PAL.light, k = reduce ? 0 : t / 1000
+    for (const d of dust) {
+      if ((d.z < 0) !== front) continue
+      const p = toS(camS.ox + d.x + Math.sin(k * 0.1 + d.ph) * 20, camS.oy + d.y + Math.cos(k * 0.08 + d.ph) * 14, d.z)
+      if (p.z < -camS.F + 100) continue
+      const s = 1.4 * p.s, a = (d.z < 0 ? 0.2 : 0.3) * Math.min(1, p.s) * (0.6 + 0.4 * Math.sin(k + d.ph)) * (light ? 1.4 : 1)
+      ctx.fillStyle = `rgba(${C0.dot},${a})`; ctx.fillRect(p.x - s / 2, p.y - s / 2, s, s)
+    }
+    if (!front) return
+    for (const b of bokeh) {
+      const p = toS(camS.ox + b.x + Math.sin(k * 0.07 + b.ph) * 30, camS.oy + b.y + Math.cos(k * 0.05 + b.ph) * 20, b.z)
+      if (p.z < -camS.F + 100) continue
+      const r = b.r * p.s, a = (light ? 0.05 : 0.045) * (0.7 + 0.3 * Math.sin(k * 0.4 + b.ph))
+      const g = ctx.createRadialGradient(p.x, p.y, r * 0.2, p.x, p.y, r)
+      g.addColorStop(0, `rgba(${b.ph > 4.5 ? C0.ai : C0.dot},${a})`); g.addColorStop(1, `rgba(${C0.dot},0)`)
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, 6.283); ctx.fill()
+    }
+  }
+
+  /* ---------- 粒子：「Pairwise」由 token 组成 ---------- */
+  function sample() {
+    dpr = Math.min(2, devicePixelRatio || 1)
+    W = innerWidth; H = innerHeight
+    galaxyLayers.clear()
+    cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+    const size = Math.min(W * (W < 640 ? 0.235 : 0.17), H * 0.34, 260), cy = H * (W < 640 ? 0.4 : 0.44)
+    const off = document.createElement('canvas'), o = off.getContext('2d')
+    off.width = W; off.height = H
+    o.font = `620 ${size}px Geist`; o.letterSpacing = `${-size * 0.055}px`
+    o.textAlign = 'center'; o.textBaseline = 'middle'; o.fillStyle = '#fff'
+    o.fillText('Pairwise', W / 2, cy)
+    const tw = o.measureText('Pairwise').width
+    wordBox = { x: W / 2 - tw / 2, y: cy - size * 0.4, w: tw, h: size * 0.8 }
+    const data = o.getImageData(0, 0, W, H).data
+    step = Math.max(2, Math.round(size / 58))
+    const pts = []
+    for (let y = 0; y < H; y += step) for (let x = 0; x < W; x += step) {
+      const ink = data[(y * W + x) * 4 + 3] / 255
+      if (ink > 0.28) pts.push([x + (Math.random() - 0.5) * step * 0.82, y + (Math.random() - 0.5) * step * 0.82, ink])
+    }
+    P = pts.map(([hx, hy, ink]) => {
+      const grain = Math.random(), tint = Math.random()
+      const across = (hx - wordBox.x) / wordBox.w
+      const tone = tint < 0.47 ? 0 : tint < 0.75 ? 1 : across < 0.46 ? 2 : 3
+      return {
+        hx, hy, x: -Math.random() * W * 0.4, y: hy + (Math.random() - 0.5) * 80, z: 0, vx: 0, vy: 0, cloud: 0,
+        r: grain > 0.94 ? 1.6 : 0.48 + grain * 0.91, ink: (0.65 + 0.35 * ink) * (0.8 + grain * 0.2), tone,
+        ph: Math.random() * Math.PI * 2, delay: (hx / W) * 900 + Math.random() * 500, nb: -1, q: -1, heat: 0, d: 0,
+      }
+    })
+    // 每个粒子记一个最近邻，查询点经过时把这些成对关系画出来
+    const cell = step * 3, grid = new Map(), key = (x, y) => `${Math.floor(x / cell)},${Math.floor(y / cell)}`
+    P.forEach((p, i) => { const k = key(p.hx, p.hy); (grid.get(k) || grid.set(k, []).get(k)).push(i) })
+    P.forEach((p, i) => {
+      const cx = Math.floor(p.hx / cell), cy2 = Math.floor(p.hy / cell); let best = 1e9
+      for (let dx = -1; dx <= 1; dx++) for (let dy = -1; dy <= 1; dy++) for (const j of grid.get(`${cx + dx},${cy2 + dy}`) || []) {
+        if (j === i) continue
+        const d = (P[j].hx - p.hx) ** 2 + (P[j].hy - p.hy) ** 2
+        if (d < best && d > step * step * 2) { best = d; p.nb = j }
+      }
+    })
+    t0 = performance.now()
+    if (reduce) P.forEach((p) => { p.x = p.hx; p.y = p.hy })
+    initSpace()
+  }
+  /* ---------- 光标 ---------- */
+  const you = { x: -100, y: -100, live: false, last: -1e9 }
+  const ai = { x: innerWidth * 0.5, y: innerHeight + 60, vx: 0, vy: 0, tx: 0, ty: 0, mode: 'wander', show: true, a: 1 }
+
+  addEventListener('pointermove', (e) => {
+    const now = performance.now()
+    you.x = e.clientX; you.y = e.clientY; you.last = now
+    if (e.pointerType === 'mouse') { you.live = true; youEl.classList.add('on'); document.documentElement.classList.add('own-cursor') }
+    youEl.style.transform = `translate3d(${you.x - 2}px, ${you.y - 2}px, 0)`
+    youEl.classList.toggle('link', !!e.target.closest('a, .hint, button'))
+    wake()
+  })
+  addEventListener('pointerdown', (e) => {
+    youEl.classList.add('press'); wake()
+    if (e.pointerType !== 'mouse') { you.x = e.clientX; you.y = e.clientY; you.last = performance.now() }
+    // 点空白处让字标散成粒子云，再从左到右聚回字形
+    if (!e.target.closest('a, .hint, button') && !reduce) burst(e.clientX, e.clientY)
+  })
+  const smoothstep = (n) => {
+    const x = Math.max(0, Math.min(1, n))
+    return x * x * (3 - 2 * x)
+  }
+
+  function burst(sx, sy) {
+    const c = camS.m && toP(sx, sy)
+    if (!c || !P.length) return
+    const now = performance.now()
+    const radius = Math.min(wordBox.w * 0.48, W * 0.30, H * 0.29, 290)
+    const centerX = camS.ox + Math.max(-radius, Math.min(radius, c.x - camS.ox)) * 0.18
+    const centerY = camS.oy + Math.max(-radius, Math.min(radius, c.y - camS.oy)) * 0.13
+
+    for (const p of P) {
+      const band = Math.random() < 0.37
+      const latitude = Math.random() * 2 - 1
+      const spread = Math.random()
+      const shell = band ? radius * (0.99 + spread * 0.24) : radius * (0.38 + 0.62 * Math.cbrt(spread))
+      p.flight = {
+        x: p.x, y: p.y, z: p.z,
+        centerX, centerY,
+        around: band ? shell : Math.sqrt(1 - latitude * latitude) * shell,
+        height: band ? latitude * radius * 0.19 : latitude * shell,
+        tilt: band ? (p.ph < Math.PI ? -0.43 : 0.55) : 0.18,
+        angle: Math.random() * Math.PI * 2,
+        start: now + Math.min(240, Math.hypot(p.hx - c.x, p.hy - c.y) * 0.34),
+        returnAt: 1160 + ((p.hx - wordBox.x) / wordBox.w) * 540 + Math.random() * 110,
+      }
+      p.vx = p.vy = 0
+      p.q = -1
+      p.heat = 0
+    }
+  }
+
+  function moveThroughCloud(p, t) {
+    const f = p.flight, age = t - f.start
+    if (age < 0) return
+    const rise = smoothstep(age / 640)
+    const settle = smoothstep((age - f.returnAt) / 620)
+    const angle = f.angle + age * 0.0012 + Math.sin(age * 0.0023 + p.ph) * 0.32
+    const across = Math.cos(angle) * f.around, forward = Math.sin(angle) * f.around
+    const roll = forward * f.tilt
+    const x = f.centerX + across * 1.15
+    const y = f.centerY + f.height + roll + Math.sin(angle * 2 + p.ph) * f.around * 0.11
+    const z = forward * 0.77 - f.height * f.tilt
+    const fromX = f.x + (x - f.x) * rise
+    const fromY = f.y + (y - f.y) * rise
+    p.x = fromX + (p.hx - fromX) * settle
+    p.y = fromY + (p.hy - fromY) * settle
+    p.z = (f.z + (z - f.z) * rise) * (1 - settle)
+    p.cloud = rise * (1 - settle)
+    if (settle === 1) p.flight = null
+  }
+  addEventListener('pointerup', () => youEl.classList.remove('press'))
+  document.documentElement.addEventListener('pointerleave', () => { you.live = false; youEl.classList.remove('on') })
+
+  /* ---------- 入口：交互后 AI 写出补全，接受后才是链接 ---------- */
+  let woke = false, accepted = false
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
+  function caretPoint() { const r = suggest.getBoundingClientRect(); return { x: r.left + 4, y: r.top + r.height / 2 } }
+  async function wake() {
+    if (woke) return
+    woke = true
+    await typed
+    await sleep(reduce ? 0 : 450)
+    ai.mode = 'suggest'
+    // AI 光标在场时先飞到补全的位置再开始写，最多等 1.4 秒；访客正在动鼠标时 AI 不出现，直接写
+    for (let t = 0; t < 1400 && !reduce && ai.show; t += 50) { const c = caretPoint(); if (Math.hypot(ai.x - c.x, ai.y - c.y) < 36) break; await sleep(50) }
+    say.textContent = 'suggesting…'; say.classList.add('on')
+    suggest.classList.add('typing')
+    await sleep(reduce ? 0 : 700)
+    suggest.classList.remove('typing'); suggest.classList.add('ready')
+    say.textContent = fine ? 'Tab to accept' : 'tap to accept'
+    await sleep(1300)
+    say.classList.remove('on')
+    if (ai.mode === 'suggest') ai.mode = 'wander'
+  }
+  function accept(go) {
+    if (accepted || !suggest.classList.contains('ready')) return
+    accepted = true
+    const t1 = performance.now(), dur = reduce ? 1 : 520
+    const tick = (t) => {
+      const k = Math.min(1, (t - t1) / dur)
+      links.forEach((a, i) => a.style.setProperty('--p', Math.max(0, Math.min(1, k * (1 + 0.3 * (links.length - 1)) - i * 0.3)) * 100 + '%'))
+      if (k < 1) return requestAnimationFrame(tick)
+      suggest.classList.replace('ready', 'done')
+      links.forEach((a) => { a.style.background = 'none'; a.style.color = 'var(--ai)'; a.removeAttribute('tabindex') })
+      if (go) location.href = go
+    }
+    requestAnimationFrame(tick)
+    say.classList.remove('on')
+  }
+  addEventListener('keydown', (e) => {
+    wake()
+    if (e.key === 'Tab' && !accepted && suggest.classList.contains('ready')) { e.preventDefault(); accept(); setTimeout(() => links[0].focus(), 560) }
+  })
+  hint.addEventListener('click', () => accept())
+  links.forEach((a) => a.addEventListener('click', (e) => { if (!accepted) { e.preventDefault(); accept(a.href) } }))
+
+  /* ---------- 明暗切换：新主题从点击处圆形扩散铺满全屏（同 resume/index.html） ---------- */
+  const themeBtn = document.getElementById('theme')
+  function applyTheme(next) {
+    document.documentElement.dataset.theme = next
+    syncChrome()
+    try { localStorage.setItem('starlight-theme', next) } catch (e) {}
+    const u = new URL(location.href)
+    if (u.searchParams.has('theme')) { u.searchParams.delete('theme'); history.replaceState(history.state, '', u) }
+  }
+  // 地址栏颜色和按钮的读屏文案跟着当前主题走
+  function syncChrome() {
+    const light = document.documentElement.dataset.theme === 'light'
+    document.querySelector('meta[name="theme-color"]').content = light ? '#f6f6f3' : '#050608'
+    themeBtn.setAttribute('aria-label', light ? '切换到深色' : '切换到浅色')
+  }
+  syncChrome()
+  themeBtn.addEventListener('click', (e) => {
+    const root = document.documentElement, next = root.dataset.theme === 'light' ? 'dark' : 'light'
+    if (!document.startViewTransition || reduce) return applyTheme(next)
+    const r = themeBtn.getBoundingClientRect()
+    const x = e.detail ? e.clientX : r.left + r.width / 2, y = e.detail ? e.clientY : r.top + r.height / 2
+    const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y))
+    root.classList.add('theme-reveal')
+    const t = document.startViewTransition(() => applyTheme(next))
+    t.ready.then(() => root.animate({ clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+      { duration: 500, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', pseudoElement: '::view-transition-new(root)' })).catch(() => {})
+    t.finished.finally(() => root.classList.remove('theme-reveal'))
+  })
+
+  // 亮度量化成 21 档，避免每帧为每颗粒子拼接颜色字符串
+  const colorCache = new Map()
+  function particleColor(rgb, a) {
+    const key = rgb + Math.round(a * 20)
+    let c = colorCache.get(key)
+    if (!c) colorCache.set(key, (c = `rgba(${rgb},${Math.round(a * 20) / 20})`))
+    return c
+  }
+
+  /* ---------- 每帧 ---------- */
+  let prev = performance.now()
+  function frame(t) {
+    const dt = Math.min(0.05, (t - prev) / 1000); prev = t
+    const el = t - t0
+    // AI 光标只在访客静止约 2 秒后出现（从访客光标旁边淡入，再去字上巡游），访客一动就立刻消失（光圈、虚线一起，不留淡出）
+    const idle = t - you.last > 2200
+    if (idle && !ai.show) {
+      ai.show = true; ai.since = t; aiEl.classList.add('on')
+      if (you.live) { ai.x = you.x + 42; ai.y = you.y + 30; ai.vx = ai.vy = 0 }
+    } else if (!idle && ai.show) { ai.show = false; ai.a = 0; aiEl.classList.remove('on') }
+    ai.a += ((ai.show ? 1 : 0) - ai.a) * Math.min(1, dt * 6)
+
+    // AI 的目标：写补全时停在补全行首的左下方（标签和气泡往下展开，不挡补全文字）；刚出现时先在访客旁边停一下；其余时间在字上巡游
+    const fresh = you.live ? t - (ai.since || -1e9) : 1e9
+    if (ai.mode === 'suggest' && ai.show) { const c = caretPoint(); ai.tx = c.x - 4; ai.ty = c.y + 16 }
+    else if (fresh < 900) { ai.tx = you.x + 42; ai.ty = you.y + 30 }
+    else {
+      if (ai.mode !== 'suggest') ai.mode = 'wander'
+      const k = reduce ? 0 : el / 1000
+      const wt = camS.m ? toS(wordBox.x + wordBox.w * (0.5 + Math.sin(k * 0.37) * 0.46), wordBox.y + wordBox.h * (0.5 + Math.sin(k * 0.83 + 1) * 0.42)) : { x: W / 2, y: H / 2 }
+      ai.tx = wt.x; ai.ty = wt.y
+    }
+    // 略欠阻尼的弹簧：有一点惯性和过冲，像另一个人在操作
+    // 刚离开访客时弹簧放软，慢慢飘向字，不要一下冲过去
+    const K = ai.mode === 'suggest' ? 70 : fresh < 2500 ? 10 : 34, C = 2 * Math.sqrt(K) * 0.82
+    ai.vx += ((ai.tx - ai.x) * K - ai.vx * C) * dt
+    ai.vy += ((ai.ty - ai.y) * K - ai.vy * C) * dt
+    ai.x += ai.vx * dt; ai.y += ai.vy * dt
+    const tilt = Math.max(-14, Math.min(14, ai.vx * 0.02))
+    aiEl.style.transform = `translate3d(${ai.x - 2}px, ${ai.y - 2}px, 0)`
+    aiEl.firstElementChild.style.transform = `rotate(${tilt}deg)`
+
+    const C0 = pal()
+    updateCam(t, dt)
+    ctx.fillStyle = C0.bg; ctx.fillRect(0, 0, W, H)
+    drawGalaxy(C0)
+    const LT = lights(C0)
+    drawLightGlow(LT, C0)
+    drawStars(t, C0)
+    drawSpace(t, C0, false)
+    // 交互点反投影到字的平面：物理在平面里算，连线从屏幕上的光标画出去
+    const Q = [], qa = toP(ai.x, ai.y)
+    if (qa && ai.a > 0.02) Q.push({ x: qa.x, y: qa.y, sx: ai.x, sy: ai.y, c: C0.ai, R: Math.min(190, W * 0.22) * ai.a })
+    if (you.live || (!fine && t - you.last < 1500)) { const qy = toP(you.x, you.y); if (qy) Q.push({ x: qy.x, y: qy.y, sx: you.x, sy: you.y, c: C0.you, R: Math.min(170, W * 0.2) }) }
+
+    for (const p of P) {
+      if (p.flight) {
+        moveThroughCloud(p, t)
+      } else if (el > p.delay || reduce) {
+        const jx = reduce ? 0 : Math.sin(el * 0.0011 + p.ph) * 0.9, jy = reduce ? 0 : Math.cos(el * 0.0013 + p.ph) * 0.9
+        let ax = (p.hx + jx - p.x) * 0.06, ay = (p.hy + jy - p.y) * 0.06
+        p.q = -1; p.heat = 0
+        for (let qi = 0; qi < Q.length; qi++) {
+          const q = Q[qi], dx = p.x - q.x, dy = p.y - q.y, d2 = dx * dx + dy * dy
+          if (d2 < q.R * q.R) {
+            const d = Math.sqrt(d2) || 1, f = (1 - d / q.R) ** 2
+            ax += (dx / d) * f * 2; ay += (dy / d) * f * 2
+            if (1 - d / q.R > p.heat) { p.heat = 1 - d / q.R; p.q = qi; p.d = d }
+          }
+        }
+        p.vx = (p.vx + ax) * 0.82; p.vy = (p.vy + ay) * 0.82
+        p.x += p.vx; p.y += p.vy
+      } else p.x += 6
+    }
+
+    for (const p of P) { const pr = toS(p.x, p.y, p.z); p.px = pr.x; p.py = pr.y; p.ps = pr.s }
+
+    // 成对连线 + 注意力线
+    const settled = (p) => Math.abs(p.x - p.hx) + Math.abs(p.y - p.hy) < step * 6
+    ctx.lineWidth = 0.6
+    const byQ = Q.map(() => [])
+    for (const p of P) if (p.q >= 0 && settled(p)) {
+      byQ[p.q].push(p)
+      const n = P[p.nb]
+      if (n && settled(n)) { ctx.strokeStyle = `rgba(${Q[p.q].c},${p.heat * 0.5})`; ctx.beginPath(); ctx.moveTo(p.px, p.py); ctx.lineTo(n.px, n.py); ctx.stroke() }
+    }
+    ctx.lineWidth = 0.5
+    byQ.forEach((arr, qi) => {
+      arr.sort((a, b) => a.d - b.d)
+      for (const p of arr.slice(0, 24)) { ctx.strokeStyle = `rgba(${Q[qi].c},${p.heat ** 1.5 * 0.32})`; ctx.beginPath(); ctx.moveTo(Q[qi].sx, Q[qi].sy); ctx.lineTo(p.px, p.py); ctx.stroke() }
+    })
+    // 两个光标之间的那一根线：Pairwise 的「一对」
+    if (Q.length > 1 && Q[0].c === C0.ai) {
+      const g = ctx.createLinearGradient(Q[1].sx, Q[1].sy, Q[0].sx, Q[0].sy)
+      g.addColorStop(0, `rgba(${C0.you},0.35)`); g.addColorStop(1, `rgba(${C0.ai},0.5)`)
+      ctx.strokeStyle = g; ctx.lineWidth = 0.8; ctx.setLineDash([2, 4])
+      ctx.beginPath(); ctx.moveTo(Q[1].sx, Q[1].sy); ctx.lineTo(Q[0].sx, Q[0].sy); ctx.stroke(); ctx.setLineDash([])
+    }
+    // 云里的前景亮而大，背面的粒子更细，隐约透过前景。
+    const light = C0 === PAL.light
+    const inks = [C0.dot, C0.cool, C0.lilac, C0.aqua]
+    for (const p of P) {
+      const la = light ? 0.6 + lit(p, LT) * 0.45 : 0.55 + lit(p, LT) * 0.5
+      const s = Math.max(0.58, (p.r + p.heat * 1.2) * p.ps * (light ? 1.22 : 1.12))
+      const tint = inks[p.tone]
+      if (p.cloud > 0.02) {
+        const depth = Math.max(0, Math.min(1, (p.ps - 0.7) / 0.68))
+        const alpha = (0.34 + depth * 0.57) * (0.76 + la * 0.24)
+        const radius = s * (0.55 + p.cloud * depth * 0.45)
+        if (p.cloud > 0.45) {
+          const scatter = (4 + depth * 8) * p.cloud
+          const offsetX = Math.cos(p.ph) * scatter, offsetY = Math.sin(p.ph) * scatter
+          const fleck = Math.max(0.65, radius * 0.62)
+          ctx.fillStyle = particleColor(tint, alpha * p.cloud * 0.42)
+          ctx.fillRect(p.px + offsetX, p.py + offsetY, fleck, fleck)
+          ctx.fillRect(p.px - offsetY, p.py + offsetX * 0.6, fleck * 0.8, fleck * 0.8)
+        }
+        if (p.r >= 1.6 && depth > 0.52) {
+          ctx.fillStyle = particleColor(tint, alpha * p.cloud * 0.16)
+          ctx.beginPath(); ctx.arc(p.px, p.py, radius * 2.8, 0, Math.PI * 2); ctx.fill()
+        }
+        ctx.fillStyle = particleColor(tint, alpha)
+        ctx.beginPath(); ctx.arc(p.px, p.py, radius, 0, Math.PI * 2); ctx.fill()
+      } else {
+        const alpha = Math.min(1, C0.dotA * (light ? la : la + 0.18) * p.ink)
+        ctx.fillStyle = p.heat > 0.04 ? `rgba(${Q[p.q].c},${0.45 + p.heat * 0.55})`
+          : particleColor(tint, alpha)
+        if (p.r >= 1.6) {
+          ctx.beginPath(); ctx.arc(p.px, p.py, s * 0.57, 0, Math.PI * 2); ctx.fill()
+        } else {
+          ctx.fillRect(p.px - s / 2, p.py - s / 2, s, s)
+        }
+      }
+    }
+    drawSpace(t, C0, true)
+    requestAnimationFrame(frame)
+  }
+
+  let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(sample, 150) })
+  // 「Joy」下面那行逐字打出来；整句一直在 DOM 里，没打到的部分隐藏
+  const tagEl = document.getElementById('tag'), full = tagEl.textContent
+  let typedDone
+  const typed = new Promise((r) => (typedDone = r))
+  async function typewriter() {
+    if (reduce) return typedDone()
+    tagEl.innerHTML = '<span class="done"></span><i class="tc" aria-hidden="true"></i><span class="rest"></span>'
+    tagEl.setAttribute('aria-label', full)
+    const [done, tc, rest] = tagEl.children
+    rest.textContent = full
+    await sleep(1100)
+    for (let n = 1; n <= full.length; n++) {
+      done.textContent = full.slice(0, n); rest.textContent = full.slice(n)
+      const ch = full[n - 1]
+      await sleep(ch === ' ' ? 70 : /[&,.]/.test(ch) ? 180 : 32 + Math.random() * 46)
+    }
+    tc.classList.add('blink'); await sleep(1600)
+    tc.classList.add('gone'); typedDone()
+    await sleep(320)
+    tagEl.textContent = full; tagEl.removeAttribute('aria-label')
+  }
+
+  document.fonts.load('620 100px Geist').then(() => {
+    typewriter()
+    sample(); aiEl.classList.add('on'); requestAnimationFrame(frame)
+  })
+</script>
+</body>
+</html>

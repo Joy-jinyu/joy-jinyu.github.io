@@ -1,0 +1,254 @@
+{
+ "file": "members-ref-2.html",
+ "scheme": "light",
+ "bag": {
+  "bg": {
+   "#f4f4f1": {
+    "n": 1,
+    "who": [
+     "header.nav「团队成员 邀请」"
+    ]
+   },
+   "#ffffff": {
+    "n": 3,
+    "who": [
+     "input「搜索成员」",
+     "div.card「林 林知夏（你）所有者 刚刚」",
+     "div.card「@ wang.lei@exa」"
+    ]
+   },
+   "#ecebe6": {
+    "n": 9,
+    "who": [
+     "span.avatar「林」",
+     "span.avatar「周」",
+     "span.tag「管理员」",
+     "span.avatar「何」"
+    ]
+   },
+   "#f6e9e3": {
+    "n": 1,
+    "who": [
+     "span.tag「所有者」"
+    ]
+   },
+   "#6b6a65": {
+    "n": 18,
+    "who": [
+     "i",
+     "i",
+     "i",
+     "i"
+    ]
+   }
+  },
+  "border": {
+   "1px null": {
+    "n": 1,
+    "who": [
+     "header.nav「团队成员 邀请」"
+    ]
+   },
+   "2px #1c1c1a": {
+    "n": 2,
+    "who": [
+     "i",
+     "i"
+    ]
+   },
+   "1px #e7e6e1": {
+    "n": 18,
+    "who": [
+     "input「搜索成员」",
+     "input「搜索成员」",
+     "input「搜索成员」",
+     "input「搜索成员」"
+    ]
+   }
+  },
+  "radius": {
+   "10": {
+    "n": 11,
+    "who": [
+     "button.icon-btn「返回」",
+     "button.text-btn「邀请」",
+     "input「搜索成员」",
+     "button.more「更多操作：林知夏」"
+    ]
+   },
+   "16": {
+    "n": 2,
+    "who": [
+     "div.card「林 林知夏（你）所有者 刚刚」",
+     "div.card「@ wang.lei@exa」"
+    ]
+   },
+   "pill": {
+    "n": 32,
+    "who": [
+     "span.avatar「林」",
+     "span.tag「所有者」",
+     "i",
+     "i"
+    ]
+   }
+  },
+  "controlHeight": {
+   "36": {
+    "n": 2,
+    "who": [
+     "button.btn「撤回发给 wang.lei@」",
+     "button.btn「撤回发给 chen.yue@」"
+    ]
+   },
+   "40": {
+    "n": 8,
+    "who": [
+     "button.icon-btn「返回」",
+     "button.text-btn「邀请」",
+     "button.more「更多操作：林知夏」",
+     "button.more「更多操作：周启明」"
+    ]
+   },
+   "44": {
+    "n": 1,
+    "who": [
+     "input「搜索成员」"
+    ]
+   }
+  },
+  "text": {
+   "#1c1c1a": {
+    "n": 18,
+    "who": [
+     "h1「团队成员」",
+     "span.avatar「林」",
+     "span.name「林知夏（你）」",
+     "span.avatar「周」"
+    ]
+   },
+   "#c96442": {
+    "n": 1,
+    "who": [
+     "button.text-btn「邀请」"
+    ]
+   },
+   "#6b6a65": {
+    "n": 20,
+    "who": [
+     "h2.group-title「成员 · 6」",
+     "span「6」",
+     "p.meta「刚刚活跃」",
+     "p.meta「2 小时前活跃」"
+    ]
+   },
+   "#a24f32": {
+    "n": 1,
+    "who": [
+     "span.tag「所有者」"
+    ]
+   }
+  },
+  "fontSize": {
+   "12": {
+    "n": 6,
+    "who": [
+     "span.tag「所有者」",
+     "span.tag「管理员」",
+     "span.tag「成员」",
+     "span.tag「成员」"
+    ]
+   },
+   "13": {
+    "n": 14,
+    "who": [
+     "h2.group-title「成员 · 6」",
+     "span「6」",
+     "p.meta「刚刚活跃」",
+     "p.meta「2 小时前活跃」"
+    ]
+   },
+   "14": {
+    "n": 2,
+    "who": [
+     "button.btn「撤回发给 wang.lei@」",
+     "button.btn「撤回发给 chen.yue@」"
+    ]
+   },
+   "15": {
+    "n": 17,
+    "who": [
+     "button.text-btn「邀请」",
+     "span.avatar「林」",
+     "span.name「林知夏（你）」",
+     "span.avatar「周」"
+    ]
+   },
+   "18": {
+    "n": 1,
+    "who": [
+     "h1「团队成员」"
+    ]
+   }
+  },
+  "fontWeight": {
+   "400": {
+    "n": 12,
+    "who": [
+     "p.meta「刚刚活跃」",
+     "p.meta「2 小时前活跃」",
+     "p.meta「3 小时前活跃」",
+     "p.meta「昨天活跃」"
+    ]
+   },
+   "600": {
+    "n": 28,
+    "who": [
+     "h1「团队成员」",
+     "button.text-btn「邀请」",
+     "h2.group-title「成员 · 6」",
+     "span「6」"
+    ]
+   }
+  },
+  "shadow": {
+   "#000000/0.04 0px 1px 2px 0px, #000000/0.06 0px 8px 24px 0px": {
+    "n": 2,
+    "who": [
+     "div.card「林 林知夏（你）所有者 刚刚」",
+     "div.card「@ wang.lei@exa」"
+    ]
+   },
+   "#e7e6e1 0px 0px 0px 1px inset": {
+    "n": 4,
+    "who": [
+     "span.tag「成员」",
+     "span.tag「成员」",
+     "span.tag「成员」",
+     "span.tag「成员」"
+    ]
+   }
+  }
+ },
+ "vars": {
+  "--bg": "#f4f4f1",
+  "--card": "#ffffff",
+  "--text": "#1c1c1a",
+  "--text-2": "#6b6a65",
+  "--line": "#e7e6e1",
+  "--track": "#ecebe6",
+  "--accent": "#c96442",
+  "--accent-ink": "#ffffff",
+  "--tag-bg": "#f6e9e3",
+  "--tag-ink": "#a24f32",
+  "--danger": "#c43d3d",
+  "--danger-ink": "#ffffff",
+  "--hover": "#f3f2ee",
+  "--scrim": "rgba(0,0,0,.4)",
+  "--shadow": "0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06)",
+  "--menu-shadow": "0 2px 6px rgba(0,0,0,.06), 0 12px 32px rgba(0,0,0,.12)"
+ },
+ "darkRule": true,
+ "literalColorsOutsideRoot": 0,
+ "errors": []
+}
